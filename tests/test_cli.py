@@ -3,6 +3,7 @@
 from unittest.mock import MagicMock, patch
 
 import pytest
+from rich.text import Text
 from typer.testing import CliRunner
 
 from cf import __version__
@@ -63,8 +64,8 @@ class TestPrepareModel:
 
     def test_source_requires_prepare_flag(self, tmp_path):
         result = runner.invoke(app, ["--model-source", str(tmp_path)])
-        assert result.exit_code != 0
-        assert "--prepare-model" in result.output
+        assert result.exit_code == 2
+        assert "--prepare-model" in Text.from_ansi(result.output).plain
 
     @patch("cf.seed.seed_database", return_value={"commands": 392, "patterns": 3892})
     @patch("cf.model.prepare_model")
