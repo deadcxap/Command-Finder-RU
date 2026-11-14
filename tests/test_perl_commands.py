@@ -67,7 +67,7 @@ class PerlRecipeTests(unittest.TestCase):
 
     def run_recipe(self, ci, pi, *, arguments=None, input_data=None, check=True):
         self.assertIn((ci, pi), SAFE_RECIPES)
-        pattern = self.source['commands'][ci]['patterns'][pi]
+        pattern = self.source['commands'][ci]['patterns'][2 * pi]
         argv = shlex.split(pattern['command'])
         if (ci, pi) == (6, 9):
             self.assertEqual(argv[:5], ['sort', '-n', 'data.txt', '|', 'perl'])
@@ -203,7 +203,7 @@ class PerlRecipeTests(unittest.TestCase):
             self.file('app.js', 'oldFunction()\n')
             (self.directory / 'directory.js').mkdir()
             self.file('directory.js/nested.js', 'oldFunction()\n')
-            argv = shlex.split(self.source['commands'][0]['patterns'][1]['command'])
+            argv = shlex.split(self.source['commands'][0]['patterns'][2]['command'])
             self.assertEqual(argv[0], 'find')
             argv[0] = '/usr/bin/find'
             argv[argv.index('perl')] = PERL
@@ -413,7 +413,7 @@ class PerlRecipeTests(unittest.TestCase):
     def test_all_changed_programs_compile_without_running_their_commands(self):
         for ci, pi in sorted(COMPILE_RECIPES):
             with self.subTest(ci=ci, pi=pi):
-                parts = shlex.split(self.source['commands'][ci]['patterns'][pi]['command'])
+                parts = shlex.split(self.source['commands'][ci]['patterns'][2 * pi]['command'])
                 parts = parts[parts.index('perl'):]
                 modules = []
                 program = None

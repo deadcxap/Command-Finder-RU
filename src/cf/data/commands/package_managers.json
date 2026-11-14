@@ -4,873 +4,1627 @@
     {
       "name": "apt",
       "synopsis": "apt [options] command [package...]",
-      "description": "High-level package manager for Debian-based systems",
+      "description": "Управление пакетами в системах на основе Debian",
       "patterns": [
         {
           "type": "example",
-          "text": "update the list of available packages",
+          "text": "Обновить списки доступных пакетов APT",
           "command": "sudo apt update",
-          "explanation": "Refreshes the package index from configured repositories"
+          "explanation": "Обновить списки доступных пакетов APT."
         },
         {
           "type": "example",
-          "text": "upgrade all installed packages",
+          "text": "Скачать свежие сведения о пакетах из репозиториев Debian",
+          "command": "sudo apt update",
+          "explanation": "Обновить списки доступных пакетов APT."
+        },
+        {
+          "type": "example",
+          "text": "Обновить установленные пакеты через apt без подтверждений",
           "command": "sudo apt upgrade -y",
-          "explanation": "Installs the newest versions of all currently installed packages"
+          "explanation": "Обновить установленные пакеты через apt без подтверждений."
         },
         {
           "type": "example",
-          "text": "install a package",
+          "text": "Установить доступные обновления пакетов с автоматическим согласием",
+          "command": "sudo apt upgrade -y",
+          "explanation": "Обновить установленные пакеты через apt без подтверждений."
+        },
+        {
+          "type": "example",
+          "text": "Установить nginx через apt",
           "command": "sudo apt install nginx",
-          "explanation": "Downloads and installs nginx and its dependencies"
+          "explanation": "Установить nginx через apt."
         },
         {
           "type": "example",
-          "text": "remove a package but keep its config files",
+          "text": "Добавить пакет из репозитория Debian или Ubuntu",
+          "command": "sudo apt install nginx",
+          "explanation": "Установить nginx через apt."
+        },
+        {
+          "type": "example",
+          "text": "Удалить nginx, сохранив конфигурационные файлы",
           "command": "sudo apt remove nginx",
-          "explanation": "Uninstalls the package but leaves configuration files"
+          "explanation": "Удалить nginx, сохранив конфигурационные файлы."
         },
         {
           "type": "example",
-          "text": "search for a package by name or description",
+          "text": "Деинсталлировать пакет APT без очистки его настроек",
+          "command": "sudo apt remove nginx",
+          "explanation": "Удалить nginx, сохранив конфигурационные файлы."
+        },
+        {
+          "type": "example",
+          "text": "Найти пакеты по словам image и editor",
           "command": "apt search image editor",
-          "explanation": "Searches the package database for matching packages"
+          "explanation": "Найти пакеты по словам image и editor."
+        },
+        {
+          "type": "example",
+          "text": "Поискать приложение в названиях и описаниях APT-пакетов",
+          "command": "apt search image editor",
+          "explanation": "Найти пакеты по словам image и editor."
         }
       ]
     },
     {
       "name": "apt-get",
       "synopsis": "apt-get [options] command [package...]",
-      "description": "Lower-level APT package handling utility",
+      "description": "Управление пакетами низкоуровневым интерфейсом APT",
       "patterns": [
         {
           "type": "example",
-          "text": "install a package without prompts in a script",
+          "text": "Установить curl через apt-get без вопросов",
           "command": "sudo apt-get install -y curl",
-          "explanation": "Non-interactive install suitable for automation and Dockerfiles"
+          "explanation": "Установить curl через apt-get без вопросов."
         },
         {
           "type": "example",
-          "text": "completely remove a package and its config",
+          "text": "Добавить пакет в скрипте с автоматическим подтверждением",
+          "command": "sudo apt-get install -y curl",
+          "explanation": "Установить curl через apt-get без вопросов."
+        },
+        {
+          "type": "example",
+          "text": "Удалить nginx вместе с конфигурацией",
           "command": "sudo apt-get purge nginx",
-          "explanation": "Removes the package along with all configuration files"
+          "explanation": "Удалить nginx вместе с конфигурацией."
         },
         {
           "type": "example",
-          "text": "clean up downloaded package files",
+          "text": "Полностью очистить пакет через apt-get purge",
+          "command": "sudo apt-get purge nginx",
+          "explanation": "Удалить nginx вместе с конфигурацией."
+        },
+        {
+          "type": "example",
+          "text": "Очистить кеш скачанных deb-пакетов",
           "command": "sudo apt-get clean",
-          "explanation": "Removes cached .deb files to free disk space"
+          "explanation": "Очистить кеш скачанных deb-пакетов."
         },
         {
           "type": "example",
-          "text": "remove unused dependencies",
+          "text": "Удалить загруженные архивы установщика APT",
+          "command": "sudo apt-get clean",
+          "explanation": "Очистить кеш скачанных deb-пакетов."
+        },
+        {
+          "type": "example",
+          "text": "Удалить ненужные зависимости без подтверждений",
           "command": "sudo apt-get autoremove -y",
-          "explanation": "Uninstalls packages that were installed as dependencies but are no longer needed"
+          "explanation": "Удалить ненужные зависимости без подтверждений."
         },
         {
           "type": "example",
-          "text": "do a distribution upgrade",
+          "text": "Убрать автоматически установленные зависимости, которые больше не нужны",
+          "command": "sudo apt-get autoremove -y",
+          "explanation": "Удалить ненужные зависимости без подтверждений."
+        },
+        {
+          "type": "example",
+          "text": "Обновить пакеты с разрешением изменения зависимостей",
           "command": "sudo apt-get dist-upgrade",
-          "explanation": "Upgrades packages and handles dependency changes intelligently"
+          "explanation": "Обновить пакеты с разрешением изменения зависимостей."
+        },
+        {
+          "type": "example",
+          "text": "Выполнить dist-upgrade через apt-get",
+          "command": "sudo apt-get dist-upgrade",
+          "explanation": "Обновить пакеты с разрешением изменения зависимостей."
         }
       ]
     },
     {
       "name": "dpkg",
       "synopsis": "dpkg [options] action",
-      "description": "Low-level Debian package manager",
+      "description": "Управление отдельными пакетами Debian",
       "patterns": [
         {
           "type": "example",
-          "text": "install a local .deb package file",
+          "text": "Установить локальный файл package.deb",
           "command": "sudo dpkg -i package.deb",
-          "explanation": "Installs a package directly from a .deb file"
+          "explanation": "Установить локальный файл package.deb."
         },
         {
           "type": "example",
-          "text": "list fully installed Debian packages with versions and descriptions",
+          "text": "Добавить Debian-пакет напрямую через dpkg",
+          "command": "sudo dpkg -i package.deb",
+          "explanation": "Установить локальный файл package.deb."
+        },
+        {
+          "type": "example",
+          "text": "показать полностью установленные пакеты Debian с версиями",
           "command": "dpkg -l | awk 'length($1) == 2 && substr($1, 2, 1) == \"i\" {print}'",
-          "explanation": "Selects fully installed actual states without an error flag, including packages held or marked for removal"
+          "explanation": "Выбирает фактически установленные пакеты без флага ошибки, включая удерживаемые и помеченные для удаления."
         },
         {
           "type": "example",
-          "text": "find which package owns a file",
+          "text": "получить список установленных пакетов без удалённых и недонастроенных записей",
+          "command": "dpkg -l | awk 'length($1) == 2 && substr($1, 2, 1) == \"i\" {print}'",
+          "explanation": "Выбирает фактически установленные пакеты без флага ошибки, включая удерживаемые и помеченные для удаления."
+        },
+        {
+          "type": "example",
+          "text": "Узнать, какому пакету принадлежит /usr/bin/vim",
           "command": "dpkg -S /usr/bin/vim",
-          "explanation": "Identifies which package installed the given file"
+          "explanation": "Узнать, какому пакету принадлежит /usr/bin/vim."
         },
         {
           "type": "example",
-          "text": "list files installed by a package",
+          "text": "Найти владельца установленного файла в базе dpkg",
+          "command": "dpkg -S /usr/bin/vim",
+          "explanation": "Узнать, какому пакету принадлежит /usr/bin/vim."
+        },
+        {
+          "type": "example",
+          "text": "Показать файлы пакета nginx",
           "command": "dpkg -L nginx",
-          "explanation": "Shows every file installed by the nginx package"
+          "explanation": "Показать файлы пакета nginx."
+        },
+        {
+          "type": "example",
+          "text": "Перечислить пути, установленные Debian-пакетом",
+          "command": "dpkg -L nginx",
+          "explanation": "Показать файлы пакета nginx."
         }
       ]
     },
     {
       "name": "yum",
       "synopsis": "yum [options] command [package...]",
-      "description": "Package manager for RHEL/CentOS 7 and older",
+      "description": "Управление пакетами RHEL, CentOS 7 и более старых систем",
       "patterns": [
         {
           "type": "example",
-          "text": "install a package on CentOS or RHEL",
+          "text": "Установить httpd через yum",
           "command": "sudo yum install httpd",
-          "explanation": "Installs Apache HTTP server and its dependencies"
+          "explanation": "Установить httpd через yum."
         },
         {
           "type": "example",
-          "text": "update all packages",
+          "text": "Добавить Apache-пакет на CentOS или RHEL",
+          "command": "sudo yum install httpd",
+          "explanation": "Установить httpd через yum."
+        },
+        {
+          "type": "example",
+          "text": "Обновить все пакеты через yum без вопросов",
           "command": "sudo yum update -y",
-          "explanation": "Upgrades all packages to the latest available versions"
+          "explanation": "Обновить все пакеты через yum без вопросов."
         },
         {
           "type": "example",
-          "text": "search for a package",
+          "text": "Установить доступные обновления RPM-пакетов автоматически",
+          "command": "sudo yum update -y",
+          "explanation": "Обновить все пакеты через yum без вопросов."
+        },
+        {
+          "type": "example",
+          "text": "Найти пакет nodejs через yum",
           "command": "yum search nodejs",
-          "explanation": "Searches package names and descriptions for matches"
+          "explanation": "Найти пакет nodejs через yum."
         },
         {
           "type": "example",
-          "text": "remove a package",
+          "text": "Поискать доступное приложение в RPM-репозиториях",
+          "command": "yum search nodejs",
+          "explanation": "Найти пакет nodejs через yum."
+        },
+        {
+          "type": "example",
+          "text": "Удалить пакет httpd через yum",
           "command": "sudo yum remove httpd",
-          "explanation": "Uninstalls the specified package"
+          "explanation": "Удалить пакет httpd через yum."
         },
         {
           "type": "example",
-          "text": "list installed packages",
+          "text": "Деинсталлировать Apache на системе с yum",
+          "command": "sudo yum remove httpd",
+          "explanation": "Удалить пакет httpd через yum."
+        },
+        {
+          "type": "example",
+          "text": "Перечислить установленные пакеты yum",
           "command": "yum list installed",
-          "explanation": "Shows all currently installed packages"
+          "explanation": "Перечислить установленные пакеты yum."
+        },
+        {
+          "type": "example",
+          "text": "Посмотреть локальные RPM-пакеты через менеджер yum",
+          "command": "yum list installed",
+          "explanation": "Перечислить установленные пакеты yum."
         }
       ]
     },
     {
       "name": "dnf",
       "synopsis": "dnf [options] command [package...]",
-      "description": "Next-generation package manager for Fedora and RHEL 8+",
+      "description": "Управление пакетами Fedora, RHEL 8 и более новых систем",
       "patterns": [
         {
           "type": "example",
-          "text": "install a package on Fedora",
+          "text": "Установить gcc через dnf",
           "command": "sudo dnf install gcc",
-          "explanation": "Installs the GCC compiler and its dependencies"
+          "explanation": "Установить gcc через dnf."
         },
         {
           "type": "example",
-          "text": "search for available packages",
+          "text": "Добавить компилятор из репозиториев Fedora",
+          "command": "sudo dnf install gcc",
+          "explanation": "Установить gcc через dnf."
+        },
+        {
+          "type": "example",
+          "text": "Найти пакеты Python через dnf",
           "command": "dnf search python",
-          "explanation": "Searches repositories for packages matching the query"
+          "explanation": "Найти пакеты Python через dnf."
         },
         {
           "type": "example",
-          "text": "show info about a package",
+          "text": "Поискать доступные пакеты по слову python",
+          "command": "dnf search python",
+          "explanation": "Найти пакеты Python через dnf."
+        },
+        {
+          "type": "example",
+          "text": "Посмотреть информацию о пакете nginx",
           "command": "dnf info nginx",
-          "explanation": "Displays details like version, size, and description"
+          "explanation": "Посмотреть информацию о пакете nginx."
         },
         {
           "type": "example",
-          "text": "remove a package and its unused dependencies",
+          "text": "Узнать описание и версию пакета через dnf",
+          "command": "dnf info nginx",
+          "explanation": "Посмотреть информацию о пакете nginx."
+        },
+        {
+          "type": "example",
+          "text": "Удалить nginx и ненужные зависимости через dnf",
           "command": "sudo dnf autoremove nginx",
-          "explanation": "Removes the package and any orphaned dependencies"
+          "explanation": "Удалить nginx и ненужные зависимости через dnf."
         },
         {
           "type": "example",
-          "text": "list enabled repositories",
+          "text": "Очистить пакет вместе с автоматически установленными зависимостями",
+          "command": "sudo dnf autoremove nginx",
+          "explanation": "Удалить nginx и ненужные зависимости через dnf."
+        },
+        {
+          "type": "example",
+          "text": "Показать подключённые репозитории dnf",
           "command": "dnf repolist",
-          "explanation": "Shows all currently enabled package repositories"
+          "explanation": "Показать подключённые репозитории dnf."
+        },
+        {
+          "type": "example",
+          "text": "Перечислить включённые источники пакетов Fedora",
+          "command": "dnf repolist",
+          "explanation": "Показать подключённые репозитории dnf."
         }
       ]
     },
     {
       "name": "pacman",
       "synopsis": "pacman [options] [targets...]",
-      "description": "Package manager for Arch Linux",
+      "description": "Управление пакетами Arch Linux",
       "patterns": [
         {
           "type": "example",
-          "text": "install a package on Arch Linux",
+          "text": "Установить Firefox через pacman",
           "command": "sudo pacman -S firefox",
-          "explanation": "Syncs and installs the package from the repositories"
+          "explanation": "Установить Firefox через pacman."
         },
         {
           "type": "example",
-          "text": "update all installed packages",
+          "text": "Добавить пакет в Arch Linux",
+          "command": "sudo pacman -S firefox",
+          "explanation": "Установить Firefox через pacman."
+        },
+        {
+          "type": "example",
+          "text": "Обновить базу пакетов и всю систему Arch",
           "command": "sudo pacman -Syu",
-          "explanation": "Synchronizes databases and upgrades all packages"
+          "explanation": "Обновить базу пакетов и всю систему Arch."
         },
         {
           "type": "example",
-          "text": "search for a package",
+          "text": "Выполнить полное обновление через pacman -Syu",
+          "command": "sudo pacman -Syu",
+          "explanation": "Обновить базу пакетов и всю систему Arch."
+        },
+        {
+          "type": "example",
+          "text": "Найти пакеты по словам text и editor",
           "command": "pacman -Ss text editor",
-          "explanation": "Searches the sync databases for matching packages"
+          "explanation": "Найти пакеты по словам text и editor."
         },
         {
           "type": "example",
-          "text": "remove a package and its unused dependencies",
+          "text": "Поискать текстовый редактор в репозиториях Arch",
+          "command": "pacman -Ss text editor",
+          "explanation": "Найти пакеты по словам text и editor."
+        },
+        {
+          "type": "example",
+          "text": "Удалить Firefox с ненужными зависимостями и без резервных конфигов",
           "command": "sudo pacman -Rns firefox",
-          "explanation": "Removes the package, its config, and orphaned dependencies"
+          "explanation": "Удалить Firefox с ненужными зависимостями и без резервных конфигов."
         },
         {
           "type": "example",
-          "text": "list all explicitly installed packages",
+          "text": "Очистить пакет Arch через pacman -Rns",
+          "command": "sudo pacman -Rns firefox",
+          "explanation": "Удалить Firefox с ненужными зависимостями и без резервных конфигов."
+        },
+        {
+          "type": "example",
+          "text": "Показать явно установленные пакеты Arch",
           "command": "pacman -Qe",
-          "explanation": "Shows packages that were explicitly installed by the user"
+          "explanation": "Показать явно установленные пакеты Arch."
+        },
+        {
+          "type": "example",
+          "text": "Перечислить пакеты, не помеченные как автоматические зависимости",
+          "command": "pacman -Qe",
+          "explanation": "Показать явно установленные пакеты Arch."
         }
       ]
     },
     {
       "name": "brew",
       "synopsis": "brew [command] [options] [formula|cask...]",
-      "description": "Package manager for macOS and Linux (Homebrew)",
+      "description": "Установка пакетов Homebrew в macOS и Linux",
       "patterns": [
         {
           "type": "example",
-          "text": "install a command-line tool on macOS",
+          "text": "Установить консольный wget через Homebrew",
           "command": "brew install wget",
-          "explanation": "Downloads and installs the formula"
+          "explanation": "Установить консольный wget через Homebrew."
         },
         {
           "type": "example",
-          "text": "install a macOS GUI application",
+          "text": "Добавить wget в окружение через пакетный менеджер Homebrew",
+          "command": "brew install wget",
+          "explanation": "Установить консольный wget через Homebrew."
+        },
+        {
+          "type": "example",
+          "text": "Установить графический Firefox через Homebrew Cask",
           "command": "brew install --cask firefox",
-          "explanation": "Installs a desktop application as a cask"
+          "explanation": "Установить графический Firefox через Homebrew Cask."
         },
         {
           "type": "example",
-          "text": "update Homebrew and all installed packages",
+          "text": "Добавить macOS-приложение как cask",
+          "command": "brew install --cask firefox",
+          "explanation": "Установить графический Firefox через Homebrew Cask."
+        },
+        {
+          "type": "example",
+          "text": "Обновить Homebrew и установленные пакеты",
           "command": "brew update && brew upgrade",
-          "explanation": "Fetches the latest formulae and upgrades all packages"
+          "explanation": "Обновить Homebrew и установленные пакеты."
         },
         {
           "type": "example",
-          "text": "search for a package in Homebrew",
+          "text": "Скачать сведения brew и затем обновить формулы",
+          "command": "brew update && brew upgrade",
+          "explanation": "Обновить Homebrew и установленные пакеты."
+        },
+        {
+          "type": "example",
+          "text": "Найти пакеты Homebrew по имени node",
           "command": "brew search node",
-          "explanation": "Searches for formulae and casks matching the query"
+          "explanation": "Найти пакеты Homebrew по имени node."
         },
         {
           "type": "example",
-          "text": "uninstall a package and clean up",
+          "text": "Поискать формулу или cask в brew",
+          "command": "brew search node",
+          "explanation": "Найти пакеты Homebrew по имени node."
+        },
+        {
+          "type": "example",
+          "text": "Удалить wget и очистить кеш Homebrew",
           "command": "brew uninstall wget && brew cleanup",
-          "explanation": "Removes the formula and deletes old cached downloads",
+          "explanation": "Удалить wget и очистить кеш Homebrew.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "see what is wrong with your Homebrew setup",
+          "text": "Деинсталлировать формулу с последующей уборкой brew cleanup",
+          "command": "brew uninstall wget && brew cleanup",
+          "explanation": "Удалить wget и очистить кеш Homebrew.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "Проверить проблемы установки Homebrew",
           "command": "brew doctor",
-          "explanation": "Runs diagnostics for permissions, PATH, and outdated Xcode CLT"
+          "explanation": "Проверить проблемы установки Homebrew."
         },
         {
           "type": "example",
-          "text": "list only top-level installed formulas you asked for",
+          "text": "Запустить диагностику brew doctor",
+          "command": "brew doctor",
+          "explanation": "Проверить проблемы установки Homebrew."
+        },
+        {
+          "type": "example",
+          "text": "показать вручную установленные формулы Homebrew без зависимых пакетов",
           "command": "brew leaves --installed-on-request",
-          "explanation": "Lists manually requested formulae that are not dependencies of another installed formula or cask"
+          "explanation": "Показывает явно запрошенные формулы, не используемые как зависимости других установленных формул или cask."
         },
         {
           "type": "example",
-          "text": "show the dependency tree of a formula",
+          "text": "перечислить листья Homebrew, которые были установлены по явному запросу",
+          "command": "brew leaves --installed-on-request",
+          "explanation": "Показывает явно запрошенные формулы, не используемые как зависимости других установленных формул или cask."
+        },
+        {
+          "type": "example",
+          "text": "Показать дерево зависимостей ffmpeg",
           "command": "brew deps --tree ffmpeg",
-          "explanation": "Visualizes recursive dependencies before a large install"
+          "explanation": "Показать дерево зависимостей ffmpeg."
         },
         {
           "type": "example",
-          "text": "reproduce a machine from a Brewfile",
+          "text": "Посмотреть, какие пакеты нужны формуле Homebrew",
+          "command": "brew deps --tree ffmpeg",
+          "explanation": "Показать дерево зависимостей ffmpeg."
+        },
+        {
+          "type": "example",
+          "text": "Установить набор пакетов из Brewfile",
           "command": "brew bundle install --file=Brewfile",
-          "explanation": "Installs everything listed in brew bundle format for dotfiles repos"
+          "explanation": "Установить набор пакетов из Brewfile."
         },
         {
           "type": "example",
-          "text": "manage background services installed by brew",
+          "text": "Воспроизвести конфигурацию Homebrew по сохранённому списку",
+          "command": "brew bundle install --file=Brewfile",
+          "explanation": "Установить набор пакетов из Brewfile."
+        },
+        {
+          "type": "example",
+          "text": "Запустить Redis как фоновую службу Homebrew",
           "command": "brew services start redis",
-          "explanation": "Starts redis as a user LaunchAgent on macOS"
+          "explanation": "Запустить Redis как фоновую службу Homebrew."
+        },
+        {
+          "type": "example",
+          "text": "Включить сервис redis через brew services",
+          "command": "brew services start redis",
+          "explanation": "Запустить Redis как фоновую службу Homebrew."
         }
       ]
     },
     {
       "name": "snap",
       "synopsis": "snap [command] [options] [snap...]",
-      "description": "Package manager for snap packages on Ubuntu/Linux",
+      "description": "Управление пакетами Snap",
       "patterns": [
         {
           "type": "example",
-          "text": "install a snap package",
+          "text": "Установить VLC как snap-пакет",
           "command": "sudo snap install vlc",
-          "explanation": "Installs the snap from the Snap Store"
+          "explanation": "Установить VLC как snap-пакет."
         },
         {
           "type": "example",
-          "text": "install a classic snap without confinement",
+          "text": "Добавить приложение из Snap Store",
+          "command": "sudo snap install vlc",
+          "explanation": "Установить VLC как snap-пакет."
+        },
+        {
+          "type": "example",
+          "text": "Установить редактор code с классическим confinement",
           "command": "sudo snap install code --classic",
-          "explanation": "Installs VS Code in classic mode with full system access"
+          "explanation": "Установить редактор code с классическим confinement."
         },
         {
           "type": "example",
-          "text": "list installed snaps",
+          "text": "Разрешить snap-приложению доступ в режиме classic",
+          "command": "sudo snap install code --classic",
+          "explanation": "Установить редактор code с классическим confinement."
+        },
+        {
+          "type": "example",
+          "text": "Показать установленные snap-пакеты",
           "command": "snap list",
-          "explanation": "Shows all installed snap packages and their versions"
+          "explanation": "Показать установленные snap-пакеты."
         },
         {
           "type": "example",
-          "text": "update all snap packages",
+          "text": "Перечислить приложения, добавленные через snap",
+          "command": "snap list",
+          "explanation": "Показать установленные snap-пакеты."
+        },
+        {
+          "type": "example",
+          "text": "Обновить все snap-пакеты",
           "command": "sudo snap refresh",
-          "explanation": "Updates all installed snaps to their latest versions"
+          "explanation": "Обновить все snap-пакеты."
+        },
+        {
+          "type": "example",
+          "text": "Установить новые ревизии приложений Snap",
+          "command": "sudo snap refresh",
+          "explanation": "Обновить все snap-пакеты."
         }
       ]
     },
     {
       "name": "flatpak",
       "synopsis": "flatpak [command] [options] [app...]",
-      "description": "Application distribution framework for Linux",
+      "description": "Установка приложений Flatpak",
       "patterns": [
         {
           "type": "example",
-          "text": "install a Flatpak application",
+          "text": "Установить GIMP из Flathub",
           "command": "flatpak install flathub org.gimp.GIMP",
-          "explanation": "Installs GIMP from the Flathub repository"
+          "explanation": "Установить GIMP из Flathub."
         },
         {
           "type": "example",
-          "text": "run a Flatpak application",
+          "text": "Добавить приложение в формате Flatpak",
+          "command": "flatpak install flathub org.gimp.GIMP",
+          "explanation": "Установить GIMP из Flathub."
+        },
+        {
+          "type": "example",
+          "text": "Запустить GIMP через Flatpak",
           "command": "flatpak run org.gimp.GIMP",
-          "explanation": "Launches the installed Flatpak application"
+          "explanation": "Запустить GIMP через Flatpak."
         },
         {
           "type": "example",
-          "text": "list installed Flatpak apps",
+          "text": "Открыть установленное Flatpak-приложение по идентификатору",
+          "command": "flatpak run org.gimp.GIMP",
+          "explanation": "Запустить GIMP через Flatpak."
+        },
+        {
+          "type": "example",
+          "text": "Показать установленные Flatpak-приложения и среды",
           "command": "flatpak list",
-          "explanation": "Shows all installed Flatpak applications and runtimes"
+          "explanation": "Показать установленные Flatpak-приложения и среды."
         },
         {
           "type": "example",
-          "text": "update all Flatpak applications",
+          "text": "Перечислить локальные Flatpak-пакеты",
+          "command": "flatpak list",
+          "explanation": "Показать установленные Flatpak-приложения и среды."
+        },
+        {
+          "type": "example",
+          "text": "Обновить установленные пакеты Flatpak",
           "command": "flatpak update",
-          "explanation": "Checks for and installs updates for all Flatpak apps"
+          "explanation": "Обновить установленные пакеты Flatpak."
+        },
+        {
+          "type": "example",
+          "text": "Установить доступные обновления приложений и runtime",
+          "command": "flatpak update",
+          "explanation": "Обновить установленные пакеты Flatpak."
         }
       ]
     },
     {
       "name": "pip",
       "synopsis": "pip [command] [options] [package...]",
-      "description": "Package installer for Python",
+      "description": "Установка пакетов Python",
       "patterns": [
         {
           "type": "example",
-          "text": "install a Python package",
+          "text": "Установить библиотеку requests через pip",
           "command": "pip install requests",
-          "explanation": "Downloads and installs the package from PyPI"
+          "explanation": "Установить библиотеку requests через pip."
         },
         {
           "type": "example",
-          "text": "install packages from a requirements file",
+          "text": "Добавить Python-пакет из индекса пакетов",
+          "command": "pip install requests",
+          "explanation": "Установить библиотеку requests через pip."
+        },
+        {
+          "type": "example",
+          "text": "Установить зависимости из requirements.txt",
           "command": "pip install -r requirements.txt",
-          "explanation": "Installs all packages listed in the requirements file"
+          "explanation": "Установить зависимости из requirements.txt."
         },
         {
           "type": "example",
-          "text": "upgrade a package to the latest version",
+          "text": "Подготовить Python-окружение по списку требований",
+          "command": "pip install -r requirements.txt",
+          "explanation": "Установить зависимости из requirements.txt."
+        },
+        {
+          "type": "example",
+          "text": "Обновить сам pip до свежей версии",
           "command": "pip install --upgrade pip",
-          "explanation": "Updates the specified package to the newest version"
+          "explanation": "Обновить сам pip до свежей версии."
         },
         {
           "type": "example",
-          "text": "list all installed Python packages",
+          "text": "Установить последнюю доступную версию менеджера pip",
+          "command": "pip install --upgrade pip",
+          "explanation": "Обновить сам pip до свежей версии."
+        },
+        {
+          "type": "example",
+          "text": "Перечислить установленные Python-пакеты",
           "command": "pip list",
-          "explanation": "Shows all installed packages and their versions"
+          "explanation": "Перечислить установленные Python-пакеты."
         },
         {
           "type": "example",
-          "text": "freeze installed packages into a requirements file",
+          "text": "Посмотреть библиотеки текущего окружения через pip",
+          "command": "pip list",
+          "explanation": "Перечислить установленные Python-пакеты."
+        },
+        {
+          "type": "example",
+          "text": "Сохранить версии Python-зависимостей в requirements.txt",
           "command": "pip freeze > requirements.txt",
-          "explanation": "Exports exact package versions for reproducibility"
+          "explanation": "Сохранить версии Python-зависимостей в requirements.txt."
+        },
+        {
+          "type": "example",
+          "text": "Записать результат pip freeze в файл с перезаписью",
+          "command": "pip freeze > requirements.txt",
+          "explanation": "Сохранить версии Python-зависимостей в requirements.txt."
         }
       ]
     },
     {
       "name": "pip3",
       "synopsis": "pip3 [command] [options] [package...]",
-      "description": "Package installer specifically for Python 3",
+      "description": "Установка пакетов Python 3",
       "patterns": [
         {
           "type": "example",
-          "text": "install a package for Python 3 specifically",
+          "text": "Установить Flask для Python 3",
           "command": "pip3 install flask",
-          "explanation": "Installs the package into the Python 3 environment"
+          "explanation": "Установить Flask для Python 3."
         },
         {
           "type": "example",
-          "text": "install a package for the current user only",
+          "text": "Добавить пакет через pip3",
+          "command": "pip3 install flask",
+          "explanation": "Установить Flask для Python 3."
+        },
+        {
+          "type": "example",
+          "text": "Установить NumPy только для текущего пользователя",
           "command": "pip3 install --user numpy",
-          "explanation": "Installs to the user directory without needing sudo"
+          "explanation": "Установить NumPy только для текущего пользователя."
         },
         {
           "type": "example",
-          "text": "show details about an installed package",
+          "text": "Добавить Python-библиотеку без системной установки",
+          "command": "pip3 install --user numpy",
+          "explanation": "Установить NumPy только для текущего пользователя."
+        },
+        {
+          "type": "example",
+          "text": "Показать сведения об установленном Flask",
           "command": "pip3 show flask",
-          "explanation": "Displays version, location, dependencies, and metadata"
+          "explanation": "Показать сведения об установленном Flask."
         },
         {
           "type": "example",
-          "text": "uninstall a Python package",
+          "text": "Узнать версию и расположение пакета через pip3 show",
+          "command": "pip3 show flask",
+          "explanation": "Показать сведения об установленном Flask."
+        },
+        {
+          "type": "example",
+          "text": "Удалить Flask из Python-окружения",
           "command": "pip3 uninstall flask",
-          "explanation": "Removes the specified package"
+          "explanation": "Удалить Flask из Python-окружения."
+        },
+        {
+          "type": "example",
+          "text": "Деинсталлировать Python-пакет через pip3",
+          "command": "pip3 uninstall flask",
+          "explanation": "Удалить Flask из Python-окружения."
         }
       ]
     },
     {
       "name": "npm",
       "synopsis": "npm [command] [options] [package...]",
-      "description": "Package manager for Node.js",
+      "description": "Управление пакетами Node.js",
       "patterns": [
         {
           "type": "example",
-          "text": "install all project dependencies",
+          "text": "Установить зависимости проекта из package.json",
           "command": "npm install",
-          "explanation": "Reads package.json and installs all listed dependencies"
+          "explanation": "Установить зависимости проекта из package.json."
         },
         {
           "type": "example",
-          "text": "add a new package to the project",
+          "text": "Подготовить node_modules через npm install",
+          "command": "npm install",
+          "explanation": "Установить зависимости проекта из package.json."
+        },
+        {
+          "type": "example",
+          "text": "Добавить Express в зависимости проекта",
           "command": "npm install express",
-          "explanation": "Installs express and adds it to package.json"
+          "explanation": "Добавить Express в зависимости проекта."
         },
         {
           "type": "example",
-          "text": "install a package as a dev dependency",
+          "text": "Установить новый npm-пакет локально",
+          "command": "npm install express",
+          "explanation": "Добавить Express в зависимости проекта."
+        },
+        {
+          "type": "example",
+          "text": "Добавить Jest как зависимость разработки",
           "command": "npm install --save-dev jest",
-          "explanation": "Adds jest to devDependencies in package.json"
+          "explanation": "Добавить Jest как зависимость разработки."
         },
         {
           "type": "example",
-          "text": "install a package globally",
+          "text": "Записать пакет в devDependencies через npm",
+          "command": "npm install --save-dev jest",
+          "explanation": "Добавить Jest как зависимость разработки."
+        },
+        {
+          "type": "example",
+          "text": "Установить TypeScript глобально",
           "command": "npm install -g typescript",
-          "explanation": "Installs the package system-wide for CLI usage"
+          "explanation": "Установить TypeScript глобально."
         },
         {
           "type": "example",
-          "text": "run a script defined in package.json",
+          "text": "Сделать npm-утилиту доступной вне текущего проекта",
+          "command": "npm install -g typescript",
+          "explanation": "Установить TypeScript глобально."
+        },
+        {
+          "type": "example",
+          "text": "Запустить скрипт build из package.json",
           "command": "npm run build",
-          "explanation": "Executes the build script from the scripts section"
+          "explanation": "Запустить скрипт build из package.json."
+        },
+        {
+          "type": "example",
+          "text": "Выполнить сборку проекта через npm run",
+          "command": "npm run build",
+          "explanation": "Запустить скрипт build из package.json."
         }
       ]
     },
     {
       "name": "npx",
       "synopsis": "npx [options] <package>[@version] [args]",
-      "description": "Execute npm packages without installing them globally, run one-off tools and scaffolding commands",
+      "description": "Разовый запуск пакетов npm и генераторов проектов без глобальной установки",
       "patterns": [
         {
           "type": "example",
-          "text": "start a quick local web server to serve files",
+          "text": "Раздать файлы текущей папки по HTTP на порту 8080",
           "command": "npx http-server . -p 8080",
-          "explanation": "Serves current directory on port 8080 with directory listing"
+          "explanation": "Раздать файлы текущей папки по HTTP на порту 8080."
         },
         {
           "type": "example",
-          "text": "start a static file server with CORS enabled",
+          "text": "Быстро поднять локальный файловый веб-сервер через npx",
+          "command": "npx http-server . -p 8080",
+          "explanation": "Раздать файлы текущей папки по HTTP на порту 8080."
+        },
+        {
+          "type": "example",
+          "text": "запустить статический сервер на порту 3000 с включённым CORS",
           "command": "npx serve -l 3000 --cors",
-          "explanation": "Serves current directory on port 3000 with CORS headers"
+          "explanation": "Запустить статический сервер на порту 3000 с включённым CORS."
         },
         {
           "type": "example",
-          "text": "start a mock REST API server from a JSON file",
+          "text": "раздать файлы текущей папки через serve с заголовком Access-Control-Allow-Origin",
+          "command": "npx serve -l 3000 --cors",
+          "explanation": "Запустить статический сервер на порту 3000 с включённым CORS."
+        },
+        {
+          "type": "example",
+          "text": "Поднять тестовый REST API из db.json",
           "command": "npx json-server --watch db.json --port 3001",
-          "explanation": "Creates a full REST API from a JSON file with CRUD endpoints"
+          "explanation": "Поднять тестовый REST API из db.json."
         },
         {
           "type": "example",
-          "text": "expose local server to the internet with a public URL",
+          "text": "Запустить JSON-сервер с наблюдением за файлом на порту 3001",
+          "command": "npx json-server --watch db.json --port 3001",
+          "explanation": "Поднять тестовый REST API из db.json."
+        },
+        {
+          "type": "example",
+          "text": "Опубликовать локальный сервер через публичный туннель",
           "command": "npx localtunnel --port 3000",
-          "explanation": "Creates a public tunnel URL pointing to your local port 3000"
+          "explanation": "Опубликовать локальный сервер через публичный туннель."
         },
         {
           "type": "example",
-          "text": "create a new Next.js application",
+          "text": "Получить внешний URL для приложения на порту 3000",
+          "command": "npx localtunnel --port 3000",
+          "explanation": "Опубликовать локальный сервер через публичный туннель."
+        },
+        {
+          "type": "example",
+          "text": "Создать новое приложение Next.js",
           "command": "npx create-next-app@latest my-app",
-          "explanation": "Scaffolds a new Next.js project with the latest template"
+          "explanation": "Создать новое приложение Next.js."
         },
         {
           "type": "example",
-          "text": "create a new Vite project with React and TypeScript",
+          "text": "Инициализировать проект my-app через create-next-app",
+          "command": "npx create-next-app@latest my-app",
+          "explanation": "Создать новое приложение Next.js."
+        },
+        {
+          "type": "example",
+          "text": "Создать Vite-проект с React и TypeScript",
           "command": "npx create-vite@latest my-app --template react-ts",
-          "explanation": "Scaffolds a Vite project with React and TypeScript configured"
+          "explanation": "Создать Vite-проект с React и TypeScript."
         },
         {
           "type": "example",
-          "text": "create a new React Native Expo app",
+          "text": "Подготовить приложение по шаблону react-ts",
+          "command": "npx create-vite@latest my-app --template react-ts",
+          "explanation": "Создать Vite-проект с React и TypeScript."
+        },
+        {
+          "type": "example",
+          "text": "Создать новое приложение Expo",
           "command": "npx create-expo-app my-app",
-          "explanation": "Scaffolds a new Expo React Native project"
+          "explanation": "Создать новое приложение Expo."
         },
         {
           "type": "example",
-          "text": "clone a git repo without git history as a template",
+          "text": "Начать React Native-проект через create-expo-app",
+          "command": "npx create-expo-app my-app",
+          "explanation": "Создать новое приложение Expo."
+        },
+        {
+          "type": "example",
+          "text": "Скопировать шаблон репозитория без истории Git",
           "command": "npx degit user/repo my-project",
-          "explanation": "Downloads repo contents without .git history, great for templates"
+          "explanation": "Скопировать шаблон репозитория без истории Git."
         },
         {
           "type": "example",
-          "text": "create a new React app with Create React App",
+          "text": "Получить файлы проекта через degit в новую папку",
+          "command": "npx degit user/repo my-project",
+          "explanation": "Скопировать шаблон репозитория без истории Git."
+        },
+        {
+          "type": "example",
+          "text": "Создать TypeScript-приложение через Create React App",
           "command": "npx create-react-app my-app --template typescript",
-          "explanation": "Scaffolds a React project with TypeScript template"
+          "explanation": "Создать TypeScript-приложение через Create React App."
         },
         {
           "type": "example",
-          "text": "format all code files with Prettier",
+          "text": "Подготовить React-проект с шаблоном typescript",
+          "command": "npx create-react-app my-app --template typescript",
+          "explanation": "Создать TypeScript-приложение через Create React App."
+        },
+        {
+          "type": "example",
+          "text": "Отформатировать файлы проекта с записью изменений",
           "command": "npx prettier --write .",
-          "explanation": "Auto-formats all supported files in the current directory"
+          "explanation": "Отформатировать файлы проекта с записью изменений."
         },
         {
           "type": "example",
-          "text": "check code formatting without modifying files",
+          "text": "Применить Prettier ко всему текущему каталогу",
+          "command": "npx prettier --write .",
+          "explanation": "Отформатировать файлы проекта с записью изменений."
+        },
+        {
+          "type": "example",
+          "text": "Проверить форматирование проекта без изменения файлов",
           "command": "npx prettier --check .",
-          "explanation": "Reports which files are not formatted without changing them"
+          "explanation": "Проверить форматирование проекта без изменения файлов."
         },
         {
           "type": "example",
-          "text": "lint JavaScript and TypeScript files and automatically apply available fixes",
+          "text": "Найти несоответствия Prettier в режиме проверки",
+          "command": "npx prettier --check .",
+          "explanation": "Проверить форматирование проекта без изменения файлов."
+        },
+        {
+          "type": "example",
+          "text": "Проверить JS и TS файлы и автоматически исправить ошибки ESLint",
           "command": "npx eslint . --ext .js,.ts,.tsx --fix",
-          "explanation": "Runs ESLint and auto-fixes what it can across JS/TS files",
+          "explanation": "Проверить JS и TS файлы и автоматически исправить ошибки ESLint.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "initialize a TypeScript configuration file",
+          "text": "Применить lint с автоисправлением к js, ts и tsx",
+          "command": "npx eslint . --ext .js,.ts,.tsx --fix",
+          "explanation": "Проверить JS и TS файлы и автоматически исправить ошибки ESLint.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "Создать начальный tsconfig.json",
           "command": "npx tsc --init",
-          "explanation": "Creates a tsconfig.json with default compiler options"
+          "explanation": "Создать начальный tsconfig.json."
         },
         {
           "type": "example",
-          "text": "type check TypeScript project without emitting files",
+          "text": "Инициализировать конфигурацию компилятора TypeScript",
+          "command": "npx tsc --init",
+          "explanation": "Создать начальный tsconfig.json."
+        },
+        {
+          "type": "example",
+          "text": "Проверить типы TypeScript без генерации файлов",
           "command": "npx tsc --noEmit",
-          "explanation": "Runs TypeScript compiler in check-only mode"
+          "explanation": "Проверить типы TypeScript без генерации файлов."
         },
         {
           "type": "example",
-          "text": "detect circular dependencies in a project",
+          "text": "Запустить tsc только для диагностики проекта",
+          "command": "npx tsc --noEmit",
+          "explanation": "Проверить типы TypeScript без генерации файлов."
+        },
+        {
+          "type": "example",
+          "text": "Найти циклические зависимости в исходниках JS и TS",
           "command": "npx madge --circular --extensions ts,js src/",
-          "explanation": "Finds circular import chains in TypeScript/JavaScript files"
+          "explanation": "Найти циклические зависимости в исходниках JS и TS."
         },
         {
           "type": "example",
-          "text": "find unused dependencies in package.json",
+          "text": "Проверить импорты src на циклы через madge",
+          "command": "npx madge --circular --extensions ts,js src/",
+          "explanation": "Найти циклические зависимости в исходниках JS и TS."
+        },
+        {
+          "type": "example",
+          "text": "Найти неиспользуемые зависимости проекта",
           "command": "npx depcheck",
-          "explanation": "Analyzes imports and reports packages in package.json that are unused"
+          "explanation": "Найти неиспользуемые зависимости проекта."
         },
         {
           "type": "example",
-          "text": "kill whatever process is running on a specific port",
+          "text": "Проверить лишние npm-пакеты через depcheck",
+          "command": "npx depcheck",
+          "explanation": "Найти неиспользуемые зависимости проекта."
+        },
+        {
+          "type": "example",
+          "text": "Завершить процесс, занявший порт 3000",
           "command": "npx kill-port 3000",
-          "explanation": "Finds and kills the process occupying port 3000"
+          "explanation": "Завершить процесс, занявший порт 3000."
         },
         {
           "type": "example",
-          "text": "move files to trash instead of permanently deleting",
+          "text": "Освободить указанный сетевой порт через kill-port",
+          "command": "npx kill-port 3000",
+          "explanation": "Завершить процесс, занявший порт 3000."
+        },
+        {
+          "type": "example",
+          "text": "Переместить файлы в корзину вместо безвозвратного удаления",
           "command": "npx trash-cli file1.txt file2.txt",
-          "explanation": "Moves files to system trash so they can be recovered"
+          "explanation": "Переместить файлы в корзину вместо безвозвратного удаления."
         },
         {
           "type": "example",
-          "text": "cross-platform recursive directory removal like rm -rf",
+          "text": "Убрать file1.txt и file2.txt через trash-cli",
+          "command": "npx trash-cli file1.txt file2.txt",
+          "explanation": "Переместить файлы в корзину вместо безвозвратного удаления."
+        },
+        {
+          "type": "example",
+          "text": "Рекурсивно удалить каталоги dist и node_modules",
           "command": "npx rimraf dist node_modules",
-          "explanation": "Deletes directories recursively, works on Windows too"
+          "explanation": "Рекурсивно удалить каталоги dist и node_modules."
         },
         {
           "type": "example",
-          "text": "generate a QR code in the terminal",
+          "text": "Очистить папки проекта кроссплатформенной утилитой rimraf",
+          "command": "npx rimraf dist node_modules",
+          "explanation": "Рекурсивно удалить каталоги dist и node_modules."
+        },
+        {
+          "type": "example",
+          "text": "Показать QR-код ссылки прямо в терминале",
           "command": "npx qrcode-terminal 'https://example.com'",
-          "explanation": "Renders a QR code as ASCII art in the terminal"
+          "explanation": "Показать QR-код ссылки прямо в терминале."
         },
         {
           "type": "example",
-          "text": "show simplified man page for a command",
+          "text": "Преобразовать URL в текстовый QR через npx",
+          "command": "npx qrcode-terminal 'https://example.com'",
+          "explanation": "Показать QR-код ссылки прямо в терминале."
+        },
+        {
+          "type": "example",
+          "text": "Посмотреть короткую шпаргалку по tar",
           "command": "npx tldr tar",
-          "explanation": "Shows practical examples for a command from the tldr-pages project"
+          "explanation": "Посмотреть короткую шпаргалку по tar."
         },
         {
           "type": "example",
-          "text": "open a URL or file from the command line",
+          "text": "Получить упрощённые примеры команды через tldr",
+          "command": "npx tldr tar",
+          "explanation": "Посмотреть короткую шпаргалку по tar."
+        },
+        {
+          "type": "example",
+          "text": "Открыть URL через системное приложение",
           "command": "npx open-cli https://example.com",
-          "explanation": "Opens URL in default browser or file in default application"
+          "explanation": "Открыть URL через системное приложение."
         },
         {
           "type": "example",
-          "text": "initialize Prisma ORM in a project",
+          "text": "Запустить ссылку из командной строки с open-cli",
+          "command": "npx open-cli https://example.com",
+          "explanation": "Открыть URL через системное приложение."
+        },
+        {
+          "type": "example",
+          "text": "Инициализировать Prisma ORM в проекте",
           "command": "npx prisma init",
-          "explanation": "Creates prisma/schema.prisma and .env with database URL placeholder"
+          "explanation": "Инициализировать Prisma ORM в проекте."
         },
         {
           "type": "example",
-          "text": "create and apply a Prisma development database migration",
+          "text": "Создать начальную конфигурацию Prisma",
+          "command": "npx prisma init",
+          "explanation": "Инициализировать Prisma ORM в проекте."
+        },
+        {
+          "type": "example",
+          "text": "Создать и применить миграцию Prisma в режиме разработки",
           "command": "npx prisma migrate dev --name init",
-          "explanation": "Creates and applies a migration from schema changes in a development database; may request a reset",
+          "explanation": "Создаёт и применяет миграцию по изменениям схемы базы разработки; может запросить сброс базы.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "open Prisma Studio database browser",
+          "text": "Обновить схему базы через prisma migrate dev",
+          "command": "npx prisma migrate dev --name init",
+          "explanation": "Создаёт и применяет миграцию по изменениям схемы базы разработки; может запросить сброс базы.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "Открыть графический просмотр базы Prisma Studio",
           "command": "npx prisma studio",
-          "explanation": "Opens a web UI to browse and edit database records"
+          "explanation": "Открыть графический просмотр базы Prisma Studio."
         },
         {
           "type": "example",
-          "text": "generate Drizzle ORM database migration",
+          "text": "Запустить браузер данных для Prisma-проекта",
+          "command": "npx prisma studio",
+          "explanation": "Открыть графический просмотр базы Prisma Studio."
+        },
+        {
+          "type": "example",
+          "text": "Сгенерировать миграцию Drizzle ORM",
           "command": "npx drizzle-kit generate",
-          "explanation": "Generates SQL migration files from Drizzle schema changes"
+          "explanation": "Сгенерировать миграцию Drizzle ORM."
         },
         {
           "type": "example",
-          "text": "push Drizzle schema directly to database without migration",
+          "text": "Создать файлы изменения схемы через drizzle-kit",
+          "command": "npx drizzle-kit generate",
+          "explanation": "Сгенерировать миграцию Drizzle ORM."
+        },
+        {
+          "type": "example",
+          "text": "Применить схему Drizzle напрямую к базе без файлов миграции",
           "command": "npx drizzle-kit push",
-          "explanation": "Syncs schema to database directly, useful for prototyping"
+          "explanation": "Применить схему Drizzle напрямую к базе без файлов миграции."
         },
         {
           "type": "example",
-          "text": "update dependency version ranges in package.json without installing packages",
+          "text": "Синхронизировать структуру базы командой drizzle-kit push",
+          "command": "npx drizzle-kit push",
+          "explanation": "Применить схему Drizzle напрямую к базе без файлов миграции."
+        },
+        {
+          "type": "example",
+          "text": "Обновить диапазоны версий зависимостей в package.json",
           "command": "npx npm-check-updates -u",
-          "explanation": "Writes newer version ranges to package.json; run the package manager separately to install them",
+          "explanation": "Обновляет диапазоны версий в package.json; установка новых версий выполняется менеджером пакетов отдельно.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "check bundle size impact of a package before installing",
+          "text": "Записать свежие версии пакетов через npm-check-updates без установки",
+          "command": "npx npm-check-updates -u",
+          "explanation": "Обновляет диапазоны версий в package.json; установка новых версий выполняется менеджером пакетов отдельно.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "Оценить размер зависимости axios перед установкой",
           "command": "npx bundlephobia axios",
-          "explanation": "Shows minified, gzipped, and download size of a package"
+          "explanation": "Оценить размер зависимости axios перед установкой."
         },
         {
           "type": "example",
-          "text": "initialize git hooks with Husky",
+          "text": "Посмотреть влияние npm-пакета на размер сборки через bundlephobia",
+          "command": "npx bundlephobia axios",
+          "explanation": "Оценить размер зависимости axios перед установкой."
+        },
+        {
+          "type": "example",
+          "text": "Настроить Git-хуки с Husky",
           "command": "npx husky init",
-          "explanation": "Sets up Husky and creates a pre-commit hook template"
+          "explanation": "Настроить Git-хуки с Husky."
         },
         {
           "type": "example",
-          "text": "automate npm package release with version bump",
+          "text": "Инициализировать обработчики Git в Node-проекте",
+          "command": "npx husky init",
+          "explanation": "Настроить Git-хуки с Husky."
+        },
+        {
+          "type": "example",
+          "text": "Запустить выпуск npm-пакета с повышением версии",
           "command": "npx release-it",
-          "explanation": "Bumps version, creates changelog, git tag, and publishes to npm"
+          "explanation": "Запустить выпуск npm-пакета с повышением версии."
         },
         {
           "type": "example",
-          "text": "analyze webpack bundle and visualize module sizes",
+          "text": "Автоматизировать подготовку релиза через release-it",
+          "command": "npx release-it",
+          "explanation": "Запустить выпуск npm-пакета с повышением версии."
+        },
+        {
+          "type": "example",
+          "text": "Открыть анализ размеров модулей webpack",
           "command": "npx webpack-bundle-analyzer stats.json",
-          "explanation": "Opens interactive treemap of bundle contents from webpack stats"
+          "explanation": "Открыть анализ размеров модулей webpack."
         },
         {
           "type": "example",
-          "text": "show system environment info for bug reports",
+          "text": "Визуализировать состав бандла по файлу stats.json",
+          "command": "npx webpack-bundle-analyzer stats.json",
+          "explanation": "Открыть анализ размеров модулей webpack."
+        },
+        {
+          "type": "example",
+          "text": "Собрать сведения о среде для отчёта об ошибке",
           "command": "npx envinfo --system --binaries --browsers --npmPackages",
-          "explanation": "Prints OS, Node, npm, browsers, and installed packages info"
+          "explanation": "Собрать сведения о среде для отчёта об ошибке."
         },
         {
           "type": "example",
-          "text": "list all package licenses in a project",
+          "text": "Вывести версии системы, браузеров, бинарников и npm-пакетов",
+          "command": "npx envinfo --system --binaries --browsers --npmPackages",
+          "explanation": "Собрать сведения о среде для отчёта об ошибке."
+        },
+        {
+          "type": "example",
+          "text": "Показать сводку лицензий зависимостей",
           "command": "npx license-checker --summary",
-          "explanation": "Scans node_modules and lists license types used"
+          "explanation": "Показать сводку лицензий зависимостей."
         },
         {
           "type": "example",
-          "text": "run a Lighthouse performance audit on a URL",
+          "text": "Посчитать используемые лицензии npm-проекта",
+          "command": "npx license-checker --summary",
+          "explanation": "Показать сводку лицензий зависимостей."
+        },
+        {
+          "type": "example",
+          "text": "Провести аудит сайта Lighthouse и сохранить HTML-отчёт",
           "command": "npx lighthouse https://example.com --output html --output-path report.html",
-          "explanation": "Generates a performance, accessibility, and SEO audit report"
+          "explanation": "Провести аудит сайта Lighthouse и сохранить HTML-отчёт."
         },
         {
           "type": "example",
-          "text": "test internet connection speed from terminal",
+          "text": "Проверить качество страницы по URL через Lighthouse",
+          "command": "npx lighthouse https://example.com --output html --output-path report.html",
+          "explanation": "Провести аудит сайта Lighthouse и сохранить HTML-отчёт."
+        },
+        {
+          "type": "example",
+          "text": "Измерить скорость интернет-соединения в терминале",
           "command": "npx speed-test",
-          "explanation": "Runs a speed test and shows download/upload speeds"
+          "explanation": "Измерить скорость интернет-соединения в терминале."
         },
         {
           "type": "example",
-          "text": "run a command with environment variables cross-platform",
+          "text": "Запустить сетевой speed-test через npx",
+          "command": "npx speed-test",
+          "explanation": "Измерить скорость интернет-соединения в терминале."
+        },
+        {
+          "type": "example",
+          "text": "Запустить Node-сервер с NODE_ENV=production кроссплатформенно",
           "command": "npx cross-env NODE_ENV=production node server.js",
-          "explanation": "Sets environment variables in a way that works on Windows and Unix"
+          "explanation": "Запустить Node-сервер с NODE_ENV=production кроссплатформенно."
         },
         {
           "type": "example",
-          "text": "run TypeScript file directly without compiling",
+          "text": "Передать переменную окружения команде через cross-env",
+          "command": "npx cross-env NODE_ENV=production node server.js",
+          "explanation": "Запустить Node-сервер с NODE_ENV=production кроссплатформенно."
+        },
+        {
+          "type": "example",
+          "text": "Выполнить TypeScript-файл без отдельного шага компиляции",
           "command": "npx tsx script.ts",
-          "explanation": "Executes TypeScript with ESM support, no tsconfig needed"
+          "explanation": "Выполнить TypeScript-файл без отдельного шага компиляции."
         },
         {
           "type": "example",
-          "text": "auto-restart node server on file changes",
+          "text": "Запустить script.ts напрямую через tsx",
+          "command": "npx tsx script.ts",
+          "explanation": "Выполнить TypeScript-файл без отдельного шага компиляции."
+        },
+        {
+          "type": "example",
+          "text": "Перезапускать Node-сервер при изменениях файлов",
           "command": "npx nodemon server.js",
-          "explanation": "Watches for file changes and automatically restarts the process"
+          "explanation": "Перезапускать Node-сервер при изменениях файлов."
         },
         {
           "type": "example",
-          "text": "initialize Storybook in a project",
+          "text": "Следить за исходниками server.js через nodemon",
+          "command": "npx nodemon server.js",
+          "explanation": "Перезапускать Node-сервер при изменениях файлов."
+        },
+        {
+          "type": "example",
+          "text": "Добавить Storybook в проект",
           "command": "npx storybook@latest init",
-          "explanation": "Detects framework and sets up Storybook with example stories"
+          "explanation": "Добавить Storybook в проект."
         },
         {
           "type": "example",
-          "text": "initialize Tailwind CSS v3 and PostCSS configuration",
+          "text": "Инициализировать окружение просмотра UI-компонентов",
+          "command": "npx storybook@latest init",
+          "explanation": "Добавить Storybook в проект."
+        },
+        {
+          "type": "example",
+          "text": "создать конфигурации Tailwind CSS третьей версии и PostCSS",
           "command": "npx tailwindcss@3 init -p",
-          "explanation": "Uses the Tailwind v3 CLI to create tailwind.config.js and postcss.config.js"
+          "explanation": "Использует CLI Tailwind v3 для создания tailwind.config.js и postcss.config.js."
         },
         {
           "type": "example",
-          "text": "run multiple npm scripts in parallel",
+          "text": "инициализировать Tailwind v3 через CLI вместе с настройкой PostCSS",
+          "command": "npx tailwindcss@3 init -p",
+          "explanation": "Использует CLI Tailwind v3 для создания tailwind.config.js и postcss.config.js."
+        },
+        {
+          "type": "example",
+          "text": "Запустить npm-скрипты dev и watch:css параллельно",
           "command": "npx concurrently \"npm:dev\" \"npm:watch:css\"",
-          "explanation": "Runs multiple commands simultaneously with combined output"
+          "explanation": "Запустить npm-скрипты dev и watch:css параллельно."
         },
         {
           "type": "example",
-          "text": "optimize SVG files reducing their size",
+          "text": "Одновременно выполнять сервер разработки и наблюдение за стилями",
+          "command": "npx concurrently \"npm:dev\" \"npm:watch:css\"",
+          "explanation": "Запустить npm-скрипты dev и watch:css параллельно."
+        },
+        {
+          "type": "example",
+          "text": "Оптимизировать SVG в каталоге icons рекурсивно",
           "command": "npx svgo --folder ./icons --recursive",
-          "explanation": "Removes metadata and optimizes SVG paths to reduce file size"
+          "explanation": "Оптимизировать SVG в каталоге icons рекурсивно."
         },
         {
           "type": "example",
-          "text": "run a specific version of a node package",
+          "text": "Уменьшить размер иконок через svgo",
+          "command": "npx svgo --folder ./icons --recursive",
+          "explanation": "Оптимизировать SVG в каталоге icons рекурсивно."
+        },
+        {
+          "type": "example",
+          "text": "Запустить Node версии 18 через npx",
           "command": "npx node@18 -e \"console.log(process.version)\"",
-          "explanation": "Temporarily uses a specific Node.js version for one command"
+          "explanation": "Запустить Node версии 18 через npx."
         },
         {
           "type": "example",
-          "text": "execute a package from a GitHub repository directly",
+          "text": "Выполнить JavaScript указанной версией пакета node",
+          "command": "npx node@18 -e \"console.log(process.version)\"",
+          "explanation": "Запустить Node версии 18 через npx."
+        },
+        {
+          "type": "example",
+          "text": "Выполнить npm-пакет прямо из GitHub-репозитория",
           "command": "npx github:user/repo",
-          "explanation": "Downloads and runs a package directly from a GitHub repo"
+          "explanation": "Выполнить npm-пакет прямо из GitHub-репозитория."
+        },
+        {
+          "type": "example",
+          "text": "Запустить CLI проекта по адресу github:user/repo",
+          "command": "npx github:user/repo",
+          "explanation": "Выполнить npm-пакет прямо из GitHub-репозитория."
         }
       ]
     },
     {
       "name": "yarn",
       "synopsis": "yarn [command] [options] [package...]",
-      "description": "Fast, reliable, and secure dependency management for JavaScript",
+      "description": "Управление зависимостями JavaScript через Yarn",
       "patterns": [
         {
           "type": "example",
-          "text": "install all project dependencies with Yarn",
+          "text": "Установить зависимости проекта через Yarn",
           "command": "yarn install",
-          "explanation": "Installs dependencies from yarn.lock for deterministic builds"
+          "explanation": "Установить зависимости проекта через Yarn."
         },
         {
           "type": "example",
-          "text": "add a package to the project",
+          "text": "Подготовить Node-пакеты командой yarn install",
+          "command": "yarn install",
+          "explanation": "Установить зависимости проекта через Yarn."
+        },
+        {
+          "type": "example",
+          "text": "Добавить lodash в проект через Yarn",
           "command": "yarn add lodash",
-          "explanation": "Installs lodash and adds it to package.json"
+          "explanation": "Добавить lodash в проект через Yarn."
         },
         {
           "type": "example",
-          "text": "add a dev dependency",
+          "text": "Установить новую зависимость с yarn add",
+          "command": "yarn add lodash",
+          "explanation": "Добавить lodash в проект через Yarn."
+        },
+        {
+          "type": "example",
+          "text": "Добавить ESLint в зависимости разработки Yarn",
           "command": "yarn add --dev eslint",
-          "explanation": "Adds eslint as a development dependency"
+          "explanation": "Добавить ESLint в зависимости разработки Yarn."
         },
         {
           "type": "example",
-          "text": "remove a package",
+          "text": "Установить пакет с записью в devDependencies",
+          "command": "yarn add --dev eslint",
+          "explanation": "Добавить ESLint в зависимости разработки Yarn."
+        },
+        {
+          "type": "example",
+          "text": "Удалить lodash из зависимостей Yarn",
           "command": "yarn remove lodash",
-          "explanation": "Uninstalls the package and updates package.json"
+          "explanation": "Удалить lodash из зависимостей Yarn."
         },
         {
           "type": "example",
-          "text": "upgrade all packages to their latest versions",
+          "text": "Убрать пакет из проекта через yarn remove",
+          "command": "yarn remove lodash",
+          "explanation": "Удалить lodash из зависимостей Yarn."
+        },
+        {
+          "type": "example",
+          "text": "Обновить зависимости Yarn до последних версий",
           "command": "yarn upgrade --latest",
-          "explanation": "Updates all dependencies to the newest available versions"
+          "explanation": "Обновить зависимости Yarn до последних версий."
+        },
+        {
+          "type": "example",
+          "text": "Повысить версии пакетов с игнорированием прежних диапазонов",
+          "command": "yarn upgrade --latest",
+          "explanation": "Обновить зависимости Yarn до последних версий."
         }
       ]
     },
     {
       "name": "gem",
       "synopsis": "gem [command] [options] [gemname...]",
-      "description": "Package manager for Ruby",
+      "description": "Управление пакетами Ruby",
       "patterns": [
         {
           "type": "example",
-          "text": "install a Ruby gem",
+          "text": "Установить Ruby-пакет Rails",
           "command": "gem install rails",
-          "explanation": "Downloads and installs the Rails gem"
+          "explanation": "Установить Ruby-пакет Rails."
         },
         {
           "type": "example",
-          "text": "list installed gems",
+          "text": "Добавить gem rails в Ruby-окружение",
+          "command": "gem install rails",
+          "explanation": "Установить Ruby-пакет Rails."
+        },
+        {
+          "type": "example",
+          "text": "Перечислить установленные Ruby gems",
           "command": "gem list",
-          "explanation": "Shows all locally installed gems and their versions"
+          "explanation": "Перечислить установленные Ruby gems."
         },
         {
           "type": "example",
-          "text": "update a gem to the latest version",
+          "text": "Посмотреть доступные локальные gem-пакеты",
+          "command": "gem list",
+          "explanation": "Перечислить установленные Ruby gems."
+        },
+        {
+          "type": "example",
+          "text": "Обновить Bundler до свежей версии",
           "command": "gem update bundler",
-          "explanation": "Upgrades bundler to the newest available version"
+          "explanation": "Обновить Bundler до свежей версии."
         },
         {
           "type": "example",
-          "text": "uninstall a gem",
+          "text": "Установить актуальный выпуск выбранного Ruby gem",
+          "command": "gem update bundler",
+          "explanation": "Обновить Bundler до свежей версии."
+        },
+        {
+          "type": "example",
+          "text": "Удалить gem nokogiri",
           "command": "gem uninstall nokogiri",
-          "explanation": "Removes the specified gem from the system"
+          "explanation": "Удалить gem nokogiri."
+        },
+        {
+          "type": "example",
+          "text": "Деинсталлировать Ruby-пакет",
+          "command": "gem uninstall nokogiri",
+          "explanation": "Удалить gem nokogiri."
         }
       ]
     },
     {
       "name": "cargo",
       "synopsis": "cargo [command] [options]",
-      "description": "Package manager and build system for Rust",
+      "description": "Сборка проектов Rust и управление пакетами",
       "patterns": [
         {
           "type": "example",
-          "text": "create a new Rust project",
+          "text": "Создать новый Rust-проект",
           "command": "cargo new myproject",
-          "explanation": "Scaffolds a new Rust binary project with Cargo.toml"
+          "explanation": "Создать новый Rust-проект."
         },
         {
           "type": "example",
-          "text": "build the Rust project",
+          "text": "Инициализировать приложение myproject через Cargo",
+          "command": "cargo new myproject",
+          "explanation": "Создать новый Rust-проект."
+        },
+        {
+          "type": "example",
+          "text": "Собрать Rust-проект в режиме release",
           "command": "cargo build --release",
-          "explanation": "Compiles the project with optimizations enabled"
+          "explanation": "Собрать Rust-проект в режиме release."
         },
         {
           "type": "example",
-          "text": "run the Rust project",
+          "text": "Получить оптимизированный исполняемый файл через cargo build",
+          "command": "cargo build --release",
+          "explanation": "Собрать Rust-проект в режиме release."
+        },
+        {
+          "type": "example",
+          "text": "Собрать и запустить Rust-приложение",
           "command": "cargo run",
-          "explanation": "Compiles and immediately executes the binary"
+          "explanation": "Собрать и запустить Rust-приложение."
         },
         {
           "type": "example",
-          "text": "install a Rust binary crate globally",
+          "text": "Выполнить текущий проект через cargo run",
+          "command": "cargo run",
+          "explanation": "Собрать и запустить Rust-приложение."
+        },
+        {
+          "type": "example",
+          "text": "Установить консольную программу ripgrep через Cargo",
           "command": "cargo install ripgrep",
-          "explanation": "Compiles and installs the binary to ~/.cargo/bin"
+          "explanation": "Установить консольную программу ripgrep через Cargo."
         },
         {
           "type": "example",
-          "text": "run tests for the project",
+          "text": "Добавить исполняемый Rust-crate в пользовательские инструменты",
+          "command": "cargo install ripgrep",
+          "explanation": "Установить консольную программу ripgrep через Cargo."
+        },
+        {
+          "type": "example",
+          "text": "Запустить тесты Rust-проекта",
           "command": "cargo test",
-          "explanation": "Compiles and runs all tests in the project"
+          "explanation": "Запустить тесты Rust-проекта."
+        },
+        {
+          "type": "example",
+          "text": "Проверить модульные и интеграционные тесты через Cargo",
+          "command": "cargo test",
+          "explanation": "Запустить тесты Rust-проекта."
         }
       ]
     },
     {
       "name": "go install",
       "synopsis": "go install [packages]",
-      "description": "Compile and install Go packages and binaries",
+      "description": "Сборка и установка программ Go",
       "patterns": [
         {
           "type": "example",
-          "text": "install a Go tool globally",
+          "text": "Установить последнюю версию Go-инструмента gopls",
           "command": "go install golang.org/x/tools/gopls@latest",
-          "explanation": "Downloads, compiles, and installs the binary to GOPATH/bin"
+          "explanation": "Установить последнюю версию Go-инструмента gopls."
         },
         {
           "type": "example",
-          "text": "install a specific version of a Go tool",
+          "text": "Собрать и добавить языковой сервер Go через go install",
+          "command": "go install golang.org/x/tools/gopls@latest",
+          "explanation": "Установить последнюю версию Go-инструмента gopls."
+        },
+        {
+          "type": "example",
+          "text": "Установить golangci-lint конкретной версии",
           "command": "go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.55.0",
-          "explanation": "Installs a pinned version of the linter"
+          "explanation": "Установить golangci-lint конкретной версии."
         },
         {
           "type": "example",
-          "text": "install all dependencies for a Go module",
+          "text": "Получить выпуск v1.55.0 Go-утилиты",
+          "command": "go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.55.0",
+          "explanation": "Установить golangci-lint конкретной версии."
+        },
+        {
+          "type": "example",
+          "text": "Скачать зависимости Go-модуля",
           "command": "go mod download",
-          "explanation": "Downloads all module dependencies to the local cache"
+          "explanation": "Скачать зависимости Go-модуля."
         },
         {
           "type": "example",
-          "text": "add a dependency to a Go project",
+          "text": "Загрузить пакеты из go.mod в модульный кеш",
+          "command": "go mod download",
+          "explanation": "Скачать зависимости Go-модуля."
+        },
+        {
+          "type": "example",
+          "text": "Добавить Gin в зависимости Go-проекта",
           "command": "go get github.com/gin-gonic/gin",
-          "explanation": "Adds the package as a dependency and downloads it"
+          "explanation": "Добавить Gin в зависимости Go-проекта."
         },
         {
           "type": "example",
-          "text": "tidy up Go module dependencies",
+          "text": "Получить библиотеку и обновить требования модуля",
+          "command": "go get github.com/gin-gonic/gin",
+          "explanation": "Добавить Gin в зависимости Go-проекта."
+        },
+        {
+          "type": "example",
+          "text": "Привести go.mod и go.sum в порядок",
           "command": "go mod tidy",
-          "explanation": "Removes unused dependencies and adds missing ones"
+          "explanation": "Привести go.mod и go.sum в порядок."
+        },
+        {
+          "type": "example",
+          "text": "Добавить недостающие и убрать лишние зависимости Go",
+          "command": "go mod tidy",
+          "explanation": "Привести go.mod и go.sum в порядок."
         }
       ]
     }

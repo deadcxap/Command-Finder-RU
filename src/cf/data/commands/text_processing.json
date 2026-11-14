@@ -4,1055 +4,1872 @@
     {
       "name": "grep",
       "synopsis": "grep [options] pattern [file...]",
-      "description": "Search for lines matching a pattern in files",
+      "description": "Поиск строк по шаблону в файлах",
       "patterns": [
         {
           "type": "example",
-          "text": "find all lines containing a word in a file",
+          "text": "найти строки с error в файле журнала",
           "command": "grep 'error' logfile.txt",
-          "explanation": "Searches logfile.txt for lines containing the word 'error'"
+          "explanation": "Найти строки с error в файле журнала."
         },
         {
           "type": "example",
-          "text": "search for a string across all files in a directory recursively",
+          "text": "вывести совпадения текста error из logfile.txt",
+          "command": "grep 'error' logfile.txt",
+          "explanation": "Найти строки с error в файле журнала."
+        },
+        {
+          "type": "example",
+          "text": "рекурсивно найти TODO в каталоге src",
           "command": "grep -r 'TODO' src/",
-          "explanation": "Recursively searches all files under src/ for lines containing 'TODO'"
+          "explanation": "Рекурсивно найти TODO в каталоге src."
         },
         {
           "type": "example",
-          "text": "search case insensitively for a pattern",
+          "text": "поискать пометки TODO в исходниках и вложенных папках через grep",
+          "command": "grep -r 'TODO' src/",
+          "explanation": "Рекурсивно найти TODO в каталоге src."
+        },
+        {
+          "type": "example",
+          "text": "найти warning в лог-файлах без учёта регистра",
           "command": "grep -i 'warning' *.log",
-          "explanation": "Matches 'warning', 'WARNING', 'Warning', etc. in all .log files"
+          "explanation": "Найти warning в лог-файлах без учёта регистра."
         },
         {
           "type": "example",
-          "text": "show line numbers for matches",
+          "text": "показать предупреждения из *.log независимо от больших и маленьких букв",
+          "command": "grep -i 'warning' *.log",
+          "explanation": "Найти warning в лог-файлах без учёта регистра."
+        },
+        {
+          "type": "example",
+          "text": "найти function в файле script.js и показать номера строк",
           "command": "grep -n 'function' script.js",
-          "explanation": "Displays matching lines with their line numbers"
+          "explanation": "Найти function в файле script.js и показать номера строк."
         },
         {
           "type": "example",
-          "text": "show only filenames that contain a match",
+          "text": "найти текст в файле и показать номера строк",
+          "command": "grep -n 'function' script.js",
+          "explanation": "Найти function в файле script.js и показать номера строк."
+        },
+        {
+          "type": "example",
+          "text": "показать только имена файлов с текстом password в папке config",
           "command": "grep -rl 'password' config/",
-          "explanation": "Lists only the names of files that contain 'password'"
+          "explanation": "Показать только имена файлов с текстом password в папке config."
         },
         {
           "type": "example",
-          "text": "find lines that do not match a pattern",
+          "text": "найти файлы, в которых встречается нужный текст",
+          "command": "grep -rl 'password' config/",
+          "explanation": "Показать только имена файлов с текстом password в папке config."
+        },
+        {
+          "type": "example",
+          "text": "показать строки конфигурации, не начинающиеся с решётки",
           "command": "grep -v '^#' config.ini",
-          "explanation": "Shows all lines that are not comments (don't start with #)"
+          "explanation": "Показать строки конфигурации, не начинающиеся с решётки."
+        },
+        {
+          "type": "example",
+          "text": "исключить из config.ini строки с символом # в первой позиции",
+          "command": "grep -v '^#' config.ini",
+          "explanation": "Показать строки конфигурации, не начинающиеся с решётки."
         }
       ]
     },
     {
       "name": "sed",
       "synopsis": "sed [options] 'command' [file...]",
-      "description": "Stream editor for filtering and transforming text",
+      "description": "Потоковое редактирование и преобразование текста",
       "patterns": [
         {
           "type": "example",
-          "text": "print a file with all occurrences of a word replaced without editing the original",
+          "text": "заменить все old на new в выводе содержимого файла",
           "command": "sed 's/old/new/g' file.txt",
-          "explanation": "Replaces all occurrences of 'old' with 'new' and prints to stdout"
+          "explanation": "Заменить все old на new в выводе содержимого файла."
         },
         {
           "type": "example",
-          "text": "edit a file in place replacing text with GNU sed on Linux",
+          "text": "вывести текст после глобальной подстановки old/new без правки исходного файла",
+          "command": "sed 's/old/new/g' file.txt",
+          "explanation": "Заменить все old на new в выводе содержимого файла."
+        },
+        {
+          "type": "example",
+          "text": "заменить все foo на bar прямо в файле через BSD sed",
           "command": "sed -i 's/foo/bar/g' file.txt",
-          "explanation": "GNU sed -i changes file.txt directly, replacing every foo with bar; BSD/macOS requires a different -i form",
+          "explanation": "GNU sed -i меняет file.txt на месте, заменяя все foo на bar; BSD и macOS требуют другой формы -i.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "delete lines matching a pattern",
+          "text": "отредактировать файл на месте без резервной копии синтаксисом sed для macOS",
+          "command": "sed -i 's/foo/bar/g' file.txt",
+          "explanation": "GNU sed -i меняет file.txt на месте, заменяя все foo на bar; BSD и macOS требуют другой формы -i.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "вывести файл без полностью пустых строк",
           "command": "sed '/^$/d' file.txt",
-          "explanation": "Removes all blank lines from the output"
+          "explanation": "Вывести файл без полностью пустых строк."
         },
         {
           "type": "example",
-          "text": "print only specific lines from a file",
+          "text": "убрать строки нулевой длины из текстового потока",
+          "command": "sed '/^$/d' file.txt",
+          "explanation": "Вывести файл без полностью пустых строк."
+        },
+        {
+          "type": "example",
+          "text": "показать только строки с десятой по двадцатую",
           "command": "sed -n '10,20p' file.txt",
-          "explanation": "Prints only lines 10 through 20"
+          "explanation": "Показать только строки с десятой по двадцатую."
         },
         {
           "type": "example",
-          "text": "insert a line before a matching line",
+          "text": "вывести фрагмент файла в диапазоне строк 10–20 включительно",
+          "command": "sed -n '10,20p' file.txt",
+          "explanation": "Показать только строки с десятой по двадцатую."
+        },
+        {
+          "type": "example",
+          "text": "вставить строку текста перед каждой строкой с pattern в выводе",
           "command": "sed '/pattern/i\\new line of text' file.txt",
-          "explanation": "Inserts 'new line of text' before every line matching 'pattern'"
+          "explanation": "Вставить строку текста перед каждой строкой с pattern в выводе."
+        },
+        {
+          "type": "example",
+          "text": "добавить new line of text перед найденным шаблоном без изменения исходника",
+          "command": "sed '/pattern/i\\new line of text' file.txt",
+          "explanation": "Вставить строку текста перед каждой строкой с pattern в выводе."
         }
       ]
     },
     {
       "name": "awk",
       "synopsis": "awk [options] 'program' [file...]",
-      "description": "Pattern scanning and text processing language",
+      "description": "Обработка текста и полей языком awk",
       "patterns": [
         {
           "type": "example",
-          "text": "print a specific column from a file",
+          "text": "вывести второй столбец текста, разделённого пробелами",
           "command": "awk '{print $2}' data.txt",
-          "explanation": "Prints the second whitespace-delimited field of each line"
+          "explanation": "Вывести второй столбец текста, разделённого пробелами."
         },
         {
           "type": "example",
-          "text": "sum up numbers in a column",
+          "text": "извлечь второе поле каждой строки через awk",
+          "command": "awk '{print $2}' data.txt",
+          "explanation": "Вывести второй столбец текста, разделённого пробелами."
+        },
+        {
+          "type": "example",
+          "text": "сложить числа из первого столбца файла",
           "command": "awk '{sum += $1} END {print sum}' numbers.txt",
-          "explanation": "Adds up all values in the first column and prints the total"
+          "explanation": "Сложить числа из первого столбца файла."
         },
         {
           "type": "example",
-          "text": "filter rows where a column meets a condition",
+          "text": "посчитать сумму значений первого поля через awk",
+          "command": "awk '{sum += $1} END {print sum}' numbers.txt",
+          "explanation": "Сложить числа из первого столбца файла."
+        },
+        {
+          "type": "example",
+          "text": "показать строки простого CSV, где третий столбец больше ста",
           "command": "awk -F',' '$3 > 100' data.csv",
-          "explanation": "Prints rows whose third comma-separated field exceeds 100; assumes simple data without quoted embedded commas"
+          "explanation": "Выводит строки со значением третьего поля больше 100; данные должны быть простыми, без запятых внутри полей в кавычках."
         },
         {
           "type": "example",
-          "text": "use a custom field separator like comma",
+          "text": "отфильтровать данные с запятыми по условию для третьего поля",
+          "command": "awk -F',' '$3 > 100' data.csv",
+          "explanation": "Выводит строки со значением третьего поля больше 100; данные должны быть простыми, без запятых внутри полей в кавычках."
+        },
+        {
+          "type": "example",
+          "text": "извлечь первое и третье поля из строк, разделённых запятыми",
           "command": "awk -F',' '{print $1, $3}' data.csv",
-          "explanation": "Uses comma as delimiter and prints the first and third columns"
+          "explanation": "Извлечь первое и третье поля из строк, разделённых запятыми."
         },
         {
           "type": "example",
-          "text": "count the number of lines in a file",
+          "text": "прочитать данные по запятым и выбрать поля 1 и 3 через awk",
+          "command": "awk -F',' '{print $1, $3}' data.csv",
+          "explanation": "Извлечь первое и третье поля из строк, разделённых запятыми."
+        },
+        {
+          "type": "example",
+          "text": "посчитать количество записей-строк файла через awk",
           "command": "awk 'END {print NR}' file.txt",
-          "explanation": "Prints the total number of records (lines) processed"
+          "explanation": "Посчитать количество записей-строк файла через awk."
+        },
+        {
+          "type": "example",
+          "text": "вывести итоговое значение счётчика строк NR",
+          "command": "awk 'END {print NR}' file.txt",
+          "explanation": "Посчитать количество записей-строк файла через awk."
         }
       ]
     },
     {
       "name": "cut",
       "synopsis": "cut [options] [file...]",
-      "description": "Remove sections from each line of files",
+      "description": "Выделение частей строк и столбцов",
       "patterns": [
         {
           "type": "example",
-          "text": "extract a specific column from a CSV",
+          "text": "извлечь второй столбец данных с разделителем запятая",
           "command": "cut -d',' -f2 data.csv",
-          "explanation": "Uses comma as delimiter and extracts the second field"
+          "explanation": "Извлечь второй столбец данных с разделителем запятая."
         },
         {
           "type": "example",
-          "text": "get the first 10 characters of each line",
+          "text": "вывести второе поле каждой CSV-строки простым разбиением по запятым",
+          "command": "cut -d',' -f2 data.csv",
+          "explanation": "Извлечь второй столбец данных с разделителем запятая."
+        },
+        {
+          "type": "example",
+          "text": "показать первые десять символов каждой строки",
           "command": "cut -c1-10 file.txt",
-          "explanation": "Extracts characters 1 through 10 from every line"
+          "explanation": "Показать первые десять символов каждой строки."
         },
         {
           "type": "example",
-          "text": "extract multiple fields from a tab-separated file",
+          "text": "вырезать позиции с первой по десятую из строк файла",
+          "command": "cut -c1-10 file.txt",
+          "explanation": "Показать первые десять символов каждой строки."
+        },
+        {
+          "type": "example",
+          "text": "выбрать поля 1, 3 и 5 из файла с табуляциями",
           "command": "cut -f1,3,5 data.tsv",
-          "explanation": "Extracts fields 1, 3, and 5 using the default tab delimiter"
+          "explanation": "Выбрать поля 1, 3 и 5 из файла с табуляциями."
         },
         {
           "type": "example",
-          "text": "get everything after the first field",
+          "text": "извлечь несколько заданных столбцов TSV",
+          "command": "cut -f1,3,5 data.tsv",
+          "explanation": "Выбрать поля 1, 3 и 5 из файла с табуляциями."
+        },
+        {
+          "type": "example",
+          "text": "вывести всё после первого двоеточия в каждой строке passwd",
           "command": "cut -d':' -f2- /etc/passwd",
-          "explanation": "Extracts from the second field to the end using colon as delimiter"
+          "explanation": "Вывести всё после первого двоеточия в каждой строке passwd."
         },
         {
           "type": "example",
-          "text": "extract a range of bytes from each line",
+          "text": "убрать первое поле из данных, разделённых двоеточиями",
+          "command": "cut -d':' -f2- /etc/passwd",
+          "explanation": "Вывести всё после первого двоеточия в каждой строке passwd."
+        },
+        {
+          "type": "example",
+          "text": "извлечь первые пять байтов каждой строки файла",
           "command": "cut -b1-5 file.bin",
-          "explanation": "Extracts bytes 1 through 5 from each line"
+          "explanation": "Извлечь первые пять байтов каждой строки файла."
+        },
+        {
+          "type": "example",
+          "text": "вывести диапазон байтов от 1 до 5 через cut",
+          "command": "cut -b1-5 file.bin",
+          "explanation": "Извлечь первые пять байтов каждой строки файла."
         }
       ]
     },
     {
       "name": "tr",
       "synopsis": "tr [options] set1 [set2]",
-      "description": "Translate or delete characters",
+      "description": "Замена и удаление символов",
       "patterns": [
         {
           "type": "example",
-          "text": "convert lowercase to uppercase",
+          "text": "перевести латинское слово hello в верхний регистр",
           "command": "echo 'hello' | tr 'a-z' 'A-Z'",
-          "explanation": "Translates all lowercase letters to uppercase"
+          "explanation": "Перевести латинское слово hello в верхний регистр."
         },
         {
           "type": "example",
-          "text": "delete specific characters from text",
+          "text": "заменить строчные буквы a–z на заглавные A–Z в потоке",
+          "command": "echo 'hello' | tr 'a-z' 'A-Z'",
+          "explanation": "Перевести латинское слово hello в верхний регистр."
+        },
+        {
+          "type": "example",
+          "text": "удалить цифры из строки a1b2c3",
           "command": "echo 'a1b2c3' | tr -d '0-9'",
-          "explanation": "Removes all digits, leaving only letters"
+          "explanation": "Удалить цифры из строки a1b2c3."
         },
         {
           "type": "example",
-          "text": "squeeze repeated characters into one",
+          "text": "очистить текст от символов диапазона 0–9",
+          "command": "echo 'a1b2c3' | tr -d '0-9'",
+          "explanation": "Удалить цифры из строки a1b2c3."
+        },
+        {
+          "type": "example",
+          "text": "сжать несколько пробелов подряд до одного",
           "command": "echo 'hello    world' | tr -s ' '",
-          "explanation": "Collapses multiple consecutive spaces into a single space"
+          "explanation": "Сжать несколько пробелов подряд до одного."
         },
         {
           "type": "example",
-          "text": "replace newlines with spaces to make one line",
+          "text": "убрать повторы пробела между hello и world",
+          "command": "echo 'hello    world' | tr -s ' '",
+          "explanation": "Сжать несколько пробелов подряд до одного."
+        },
+        {
+          "type": "example",
+          "text": "заменить переводы строк пробелами",
           "command": "tr '\\n' ' ' < file.txt",
-          "explanation": "Converts a multi-line file into a single line"
+          "explanation": "Заменить переводы строк пробелами."
         },
         {
           "type": "example",
-          "text": "replace tabs with spaces",
+          "text": "объединить содержимое файла в одну строку через tr",
+          "command": "tr '\\n' ' ' < file.txt",
+          "explanation": "Заменить переводы строк пробелами."
+        },
+        {
+          "type": "example",
+          "text": "заменить табуляции пробелами в текстовом потоке",
           "command": "tr '\\t' ' ' < file.txt",
-          "explanation": "Converts every tab character into a space"
+          "explanation": "Заменить табуляции пробелами в текстовом потоке."
+        },
+        {
+          "type": "example",
+          "text": "преобразовать каждый символ табуляции в один пробел",
+          "command": "tr '\\t' ' ' < file.txt",
+          "explanation": "Заменить табуляции пробелами в текстовом потоке."
         }
       ]
     },
     {
       "name": "sort",
       "synopsis": "sort [options] [file...]",
-      "description": "Sort lines of text files",
+      "description": "Сортировка строк текста",
       "patterns": [
         {
           "type": "example",
-          "text": "sort a file alphabetically",
+          "text": "отсортировать строки файла по алфавиту",
           "command": "sort names.txt",
-          "explanation": "Sorts all lines in alphabetical order"
+          "explanation": "Отсортировать строки файла по алфавиту."
         },
         {
           "type": "example",
-          "text": "sort numbers in numeric order",
+          "text": "упорядочить список имён стандартной текстовой сортировкой",
+          "command": "sort names.txt",
+          "explanation": "Отсортировать строки файла по алфавиту."
+        },
+        {
+          "type": "example",
+          "text": "отсортировать числовые значения по возрастанию",
           "command": "sort -n scores.txt",
-          "explanation": "Sorts lines numerically rather than lexicographically"
+          "explanation": "Отсортировать числовые значения по возрастанию."
         },
         {
           "type": "example",
-          "text": "sort in reverse order",
+          "text": "упорядочить строки по числовому значению в начале",
+          "command": "sort -n scores.txt",
+          "explanation": "Отсортировать числовые значения по возрастанию."
+        },
+        {
+          "type": "example",
+          "text": "отсортировать текст в обратном порядке",
           "command": "sort -r file.txt",
-          "explanation": "Sorts lines in descending order"
+          "explanation": "Отсортировать текст в обратном порядке."
         },
         {
           "type": "example",
-          "text": "sort by a specific column",
+          "text": "вывести строки файла от больших к меньшим по правилам текстовой сортировки",
+          "command": "sort -r file.txt",
+          "explanation": "Отсортировать текст в обратном порядке."
+        },
+        {
+          "type": "example",
+          "text": "отсортировать строки данных с запятыми только по второму столбцу",
           "command": "sort -s -t',' -k2,2 data.csv",
-          "explanation": "Stably sorts simple comma-separated records by the second field only; equal keys retain input order"
+          "explanation": "Стабильно сортирует простые записи с запятыми только по второму полю, сохраняя исходный порядок равных ключей."
         },
         {
           "type": "example",
-          "text": "remove duplicate lines while sorting",
+          "text": "упорядочить простой CSV по значению второго поля",
+          "command": "sort -s -t',' -k2,2 data.csv",
+          "explanation": "Стабильно сортирует простые записи с запятыми только по второму полю, сохраняя исходный порядок равных ключей."
+        },
+        {
+          "type": "example",
+          "text": "отсортировать строки и удалить дубликаты",
           "command": "sort -u file.txt",
-          "explanation": "Sorts and removes duplicate lines in one step"
+          "explanation": "Отсортировать строки и удалить дубликаты."
+        },
+        {
+          "type": "example",
+          "text": "вывести уникальные строки файла в отсортированном порядке",
+          "command": "sort -u file.txt",
+          "explanation": "Отсортировать строки и удалить дубликаты."
         }
       ]
     },
     {
       "name": "uniq",
       "synopsis": "uniq [options] [input [output]]",
-      "description": "Report or omit repeated lines",
+      "description": "Поиск и удаление повторяющихся соседних строк",
       "patterns": [
         {
           "type": "example",
-          "text": "remove consecutive duplicate lines",
+          "text": "отсортировать файл и убрать повторяющиеся строки",
           "command": "sort file.txt | uniq",
-          "explanation": "Sorts first then removes duplicates since uniq only works on adjacent lines"
+          "explanation": "Отсортировать файл и убрать повторяющиеся строки."
         },
         {
           "type": "example",
-          "text": "count how many times each line appears",
+          "text": "получить список разных строк через sort и uniq",
+          "command": "sort file.txt | uniq",
+          "explanation": "Отсортировать файл и убрать повторяющиеся строки."
+        },
+        {
+          "type": "example",
+          "text": "посчитать, сколько раз встречается каждая строка",
           "command": "sort file.txt | uniq -c",
-          "explanation": "Prefixes each unique line with the number of occurrences"
+          "explanation": "Посчитать, сколько раз встречается каждая строка."
         },
         {
           "type": "example",
-          "text": "show only the lines that appear more than once",
+          "text": "сгруппировать одинаковые строки и вывести их частоты",
+          "command": "sort file.txt | uniq -c",
+          "explanation": "Посчитать, сколько раз встречается каждая строка."
+        },
+        {
+          "type": "example",
+          "text": "показать только строки, встречающиеся больше одного раза",
           "command": "sort file.txt | uniq -d",
-          "explanation": "Prints only the duplicated lines"
+          "explanation": "Показать только строки, встречающиеся больше одного раза."
         },
         {
           "type": "example",
-          "text": "show only lines that are unique and never repeated",
+          "text": "найти повторяющиеся строки после сортировки файла",
+          "command": "sort file.txt | uniq -d",
+          "explanation": "Показать только строки, встречающиеся больше одного раза."
+        },
+        {
+          "type": "example",
+          "text": "вывести строки, которые встречаются ровно один раз",
           "command": "sort file.txt | uniq -u",
-          "explanation": "Prints only the lines that appear exactly once"
+          "explanation": "Вывести строки, которые встречаются ровно один раз."
         },
         {
           "type": "example",
-          "text": "find the most frequent lines in a file",
+          "text": "исключить все повторяющиеся значения из отсортированного текста",
+          "command": "sort file.txt | uniq -u",
+          "explanation": "Вывести строки, которые встречаются ровно один раз."
+        },
+        {
+          "type": "example",
+          "text": "показать десять самых частых строк файла",
           "command": "sort file.txt | uniq -c | sort -rn | head",
-          "explanation": "Counts occurrences, sorts by frequency, and shows the top entries"
+          "explanation": "Показать десять самых частых строк файла."
+        },
+        {
+          "type": "example",
+          "text": "отсортировать значения по числу повторений и вывести лидеров",
+          "command": "sort file.txt | uniq -c | sort -rn | head",
+          "explanation": "Показать десять самых частых строк файла."
         }
       ]
     },
     {
       "name": "wc",
       "synopsis": "wc [options] [file...]",
-      "description": "Print newline, word, and byte counts for files",
+      "description": "Подсчёт строк, слов и байтов",
       "patterns": [
         {
           "type": "example",
-          "text": "count newline-terminated lines in a file",
+          "text": "посчитать переводы строк в файле",
           "command": "wc -l file.txt",
-          "explanation": "Counts newline characters; a final record without a newline is not counted separately"
+          "explanation": "Считает символы перевода строки; последняя запись без завершающего перевода строки отдельно не учитывается."
         },
         {
           "type": "example",
-          "text": "count the number of words in a file",
+          "text": "узнать количество строк файла через wc -l",
+          "command": "wc -l file.txt",
+          "explanation": "Считает символы перевода строки; последняя запись без завершающего перевода строки отдельно не учитывается."
+        },
+        {
+          "type": "example",
+          "text": "посчитать слова в текстовом документе",
           "command": "wc -w essay.txt",
-          "explanation": "Prints the total word count"
+          "explanation": "Посчитать слова в текстовом документе."
         },
         {
           "type": "example",
-          "text": "count the number of characters in a file",
+          "text": "узнать объём сочинения в словах",
+          "command": "wc -w essay.txt",
+          "explanation": "Посчитать слова в текстовом документе."
+        },
+        {
+          "type": "example",
+          "text": "посчитать символы в файле с учётом кодировки",
           "command": "wc -m file.txt",
-          "explanation": "Prints the character count"
+          "explanation": "Посчитать символы в файле с учётом кодировки."
         },
         {
           "type": "example",
-          "text": "get line counts for all files in a directory",
+          "text": "вывести количество знаков через wc -m",
+          "command": "wc -m file.txt",
+          "explanation": "Посчитать символы в файле с учётом кодировки."
+        },
+        {
+          "type": "example",
+          "text": "посчитать строки во всех нескрытых файлах py текущей папки",
           "command": "wc -l *.py",
-          "explanation": "Shows line count per Python file and a total"
+          "explanation": "Посчитать строки во всех нескрытых файлах py текущей папки."
+        },
+        {
+          "type": "example",
+          "text": "показать число строк каждого Python-файла и общий итог",
+          "command": "wc -l *.py",
+          "explanation": "Посчитать строки во всех нескрытых файлах py текущей папки."
         }
       ]
     },
     {
       "name": "head",
       "synopsis": "head [options] [file...]",
-      "description": "Output the first part of files",
+      "description": "Вывод начала файла",
       "patterns": [
         {
           "type": "example",
-          "text": "show the first 10 lines of a file",
+          "text": "показать первые десять строк файла",
           "command": "head file.txt",
-          "explanation": "Displays the first 10 lines by default"
+          "explanation": "Показать первые десять строк файла."
         },
         {
           "type": "example",
-          "text": "show the first N lines of a file",
+          "text": "прочитать начало текста стандартной командой head",
+          "command": "head file.txt",
+          "explanation": "Показать первые десять строк файла."
+        },
+        {
+          "type": "example",
+          "text": "вывести первые двадцать строк файла",
           "command": "head -n 20 file.txt",
-          "explanation": "Displays the first 20 lines"
+          "explanation": "Вывести первые двадцать строк файла."
         },
         {
           "type": "example",
-          "text": "show everything except the last N lines",
+          "text": "ограничить просмотр начала файла двадцатью строками",
+          "command": "head -n 20 file.txt",
+          "explanation": "Вывести первые двадцать строк файла."
+        },
+        {
+          "type": "example",
+          "text": "показать файл без последних пяти строк",
           "command": "head -n -5 file.txt",
-          "explanation": "Prints all lines except the last 5"
+          "explanation": "Показать файл без последних пяти строк."
         },
         {
           "type": "example",
-          "text": "show the first few bytes of a file",
+          "text": "вывести всё содержимое, исключив пять строк с конца",
+          "command": "head -n -5 file.txt",
+          "explanation": "Показать файл без последних пяти строк."
+        },
+        {
+          "type": "example",
+          "text": "прочитать первые сто байтов двоичного файла",
           "command": "head -c 100 file.bin",
-          "explanation": "Displays the first 100 bytes of the file"
+          "explanation": "Прочитать первые сто байтов двоичного файла."
+        },
+        {
+          "type": "example",
+          "text": "вывести начало file.bin длиной 100 байт",
+          "command": "head -c 100 file.bin",
+          "explanation": "Прочитать первые сто байтов двоичного файла."
         }
       ]
     },
     {
       "name": "tail",
       "synopsis": "tail [options] [file...]",
-      "description": "Output the last part of files",
+      "description": "Вывод конца файла",
       "patterns": [
         {
           "type": "example",
-          "text": "show the last 10 lines of a file",
+          "text": "показать последние десять строк файла",
           "command": "tail file.txt",
-          "explanation": "Displays the last 10 lines by default"
+          "explanation": "Показать последние десять строк файла."
         },
         {
           "type": "example",
-          "text": "show the last N lines of a file",
+          "text": "прочитать конец текста стандартной командой tail",
+          "command": "tail file.txt",
+          "explanation": "Показать последние десять строк файла."
+        },
+        {
+          "type": "example",
+          "text": "вывести последние пятьдесят строк журнала",
           "command": "tail -n 50 log.txt",
-          "explanation": "Displays the last 50 lines"
+          "explanation": "Вывести последние пятьдесят строк журнала."
         },
         {
           "type": "example",
-          "text": "follow a log file in real time as it grows",
+          "text": "посмотреть хвост log.txt длиной 50 строк",
+          "command": "tail -n 50 log.txt",
+          "explanation": "Вывести последние пятьдесят строк журнала."
+        },
+        {
+          "type": "example",
+          "text": "следить за новыми строками системного журнала в реальном времени",
           "command": "tail -f /var/log/syslog",
-          "explanation": "Continuously outputs new lines appended to the file"
+          "explanation": "Следить за новыми строками системного журнала в реальном времени."
         },
         {
           "type": "example",
-          "text": "show everything starting from a specific line",
+          "text": "непрерывно выводить дописываемое содержимое /var/log/syslog",
+          "command": "tail -f /var/log/syslog",
+          "explanation": "Следить за новыми строками системного журнала в реальном времени."
+        },
+        {
+          "type": "example",
+          "text": "вывести файл начиная со сотой строки",
           "command": "tail -n +100 file.txt",
-          "explanation": "Prints from line 100 to the end of the file"
+          "explanation": "Вывести файл начиная со сотой строки."
         },
         {
           "type": "example",
-          "text": "follow a log file and stop when process dies",
+          "text": "пропустить первые 99 строк и показать оставшийся текст",
+          "command": "tail -n +100 file.txt",
+          "explanation": "Вывести файл начиная со сотой строки."
+        },
+        {
+          "type": "example",
+          "text": "следить за app.log до завершения процесса 1234",
           "command": "tail -f --pid=1234 app.log",
-          "explanation": "Follows the log until the process with PID 1234 terminates"
+          "explanation": "Следить за app.log до завершения процесса 1234."
+        },
+        {
+          "type": "example",
+          "text": "остановить tail -f после исчезновения указанного PID",
+          "command": "tail -f --pid=1234 app.log",
+          "explanation": "Следить за app.log до завершения процесса 1234."
         }
       ]
     },
     {
       "name": "tee",
       "synopsis": "tee [options] [file...]",
-      "description": "Read from stdin and write to stdout and files simultaneously",
+      "description": "Одновременная запись стандартного ввода в файлы и стандартный вывод",
       "patterns": [
         {
           "type": "example",
-          "text": "save command output to a file while still seeing it",
+          "text": "показать подробный список файлов и одновременно сохранить его",
           "command": "ls -la | tee listing.txt",
-          "explanation": "Writes the directory listing to both the screen and listing.txt"
+          "explanation": "Показать подробный список файлов и одновременно сохранить его."
         },
         {
           "type": "example",
-          "text": "append output to a file instead of overwriting",
+          "text": "записать вывод ls -la в listing.txt, оставив его на экране",
+          "command": "ls -la | tee listing.txt",
+          "explanation": "Показать подробный список файлов и одновременно сохранить его."
+        },
+        {
+          "type": "example",
+          "text": "дописать новую запись в журнал и показать её в терминале",
           "command": "echo 'new entry' | tee -a log.txt",
-          "explanation": "Appends the text to log.txt rather than replacing its contents"
+          "explanation": "Дописать новую запись в журнал и показать её в терминале."
         },
         {
           "type": "example",
-          "text": "write output to multiple files at once",
+          "text": "добавить строку в log.txt через tee без перезаписи содержимого",
+          "command": "echo 'new entry' | tee -a log.txt",
+          "explanation": "Дописать новую запись в журнал и показать её в терминале."
+        },
+        {
+          "type": "example",
+          "text": "скопировать поток данных сразу в два файла без вывода на экран",
           "command": "cat data.txt | tee copy1.txt copy2.txt > /dev/null",
-          "explanation": "Writes the same content to both copy1.txt and copy2.txt"
+          "explanation": "Скопировать поток данных сразу в два файла без вывода на экран."
         },
         {
           "type": "example",
-          "text": "pipe through tee to log intermediate results in a pipeline",
+          "text": "записать содержимое data.txt в copy1.txt и copy2.txt через tee",
+          "command": "cat data.txt | tee copy1.txt copy2.txt > /dev/null",
+          "explanation": "Скопировать поток данных сразу в два файла без вывода на экран."
+        },
+        {
+          "type": "example",
+          "text": "сохранить строки ERROR в отдельный файл и посчитать их",
           "command": "grep 'ERROR' app.log | tee errors.txt | wc -l",
-          "explanation": "Saves matching lines to errors.txt and also counts them"
+          "explanation": "Сохранить строки ERROR в отдельный файл и посчитать их."
+        },
+        {
+          "type": "example",
+          "text": "передать найденные ошибки через tee в errors.txt и wc -l",
+          "command": "grep 'ERROR' app.log | tee errors.txt | wc -l",
+          "explanation": "Сохранить строки ERROR в отдельный файл и посчитать их."
         }
       ]
     },
     {
       "name": "paste",
       "synopsis": "paste [options] [file...]",
-      "description": "Merge lines of files side by side",
+      "description": "Объединение строк файлов по столбцам",
       "patterns": [
         {
           "type": "example",
-          "text": "merge two files side by side with tabs",
+          "text": "объединить два файла построчно в соседние столбцы через табуляцию",
           "command": "paste names.txt scores.txt",
-          "explanation": "Combines corresponding lines from both files separated by tabs"
+          "explanation": "Объединить два файла построчно в соседние столбцы через табуляцию."
         },
         {
           "type": "example",
-          "text": "merge files with a custom delimiter",
+          "text": "сопоставить имена и оценки по номеру строки",
+          "command": "paste names.txt scores.txt",
+          "explanation": "Объединить два файла построчно в соседние столбцы через табуляцию."
+        },
+        {
+          "type": "example",
+          "text": "соединить строки двух файлов с разделителем запятая",
           "command": "paste -d',' file1.txt file2.txt",
-          "explanation": "Joins lines from both files using a comma as the separator"
+          "explanation": "Соединить строки двух файлов с разделителем запятая."
         },
         {
           "type": "example",
-          "text": "convert a column of data into a single comma-separated line",
+          "text": "склеить данные file1.txt и file2.txt в два соседних поля",
+          "command": "paste -d',' file1.txt file2.txt",
+          "explanation": "Соединить строки двух файлов с разделителем запятая."
+        },
+        {
+          "type": "example",
+          "text": "объединить строки одного файла в строку через запятую",
           "command": "paste -sd',' file.txt",
-          "explanation": "Joins all lines into one line separated by commas"
+          "explanation": "Объединить строки одного файла в строку через запятую."
         },
         {
           "type": "example",
-          "text": "arrange a single column into multiple columns",
+          "text": "превратить вертикальный список в последовательность значений с запятыми",
+          "command": "paste -sd',' file.txt",
+          "explanation": "Объединить строки одного файла в строку через запятую."
+        },
+        {
+          "type": "example",
+          "text": "разложить последовательные строки файла по трём столбцам",
           "command": "paste - - - < file.txt",
-          "explanation": "Arranges input into three columns by reading from stdin three times"
+          "explanation": "Разложить последовательные строки файла по трём столбцам."
+        },
+        {
+          "type": "example",
+          "text": "преобразовать один столбец в таблицу по три значения в строке",
+          "command": "paste - - - < file.txt",
+          "explanation": "Разложить последовательные строки файла по трём столбцам."
         }
       ]
     },
     {
       "name": "join",
       "synopsis": "join [options] file1 file2",
-      "description": "Join lines of two sorted files on a common field",
+      "description": "Объединение двух отсортированных файлов по общему полю",
       "patterns": [
         {
           "type": "example",
-          "text": "join two sorted files on the first column",
+          "text": "соединить два отсортированных файла по первому полю",
           "command": "join file1.txt file2.txt",
-          "explanation": "Merges lines from both files that share a matching first field"
+          "explanation": "Соединить два отсортированных файла по первому полю."
         },
         {
           "type": "example",
-          "text": "join files on a different column",
+          "text": "объединить записи с одинаковым первым ключом через join",
+          "command": "join file1.txt file2.txt",
+          "explanation": "Соединить два отсортированных файла по первому полю."
+        },
+        {
+          "type": "example",
+          "text": "соединить второй столбец первого файла с первым столбцом второго",
           "command": "join -1 2 -2 1 file1.txt file2.txt",
-          "explanation": "Joins on the second field of file1 and first field of file2"
+          "explanation": "Соединить второй столбец первого файла с первым столбцом второго."
         },
         {
           "type": "example",
-          "text": "join with a custom delimiter",
+          "text": "сопоставить отсортированные записи по разным ключевым полям",
+          "command": "join -1 2 -2 1 file1.txt file2.txt",
+          "explanation": "Соединить второй столбец первого файла с первым столбцом второго."
+        },
+        {
+          "type": "example",
+          "text": "объединить отсортированные файлы по первому полю с разделителем запятая",
           "command": "join -t',' file1.csv file2.csv",
-          "explanation": "Uses comma as both input and output field separator"
+          "explanation": "Объединить отсортированные файлы по первому полю с разделителем запятая."
         },
         {
           "type": "example",
-          "text": "show unmatched lines from the first file",
+          "text": "соединить данные CSV по начальному ключевому столбцу через join",
+          "command": "join -t',' file1.csv file2.csv",
+          "explanation": "Объединить отсортированные файлы по первому полю с разделителем запятая."
+        },
+        {
+          "type": "example",
+          "text": "соединить файлы, сохранив также записи без пары из первого",
           "command": "join -a1 file1.txt file2.txt",
-          "explanation": "Includes lines from file1 that have no match in file2"
+          "explanation": "Соединить файлы, сохранив также записи без пары из первого."
+        },
+        {
+          "type": "example",
+          "text": "выполнить объединение по первому ключу с включением всех строк первого файла",
+          "command": "join -a1 file1.txt file2.txt",
+          "explanation": "Соединить файлы, сохранив также записи без пары из первого."
         }
       ]
     },
     {
       "name": "comm",
       "synopsis": "comm [options] file1 file2",
-      "description": "Compare two sorted files line by line",
+      "description": "Построчное сравнение двух отсортированных файлов",
       "patterns": [
         {
           "type": "example",
-          "text": "find lines unique to the first file",
+          "text": "найти строки первого отсортированного файла, отсутствующие во втором",
           "command": "comm -23 file1.txt file2.txt",
-          "explanation": "Shows only lines present in file1 but not file2"
+          "explanation": "Найти строки первого отсортированного файла, отсутствующие во втором."
         },
         {
           "type": "example",
-          "text": "find lines common to both files",
+          "text": "вывести разность двух отсортированных списков в пользу первого",
+          "command": "comm -23 file1.txt file2.txt",
+          "explanation": "Найти строки первого отсортированного файла, отсутствующие во втором."
+        },
+        {
+          "type": "example",
+          "text": "показать общие строки двух отсортированных файлов",
           "command": "comm -12 file1.txt file2.txt",
-          "explanation": "Shows only lines that appear in both files"
+          "explanation": "Показать общие строки двух отсортированных файлов."
         },
         {
           "type": "example",
-          "text": "find lines unique to the second file",
+          "text": "получить пересечение списков через comm",
+          "command": "comm -12 file1.txt file2.txt",
+          "explanation": "Показать общие строки двух отсортированных файлов."
+        },
+        {
+          "type": "example",
+          "text": "показать строки только второго отсортированного файла",
           "command": "comm -13 file1.txt file2.txt",
-          "explanation": "Shows only lines present in file2 but not file1"
+          "explanation": "Показать строки только второго отсортированного файла."
         },
         {
           "type": "example",
-          "text": "compare two sorted files showing all three columns",
+          "text": "вывести значения, которых нет в первом списке",
+          "command": "comm -13 file1.txt file2.txt",
+          "explanation": "Показать строки только второго отсортированного файла."
+        },
+        {
+          "type": "example",
+          "text": "сравнить отсортированные файлы в трёх столбцах",
           "command": "comm file1.txt file2.txt",
-          "explanation": "Displays three columns: unique to file1, unique to file2, and common"
+          "explanation": "Сравнить отсортированные файлы в трёх столбцах."
+        },
+        {
+          "type": "example",
+          "text": "показать строки только первого, только второго и общие для обоих",
+          "command": "comm file1.txt file2.txt",
+          "explanation": "Сравнить отсортированные файлы в трёх столбцах."
         }
       ]
     },
     {
       "name": "diff",
       "synopsis": "diff [options] file1 file2",
-      "description": "Compare files line by line and show differences",
+      "description": "Просмотр различий между файлами",
       "patterns": [
         {
           "type": "example",
-          "text": "compare two files and show the differences",
+          "text": "сравнить два файла и показать отличия",
           "command": "diff file1.txt file2.txt",
-          "explanation": "Shows lines that differ between the two files"
+          "explanation": "Сравнить два файла и показать отличия."
         },
         {
           "type": "example",
-          "text": "show differences side by side",
+          "text": "вывести различия между текстовыми версиями",
+          "command": "diff file1.txt file2.txt",
+          "explanation": "Сравнить два файла и показать отличия."
+        },
+        {
+          "type": "example",
+          "text": "сравнить файлы рядом в двух колонках",
           "command": "diff -y file1.txt file2.txt",
-          "explanation": "Displays both files in parallel with differences marked"
+          "explanation": "Сравнить файлы рядом в двух колонках."
         },
         {
           "type": "example",
-          "text": "generate a unified diff for patching",
+          "text": "показать построчные отличия в параллельном представлении",
+          "command": "diff -y file1.txt file2.txt",
+          "explanation": "Сравнить файлы рядом в двух колонках."
+        },
+        {
+          "type": "example",
+          "text": "сохранить различия исходного кода в unified-патч",
           "command": "diff -u original.c modified.c > changes.patch",
-          "explanation": "Creates a unified format diff suitable for the patch command"
+          "explanation": "Сохранить различия исходного кода в unified-патч."
         },
         {
           "type": "example",
-          "text": "compare two directories recursively",
+          "text": "создать changes.patch сравнением original.c и modified.c",
+          "command": "diff -u original.c modified.c > changes.patch",
+          "explanation": "Сохранить различия исходного кода в unified-патч."
+        },
+        {
+          "type": "example",
+          "text": "рекурсивно сравнить содержимое двух каталогов",
           "command": "diff -r dir1/ dir2/",
-          "explanation": "Compares all corresponding files in both directory trees"
+          "explanation": "Рекурсивно сравнить содержимое двух каталогов."
         },
         {
           "type": "example",
-          "text": "ignore whitespace differences when comparing",
+          "text": "найти различия файлов в деревьях dir1 и dir2",
+          "command": "diff -r dir1/ dir2/",
+          "explanation": "Рекурсивно сравнить содержимое двух каталогов."
+        },
+        {
+          "type": "example",
+          "text": "сравнить файлы, игнорируя различия в пробельных символах",
           "command": "diff -w file1.txt file2.txt",
-          "explanation": "Treats all sequences of whitespace as equal"
+          "explanation": "Сравнить файлы, игнорируя различия в пробельных символах."
+        },
+        {
+          "type": "example",
+          "text": "не учитывать пробелы и табуляции при поиске отличий",
+          "command": "diff -w file1.txt file2.txt",
+          "explanation": "Сравнить файлы, игнорируя различия в пробельных символах."
         }
       ]
     },
     {
       "name": "patch",
       "synopsis": "patch [options] [original [patchfile]]",
-      "description": "Apply a diff file to an original file",
+      "description": "Применение файла различий к исходным файлам",
       "patterns": [
         {
           "type": "example",
-          "text": "apply a patch file to source code",
+          "text": "применить изменения из файла патча к исходникам",
           "command": "patch < changes.patch",
-          "explanation": "Applies the changes described in the patch file"
+          "explanation": "Применить изменения из файла патча к исходникам."
         },
         {
           "type": "example",
-          "text": "apply a patch with a directory strip level",
+          "text": "внести правки из changes.patch через patch",
+          "command": "patch < changes.patch",
+          "explanation": "Применить изменения из файла патча к исходникам."
+        },
+        {
+          "type": "example",
+          "text": "применить патч, отбросив первый компонент путей",
           "command": "patch -p1 < feature.patch",
-          "explanation": "Strips one leading directory from paths in the patch"
+          "explanation": "Применить патч, отбросив первый компонент путей."
         },
         {
           "type": "example",
-          "text": "reverse a previously applied patch",
+          "text": "внести изменения feature.patch с уровнем удаления каталогов p1",
+          "command": "patch -p1 < feature.patch",
+          "explanation": "Применить патч, отбросив первый компонент путей."
+        },
+        {
+          "type": "example",
+          "text": "отменить изменения из ранее применённого патча",
           "command": "patch -R < changes.patch",
-          "explanation": "Undoes the changes made by the patch"
+          "explanation": "Отменить изменения из ранее применённого патча."
         },
         {
           "type": "example",
-          "text": "do a dry run to check if a patch applies cleanly",
+          "text": "применить changes.patch в обратную сторону",
+          "command": "patch -R < changes.patch",
+          "explanation": "Отменить изменения из ранее применённого патча."
+        },
+        {
+          "type": "example",
+          "text": "проверить применимость патча без изменения файлов",
           "command": "patch --dry-run < changes.patch",
-          "explanation": "Tests whether the patch can be applied without actually modifying files"
+          "explanation": "Проверить применимость патча без изменения файлов."
+        },
+        {
+          "type": "example",
+          "text": "выполнить пробное наложение changes.patch",
+          "command": "patch --dry-run < changes.patch",
+          "explanation": "Проверить применимость патча без изменения файлов."
         }
       ]
     },
     {
       "name": "column",
       "synopsis": "column [options] [file...]",
-      "description": "Format input into multiple columns or a table",
+      "description": "Оформление текста в виде таблицы или нескольких столбцов",
       "patterns": [
         {
           "type": "example",
-          "text": "format data as a nicely aligned table",
+          "text": "выровнять текстовые данные в таблицу",
           "command": "column -t data.txt",
-          "explanation": "Auto-aligns columns based on whitespace delimiters"
+          "explanation": "Выровнять текстовые данные в таблицу."
         },
         {
           "type": "example",
-          "text": "format simple comma-separated fields as a readable table",
+          "text": "отформатировать столбцы файла с удобными отступами",
+          "command": "column -t data.txt",
+          "explanation": "Выровнять текстовые данные в таблицу."
+        },
+        {
+          "type": "example",
+          "text": "показать данные с запятыми в виде выровненной таблицы",
           "command": "column -t -s',' data.csv",
-          "explanation": "Splits simple records on commas and aligns columns; quoted CSV delimiters are not parsed"
+          "explanation": "Разделяет простые записи по запятой и выравнивает столбцы; CSV-разделители в кавычках не разбираются."
         },
         {
           "type": "example",
-          "text": "arrange a list into multiple columns for display",
+          "text": "разделить CSV-строки по запятым и оформить столбцы через column",
+          "command": "column -t -s',' data.csv",
+          "explanation": "Разделяет простые записи по запятой и выравнивает столбцы; CSV-разделители в кавычках не разбираются."
+        },
+        {
+          "type": "example",
+          "text": "разложить имена файлов в несколько колонок на экране",
           "command": "ls | column",
-          "explanation": "Arranges the input into columns to fill the terminal width"
+          "explanation": "Разложить имена файлов в несколько колонок на экране."
         },
         {
           "type": "example",
-          "text": "format colon-delimited data as a table",
+          "text": "показать вывод ls компактной многоколоночной раскладкой",
+          "command": "ls | column",
+          "explanation": "Разложить имена файлов в несколько колонок на экране."
+        },
+        {
+          "type": "example",
+          "text": "оформить поля /etc/passwd в выровненную таблицу",
           "command": "column -t -s':' /etc/passwd",
-          "explanation": "Displays the passwd file in a readable tabular format"
+          "explanation": "Оформить поля /etc/passwd в выровненную таблицу."
+        },
+        {
+          "type": "example",
+          "text": "разбить данные по двоеточиям и показать читаемые столбцы",
+          "command": "column -t -s':' /etc/passwd",
+          "explanation": "Оформить поля /etc/passwd в выровненную таблицу."
         }
       ]
     },
     {
       "name": "fold",
       "synopsis": "fold [options] [file...]",
-      "description": "Wrap each input line to fit a specified width",
+      "description": "Перенос строк по заданной ширине",
       "patterns": [
         {
           "type": "example",
-          "text": "wrap long lines to 80 characters",
+          "text": "перенести длинные строки на ширине 80 позиций",
           "command": "fold -w 80 longlines.txt",
-          "explanation": "Breaks lines at 80 characters, possibly mid-word"
+          "explanation": "Перенести длинные строки на ширине 80 позиций."
         },
         {
           "type": "example",
-          "text": "wrap lines at word boundaries instead of mid-word",
+          "text": "ограничить длину экранных строк файла через fold -w 80",
+          "command": "fold -w 80 longlines.txt",
+          "explanation": "Перенести длинные строки на ширине 80 позиций."
+        },
+        {
+          "type": "example",
+          "text": "перенести текст по пробелам на ширине 72 позиций",
           "command": "fold -s -w 72 document.txt",
-          "explanation": "Breaks at the last space within 72 characters to avoid splitting words"
+          "explanation": "Перенести текст по пробелам на ширине 72 позиций."
         },
         {
           "type": "example",
-          "text": "limit output width to a specific number of bytes",
+          "text": "разбить длинные строки между словами через fold -s",
+          "command": "fold -s -w 72 document.txt",
+          "explanation": "Перенести текст по пробелам на ширине 72 позиций."
+        },
+        {
+          "type": "example",
+          "text": "переносить строки после ста байтов",
           "command": "fold -b -w 100 file.txt",
-          "explanation": "Counts bytes instead of columns when determining line width"
+          "explanation": "Переносить строки после ста байтов."
         },
         {
           "type": "example",
-          "text": "reformat a paragraph to a narrower width",
+          "text": "ограничить ширину вывода побайтово, а не по экранным колонкам",
+          "command": "fold -b -w 100 file.txt",
+          "explanation": "Переносить строки после ста байтов."
+        },
+        {
+          "type": "example",
+          "text": "переформатировать поток текста с переносами по пробелам на ширине 60",
           "command": "cat paragraph.txt | fold -s -w 60",
-          "explanation": "Wraps the paragraph text to 60 characters at word boundaries"
+          "explanation": "Переформатировать поток текста с переносами по пробелам на ширине 60."
+        },
+        {
+          "type": "example",
+          "text": "сделать абзац уже, разбивая строки на границах слов",
+          "command": "cat paragraph.txt | fold -s -w 60",
+          "explanation": "Переформатировать поток текста с переносами по пробелам на ширине 60."
         }
       ]
     },
     {
       "name": "fmt",
       "synopsis": "fmt [options] [file...]",
-      "description": "Simple text formatter that reflows paragraphs",
+      "description": "Переформатирование абзацев текста",
       "patterns": [
         {
           "type": "example",
-          "text": "reformat a text file to 75 character width",
+          "text": "переформатировать абзацы под ширину 75 символов",
           "command": "fmt -w 75 article.txt",
-          "explanation": "Reflows paragraphs so lines are at most 75 characters wide"
+          "explanation": "Переформатировать абзацы под ширину 75 символов."
         },
         {
           "type": "example",
-          "text": "reflow a paragraph to standard width",
+          "text": "перераспределить слова статьи по строкам заданной ширины",
+          "command": "fmt -w 75 article.txt",
+          "explanation": "Переформатировать абзацы под ширину 75 символов."
+        },
+        {
+          "type": "example",
+          "text": "переформатировать абзацы со стандартной шириной fmt",
           "command": "fmt document.txt",
-          "explanation": "Reformats paragraphs to the default width of approximately 75 characters"
+          "explanation": "Переформатировать абзацы со стандартной шириной fmt."
         },
         {
           "type": "example",
-          "text": "format text with uniform spacing between words",
+          "text": "переразбить строки текстового документа по словам",
+          "command": "fmt document.txt",
+          "explanation": "Переформатировать абзацы со стандартной шириной fmt."
+        },
+        {
+          "type": "example",
+          "text": "нормализовать интервалы между словами и предложениями",
           "command": "fmt -u notes.txt",
-          "explanation": "Ensures uniform spacing of one space between words and two after sentences"
+          "explanation": "Нормализовать интервалы между словами и предложениями."
         },
         {
           "type": "example",
-          "text": "format text for a narrow terminal",
+          "text": "привести пробелы текста к равномерному формату через fmt -u",
+          "command": "fmt -u notes.txt",
+          "explanation": "Нормализовать интервалы между словами и предложениями."
+        },
+        {
+          "type": "example",
+          "text": "подготовить текст для терминала шириной 40 символов",
           "command": "fmt -w 40 readme.txt",
-          "explanation": "Reflows text to fit within 40 columns"
+          "explanation": "Подготовить текст для терминала шириной 40 символов."
+        },
+        {
+          "type": "example",
+          "text": "перераспределить строки README для узкого экрана",
+          "command": "fmt -w 40 readme.txt",
+          "explanation": "Подготовить текст для терминала шириной 40 символов."
         }
       ]
     },
     {
       "name": "expand",
       "synopsis": "expand [options] [file...]",
-      "description": "Convert tabs to spaces",
+      "description": "Замена табуляции пробелами",
       "patterns": [
         {
           "type": "example",
-          "text": "convert all tabs to spaces in a file",
+          "text": "заменить табуляции пробелами в выводе файла",
           "command": "expand file.txt",
-          "explanation": "Replaces each tab with the appropriate number of spaces to reach the next tab stop"
+          "explanation": "Заменить табуляции пробелами в выводе файла."
         },
         {
           "type": "example",
-          "text": "convert tabs using a custom tab width",
+          "text": "развернуть символы табуляции до стандартных позиций",
+          "command": "expand file.txt",
+          "explanation": "Заменить табуляции пробелами в выводе файла."
+        },
+        {
+          "type": "example",
+          "text": "развернуть табуляции с шагом четыре позиции",
           "command": "expand -t 4 code.py",
-          "explanation": "Uses tab stops every four columns; each tab expands to the number of spaces needed to reach the next stop"
+          "explanation": "Использует позиции табуляции через четыре столбца; каждая табуляция разворачивается до следующей позиции."
         },
         {
           "type": "example",
-          "text": "convert only leading tabs to spaces",
+          "text": "преобразовать табы в пробелы по сетке шириной 4",
+          "command": "expand -t 4 code.py",
+          "explanation": "Использует позиции табуляции через четыре столбца; каждая табуляция разворачивается до следующей позиции."
+        },
+        {
+          "type": "example",
+          "text": "заменить только начальные табуляции строк пробелами",
           "command": "expand -i file.txt",
-          "explanation": "Replaces only tabs at the beginning of lines, leaving others intact"
+          "explanation": "Заменить только начальные табуляции строк пробелами."
         },
         {
           "type": "example",
-          "text": "standardize indentation from tabs to 2 spaces",
+          "text": "преобразовать отступы, не затрагивая табы после текста",
+          "command": "expand -i file.txt",
+          "explanation": "Заменить только начальные табуляции строк пробелами."
+        },
+        {
+          "type": "example",
+          "text": "преобразовать табуляции в пробелы по сетке из двух позиций",
           "command": "expand -t 2 source.js",
-          "explanation": "Converts every tab to 2 spaces for consistent indentation"
+          "explanation": "Преобразовать табуляции в пробелы по сетке из двух позиций."
+        },
+        {
+          "type": "example",
+          "text": "нормализовать табы исходника JavaScript с шагом 2",
+          "command": "expand -t 2 source.js",
+          "explanation": "Преобразовать табуляции в пробелы по сетке из двух позиций."
         }
       ]
     },
     {
       "name": "unexpand",
       "synopsis": "unexpand [options] [file...]",
-      "description": "Convert spaces to tabs",
+      "description": "Замена пробелов символами табуляции",
       "patterns": [
         {
           "type": "example",
-          "text": "convert leading spaces back to tabs",
+          "text": "заменить ведущие пробелы табуляциями по стандартным позициям",
           "command": "unexpand file.txt",
-          "explanation": "Replaces leading spaces with tabs based on the default tab stop of 8"
+          "explanation": "Заменить ведущие пробелы табуляциями по стандартным позициям."
         },
         {
           "type": "example",
-          "text": "convert all spaces to tabs not just leading",
+          "text": "сжать начальные пробельные отступы до табов",
+          "command": "unexpand file.txt",
+          "explanation": "Заменить ведущие пробелы табуляциями по стандартным позициям."
+        },
+        {
+          "type": "example",
+          "text": "преобразовать подходящие последовательности пробелов в табуляции во всей строке",
           "command": "unexpand -a file.txt",
-          "explanation": "Converts all sequences of spaces (not just leading) to tabs"
+          "explanation": "Преобразовать подходящие последовательности пробелов в табуляции во всей строке."
         },
         {
           "type": "example",
-          "text": "convert spaces to tabs with a custom tab width",
+          "text": "заменять пробелы табами не только в начале строки",
+          "command": "unexpand -a file.txt",
+          "explanation": "Преобразовать подходящие последовательности пробелов в табуляции во всей строке."
+        },
+        {
+          "type": "example",
+          "text": "заменить пробелы табуляциями с шагом четыре позиции",
           "command": "unexpand -t 4 code.py",
-          "explanation": "Uses a tab stop of 4 when converting spaces to tabs"
+          "explanation": "Заменить пробелы табуляциями с шагом четыре позиции."
         },
         {
           "type": "example",
-          "text": "change indentation from 2 spaces to tabs",
+          "text": "сжать пробельные последовательности Python-файла по сетке табов 4",
+          "command": "unexpand -t 4 code.py",
+          "explanation": "Заменить пробелы табуляциями с шагом четыре позиции."
+        },
+        {
+          "type": "example",
+          "text": "преобразовать только начальные пробелы в табы с шагом две позиции",
           "command": "unexpand --first-only -t 2 source.js",
-          "explanation": "Converts leading 2-space indentation to tabs"
+          "explanation": "Преобразовать только начальные пробелы в табы с шагом две позиции."
+        },
+        {
+          "type": "example",
+          "text": "поменять отступы JavaScript на табуляцию, не затрагивая пробелы после текста",
+          "command": "unexpand --first-only -t 2 source.js",
+          "explanation": "Преобразовать только начальные пробелы в табы с шагом две позиции."
         }
       ]
     },
     {
       "name": "nl",
       "synopsis": "nl [options] [file...]",
-      "description": "Number lines of files",
+      "description": "Нумерация строк файлов",
       "patterns": [
         {
           "type": "example",
-          "text": "add line numbers to a file",
+          "text": "вывести текст с номерами непустых строк",
           "command": "nl file.txt",
-          "explanation": "Numbers non-empty lines and prints the file with line numbers"
+          "explanation": "Вывести текст с номерами непустых строк."
         },
         {
           "type": "example",
-          "text": "number all lines including blank ones",
+          "text": "добавить нумерацию строк стандартным режимом nl",
+          "command": "nl file.txt",
+          "explanation": "Вывести текст с номерами непустых строк."
+        },
+        {
+          "type": "example",
+          "text": "пронумеровать все строки, включая пустые",
           "command": "nl -ba file.txt",
-          "explanation": "Assigns a number to every line, even blank lines"
+          "explanation": "Пронумеровать все строки, включая пустые."
         },
         {
           "type": "example",
-          "text": "number lines with a custom format",
+          "text": "показать номера каждой строки файла без пропусков",
+          "command": "nl -ba file.txt",
+          "explanation": "Пронумеровать все строки, включая пустые."
+        },
+        {
+          "type": "example",
+          "text": "пронумеровать непустые строки четырёхзначными числами с ведущими нулями",
           "command": "nl -nrz -w4 file.txt",
-          "explanation": "Uses right-justified zero-padded 4-digit line numbers"
+          "explanation": "Пронумеровать непустые строки четырёхзначными числами с ведущими нулями."
         },
         {
           "type": "example",
-          "text": "number lines starting from a specific number",
+          "text": "настроить номера вида 0001 с выравниванием вправо",
+          "command": "nl -nrz -w4 file.txt",
+          "explanation": "Пронумеровать непустые строки четырёхзначными числами с ведущими нулями."
+        },
+        {
+          "type": "example",
+          "text": "начать нумерацию непустых строк со ста",
           "command": "nl -v 100 file.txt",
-          "explanation": "Starts numbering from 100 instead of 1"
+          "explanation": "Начать нумерацию непустых строк со ста."
+        },
+        {
+          "type": "example",
+          "text": "вывести текст с первым номером строки 100",
+          "command": "nl -v 100 file.txt",
+          "explanation": "Начать нумерацию непустых строк со ста."
         }
       ]
     },
     {
       "name": "rev",
       "synopsis": "rev [file...]",
-      "description": "Reverse characters in each line",
+      "description": "Разворот порядка символов в строках",
       "patterns": [
         {
           "type": "example",
-          "text": "reverse each line of a file",
+          "text": "развернуть символы каждой строки в обратном порядке",
           "command": "rev file.txt",
-          "explanation": "Reverses the character order of every line"
+          "explanation": "Развернуть символы каждой строки в обратном порядке."
         },
         {
           "type": "example",
-          "text": "reverse a string",
+          "text": "прочитать строки файла справа налево через rev",
+          "command": "rev file.txt",
+          "explanation": "Развернуть символы каждой строки в обратном порядке."
+        },
+        {
+          "type": "example",
+          "text": "перевернуть текст hello world",
           "command": "echo 'hello world' | rev",
-          "explanation": "Outputs 'dlrow olleh'"
+          "explanation": "Перевернуть текст hello world."
         },
         {
           "type": "example",
-          "text": "get the last field when you don't know how many fields there are",
+          "text": "вывести заданную строку с обратным порядком символов",
+          "command": "echo 'hello world' | rev",
+          "explanation": "Перевернуть текст hello world."
+        },
+        {
+          "type": "example",
+          "text": "получить последнее поле строки с разделителем слеш",
           "command": "echo 'a/b/c/d' | rev | cut -d'/' -f1 | rev",
-          "explanation": "Reverses, takes the first field, then reverses again to extract the last field"
+          "explanation": "Получить последнее поле строки с разделителем слеш."
         },
         {
           "type": "example",
-          "text": "check if a string is a palindrome",
+          "text": "выделить конечный компонент a/b/c/d через разворот строки",
+          "command": "echo 'a/b/c/d' | rev | cut -d'/' -f1 | rev",
+          "explanation": "Получить последнее поле строки с разделителем слеш."
+        },
+        {
+          "type": "example",
+          "text": "проверить, читается ли слово racecar одинаково в обе стороны",
           "command": "word='racecar'; [ \"$word\" = \"$(echo $word | rev)\" ] && echo 'palindrome'",
-          "explanation": "Compares the string with its reverse to check for palindrome"
+          "explanation": "Проверить, читается ли слово racecar одинаково в обе стороны."
+        },
+        {
+          "type": "example",
+          "text": "сравнить слово с его перевёрнутой записью для проверки палиндрома",
+          "command": "word='racecar'; [ \"$word\" = \"$(echo $word | rev)\" ] && echo 'palindrome'",
+          "explanation": "Проверить, читается ли слово racecar одинаково в обе стороны."
         }
       ]
     },
     {
       "name": "tac",
       "synopsis": "tac [options] [file...]",
-      "description": "Concatenate and print files in reverse line order",
+      "description": "Вывод строк файлов в обратном порядке",
       "patterns": [
         {
           "type": "example",
-          "text": "print a file with lines in reverse order",
+          "text": "вывести строки файла в обратной последовательности",
           "command": "tac file.txt",
-          "explanation": "Prints the last line first and the first line last"
+          "explanation": "Вывести строки файла в обратной последовательности."
         },
         {
           "type": "example",
-          "text": "reverse the order of log entries",
+          "text": "прочитать текст снизу вверх через tac",
+          "command": "tac file.txt",
+          "explanation": "Вывести строки файла в обратной последовательности."
+        },
+        {
+          "type": "example",
+          "text": "показать двадцать последних строк журнала в обратном порядке",
           "command": "tac access.log | head -20",
-          "explanation": "Shows the 20 most recent log entries by reversing and taking the top"
+          "explanation": "Показать двадцать последних строк журнала в обратном порядке."
         },
         {
           "type": "example",
-          "text": "reverse paragraphs separated by blank lines",
+          "text": "вывести свежие записи access.log первыми, ограничившись двадцатью",
+          "command": "tac access.log | head -20",
+          "explanation": "Показать двадцать последних строк журнала в обратном порядке."
+        },
+        {
+          "type": "example",
+          "text": "развернуть порядок абзацев, разделённых пустыми строками",
           "command": "awk -v RS='' '{printf \"%s%c\", $0, 0}' document.txt | tac -s '' | awk -v RS='\\0' 'BEGIN {ORS=\"\\n\\n\"} {print}'",
-          "explanation": "Splits text into paragraphs, reverses NUL-delimited records with GNU tac, then separates output paragraphs with a blank line"
+          "explanation": "Делит текст на абзацы, разворачивает NUL-разделённые записи через GNU tac и разделяет выходные абзацы пустой строкой."
         },
         {
           "type": "example",
-          "text": "reverse lines from a pipe",
+          "text": "вывести блоки текста от последнего к первому, сохраняя строки внутри абзацев",
+          "command": "awk -v RS='' '{printf \"%s%c\", $0, 0}' document.txt | tac -s '' | awk -v RS='\\0' 'BEGIN {ORS=\"\\n\\n\"} {print}'",
+          "explanation": "Делит текст на абзацы, разворачивает NUL-разделённые записи через GNU tac и разделяет выходные абзацы пустой строкой."
+        },
+        {
+          "type": "example",
+          "text": "развернуть порядок строк числовой последовательности",
           "command": "seq 1 10 | tac",
-          "explanation": "Prints numbers 10 down to 1"
+          "explanation": "Развернуть порядок строк числовой последовательности."
+        },
+        {
+          "type": "example",
+          "text": "вывести числа от десяти до одного через seq и tac",
+          "command": "seq 1 10 | tac",
+          "explanation": "Развернуть порядок строк числовой последовательности."
         }
       ]
     },
     {
       "name": "strings",
       "synopsis": "strings [options] [file...]",
-      "description": "Find printable strings in binary files",
+      "description": "Извлечение печатных строк из двоичных файлов",
       "patterns": [
         {
           "type": "example",
-          "text": "extract readable text from a binary file",
+          "text": "извлечь читаемые строки из двоичного файла",
           "command": "strings program.bin",
-          "explanation": "Finds and prints all sequences of printable characters in the binary"
+          "explanation": "Извлечь читаемые строки из двоичного файла."
         },
         {
           "type": "example",
-          "text": "find strings longer than a minimum length in a binary",
+          "text": "посмотреть текстовые фрагменты внутри program.bin",
+          "command": "strings program.bin",
+          "explanation": "Извлечь читаемые строки из двоичного файла."
+        },
+        {
+          "type": "example",
+          "text": "найти печатные строки длиной не меньше десяти символов в программе",
           "command": "strings -n 10 executable",
-          "explanation": "Shows only strings that are at least 10 characters long"
+          "explanation": "Найти печатные строки длиной не меньше десяти символов в программе."
         },
         {
           "type": "example",
-          "text": "search for URLs inside a binary file",
+          "text": "извлечь длинные текстовые фрагменты из исполняемого файла",
+          "command": "strings -n 10 executable",
+          "explanation": "Найти печатные строки длиной не меньше десяти символов в программе."
+        },
+        {
+          "type": "example",
+          "text": "найти строки с http внутри двоичного файла",
           "command": "strings binary | grep 'http'",
-          "explanation": "Extracts text strings and filters for those containing 'http'"
+          "explanation": "Найти строки с http внутри двоичного файла."
         },
         {
           "type": "example",
-          "text": "show the byte offset of each string found",
+          "text": "поискать текстовые упоминания веб-адресов в бинарных данных",
+          "command": "strings binary | grep 'http'",
+          "explanation": "Найти строки с http внутри двоичного файла."
+        },
+        {
+          "type": "example",
+          "text": "показать читаемые строки бинарного файла с шестнадцатеричными смещениями",
           "command": "strings -t x program.bin",
-          "explanation": "Displays each string preceded by its hexadecimal offset in the file"
+          "explanation": "Показать читаемые строки бинарного файла с шестнадцатеричными смещениями."
+        },
+        {
+          "type": "example",
+          "text": "узнать байтовое положение каждого найденного текстового фрагмента",
+          "command": "strings -t x program.bin",
+          "explanation": "Показать читаемые строки бинарного файла с шестнадцатеричными смещениями."
         }
       ]
     },
     {
       "name": "iconv",
       "synopsis": "iconv [options] [file...]",
-      "description": "Convert text between character encodings",
+      "description": "Преобразование кодировок текста",
       "patterns": [
         {
           "type": "example",
-          "text": "convert a file from Latin-1 to UTF-8",
+          "text": "перекодировать Latin-1 в UTF-8 с записью в другой файл",
           "command": "iconv -f ISO-8859-1 -t UTF-8 input.txt > output.txt",
-          "explanation": "Converts the file encoding from ISO-8859-1 (Latin-1) to UTF-8"
+          "explanation": "Перекодировать Latin-1 в UTF-8 с записью в другой файл."
         },
         {
           "type": "example",
-          "text": "list all available character encodings",
+          "text": "преобразовать текст ISO-8859-1 и сохранить UTF-8-копию",
+          "command": "iconv -f ISO-8859-1 -t UTF-8 input.txt > output.txt",
+          "explanation": "Перекодировать Latin-1 в UTF-8 с записью в другой файл."
+        },
+        {
+          "type": "example",
+          "text": "показать доступные кодировки для iconv",
           "command": "iconv -l",
-          "explanation": "Prints all supported encoding names"
+          "explanation": "Показать доступные кодировки для iconv."
         },
         {
           "type": "example",
-          "text": "convert UTF-8 text to ASCII with transliteration",
+          "text": "перечислить поддерживаемые наборы символов",
+          "command": "iconv -l",
+          "explanation": "Показать доступные кодировки для iconv."
+        },
+        {
+          "type": "example",
+          "text": "преобразовать UTF-8 в ASCII с попыткой транслитерации",
           "command": "iconv -f UTF-8 -t ASCII//TRANSLIT input.txt",
-          "explanation": "Transliterates characters that have no ASCII equivalent"
+          "explanation": "Преобразовать UTF-8 в ASCII с попыткой транслитерации."
         },
         {
           "type": "example",
-          "text": "convert a file from Windows encoding to UTF-8",
+          "text": "приблизительно заменить не-ASCII символы подходящими латинскими аналогами",
+          "command": "iconv -f UTF-8 -t ASCII//TRANSLIT input.txt",
+          "explanation": "Преобразовать UTF-8 в ASCII с попыткой транслитерации."
+        },
+        {
+          "type": "example",
+          "text": "перекодировать текст WINDOWS-1252 в UTF-8",
           "command": "iconv -f WINDOWS-1252 -t UTF-8 legacy.txt > modern.txt",
-          "explanation": "Converts Windows-1252 encoded text to standard UTF-8"
+          "explanation": "Перекодировать текст WINDOWS-1252 в UTF-8."
+        },
+        {
+          "type": "example",
+          "text": "создать современную UTF-8-копию файла с кодировкой CP1252",
+          "command": "iconv -f WINDOWS-1252 -t UTF-8 legacy.txt > modern.txt",
+          "explanation": "Перекодировать текст WINDOWS-1252 в UTF-8."
         }
       ]
     },
     {
       "name": "cat",
       "synopsis": "cat [options] [file...]",
-      "description": "Concatenate files and print them to standard output",
+      "description": "Объединение файлов и вывод их содержимого",
       "patterns": [
         {
           "type": "example",
-          "text": "print a file to the terminal",
+          "text": "вывести содержимое текстового файла в терминал",
           "command": "cat notes.txt",
-          "explanation": "Sends the entire file to stdout"
+          "explanation": "Вывести содержимое текстового файла в терминал."
         },
         {
           "type": "example",
-          "text": "join several files in order into one stream",
+          "text": "прочитать notes.txt через cat",
+          "command": "cat notes.txt",
+          "explanation": "Вывести содержимое текстового файла в терминал."
+        },
+        {
+          "type": "example",
+          "text": "объединить три файла в один в заданном порядке",
           "command": "cat part1.txt part2.txt part3.txt > combined.txt",
-          "explanation": "Concatenates inputs left to right into the output file"
+          "explanation": "Объединить три файла в один в заданном порядке."
         },
         {
           "type": "example",
-          "text": "number all lines for quick reference",
+          "text": "последовательно записать содержимое частей в combined.txt",
+          "command": "cat part1.txt part2.txt part3.txt > combined.txt",
+          "explanation": "Объединить три файла в один в заданном порядке."
+        },
+        {
+          "type": "example",
+          "text": "показать скрипт с номерами всех строк",
           "command": "cat -n script.sh",
-          "explanation": "Prefixes each line with a line number including blanks"
+          "explanation": "Показать скрипт с номерами всех строк."
         },
         {
           "type": "example",
-          "text": "append stdin to the end of a file",
+          "text": "пронумеровать содержимое script.sh через cat -n",
+          "command": "cat -n script.sh",
+          "explanation": "Показать скрипт с номерами всех строк."
+        },
+        {
+          "type": "example",
+          "text": "дописывать вводимый текст в конец журнала",
           "command": "cat >> log.txt",
-          "explanation": "With no files, cat reads from the keyboard until EOF; >> appends"
+          "explanation": "Дописывать вводимый текст в конец журнала."
+        },
+        {
+          "type": "example",
+          "text": "перенаправить стандартный ввод в log.txt без обнуления файла",
+          "command": "cat >> log.txt",
+          "explanation": "Дописывать вводимый текст в конец журнала."
         }
       ]
     },
     {
       "name": "less",
       "synopsis": "less [options] [file...]",
-      "description": "View long files or pipes interactively (forward and backward scrolling)",
+      "description": "Интерактивный постраничный просмотр текста с прокруткой",
       "patterns": [
         {
           "type": "example",
-          "text": "page through a large log file",
+          "text": "открыть большой журнал для постраничного просмотра",
           "command": "less /var/log/system.log",
-          "explanation": "Use Space to page down, b to page up, q to quit"
+          "explanation": "Открыть большой журнал для постраничного просмотра."
         },
         {
           "type": "example",
-          "text": "follow new lines appended to a file like tail -f",
+          "text": "пролистать /var/log/system.log через less",
+          "command": "less /var/log/system.log",
+          "explanation": "Открыть большой журнал для постраничного просмотра."
+        },
+        {
+          "type": "example",
+          "text": "открыть журнал в less и сразу следить за новыми строками",
           "command": "less +F app.log",
-          "explanation": "Press Ctrl+C then F again to toggle follow mode in less"
+          "explanation": "Открыть журнал в less и сразу следить за новыми строками."
         },
         {
           "type": "example",
-          "text": "search forward for a pattern inside less",
+          "text": "включить режим ожидания дописываемого текста при запуске просмотра",
+          "command": "less +F app.log",
+          "explanation": "Открыть журнал в less и сразу следить за новыми строками."
+        },
+        {
+          "type": "example",
+          "text": "открыть build.log сразу на первом совпадении error",
           "command": "less +/error build.log",
-          "explanation": "Opens the file jumped to the first match of 'error'"
+          "explanation": "Открыть build.log сразу на первом совпадении error."
         },
         {
           "type": "example",
-          "text": "pipe command output into a pager without line wrap",
+          "text": "начать просмотр журнала сборки с поиска указанной ошибки",
+          "command": "less +/error build.log",
+          "explanation": "Открыть build.log сразу на первом совпадении error."
+        },
+        {
+          "type": "example",
+          "text": "просмотреть Git-историю с патчами без переноса длинных строк",
           "command": "git log -p | less -S",
-          "explanation": "-S chops long lines so you scroll horizontally with arrow keys"
+          "explanation": "Просмотреть Git-историю с патчами без переноса длинных строк."
+        },
+        {
+          "type": "example",
+          "text": "передать git log -p в less с горизонтальной прокруткой",
+          "command": "git log -p | less -S",
+          "explanation": "Просмотреть Git-историю с патчами без переноса длинных строк."
         }
       ]
     },
     {
       "name": "more",
       "synopsis": "more [options] [file...]",
-      "description": "Simple file pager (forward-only on many systems)",
+      "description": "Простой постраничный просмотр текста",
       "patterns": [
         {
           "type": "example",
-          "text": "page through a text file when less is unavailable",
+          "text": "постранично просмотреть текстовый README через more",
           "command": "more readme.txt",
-          "explanation": "Space advances a page; q exits"
+          "explanation": "Постранично просмотреть текстовый README через more."
         },
         {
           "type": "example",
-          "text": "view output of a long command one screen at a time",
+          "text": "открыть файл с остановкой вывода после каждого экрана",
+          "command": "more readme.txt",
+          "explanation": "Постранично просмотреть текстовый README через more."
+        },
+        {
+          "type": "example",
+          "text": "показать подробный список /usr/bin по одному экрану",
           "command": "ls -la /usr/bin | more",
-          "explanation": "Pipes output through more for basic scrolling"
+          "explanation": "Показать подробный список /usr/bin по одному экрану."
+        },
+        {
+          "type": "example",
+          "text": "пролистать длинный вывод ls через more",
+          "command": "ls -la /usr/bin | more",
+          "explanation": "Показать подробный список /usr/bin по одному экрану."
         }
       ]
     },
     {
       "name": "split",
       "synopsis": "split [options] [input [prefix]]",
-      "description": "Split a large file into smaller fixed-size pieces",
+      "description": "Разбиение большого файла на части",
       "patterns": [
         {
           "type": "example",
-          "text": "split a 10 GB file into 1 GB chunks named chunk_aa chunk_ab",
+          "text": "разбить большой файл на части по одному гибибайту",
           "command": "split -b 1G huge.iso chunk_",
-          "explanation": "-b uses byte size; default output is xaa xab unless you set a prefix"
+          "explanation": "Разбить большой файл на части по одному гибибайту."
         },
         {
           "type": "example",
-          "text": "split a text file into files of 1000 lines each",
+          "text": "создать последовательные фрагменты ISO с префиксом chunk_",
+          "command": "split -b 1G huge.iso chunk_",
+          "explanation": "Разбить большой файл на части по одному гибибайту."
+        },
+        {
+          "type": "example",
+          "text": "разделить журнал на файлы по тысяче строк",
           "command": "split -l 1000 big.log part_",
-          "explanation": "Creates part_aa, part_ab, ... each with at most 1000 lines"
+          "explanation": "Разделить журнал на файлы по тысяче строк."
         },
         {
           "type": "example",
-          "text": "rejoin split binary parts on any Unix system",
+          "text": "нарезать большой текстовый файл на части с префиксом part_",
+          "command": "split -l 1000 big.log part_",
+          "explanation": "Разделить журнал на файлы по тысяче строк."
+        },
+        {
+          "type": "example",
+          "text": "собрать части chunk_ обратно в один ISO-файл",
           "command": "cat chunk_* > restored.iso",
-          "explanation": "Concatenates pieces in sorted name order back into one file"
+          "explanation": "Собрать части chunk_ обратно в один ISO-файл."
+        },
+        {
+          "type": "example",
+          "text": "последовательно объединить фрагменты двоичного файла в restored.iso",
+          "command": "cat chunk_* > restored.iso",
+          "explanation": "Собрать части chunk_ обратно в один ISO-файл."
         }
       ]
     },
     {
       "name": "dos2unix",
       "synopsis": "dos2unix [options] [file...]",
-      "description": "Convert line endings between DOS/Windows and Unix formats",
+      "description": "Преобразование окончаний строк DOS и Unix",
       "patterns": [
         {
           "type": "example",
-          "text": "convert Windows line endings to Unix",
+          "text": "преобразовать переводы строк CRLF в LF прямо в файле",
           "command": "dos2unix file.txt",
-          "explanation": "Removes carriage return characters (\\r) from line endings"
+          "explanation": "Преобразовать переводы строк CRLF в LF прямо в файле."
         },
         {
           "type": "example",
-          "text": "convert Unix line endings to Windows format",
+          "text": "заменить окончания строк DOS на формат Unix",
+          "command": "dos2unix file.txt",
+          "explanation": "Преобразовать переводы строк CRLF в LF прямо в файле."
+        },
+        {
+          "type": "example",
+          "text": "преобразовать окончания строк Unix в формат CRLF",
           "command": "unix2dos file.txt",
-          "explanation": "Adds carriage return (\\r) before each newline"
+          "explanation": "Преобразовать окончания строк Unix в формат CRLF."
         },
         {
           "type": "example",
-          "text": "convert line endings and save to a different file",
+          "text": "подготовить файл с переводами строк DOS через unix2dos",
+          "command": "unix2dos file.txt",
+          "explanation": "Преобразовать окончания строк Unix в формат CRLF."
+        },
+        {
+          "type": "example",
+          "text": "преобразовать CRLF в LF и сохранить результат отдельно",
           "command": "dos2unix -n input.txt output.txt",
-          "explanation": "Converts line endings and writes to a new file, keeping the original intact"
+          "explanation": "Преобразовать CRLF в LF и сохранить результат отдельно."
         },
         {
           "type": "example",
-          "text": "convert all files in a directory from DOS to Unix format",
+          "text": "создать файл output.txt с Unix-переводами строк без перезаписи input.txt",
+          "command": "dos2unix -n input.txt output.txt",
+          "explanation": "Преобразовать CRLF в LF и сохранить результат отдельно."
+        },
+        {
+          "type": "example",
+          "text": "найти txt-файлы в текущем дереве и преобразовать окончания строк в Unix",
           "command": "find . -name '*.txt' -exec dos2unix {} +",
-          "explanation": "Recursively finds all .txt files and converts their line endings"
+          "explanation": "Найти txt-файлы в текущем дереве и преобразовать окончания строк в Unix."
+        },
+        {
+          "type": "example",
+          "text": "пакетно применить dos2unix к именам *.txt из каталога и подпапок",
+          "command": "find . -name '*.txt' -exec dos2unix {} +",
+          "explanation": "Найти txt-файлы в текущем дереве и преобразовать окончания строк в Unix."
         }
       ]
     },
     {
       "name": "xxd",
       "synopsis": "xxd [options] [infile [outfile]]",
-      "description": "Make a hexdump or do the reverse",
+      "description": "Создание шестнадцатеричного представления данных и обратное преобразование",
       "patterns": [
         {
           "type": "example",
-          "text": "view the hexadecimal representation of a binary file",
+          "text": "показать шестнадцатеричный дамп двоичного файла",
           "command": "xxd file.bin",
-          "explanation": "Outputs the hex values and corresponding ASCII characters"
+          "explanation": "Показать шестнадцатеричный дамп двоичного файла."
         },
         {
           "type": "example",
-          "text": "revert a hexdump back to a binary file",
+          "text": "посмотреть байты file.bin в текстовом hex-представлении",
+          "command": "xxd file.bin",
+          "explanation": "Показать шестнадцатеричный дамп двоичного файла."
+        },
+        {
+          "type": "example",
+          "text": "восстановить двоичный файл из шестнадцатеричного дампа",
           "command": "xxd -r dump.hex file.bin",
-          "explanation": "Reconstructs the original binary from a hex dump format"
+          "explanation": "Восстановить двоичный файл из шестнадцатеричного дампа."
+        },
+        {
+          "type": "example",
+          "text": "преобразовать dump.hex обратно в байты file.bin",
+          "command": "xxd -r dump.hex file.bin",
+          "explanation": "Восстановить двоичный файл из шестнадцатеричного дампа."
         }
       ]
     },
     {
       "name": "envsubst",
       "synopsis": "envsubst [SHELL-FORMAT]",
-      "description": "Substitute environment variables in shell format strings",
+      "description": "Подстановка переменных окружения в текст",
       "patterns": [
         {
           "type": "example",
-          "text": "replace environment variables in a template file",
+          "text": "подставить переменные окружения в шаблон конфигурации",
           "command": "envsubst < template.conf > output.conf",
-          "explanation": "Fills in $VAR or ${VAR} in the template with actual environment values"
+          "explanation": "Подставить переменные окружения в шаблон конфигурации."
         },
         {
           "type": "example",
-          "text": "replace only specific environment variables",
+          "text": "создать output.conf из template.conf с заменой значений $VAR",
+          "command": "envsubst < template.conf > output.conf",
+          "explanation": "Подставить переменные окружения в шаблон конфигурации."
+        },
+        {
+          "type": "example",
+          "text": "заменить в шаблоне только переменные USER и HOME",
           "command": "envsubst '$USER,$HOME' < template.txt",
-          "explanation": "Only substitutes the variables explicitly listed in the string"
+          "explanation": "Заменить в шаблоне только переменные USER и HOME."
+        },
+        {
+          "type": "example",
+          "text": "ограничить подстановку окружения двумя указанными именами",
+          "command": "envsubst '$USER,$HOME' < template.txt",
+          "explanation": "Заменить в шаблоне только переменные USER и HOME."
         }
       ]
     },
     {
       "name": "sponge",
       "synopsis": "sponge [file]",
-      "description": "Soak up standard input and write to a file",
+      "description": "Чтение стандартного ввода целиком перед записью в файл",
       "patterns": [
         {
           "type": "example",
-          "text": "filter a file and write the result back to the same file safely",
+          "text": "оставить в файле только строки с pattern через sponge",
           "command": "grep pattern file.txt | sponge file.txt",
-          "explanation": "Reads all input before opening the output file, avoiding truncation"
+          "explanation": "Оставить в файле только строки с pattern через sponge."
+        },
+        {
+          "type": "example",
+          "text": "отфильтровать текст и записать результат обратно после полного чтения исходника",
+          "command": "grep pattern file.txt | sponge file.txt",
+          "explanation": "Оставить в файле только строки с pattern через sponge."
         }
       ]
     }

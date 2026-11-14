@@ -4,88 +4,170 @@
     {
       "name": "perl text substitution",
       "synopsis": "perl -pe 's/pattern/replacement/flags' | perl -pie 's/pattern/replacement/flags' file",
-      "description": "In-place edits, find and replace, and regex transforms across files using Perl one-liners",
+      "description": "Замена текста и преобразования регулярными выражениями в однострочниках Perl",
       "patterns": [
         {
           "type": "example",
-          "text": "replace all tabs with 4 spaces in every python file",
+          "text": "заменить табуляции четырьмя пробелами в Python-файлах",
           "command": "perl -i -pe 's/\\t/    /g' *.py",
-          "explanation": "In-place replaces every tab character with 4 spaces across all .py files",
+          "explanation": "Заменить табуляции четырьмя пробелами в Python-файлах.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "find and replace a string across multiple files recursively",
+          "text": "исправить отступы во всех .py текущего каталога на четыре пробела",
+          "command": "perl -i -pe 's/\\t/    /g' *.py",
+          "explanation": "Заменить табуляции четырьмя пробелами в Python-файлах.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "рекурсивно переименовать oldFunction в newFunction внутри JavaScript-файлов",
           "command": "find . -type f -name '*.js' -exec perl -i -pe 's/oldFunction/newFunction/g' {} +",
-          "explanation": "Recursively selects ordinary .js files and replaces oldFunction with newFunction in place; matching directory names are skipped.",
+          "explanation": "Рекурсивно выбирает обычные .js-файлы и заменяет oldFunction на newFunction на месте; каталоги с таким суффиксом пропускаются.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "replace text only on lines matching a condition",
+          "text": "найти все .js и заменить вызовы старой функции новой",
+          "command": "find . -type f -name '*.js' -exec perl -i -pe 's/oldFunction/newFunction/g' {} +",
+          "explanation": "Рекурсивно выбирает обычные .js-файлы и заменяет oldFunction на newFunction на месте; каталоги с таким суффиксом пропускаются.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "заменить localhost только в строках, начинающихся с DB_HOST",
           "command": "perl -i -pe 's/localhost/production.host/g if /^DB_HOST/' .env",
-          "explanation": "Replaces localhost with production.host only on lines starting with DB_HOST",
+          "explanation": "Заменить localhost только в строках, начинающихся с DB_HOST.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "do a multiline search and replace across a file",
+          "text": "изменить адрес базы в .env, не трогая остальные строки",
+          "command": "perl -i -pe 's/localhost/production.host/g if /^DB_HOST/' .env",
+          "explanation": "Заменить localhost только в строках, начинающихся с DB_HOST.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "заменить блоки между BEGIN и END, включая переносы строк",
           "command": "perl -0777 -i -pe 's/BEGIN.*?END/REPLACED/gs' file.txt",
-          "explanation": "Slurps the entire file and replaces everything between BEGIN and END including across lines",
+          "explanation": "Заменить блоки между BEGIN и END, включая переносы строк.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "convert DOS line endings to Unix line endings",
+          "text": "выполнить многострочную замену отмеченных участков файла",
+          "command": "perl -0777 -i -pe 's/BEGIN.*?END/REPLACED/gs' file.txt",
+          "explanation": "Заменить блоки между BEGIN и END, включая переносы строк.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "преобразовать окончания строк CRLF в LF",
           "command": "perl -i -pe 's/\\r\\n/\\n/g' file.txt",
-          "explanation": "Removes carriage returns to convert Windows CRLF to Unix LF line endings",
+          "explanation": "Преобразовать окончания строк CRLF в LF.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "swap two words everywhere in a file",
+          "text": "убрать возврат каретки из пар перевода строки в файле",
+          "command": "perl -i -pe 's/\\r\\n/\\n/g' file.txt",
+          "explanation": "Преобразовать окончания строк CRLF в LF.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "поменять местами слова width и height по всему файлу",
           "command": "perl -i -pe 's/\\b(width)\\b|\\b(height)\\b/defined $1 ? \"height\" : \"width\"/ge' file.txt",
-          "explanation": "Atomically swaps every occurrence of width and height without intermediate collisions",
+          "explanation": "Поменять местами слова width и height по всему файлу.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "use capture groups to reorder parts of a matched pattern",
+          "text": "одновременно заменить width на height и height на width без промежуточных совпадений",
+          "command": "perl -i -pe 's/\\b(width)\\b|\\b(height)\\b/defined $1 ? \"height\" : \"width\"/ge' file.txt",
+          "explanation": "Поменять местами слова width и height по всему файлу.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "переставить фамилию и имя из записи Фамилия, Имя",
           "command": "perl -pe 's/(\\w+), (\\w+)/$2 $1/' names.txt",
-          "explanation": "Transforms 'Last, First' into 'First Last' using regex capture groups"
+          "explanation": "Переставить фамилию и имя из записи Фамилия, Имя."
         },
         {
           "type": "example",
-          "text": "strip simple HTML-like tags from text",
+          "text": "изменить порядок двух частей текста через группы регулярного выражения",
+          "command": "perl -pe 's/(\\w+), (\\w+)/$2 $1/' names.txt",
+          "explanation": "Переставить фамилию и имя из записи Фамилия, Имя."
+        },
+        {
+          "type": "example",
+          "text": "удалить простые HTML-теги из текста",
           "command": "perl -pe 's/<[^>]*>//g' page.html",
-          "explanation": "Removes simple angle-bracket tag fragments; it does not parse arbitrary HTML or decode entities."
+          "explanation": "Удаляет простые фрагменты тегов в угловых скобках; полноценный HTML не разбирает и сущности не декодирует."
         },
         {
           "type": "example",
-          "text": "replace a word with word boundaries in all C source files keeping backups",
+          "text": "оставить содержимое файла без фрагментов в угловых скобках",
+          "command": "perl -pe 's/<[^>]*>//g' page.html",
+          "explanation": "Удаляет простые фрагменты тегов в угловых скобках; полноценный HTML не разбирает и сущности не декодирует."
+        },
+        {
+          "type": "example",
+          "text": "заменить целое слово foo на bar в C-файлах с резервными копиями",
           "command": "perl -p -i.bak -e 's/\\bfoo\\b/bar/g' *.c",
-          "explanation": "Replaces whole-word foo with bar in all .c files, saving originals as .bak",
+          "explanation": "Заменить целое слово foo на bar в C-файлах с резервными копиями.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "replace text only on the first line of each file",
+          "text": "изменить слово во всех .c, сохранив оригиналы с расширением .bak",
+          "command": "perl -p -i.bak -e 's/\\bfoo\\b/bar/g' *.c",
+          "explanation": "Заменить целое слово foo на bar в C-файлах с резервными копиями.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "заменить текст только в первой строке каждого файла",
           "command": "perl -i -pe 's/PATTERN/REPLACE/ if $. == 1; close ARGV if eof' file1.txt file2.txt",
-          "explanation": "Replaces the first match only on the first line of each input file and resets the line counter at each file boundary.",
+          "explanation": "Заменяет только первое совпадение в первой строке каждого входного файла; счётчик строк сбрасывается на границе файлов.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "increment every sequence of decimal digits in a file by one",
+          "text": "изменить первое совпадение в начальной строке нескольких файлов",
+          "command": "perl -i -pe 's/PATTERN/REPLACE/ if $. == 1; close ARGV if eof' file1.txt file2.txt",
+          "explanation": "Заменяет только первое совпадение в первой строке каждого входного файла; счётчик строк сбрасывается на границе файлов.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "увеличить каждую последовательность цифр в файле на единицу",
           "command": "perl -i -pe 's/(\\d+)/ 1 + $1 /ge' file.txt",
-          "explanation": "Increments each digit sequence independently in place; neighboring signs and decimal points are not parsed as part of a number.",
+          "explanation": "Увеличивает каждую последовательность цифр отдельно на месте; соседние знаки и десятичные точки не считаются частью числа.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "replace text in a binary executable file",
+          "text": "прибавить единицу к каждой последовательности цифр в тексте независимо от соседних знаков",
+          "command": "perl -i -pe 's/(\\d+)/ 1 + $1 /ge' file.txt",
+          "explanation": "Увеличивает каждую последовательность цифр отдельно на месте; соседние знаки и десятичные точки не считаются частью числа.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "заменить строку внутри исполняемого файла с сохранением копии",
           "command": "perl -i.bak -pe 's/OldString/NewString/g' /usr/local/bin/myapp",
-          "explanation": "In-place text replacement inside a binary file, keeping a backup copy",
+          "explanation": "Заменить строку внутри исполняемого файла с сохранением копии.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "отредактировать вхождения OldString в бинарном файле, оставив .bak",
+          "command": "perl -i.bak -pe 's/OldString/NewString/g' /usr/local/bin/myapp",
+          "explanation": "Заменить строку внутри исполняемого файла с сохранением копии.",
           "destructive": true
         }
       ]
@@ -93,308 +175,589 @@
     {
       "name": "perl text extraction",
       "synopsis": "perl -ne 'print if /pattern/' | perl -ne 'print $1 if /regex/'",
-      "description": "Extract specific fields, patterns, emails, IPs, and URLs from text using Perl regex",
+      "description": "Извлечение полей, адресов и других фрагментов текста средствами Perl",
       "patterns": [
         {
           "type": "example",
-          "text": "extract all email addresses from a log file",
+          "text": "извлечь адреса электронной почты из журнала",
           "command": "perl -ne 'print \"$_\\n\" for /([\\w.+-]+@[\\w.-]+\\.[a-zA-Z]{2,})/g' logfile.txt",
-          "explanation": "Finds and prints every email address pattern in the file, one per line"
+          "explanation": "Извлечь адреса электронной почты из журнала."
         },
         {
           "type": "example",
-          "text": "extract all IP addresses from a file",
+          "text": "вывести найденные email из текста по одному на строку",
+          "command": "perl -ne 'print \"$_\\n\" for /([\\w.+-]+@[\\w.-]+\\.[a-zA-Z]{2,})/g' logfile.txt",
+          "explanation": "Извлечь адреса электронной почты из журнала."
+        },
+        {
+          "type": "example",
+          "text": "извлечь корректные IPv4-адреса из журнала",
           "command": "perl -ne 'print \"$_\\n\" for /(?<![0-9.])((?:(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9]))(?![0-9.])/g' access.log",
-          "explanation": "Extracts dotted-decimal IPv4 addresses with four octets in the range 0–255."
+          "explanation": "Извлекает IPv4-адреса из четырёх десятичных октетов в диапазоне 0–255."
         },
         {
           "type": "example",
-          "text": "extract all URLs from a document",
+          "text": "найти адреса из четырёх октетов от нуля до 255",
+          "command": "perl -ne 'print \"$_\\n\" for /(?<![0-9.])((?:(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9]))(?![0-9.])/g' access.log",
+          "explanation": "Извлекает IPv4-адреса из четырёх десятичных октетов в диапазоне 0–255."
+        },
+        {
+          "type": "example",
+          "text": "вытащить из документа ссылки HTTP и HTTPS",
           "command": "perl -ne 'print \"$_\\n\" for m{(https?://\\S+)}g' page.html",
-          "explanation": "Pulls out all HTTP and HTTPS URLs from the file"
+          "explanation": "Вытащить из документа ссылки HTTP и HTTPS."
         },
         {
           "type": "example",
-          "text": "extract the second field from each line like awk",
+          "text": "показать все URL, начинающиеся с http:// или https://",
+          "command": "perl -ne 'print \"$_\\n\" for m{(https?://\\S+)}g' page.html",
+          "explanation": "Вытащить из документа ссылки HTTP и HTTPS."
+        },
+        {
+          "type": "example",
+          "text": "вывести второе поле каждой строки, разделённой пробелами",
           "command": "perl -ane 'print \"$F[1]\\n\"' data.txt",
-          "explanation": "Auto-splits each line on whitespace and prints the second field (zero-indexed)"
+          "explanation": "Вывести второе поле каждой строки, разделённой пробелами."
         },
         {
           "type": "example",
-          "text": "extract text between two markers or delimiters",
+          "text": "извлечь второй столбец из текстовых данных через Perl",
+          "command": "perl -ane 'print \"$F[1]\\n\"' data.txt",
+          "explanation": "Вывести второе поле каждой строки, разделённой пробелами."
+        },
+        {
+          "type": "example",
+          "text": "показать строки между маркерами START и END включительно",
           "command": "perl -ne 'print if /START/../END/' file.txt",
-          "explanation": "Prints all lines from START to END inclusive, using the flip-flop operator"
+          "explanation": "Показать строки между маркерами START и END включительно."
         },
         {
           "type": "example",
-          "text": "extract the value of a specific key from key=value config lines",
+          "text": "извлечь отмеченный блок текста вместе с граничными строками",
+          "command": "perl -ne 'print if /START/../END/' file.txt",
+          "explanation": "Показать строки между маркерами START и END включительно."
+        },
+        {
+          "type": "example",
+          "text": "получить значение DB_PASSWORD из файла .env",
           "command": "perl -ne 'print \"$1\\n\" if /^DB_PASSWORD=(.*)/' .env",
-          "explanation": "Captures and prints the value after DB_PASSWORD= from a config file"
+          "explanation": "Получить значение DB_PASSWORD из файла .env."
         },
         {
           "type": "example",
-          "text": "extract sorted unique ASCII words from a text file",
+          "text": "вывести текст после конкретного ключа в конфигурации вида ключ=значение",
+          "command": "perl -ne 'print \"$1\\n\" if /^DB_PASSWORD=(.*)/' .env",
+          "explanation": "Получить значение DB_PASSWORD из файла .env."
+        },
+        {
+          "type": "example",
+          "text": "собрать уникальные слова из латинских букв и отсортировать",
           "command": "perl -ne '$w{$_}++ for /([a-zA-Z]+)/g; END { print \"$_\\n\" for sort keys %w }' file.txt",
-          "explanation": "Collects ASCII-letter words case-sensitively and prints each distinct word in sorted order."
+          "explanation": "Собирает слова из ASCII-букв с учётом регистра и выводит уникальные слова в отсортированном виде."
         },
         {
           "type": "example",
-          "text": "extract specific columns from a colon-delimited file like /etc/passwd",
+          "text": "извлечь различные английские слова из файла по алфавиту",
+          "command": "perl -ne '$w{$_}++ for /([a-zA-Z]+)/g; END { print \"$_\\n\" for sort keys %w }' file.txt",
+          "explanation": "Собирает слова из ASCII-букв с учётом регистра и выводит уникальные слова в отсортированном виде."
+        },
+        {
+          "type": "example",
+          "text": "вывести имена пользователей и UID из passwd",
           "command": "perl -F: -ane 'print \"$F[0] $F[2]\\n\"' /etc/passwd",
-          "explanation": "Splits each line on colon and prints username (field 0) and UID (field 2)"
+          "explanation": "Вывести имена пользователей и UID из passwd."
+        },
+        {
+          "type": "example",
+          "text": "извлечь первый и третий столбцы файла с разделителем двоеточие",
+          "command": "perl -F: -ane 'print \"$F[0] $F[2]\\n\"' /etc/passwd",
+          "explanation": "Вывести имена пользователей и UID из passwd."
         }
       ]
     },
     {
       "name": "perl line filtering",
       "synopsis": "perl -ne 'print if condition' | perl -ne 'print unless condition'",
-      "description": "Line selection, deduplication, range operations, and line-level filtering with Perl",
+      "description": "Фильтрация, выбор диапазонов и удаление повторов строк средствами Perl",
       "patterns": [
         {
           "type": "example",
-          "text": "remove duplicate lines keeping first occurrence and preserving order",
+          "text": "убрать повторяющиеся строки, сохранив порядок первых появлений",
           "command": "perl -ne 'print unless $seen{$_}++' file.txt",
-          "explanation": "Tracks seen lines in a hash and only prints each unique line the first time"
+          "explanation": "Убрать повторяющиеся строки, сохранив порядок первых появлений."
         },
         {
           "type": "example",
-          "text": "print specific line range from a file like lines 10 to 20",
+          "text": "показать каждую уникальную строку файла только один раз без сортировки",
+          "command": "perl -ne 'print unless $seen{$_}++' file.txt",
+          "explanation": "Убрать повторяющиеся строки, сохранив порядок первых появлений."
+        },
+        {
+          "type": "example",
+          "text": "вывести строки с десятой по двадцатую",
           "command": "perl -ne 'print if 10..20' file.txt",
-          "explanation": "Uses the range operator to print only lines 10 through 20"
+          "explanation": "Вывести строки с десятой по двадцатую."
         },
         {
           "type": "example",
-          "text": "print every Nth line from a file",
+          "text": "извлечь диапазон строк 10–20 из файла",
+          "command": "perl -ne 'print if 10..20' file.txt",
+          "explanation": "Вывести строки с десятой по двадцатую."
+        },
+        {
+          "type": "example",
+          "text": "показать каждую пятую строку файла",
           "command": "perl -ne 'print if $. % 5 == 0' file.txt",
-          "explanation": "Prints every 5th line using the line number variable $."
+          "explanation": "Показать каждую пятую строку файла."
         },
         {
           "type": "example",
-          "text": "print lines longer than 80 characters",
+          "text": "отобрать строки с номерами, кратными пяти",
+          "command": "perl -ne 'print if $. % 5 == 0' file.txt",
+          "explanation": "Показать каждую пятую строку файла."
+        },
+        {
+          "type": "example",
+          "text": "показать строки длиннее восьмидесяти символов без учёта перевода строки",
           "command": "perl -CSD -ne '$line=$_; $line =~ s/\\r?\\n\\z//; print if length($line)>80' file.txt",
-          "explanation": "Decodes UTF-8, counts characters after excluding LF/CRLF, and prints original records longer than 80 characters."
+          "explanation": "Декодирует UTF-8, считает символы без LF/CRLF и выводит исходные записи длиной более 80 символов."
         },
         {
           "type": "example",
-          "text": "print the last 10 lines of a file like tail",
+          "text": "отобрать текстовые строки, в которых больше 80 символов",
+          "command": "perl -CSD -ne '$line=$_; $line =~ s/\\r?\\n\\z//; print if length($line)>80' file.txt",
+          "explanation": "Декодирует UTF-8, считает символы без LF/CRLF и выводит исходные записи длиной более 80 символов."
+        },
+        {
+          "type": "example",
+          "text": "вывести последние десять строк файла через Perl",
           "command": "perl -e '@lines = <>; print @lines[-10..-1]' file.txt",
-          "explanation": "Reads all lines then prints the last 10 using negative array slicing"
+          "explanation": "Вывести последние десять строк файла через Perl."
         },
         {
           "type": "example",
-          "text": "remove all blank lines from a file",
+          "text": "прочитать конец текста, как tail с ограничением десять строк",
+          "command": "perl -e '@lines = <>; print @lines[-10..-1]' file.txt",
+          "explanation": "Вывести последние десять строк файла через Perl."
+        },
+        {
+          "type": "example",
+          "text": "удалить из вывода пустые и состоящие из пробелов строки",
           "command": "perl -ne 'print unless /^\\s*$/' file.txt",
-          "explanation": "Skips lines that are empty or contain only whitespace"
+          "explanation": "Удалить из вывода пустые и состоящие из пробелов строки."
         },
         {
           "type": "example",
-          "text": "print lines that contain a pattern but not another pattern",
+          "text": "оставить только строки с непробельными символами",
+          "command": "perl -ne 'print unless /^\\s*$/' file.txt",
+          "explanation": "Удалить из вывода пустые и состоящие из пробелов строки."
+        },
+        {
+          "type": "example",
+          "text": "найти строки с error, исключив deprecated без учёта регистра",
           "command": "perl -ne 'print if /error/i && !/deprecated/i' log.txt",
-          "explanation": "Shows lines containing error (case insensitive) but excluding those with deprecated"
+          "explanation": "Найти строки с error, исключив deprecated без учёта регистра."
         },
         {
           "type": "example",
-          "text": "reverse the order of all lines in a file",
+          "text": "отфильтровать ошибки, кроме сообщений об устаревших возможностях",
+          "command": "perl -ne 'print if /error/i && !/deprecated/i' log.txt",
+          "explanation": "Найти строки с error, исключив deprecated без учёта регистра."
+        },
+        {
+          "type": "example",
+          "text": "вывести строки файла в обратном порядке",
           "command": "perl -e 'print reverse <>' file.txt",
-          "explanation": "Reads all lines into a list, reverses it, and prints the result"
+          "explanation": "Вывести строки файла в обратном порядке."
         },
         {
           "type": "example",
-          "text": "delete content between START and END markers in a file",
+          "text": "развернуть текст построчно от конца к началу",
+          "command": "perl -e 'print reverse <>' file.txt",
+          "explanation": "Вывести строки файла в обратном порядке."
+        },
+        {
+          "type": "example",
+          "text": "удалить блок от строки START до строки END с резервной копией",
           "command": "perl -i.old -ne 'print unless /^START$/ .. /^END$/' foo.txt",
-          "explanation": "Removes all lines from START to END inclusive using the flip-flop operator",
+          "explanation": "Удалить блок от строки START до строки END с резервной копией.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "print the first 50 lines of a file then stop",
+          "text": "убрать отмеченный участок вместе с маркерами, сохранив исходник .old",
+          "command": "perl -i.old -ne 'print unless /^START$/ .. /^END$/' foo.txt",
+          "explanation": "Удалить блок от строки START до строки END с резервной копией.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "напечатать первые пятьдесят строк и остановиться",
           "command": "perl -pe 'exit if $. > 50' file.txt",
-          "explanation": "Efficiently prints first 50 lines and exits without reading the rest"
+          "explanation": "Напечатать первые пятьдесят строк и остановиться."
         },
         {
           "type": "example",
-          "text": "delete the first 10 lines from a file",
+          "text": "ограничить вывод файла начальными 50 строками",
+          "command": "perl -pe 'exit if $. > 50' file.txt",
+          "explanation": "Напечатать первые пятьдесят строк и остановиться."
+        },
+        {
+          "type": "example",
+          "text": "удалить первые десять строк файла, сохранив .old",
           "command": "perl -i.old -ne 'print unless 1 .. 10' foo.txt",
-          "explanation": "Removes lines 1 through 10 in-place, keeping a backup",
+          "explanation": "Удалить первые десять строк файла, сохранив .old.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "print file content up to a pattern match then stop",
+          "text": "обрезать начало текста на десять строк с резервной копией",
+          "command": "perl -i.old -ne 'print unless 1 .. 10' foo.txt",
+          "explanation": "Удалить первые десять строк файла, сохранив .old.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "вывести содержимое файла до первого совпадения PATTERN",
           "command": "perl -ne 'if (/PATTERN/) { close ARGV } else { print }' file.txt",
-          "explanation": "Prints all lines until PATTERN is found, then closes the file"
+          "explanation": "Вывести содержимое файла до первого совпадения PATTERN."
         },
         {
           "type": "example",
-          "text": "find duplicate consecutive words in a text file",
+          "text": "остановить чтение каждого файла на строке с заданным выражением",
+          "command": "perl -ne 'if (/PATTERN/) { close ARGV } else { print }' file.txt",
+          "explanation": "Вывести содержимое файла до первого совпадения PATTERN."
+        },
+        {
+          "type": "example",
+          "text": "найти одинаковые слова подряд без учёта регистра",
           "command": "perl -0777 -ne 'while (/\\b(\\w+)\\b\\s+\\b\\1\\b/gi) { $word=$1; $line=1+(substr($_,0,$-[0])=~tr/\\n//); print \"$line: doubled $word\\n\" }' file.txt",
-          "explanation": "Finds repeated adjacent words, including across line breaks, and reports the line where each repeated pair starts."
+          "explanation": "Находит соседние повторяющиеся слова, в том числе через границу строки, и показывает строку начала повтора."
         },
         {
           "type": "example",
-          "text": "find palindrome words in a dictionary or word list",
+          "text": "обнаружить в тексте повторы вроде the the",
+          "command": "perl -0777 -ne 'while (/\\b(\\w+)\\b\\s+\\b\\1\\b/gi) { $word=$1; $line=1+(substr($_,0,$-[0])=~tr/\\n//); print \"$line: doubled $word\\n\" }' file.txt",
+          "explanation": "Находит соседние повторяющиеся слова, в том числе через границу строки, и показывает строку начала повтора."
+        },
+        {
+          "type": "example",
+          "text": "показать слова-палиндромы из словаря",
           "command": "perl -lne 'print if $_ eq reverse' /usr/share/dict/words",
-          "explanation": "Prints words that read the same forwards and backwards"
+          "explanation": "Показать слова-палиндромы из словаря."
+        },
+        {
+          "type": "example",
+          "text": "найти строки, которые читаются одинаково в обоих направлениях",
+          "command": "perl -lne 'print if $_ eq reverse' /usr/share/dict/words",
+          "explanation": "Показать слова-палиндромы из словаря."
         }
       ]
     },
     {
       "name": "perl text formatting",
       "synopsis": "perl -pe 'formatting expression' | perl -ne 'printf format, fields'",
-      "description": "Padding, alignment, case conversion, column manipulation, and output formatting with Perl",
+      "description": "Выравнивание, изменение регистра и форматирование текста средствами Perl",
       "patterns": [
         {
           "type": "example",
-          "text": "convert text to uppercase",
+          "text": "преобразовать текст файла в верхний регистр",
           "command": "perl -pe '$_ = uc' file.txt",
-          "explanation": "Converts every line to uppercase using the uc function"
+          "explanation": "Преобразовать текст файла в верхний регистр."
         },
         {
           "type": "example",
-          "text": "convert text to lowercase",
+          "text": "сделать буквы в каждой строке заглавными",
+          "command": "perl -pe '$_ = uc' file.txt",
+          "explanation": "Преобразовать текст файла в верхний регистр."
+        },
+        {
+          "type": "example",
+          "text": "перевести весь текст в нижний регистр",
           "command": "perl -pe '$_ = lc' file.txt",
-          "explanation": "Converts every line to lowercase using the lc function"
+          "explanation": "Перевести весь текст в нижний регистр."
         },
         {
           "type": "example",
-          "text": "capitalize the first letter of every word in a file",
+          "text": "сделать буквы файла строчными",
+          "command": "perl -pe '$_ = lc' file.txt",
+          "explanation": "Перевести весь текст в нижний регистр."
+        },
+        {
+          "type": "example",
+          "text": "сделать первую букву каждого слова заглавной, остальные строчными",
           "command": "perl -pe 's/(\\w+)/ucfirst lc $1/ge' file.txt",
-          "explanation": "Title-cases every word by lowercasing then capitalizing the first letter"
+          "explanation": "Сделать первую букву каждого слова заглавной, остальные строчными."
         },
         {
           "type": "example",
-          "text": "add line numbers to every line in a file",
+          "text": "привести слова текста к виду заголовка",
+          "command": "perl -pe 's/(\\w+)/ucfirst lc $1/ge' file.txt",
+          "explanation": "Сделать первую букву каждого слова заглавной, остальные строчными."
+        },
+        {
+          "type": "example",
+          "text": "добавить номера строк с выравниванием в поле шириной четыре",
           "command": "perl -pe '$_ = sprintf(\"%4d: %s\", $., $_)' file.txt",
-          "explanation": "Prepends right-justified 4-digit line numbers to each line"
+          "explanation": "Добавить номера строк с выравниванием в поле шириной четыре."
         },
         {
           "type": "example",
-          "text": "pad each line with trailing spaces to a minimum width of 40 characters",
+          "text": "пронумеровать текст справа выровненными числами и двоеточием",
+          "command": "perl -pe '$_ = sprintf(\"%4d: %s\", $., $_)' file.txt",
+          "explanation": "Добавить номера строк с выравниванием в поле шириной четыре."
+        },
+        {
+          "type": "example",
+          "text": "дополнить короткие строки справа пробелами до ширины сорок",
           "command": "perl -CSD -pe 's/\\r?\\n\\z//; $_ = sprintf(\"%-40s\\n\", $_)' file.txt",
-          "explanation": "Decodes UTF-8 and pads short lines on the right to a minimum of 40 Unicode characters; longer lines are retained and output records end with LF."
+          "explanation": "Декодирует UTF-8 и дополняет короткие строки справа до 40 символов Unicode; длинные строки сохраняет, окончания записей нормализует в LF."
         },
         {
           "type": "example",
-          "text": "format output as aligned columns from whitespace-separated data",
+          "text": "выровнять текст по левому краю поля шириной не менее 40 символов",
+          "command": "perl -CSD -pe 's/\\r?\\n\\z//; $_ = sprintf(\"%-40s\\n\", $_)' file.txt",
+          "explanation": "Декодирует UTF-8 и дополняет короткие строки справа до 40 символов Unicode; длинные строки сохраняет, окончания записей нормализует в LF."
+        },
+        {
+          "type": "example",
+          "text": "вывести первые три столбца с фиксированным выравниванием",
           "command": "perl -ane 'printf \"%-20s %-10s %8s\\n\", @F[0,1,2]' data.txt",
-          "explanation": "Formats the first three fields as left-aligned 20 and 10 char columns and a right-aligned 8 char column"
+          "explanation": "Вывести первые три столбца с фиксированным выравниванием."
         },
         {
           "type": "example",
-          "text": "trim leading and trailing spaces and tabs without joining lines",
+          "text": "отформатировать поля текста в колонки шириной 20, 10 и 8",
+          "command": "perl -ane 'printf \"%-20s %-10s %8s\\n\", @F[0,1,2]' data.txt",
+          "explanation": "Вывести первые три столбца с фиксированным выравниванием."
+        },
+        {
+          "type": "example",
+          "text": "убрать пробелы и табуляции по краям строк, сохранив переводы строк",
           "command": "perl -pe 's/^[ \\t]+//; s/[ \\t]+(?=\\r?$)//' file.txt",
-          "explanation": "Removes spaces and tabs at each line edge while preserving LF or CRLF line endings."
+          "explanation": "Удаляет крайние пробелы и табуляцию, сохраняя окончания строк LF или CRLF."
         },
         {
           "type": "example",
-          "text": "squeeze multiple consecutive blank lines into one",
+          "text": "очистить отступы и хвостовые пробелы без склеивания строк",
+          "command": "perl -pe 's/^[ \\t]+//; s/[ \\t]+(?=\\r?$)//' file.txt",
+          "explanation": "Удаляет крайние пробелы и табуляцию, сохраняя окончания строк LF или CRLF."
+        },
+        {
+          "type": "example",
+          "text": "сжать последовательности пустых строк до одного разделителя",
           "command": "perl -00 -pe '' file.txt",
-          "explanation": "Uses paragraph mode (-00) to collapse runs of blank lines into a single blank line"
+          "explanation": "Сжать последовательности пустых строк до одного разделителя."
         },
         {
           "type": "example",
-          "text": "add zero-padded line numbers to each line of a file",
+          "text": "нормализовать промежутки между абзацами через режим -00",
+          "command": "perl -00 -pe '' file.txt",
+          "explanation": "Сжать последовательности пустых строк до одного разделителя."
+        },
+        {
+          "type": "example",
+          "text": "пронумеровать строки четырёхзначными числами с ведущими нулями",
           "command": "perl -i -ne 'printf \"%04d %s\", $., $_' file.txt",
-          "explanation": "Prepends 4-digit zero-padded line numbers to every line",
+          "explanation": "Пронумеровать строки четырёхзначными числами с ведущими нулями.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "reverse the order of all lines in a file",
+          "text": "добавить к каждой строке номер вида 0001 с изменением файла",
+          "command": "perl -i -ne 'printf \"%04d %s\", $., $_' file.txt",
+          "explanation": "Пронумеровать строки четырёхзначными числами с ведущими нулями.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "перевернуть порядок строк текстового файла",
           "command": "perl -e 'print reverse <>' file.txt",
-          "explanation": "Reads all lines then prints them in reverse order like tac"
+          "explanation": "Перевернуть порядок строк текстового файла."
         },
         {
           "type": "example",
-          "text": "reverse characters on each line of a file",
+          "text": "показать последнюю строку первой, а первую последней",
+          "command": "perl -e 'print reverse <>' file.txt",
+          "explanation": "Перевернуть порядок строк текстового файла."
+        },
+        {
+          "type": "example",
+          "text": "развернуть символы в каждой строке",
           "command": "perl -nle 'print scalar reverse $_' file.txt",
-          "explanation": "Reverses the character order within each line"
+          "explanation": "Развернуть символы в каждой строке."
         },
         {
           "type": "example",
-          "text": "reverse paragraphs in a file",
+          "text": "напечатать каждую строку задом наперёд",
+          "command": "perl -nle 'print scalar reverse $_' file.txt",
+          "explanation": "Развернуть символы в каждой строке."
+        },
+        {
+          "type": "example",
+          "text": "переставить абзацы файла в обратном порядке",
           "command": "perl -00 -e 'print reverse <>' file.txt",
-          "explanation": "Uses paragraph mode (-00) to reverse the order of paragraphs"
+          "explanation": "Переставить абзацы файла в обратном порядке."
+        },
+        {
+          "type": "example",
+          "text": "развернуть порядок блоков, разделённых пустыми строками",
+          "command": "perl -00 -e 'print reverse <>' file.txt",
+          "explanation": "Переставить абзацы файла в обратном порядке."
         }
       ]
     },
     {
       "name": "perl csv/data processing",
       "synopsis": "perl -F, -ane 'expression' | perl -MText::CSV -ne 'expression'",
-      "description": "CSV parsing, field reordering, data transformation, and tabular data manipulation with Perl",
+      "description": "Разбор CSV и преобразование табличных данных средствами Perl",
       "patterns": [
         {
           "type": "example",
-          "text": "sum the third column of a simple comma-delimited file",
+          "text": "просуммировать третий столбец простого файла с запятыми",
           "command": "perl -F, -ane '$s += $F[2]; END { print \"$s\\n\" }' data.csv",
-          "explanation": "Splits each line on comma, accumulates the third field, and prints the total; input must not contain CSV quoting, embedded commas, or multiline fields."
+          "explanation": "Разбивает строки по запятой и суммирует третье поле; допустимы только простые данные без CSV-кавычек, запятых внутри полей и многострочных полей."
         },
         {
           "type": "example",
-          "text": "reorder three columns in a simple comma-delimited file",
+          "text": "получить сумму чисел в третьем поле CSV без сложных кавычек",
+          "command": "perl -F, -ane '$s += $F[2]; END { print \"$s\\n\" }' data.csv",
+          "explanation": "Разбивает строки по запятой и суммирует третье поле; допустимы только простые данные без CSV-кавычек, запятых внутри полей и многострочных полей."
+        },
+        {
+          "type": "example",
+          "text": "переставить столбцы простого CSV в порядке третий, первый, второй",
           "command": "perl -F, -lane 'print join(\",\", @F[2,0,1])' data.csv",
-          "explanation": "Prints fields in third, first, second order without moving the original newline into the first field; requires simple unquoted data."
+          "explanation": "Выводит поля в порядке 3, 1, 2, не перенося исходный конец строки в первое поле; нужны простые данные без CSV-кавычек."
         },
         {
           "type": "example",
-          "text": "filter simple comma-delimited rows where a column matches a condition",
+          "text": "изменить порядок первых трёх полей данных с запятыми",
+          "command": "perl -F, -lane 'print join(\",\", @F[2,0,1])' data.csv",
+          "explanation": "Выводит поля в порядке 3, 1, 2, не перенося исходный конец строки в первое поле; нужны простые данные без CSV-кавычек."
+        },
+        {
+          "type": "example",
+          "text": "оставить строки простого CSV, где четвёртое поле больше ста",
           "command": "perl -F, -ane 'print if $F[3] > 100' data.csv",
-          "explanation": "Prints only CSV rows where the fourth column value exceeds 100; input must not contain CSV quoting, embedded commas, or multiline fields."
+          "explanation": "Выводит записи со значением четвёртого поля больше 100; допустимы только простые данные без CSV-кавычек, запятых внутри полей и многострочных полей."
         },
         {
           "type": "example",
-          "text": "convert simple comma-delimited rows to tab-separated rows",
+          "text": "отфильтровать записи по числовому условию в четвёртом столбце",
+          "command": "perl -F, -ane 'print if $F[3] > 100' data.csv",
+          "explanation": "Выводит записи со значением четвёртого поля больше 100; допустимы только простые данные без CSV-кавычек, запятых внутри полей и многострочных полей."
+        },
+        {
+          "type": "example",
+          "text": "заменить разделители простого CSV с запятых на табуляции",
           "command": "perl -ne 'chomp; print join(\"\\t\", split /,/, $_, -1), \"\\n\"' data.csv",
-          "explanation": "Splits simple unquoted rows with trailing empty fields retained, then joins them with tabs."
+          "explanation": "Преобразует простые строки без CSV-кавычек в TSV, сохраняя пустые поля в конце записи."
         },
         {
           "type": "example",
-          "text": "add a new calculated column to a simple comma-delimited",
+          "text": "преобразовать данные с запятыми в TSV",
+          "command": "perl -ne 'chomp; print join(\"\\t\", split /,/, $_, -1), \"\\n\"' data.csv",
+          "explanation": "Преобразует простые строки без CSV-кавычек в TSV, сохраняя пустые поля в конце записи."
+        },
+        {
+          "type": "example",
+          "text": "добавить столбец с произведением второго и третьего полей",
           "command": "perl -F, -ane 'chomp; print \"$_,\", $F[1]*$F[2], \"\\n\"' data.csv",
-          "explanation": "Appends a new column that is the product of the second and third columns; input must not contain CSV quoting, embedded commas, or multiline fields."
+          "explanation": "Добавляет произведение второго и третьего полей новым столбцом; нужны простые данные без CSV-кавычек, запятых внутри полей и многострочных полей."
         },
         {
           "type": "example",
-          "text": "extract sorted unique values from the second simple comma-delimited column",
+          "text": "вычислить новую колонку в конце простого CSV",
+          "command": "perl -F, -ane 'chomp; print \"$_,\", $F[1]*$F[2], \"\\n\"' data.csv",
+          "explanation": "Добавляет произведение второго и третьего полей новым столбцом; нужны простые данные без CSV-кавычек, запятых внутри полей и многострочных полей."
+        },
+        {
+          "type": "example",
+          "text": "вывести отсортированные уникальные значения второго столбца",
           "command": "perl -F, -lane '$seen{$F[1]}++; END { print for sort keys %seen }' data.csv",
-          "explanation": "Collects second-column values without record separators and prints sorted distinct values; requires simple unquoted data."
+          "explanation": "Собирает значения второго столбца без разделителей записей и выводит отсортированные уникальные значения; нужны простые данные без CSV-кавычек."
         },
         {
           "type": "example",
-          "text": "convert simple UTF-8 comma-delimited data with a header to a JSON array",
+          "text": "собрать различные значения одного поля CSV с запятыми",
+          "command": "perl -F, -lane '$seen{$F[1]}++; END { print for sort keys %seen }' data.csv",
+          "explanation": "Собирает значения второго столбца без разделителей записей и выводит отсортированные уникальные значения; нужны простые данные без CSV-кавычек."
+        },
+        {
+          "type": "example",
+          "text": "преобразовать простую таблицу с запятыми и заголовками в JSON-массив",
           "command": "perl -CSD -MJSON::PP -ne 's/\\r?\\n\\z//; @f=split /,/, $_, -1; if ($.==1) { @h=@f; for (@h) { die \"duplicate header\\n\" if $h{$_}++ } } else { die \"column count mismatch\\n\" unless @f==@h; my %row; @row{@h}=@f; push @rows,\\%row } END { print JSON::PP->new->canonical->encode(\\@rows), \"\\n\" }' data.csv",
-          "explanation": "Uses the first row as unique object keys and JSON::PP for JSON escaping, removes LF/CRLF before splitting, and accepts simple comma-delimited UTF-8 data without CSV quoting."
+          "explanation": "Использует первую строку как уникальные ключи, экранирует JSON через JSON::PP и убирает LF/CRLF до разделения полей; принимает простой UTF-8 CSV без CSV-кавычек."
         },
         {
           "type": "example",
-          "text": "group and count simple comma-delimited rows by the first column",
+          "text": "создать объекты JSON из UTF-8-таблицы с корректным экранированием значений",
+          "command": "perl -CSD -MJSON::PP -ne 's/\\r?\\n\\z//; @f=split /,/, $_, -1; if ($.==1) { @h=@f; for (@h) { die \"duplicate header\\n\" if $h{$_}++ } } else { die \"column count mismatch\\n\" unless @f==@h; my %row; @row{@h}=@f; push @rows,\\%row } END { print JSON::PP->new->canonical->encode(\\@rows), \"\\n\" }' data.csv",
+          "explanation": "Использует первую строку как уникальные ключи, экранирует JSON через JSON::PP и убирает LF/CRLF до разделения полей; принимает простой UTF-8 CSV без CSV-кавычек."
+        },
+        {
+          "type": "example",
+          "text": "сгруппировать строки простого CSV по первому полю и посчитать",
           "command": "perl -F, -lane '$c{$F[0]}++; END { printf \"%-20s %d\\n\", $_, $c{$_} for sort keys %c }' data.csv",
-          "explanation": "Counts first-field values after removing record separators; requires simple unquoted data."
+          "explanation": "Считает значения первого поля после удаления разделителей записей; нужны простые данные без CSV-кавычек."
         },
         {
           "type": "example",
-          "text": "print specific columns from a tab-separated file like columns 1 2 and last",
+          "text": "получить число записей для каждого значения первого столбца",
+          "command": "perl -F, -lane '$c{$F[0]}++; END { printf \"%-20s %d\\n\", $_, $c{$_} for sort keys %c }' data.csv",
+          "explanation": "Считает значения первого поля после удаления разделителей записей; нужны простые данные без CSV-кавычек."
+        },
+        {
+          "type": "example",
+          "text": "вывести первый, второй и последний столбцы TSV",
           "command": "perl -F\"\\t\" -nlae 'print join \"\\t\", @F[0,1,-1]'",
-          "explanation": "Splits on tabs and prints the first, second, and last fields"
+          "explanation": "Вывести первый, второй и последний столбцы TSV."
         },
         {
           "type": "example",
-          "text": "print a range of columns from a tab-delimited file",
+          "text": "извлечь выбранные поля данных с табуляцией",
+          "command": "perl -F\"\\t\" -nlae 'print join \"\\t\", @F[0,1,-1]'",
+          "explanation": "Вывести первый, второй и последний столбцы TSV."
+        },
+        {
+          "type": "example",
+          "text": "оставить первые двадцать столбцов табличного текста",
           "command": "perl -F\"\\t\" -nlae 'print join \"\\t\", @F[0..19]'",
-          "explanation": "Outputs the first 20 columns from tab-separated data"
+          "explanation": "Оставить первые двадцать столбцов табличного текста."
         },
         {
           "type": "example",
-          "text": "delete all columns after column N in a tab-separated file",
+          "text": "вывести диапазон полей с первого по двадцатое в TSV",
+          "command": "perl -F\"\\t\" -nlae 'print join \"\\t\", @F[0..19]'",
+          "explanation": "Оставить первые двадцать столбцов табличного текста."
+        },
+        {
+          "type": "example",
+          "text": "удалить все столбцы после пятого в TSV-файле",
           "command": "perl -i -ne 's/\\r?\\n\\z//; @f=split /\\t/, $_, -1; splice @f,5 if @f>5; print join(\"\\t\", @f), \"\\n\"' data.tsv",
-          "explanation": "Edits data.tsv in place, retaining up to its first five fields without padding short rows; preserves trailing empty retained fields and writes one LF per row.",
+          "explanation": "Правит data.tsv на месте, оставляя до пяти первых полей без дополнения коротких строк; сохраняет пустые поля и записывает один LF на запись.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "insert a new column after a specific position in a TSV file",
+          "text": "сократить строки таблицы до первых пяти полей на месте",
+          "command": "perl -i -ne 's/\\r?\\n\\z//; @f=split /\\t/, $_, -1; splice @f,5 if @f>5; print join(\"\\t\", @f), \"\\n\"' data.tsv",
+          "explanation": "Правит data.tsv на месте, оставляя до пяти первых полей без дополнения коротких строк; сохраняет пустые поля и записывает один LF на запись.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "вставить поле new_value после третьего столбца TSV",
           "command": "perl -i -ne 's/\\r?\\n\\z//; @f=split /\\t/, $_, -1; push @f,\"\" while @f<3; splice @f,3,0,\"new_value\"; print join(\"\\t\", @f), \"\\n\"' data.tsv",
-          "explanation": "Edits data.tsv in place, inserts new_value as the fourth field, keeps trailing empty fields, and writes one LF per row; rows shorter than three fields are padded with empty fields.",
+          "explanation": "Правит data.tsv на месте, вставляет new_value четвёртым полем и сохраняет пустые поля; короткие строки дополняет до трёх полей, окончания записей — LF.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "добавить новую колонку между третьим и четвёртым полями",
+          "command": "perl -i -ne 's/\\r?\\n\\z//; @f=split /\\t/, $_, -1; push @f,\"\" while @f<3; splice @f,3,0,\"new_value\"; print join(\"\\t\", @f), \"\\n\"' data.tsv",
+          "explanation": "Правит data.tsv на месте, вставляет new_value четвёртым полем и сохраняет пустые поля; короткие строки дополняет до трёх полей, окончания записей — LF.",
           "destructive": true
         }
       ]
@@ -402,356 +765,678 @@
     {
       "name": "perl file operations",
       "synopsis": "perl -e 'file operation code' | perl -MFile::Find -e 'code'",
-      "description": "Batch rename files, file stats, recursive file manipulation, and filesystem operations with Perl",
+      "description": "Переименование, просмотр свойств и обработка файлов средствами Perl",
       "patterns": [
         {
           "type": "example",
-          "text": "batch rename files replacing spaces with underscores",
+          "text": "заменить пробелы подчёркиваниями в именах текущего каталога",
           "command": "perl -e 'for (<*>) { $o=$_; s/ /_/g; rename $o, $_ if $o ne $_ }'",
-          "explanation": "Iterates over all files in the current directory and renames those with spaces",
+          "explanation": "Заменить пробелы подчёркиваниями в именах текущего каталога.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "rename files changing extension from .txt to .md",
+          "text": "пакетно переименовать нескрытые файлы и папки с пробелами",
+          "command": "perl -e 'for (<*>) { $o=$_; s/ /_/g; rename $o, $_ if $o ne $_ }'",
+          "explanation": "Заменить пробелы подчёркиваниями в именах текущего каталога.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "сменить расширение .txt на .md у файлов текущей папки",
           "command": "perl -e 'for (<*.txt>) { ($n=$_) =~ s/\\.txt$/.md/; rename $_, $n }'",
-          "explanation": "Renames all .txt files to .md by substituting the extension",
+          "explanation": "Сменить расширение .txt на .md у файлов текущей папки.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "add the backup_ prefix to JPEG filenames in the current directory",
+          "text": "переименовать все текстовые файлы в Markdown",
+          "command": "perl -e 'for (<*.txt>) { ($n=$_) =~ s/\\.txt$/.md/; rename $_, $n }'",
+          "explanation": "Сменить расширение .txt на .md у файлов текущей папки.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "добавить префикс backup_ к именам файлов .jpg",
           "command": "perl -e 'for (<*.jpg>) { rename $_, \"backup_$_\" }'",
-          "explanation": "Prepends 'backup_' to matching .jpg filenames in the current directory; it does not add a suffix.",
+          "explanation": "Добавляет префикс backup_ к именам .jpg-файлов текущего каталога; суффикс не добавляет.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "lowercase all filenames in the current directory",
+          "text": "пакетно пометить JPEG-файлы в текущем каталоге префиксом",
+          "command": "perl -e 'for (<*.jpg>) { rename $_, \"backup_$_\" }'",
+          "explanation": "Добавляет префикс backup_ к именам .jpg-файлов текущего каталога; суффикс не добавляет.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "привести имена нескрытых файлов и папок к нижнему регистру",
           "command": "perl -e 'for (<*>) { $o=$_; $_ = lc; rename $o, $_ if $o ne $_ }'",
-          "explanation": "Renames every file to its lowercase equivalent",
+          "explanation": "Привести имена нескрытых файлов и папок к нижнему регистру.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "recursively find ordinary files larger than 10 MiB",
+          "text": "пакетно сделать названия в текущем каталоге строчными",
+          "command": "perl -e 'for (<*>) { $o=$_; $_ = lc; rename $o, $_ if $o ne $_ }'",
+          "explanation": "Привести имена нескрытых файлов и папок к нижнему регистру.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "рекурсивно найти файлы больше десяти мебибайт",
           "command": "perl -MFile::Find -e 'find(sub { print \"$File::Find::name\\n\" if -f && -s _ > 10*1024*1024 }, \".\")'",
-          "explanation": "Walks the current tree and prints ordinary files larger than 10*1024*1024 bytes."
+          "explanation": "Обходит текущее дерево и выводит обычные файлы размером более 10 × 1024 × 1024 байт."
         },
         {
           "type": "example",
-          "text": "recursively replace a string in all files of a specific type",
+          "text": "показать пути обычных файлов размером более 10 МиБ через File::Find",
+          "command": "perl -MFile::Find -e 'find(sub { print \"$File::Find::name\\n\" if -f && -s _ > 10*1024*1024 }, \".\")'",
+          "explanation": "Обходит текущее дерево и выводит обычные файлы размером более 10 × 1024 × 1024 байт."
+        },
+        {
+          "type": "example",
+          "text": "заменить old на new во всех вложенных HTML-файлах с копиями",
           "command": "perl -MFile::Find -e 'find({no_chdir=>1,wanted=>sub { return unless -f $_ && !-l $_ && /\\.html\\z/; local @ARGV=($_); local $^I=\".bak\"; local $_; while (<>) { s/old/new/g; print } }}, \".\")'",
-          "explanation": "Walks nested paths without changing directories, edits only ordinary non-symlink .html files, and keeps .bak backups; directories with an .html suffix are skipped.",
+          "explanation": "Обходит вложенные пути без смены каталогов, изменяет только обычные .html-файлы без символических ссылок и сохраняет копии .bak; каталоги с суффиксом .html пропускает.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "number files sequentially like photo001.jpg photo002.jpg",
+          "text": "рекурсивно отредактировать .html, сохранив исходники .bak",
+          "command": "perl -MFile::Find -e 'find({no_chdir=>1,wanted=>sub { return unless -f $_ && !-l $_ && /\\.html\\z/; local @ARGV=($_); local $^I=\".bak\"; local $_; while (<>) { s/old/new/g; print } }}, \".\")'",
+          "explanation": "Обходит вложенные пути без смены каталогов, изменяет только обычные .html-файлы без символических ссылок и сохраняет копии .bak; каталоги с суффиксом .html пропускает.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "переименовать JPG-файлы по порядку в photo001.jpg и далее",
           "command": "perl -e '$i=1; for (sort <*.jpg>) { $n=sprintf(\"photo%03d.jpg\", $i++); rename $_, $n }'",
-          "explanation": "Renames all jpg files to sequentially numbered filenames with zero-padded numbers",
+          "explanation": "Переименовать JPG-файлы по порядку в photo001.jpg и далее.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "find files containing a pattern in their first N lines",
+          "text": "пронумеровать фотографии с трёхзначными номерами в отсортированном порядке",
+          "command": "perl -e '$i=1; for (sort <*.jpg>) { $n=sprintf(\"photo%03d.jpg\", $i++); rename $_, $n }'",
+          "explanation": "Переименовать JPG-файлы по порядку в photo001.jpg и далее.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "найти текстовые файлы с PATTERN в первых десяти строках",
           "command": "perl -ne 'if (/PATTERN/) { print \"$ARGV\\n\"; close ARGV } elsif ($. >= 10 || eof) { close ARGV }' *.txt",
-          "explanation": "Prints each filename at most once when PATTERN occurs within its first ten lines; resets the counter after every file, including short files."
+          "explanation": "Печатает имя файла один раз, если PATTERN найден в первых десяти строках; счётчик сбрасывается после каждого файла, включая короткие."
         },
         {
           "type": "example",
-          "text": "insert a line of text at a specific line number in a file",
+          "text": "показать имена файлов, где выражение встречается в начале",
+          "command": "perl -ne 'if (/PATTERN/) { print \"$ARGV\\n\"; close ARGV } elsif ($. >= 10 || eof) { close ARGV }' *.txt",
+          "explanation": "Печатает имя файла один раз, если PATTERN найден в первых десяти строках; счётчик сбрасывается после каждого файла, включая короткие."
+        },
+        {
+          "type": "example",
+          "text": "вставить новую строку перед пятой строкой каждого файла",
           "command": "perl -i -pe 'print \"new line here\\n\" if $. == 5; $. = 0 if eof' file.txt",
-          "explanation": "Inserts text before line 5, resetting line counter between files",
+          "explanation": "Вставить новую строку перед пятой строкой каждого файла.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "list ordinary log files smaller than 1000 bytes in the current directory",
+          "text": "добавить текст на заданной позиции с отдельным счётом строк для файлов",
+          "command": "perl -i -pe 'print \"new line here\\n\" if $. == 5; $. = 0 if eof' file.txt",
+          "explanation": "Вставить новую строку перед пятой строкой каждого файла.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "вывести имена логов размером меньше тысячи байт",
           "command": "perl -e 'for (glob \"*.log\") { print \"$_\\n\" if -f && -s _ < 1000 }'",
-          "explanation": "Checks file types and sizes directly, preserving filenames containing spaces; only non-hidden *.log entries are selected."
+          "explanation": "Проверяет тип и размер файлов напрямую, сохраняя имена с пробелами; выбирает только нескрытые элементы *.log."
+        },
+        {
+          "type": "example",
+          "text": "отобрать небольшие .log из подробного списка файлов",
+          "command": "perl -e 'for (glob \"*.log\") { print \"$_\\n\" if -f && -s _ < 1000 }'",
+          "explanation": "Проверяет тип и размер файлов напрямую, сохраняя имена с пробелами; выбирает только нескрытые элементы *.log."
         }
       ]
     },
     {
       "name": "perl math and counting",
       "synopsis": "perl -ane 'math expression' | perl -ne 'counting expression'",
-      "description": "Sums, averages, frequency counts, statistics, and histogram generation using Perl one-liners",
+      "description": "Подсчёты, статистика и построение гистограмм средствами Perl",
       "patterns": [
         {
           "type": "example",
-          "text": "sum all numbers in a file one per line",
+          "text": "сложить все числа из файла, где по одному значению на строку",
           "command": "perl -ne '$s += $_; END { print \"$s\\n\" }' numbers.txt",
-          "explanation": "Accumulates each line as a number and prints the total sum"
+          "explanation": "Сложить все числа из файла, где по одному значению на строку."
         },
         {
           "type": "example",
-          "text": "calculate the average of a column of numbers",
+          "text": "посчитать сумму числового столбца через Perl",
+          "command": "perl -ne '$s += $_; END { print \"$s\\n\" }' numbers.txt",
+          "explanation": "Сложить все числа из файла, где по одному значению на строку."
+        },
+        {
+          "type": "example",
+          "text": "вычислить среднее арифметическое чисел файла",
           "command": "perl -ne '$s += $_; $n++; END { print $s/$n, \"\\n\" }' numbers.txt",
-          "explanation": "Sums all values and divides by count to compute the mean"
+          "explanation": "Вычислить среднее арифметическое чисел файла."
         },
         {
           "type": "example",
-          "text": "find the minimum and maximum values in a column",
+          "text": "сложить значения и разделить на количество строк",
+          "command": "perl -ne '$s += $_; $n++; END { print $s/$n, \"\\n\" }' numbers.txt",
+          "explanation": "Вычислить среднее арифметическое чисел файла."
+        },
+        {
+          "type": "example",
+          "text": "найти минимальное и максимальное число в столбце",
           "command": "perl -ne 'chomp; $min=$_ if !defined $min || $_<$min; $max=$_ if !defined $max || $_>$max; END { print \"min=$min max=$max\\n\" }' numbers.txt",
-          "explanation": "Tracks the running minimum and maximum and prints both at the end"
+          "explanation": "Найти минимальное и максимальное число в столбце."
         },
         {
           "type": "example",
-          "text": "count word frequency in a text file",
+          "text": "вывести крайние значения числового файла",
+          "command": "perl -ne 'chomp; $min=$_ if !defined $min || $_<$min; $max=$_ if !defined $max || $_>$max; END { print \"min=$min max=$max\\n\" }' numbers.txt",
+          "explanation": "Найти минимальное и максимальное число в столбце."
+        },
+        {
+          "type": "example",
+          "text": "посчитать частоту слов без учёта регистра и отсортировать по убыванию",
           "command": "perl -ne '$freq{lc $_}++ for /([\\w]+)/g; END { printf \"%6d %s\\n\", $freq{$_}, $_ for sort { $freq{$b}<=>$freq{$a} } keys %freq }' file.txt",
-          "explanation": "Counts each word case-insensitively and prints frequencies sorted most to least common"
+          "explanation": "Посчитать частоту слов без учёта регистра и отсортировать по убыванию."
         },
         {
           "type": "example",
-          "text": "generate a text histogram of value frequencies",
+          "text": "найти самые употребляемые слова в тексте через Perl",
+          "command": "perl -ne '$freq{lc $_}++ for /([\\w]+)/g; END { printf \"%6d %s\\n\", $freq{$_}, $_ for sort { $freq{$b}<=>$freq{$a} } keys %freq }' file.txt",
+          "explanation": "Посчитать частоту слов без учёта регистра и отсортировать по убыванию."
+        },
+        {
+          "type": "example",
+          "text": "нарисовать текстовую гистограмму частот уникальных строк",
           "command": "perl -ne 'chomp; $h{$_}++; END { printf \"%-20s %s\\n\", $_, \"#\" x $h{$_} for sort keys %h }' data.txt",
-          "explanation": "Counts occurrences of each unique line and draws a horizontal bar chart with # symbols"
+          "explanation": "Нарисовать текстовую гистограмму частот уникальных строк."
         },
         {
           "type": "example",
-          "text": "calculate the median of a list of numbers",
+          "text": "показать число повторений значений полосками из решёток",
+          "command": "perl -ne 'chomp; $h{$_}++; END { printf \"%-20s %s\\n\", $_, \"#\" x $h{$_} for sort keys %h }' data.txt",
+          "explanation": "Нарисовать текстовую гистограмму частот уникальных строк."
+        },
+        {
+          "type": "example",
+          "text": "вычислить медиану списка чисел с учётом чётного количества",
           "command": "perl -e '@n=sort {$a<=>$b} map { chomp; $_ } <>; die \"no numbers\\n\" unless @n; $m=int(@n/2); print((@n%2 ? $n[$m] : ($n[$m-1]+$n[$m])/2), \"\\n\")' numbers.txt",
-          "explanation": "Sorts numeric input, selects the central value for odd counts, averages the two central values for even counts, and rejects empty input."
+          "explanation": "Сортирует числа, выбирает центральное значение при нечётном количестве или среднее двух центральных при чётном; пустой ввод отклоняется."
         },
         {
           "type": "example",
-          "text": "count the number of lines in a file",
+          "text": "найти центральное значение числовой выборки через Perl",
+          "command": "perl -e '@n=sort {$a<=>$b} map { chomp; $_ } <>; die \"no numbers\\n\" unless @n; $m=int(@n/2); print((@n%2 ? $n[$m] : ($n[$m-1]+$n[$m])/2), \"\\n\")' numbers.txt",
+          "explanation": "Сортирует числа, выбирает центральное значение при нечётном количестве или среднее двух центральных при чётном; пустой ввод отклоняется."
+        },
+        {
+          "type": "example",
+          "text": "посчитать число строк текстового файла",
           "command": "perl -ne 'END { print \"$. lines\\n\" }' file.txt",
-          "explanation": "Uses the special $. variable which holds the current line number to report total lines"
+          "explanation": "Посчитать число строк текстового файла."
         },
         {
           "type": "example",
-          "text": "sum the size column of the current non-recursive ls listing in MiB",
+          "text": "вывести итоговый номер строки после чтения всего файла",
+          "command": "perl -ne 'END { print \"$. lines\\n\" }' file.txt",
+          "explanation": "Посчитать число строк текстового файла."
+        },
+        {
+          "type": "example",
+          "text": "сложить размеры из вывода ls и показать итог в мебибайтах",
           "command": "ls -l | perl -ane '$s += $F[4]; END { printf \"%.2f MiB\\n\", $s/1048576 }'",
-          "explanation": "Sums the size column from ls -l, without recursive traversal or hidden names, and divides by 1048576."
+          "explanation": "Суммирует столбец размеров ls -l без рекурсивного обхода и скрытых имён, затем делит на 1048576."
         },
         {
           "type": "example",
-          "text": "sum a range of columns and append the total",
+          "text": "узнать сумму столбца размера в списке текущего каталога",
+          "command": "ls -l | perl -ane '$s += $F[4]; END { printf \"%.2f MiB\\n\", $s/1048576 }'",
+          "explanation": "Суммирует столбец размеров ls -l без рекурсивного обхода и скрытых имён, затем делит на 1048576."
+        },
+        {
+          "type": "example",
+          "text": "добавить к TSV сумму столбцов с третьего по шестой",
           "command": "perl -F'\\t' -nlae '$t=0; $t += $_ for @F[2..5]; print \"$_\\t$t\"'",
-          "explanation": "Sums columns 3 through 6 and appends the total as a new column"
+          "explanation": "Добавить к TSV сумму столбцов с третьего по шестой."
         },
         {
           "type": "example",
-          "text": "find the median value from a list of numbers",
+          "text": "вычислить итог выбранного диапазона полей для каждой строки",
+          "command": "perl -F'\\t' -nlae '$t=0; $t += $_ for @F[2..5]; print \"$_\\t$t\"'",
+          "explanation": "Добавить к TSV сумму столбцов с третьего по шестой."
+        },
+        {
+          "type": "example",
+          "text": "найти медиану чисел с усреднением двух центральных значений при чётном количестве",
           "command": "sort -n data.txt | perl -e '@n=<>; chomp @n; die \"no numbers\\n\" unless @n; $m=int(@n/2); print((@n%2 ? $n[$m] : ($n[$m-1]+$n[$m])/2), \"\\n\")'",
-          "explanation": "Numerically sorts input, then computes a true odd/even median instead of selecting only the lower central value."
+          "explanation": "Сортирует числа и вычисляет медиану для чётного и нечётного количества, а не только нижнее центральное значение."
         },
         {
           "type": "example",
-          "text": "calculate percentage distribution of values",
+          "text": "вывести центральное значение отсортированной числовой выборки",
+          "command": "sort -n data.txt | perl -e '@n=<>; chomp @n; die \"no numbers\\n\" unless @n; $m=int(@n/2); print((@n%2 ? $n[$m] : ($n[$m-1]+$n[$m])/2), \"\\n\")'",
+          "explanation": "Сортирует числа и вычисляет медиану для чётного и нечётного количества, а не только нижнее центральное значение."
+        },
+        {
+          "type": "example",
+          "text": "показать процент каждого уникального значения",
           "command": "sort data.txt | uniq -c | perl -ne '($n,$v)=/^\\s*(\\d+)\\s+(.*)/; $s+=$n; push @r,[$n,$v]; END{printf \"%s: %.1f%%\\n\",$$_[1],100*$$_[0]/$s for @r}'",
-          "explanation": "Counts occurrences and shows each value with its percentage of the total"
+          "explanation": "Показать процент каждого уникального значения."
         },
         {
           "type": "example",
-          "text": "group numbers into thousand-wide buckets by truncation toward zero",
+          "text": "посчитать распределение строк и долю каждой группы от общего числа",
+          "command": "sort data.txt | uniq -c | perl -ne '($n,$v)=/^\\s*(\\d+)\\s+(.*)/; $s+=$n; push @r,[$n,$v]; END{printf \"%s: %.1f%%\\n\",$$_[1],100*$$_[0]/$s for @r}'",
+          "explanation": "Показать процент каждого уникального значения."
+        },
+        {
+          "type": "example",
+          "text": "сгруппировать числа по тысячам с усечением дробной части",
           "command": "perl -pe '$_ = 1000 * int($_/1000) . \"\\n\"' data.txt | sort -n | uniq -c",
-          "explanation": "Truncates each number divided by 1000 toward zero, multiplies back by 1000, then counts bucket frequencies."
+          "explanation": "Делит число на 1000 с усечением к нулю, умножает результат на 1000 и считает частоты полученных групп."
         },
         {
           "type": "example",
-          "text": "count case-insensitive whitespace-delimited token frequencies",
+          "text": "посчитать частоты чисел, приведённых к кратным тысяче",
+          "command": "perl -pe '$_ = 1000 * int($_/1000) . \"\\n\"' data.txt | sort -n | uniq -c",
+          "explanation": "Делит число на 1000 с усечением к нулю, умножает результат на 1000 и считает частоты полученных групп."
+        },
+        {
+          "type": "example",
+          "text": "посчитать частоты разделённых пробелами слов без учёта регистра",
           "command": "perl -lane '$c{lc$_}++ for @F; END{printf \"%4d %s\\n\",$c{$_},$_ for sort{$c{$b}<=>$c{$a}}keys%c}' file.txt",
-          "explanation": "Splits each line on whitespace, folds token case, retains punctuation inside tokens, and sorts by descending frequency."
+          "explanation": "Разбивает строки по пробельным символам, приводит токены к одному регистру, сохраняет пунктуацию внутри и сортирует по убыванию частоты."
         },
         {
           "type": "example",
-          "text": "print the minimum and maximum values from a list of numbers",
+          "text": "показать наиболее частые токены текста с сохранением пунктуации внутри них",
+          "command": "perl -lane '$c{lc$_}++ for @F; END{printf \"%4d %s\\n\",$c{$_},$_ for sort{$c{$b}<=>$c{$a}}keys%c}' file.txt",
+          "explanation": "Разбивает строки по пробельным символам, приводит токены к одному регистру, сохраняет пунктуацию внутри и сортирует по убыванию частоты."
+        },
+        {
+          "type": "example",
+          "text": "найти минимальное и максимальное значение из стандартного ввода",
           "command": "perl -lne 'BEGIN{$min=$max=undef} $min=$_ if !defined$min||$_<$min; $max=$_ if !defined$max||$_>$max; END{print \"min=$min max=$max\"}'",
-          "explanation": "Tracks running min and max across all input lines"
+          "explanation": "Найти минимальное и максимальное значение из стандартного ввода."
         },
         {
           "type": "example",
-          "text": "calculate the average of numbers from stdin",
+          "text": "вывести наименьшее и наибольшее число потока",
+          "command": "perl -lne 'BEGIN{$min=$max=undef} $min=$_ if !defined$min||$_<$min; $max=$_ if !defined$max||$_>$max; END{print \"min=$min max=$max\"}'",
+          "explanation": "Найти минимальное и максимальное значение из стандартного ввода."
+        },
+        {
+          "type": "example",
+          "text": "посчитать среднее арифметическое чисел из stdin",
           "command": "perl -lne '$s+=$_; $n++; END{print $s/$n}'",
-          "explanation": "Accumulates sum and count, prints the mean at the end"
+          "explanation": "Посчитать среднее арифметическое чисел из stdin."
+        },
+        {
+          "type": "example",
+          "text": "получить среднее значение переданного числового столбца",
+          "command": "perl -lne '$s+=$_; $n++; END{print $s/$n}'",
+          "explanation": "Посчитать среднее арифметическое чисел из stdin."
         }
       ]
     },
     {
       "name": "perl string manipulation",
       "synopsis": "perl -pe 'string operation' | perl -e 'encode/decode expression'",
-      "description": "Reverse strings, encode/decode data, transliteration, and character-level operations with Perl",
+      "description": "Разворот, перекодировка и посимвольная обработка строк средствами Perl",
       "patterns": [
         {
           "type": "example",
-          "text": "reverse each line of text in a file",
+          "text": "напечатать символы каждой строки в обратном порядке",
           "command": "perl -ne 'chomp; print scalar reverse, \"\\n\"' file.txt",
-          "explanation": "Reverses the character order of each line"
+          "explanation": "Напечатать символы каждой строки в обратном порядке."
         },
         {
           "type": "example",
-          "text": "base64 encode a string or file",
+          "text": "перевернуть отдельные строки, сохранив их последовательность",
+          "command": "perl -ne 'chomp; print scalar reverse, \"\\n\"' file.txt",
+          "explanation": "Напечатать символы каждой строки в обратном порядке."
+        },
+        {
+          "type": "example",
+          "text": "закодировать содержимое файла в Base64",
           "command": "perl -MMIME::Base64 -e 'print encode_base64(join \"\", <>)' file.txt",
-          "explanation": "Reads the entire file and prints its base64 encoded representation"
+          "explanation": "Закодировать содержимое файла в Base64."
         },
         {
           "type": "example",
-          "text": "base64 decode a string",
+          "text": "прочитать файл целиком и вывести его представление base64",
+          "command": "perl -MMIME::Base64 -e 'print encode_base64(join \"\", <>)' file.txt",
+          "explanation": "Закодировать содержимое файла в Base64."
+        },
+        {
+          "type": "example",
+          "text": "декодировать строку Base64 в исходный текст",
           "command": "echo 'SGVsbG8gV29ybGQ=' | perl -MMIME::Base64 -ne 'print decode_base64($_)'",
-          "explanation": "Decodes a base64 encoded string back to its original form"
+          "explanation": "Декодировать строку Base64 в исходный текст."
         },
         {
           "type": "example",
-          "text": "URL encode a string for use in a web request",
+          "text": "восстановить данные из записи SGVsbG8gV29ybGQ=",
+          "command": "echo 'SGVsbG8gV29ybGQ=' | perl -MMIME::Base64 -ne 'print decode_base64($_)'",
+          "explanation": "Декодировать строку Base64 в исходный текст."
+        },
+        {
+          "type": "example",
+          "text": "закодировать специальные символы строки для URL",
           "command": "perl -MURI::Escape -e 'print uri_escape($ARGV[0]), \"\\n\"' 'hello world & goodbye'",
-          "explanation": "Percent-encodes special characters for safe use in URLs"
+          "explanation": "Закодировать специальные символы строки для URL."
         },
         {
           "type": "example",
-          "text": "URL decode a percent-encoded string",
+          "text": "сделать процентное экранирование текста через URI::Escape",
+          "command": "perl -MURI::Escape -e 'print uri_escape($ARGV[0]), \"\\n\"' 'hello world & goodbye'",
+          "explanation": "Закодировать специальные символы строки для URL."
+        },
+        {
+          "type": "example",
+          "text": "расшифровать процентное кодирование URL",
           "command": "perl -MURI::Escape -e 'print uri_unescape($ARGV[0]), \"\\n\"' 'hello%20world%26goodbye'",
-          "explanation": "Converts percent-encoded characters back to their original form"
+          "explanation": "Расшифровать процентное кодирование URL."
         },
         {
           "type": "example",
-          "text": "ROT13 encode or decode text",
+          "text": "восстановить пробелы и другие символы из последовательностей %XX",
+          "command": "perl -MURI::Escape -e 'print uri_unescape($ARGV[0]), \"\\n\"' 'hello%20world%26goodbye'",
+          "explanation": "Расшифровать процентное кодирование URL."
+        },
+        {
+          "type": "example",
+          "text": "применить ROT13 к латинскому тексту файла",
           "command": "perl -pe 'tr/A-Za-z/N-ZA-Mn-za-m/' file.txt",
-          "explanation": "Applies ROT13 cipher using transliteration, works for both encoding and decoding"
+          "explanation": "Применить ROT13 к латинскому тексту файла."
         },
         {
           "type": "example",
-          "text": "generate a random password of a given length",
+          "text": "закодировать или декодировать английские буквы сдвигом на тринадцать",
+          "command": "perl -pe 'tr/A-Za-z/N-ZA-Mn-za-m/' file.txt",
+          "explanation": "Применить ROT13 к латинскому тексту файла."
+        },
+        {
+          "type": "example",
+          "text": "сгенерировать случайную строку длиной двадцать символов",
           "command": "perl -e '@c=(\"A\"..\"Z\",\"a\"..\"z\",0..9,split//,\"!@#$%^&*\"); print $c[rand @c] for 1..20; print \"\\n\"'",
-          "explanation": "Generates a 20-character random password from upper, lower, digits, and symbols"
+          "explanation": "Сгенерировать случайную строку длиной двадцать символов."
         },
         {
           "type": "example",
-          "text": "convert hex string to ASCII text",
+          "text": "получить пароль из латинских букв, цифр и специальных знаков через Perl",
+          "command": "perl -e '@c=(\"A\"..\"Z\",\"a\"..\"z\",0..9,split//,\"!@#$%^&*\"); print $c[rand @c] for 1..20; print \"\\n\"'",
+          "explanation": "Сгенерировать случайную строку длиной двадцать символов."
+        },
+        {
+          "type": "example",
+          "text": "преобразовать шестнадцатеричную строку в байты текста",
           "command": "perl -e 'print pack(\"H*\", $ARGV[0]), \"\\n\"' '48656c6c6f'",
-          "explanation": "Packs a hexadecimal string into its ASCII byte representation"
+          "explanation": "Преобразовать шестнадцатеричную строку в байты текста."
         },
         {
           "type": "example",
-          "text": "ROT13 encode a file in place",
+          "text": "декодировать hex-представление ASCII через pack",
+          "command": "perl -e 'print pack(\"H*\", $ARGV[0]), \"\\n\"' '48656c6c6f'",
+          "explanation": "Преобразовать шестнадцатеричную строку в байты текста."
+        },
+        {
+          "type": "example",
+          "text": "изменить файл на месте, применив ROT13",
           "command": "perl -i -pe 'tr/a-zA-Z/n-za-mN-ZA-M/' file.txt",
-          "explanation": "Applies ROT13 cipher to all letters in the file",
+          "explanation": "Изменить файл на месте, применив ROT13.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "convert a string to its ASCII ordinal values",
-          "command": "perl -le 'print join \" \", map{ord} split //, shift' 'Hello'",
-          "explanation": "Splits string into chars and prints the ASCII value of each"
+          "text": "сдвинуть латинские буквы текста на тринадцать позиций с сохранением файла",
+          "command": "perl -i -pe 'tr/a-zA-Z/n-za-mN-ZA-M/' file.txt",
+          "explanation": "Изменить файл на месте, применив ROT13.",
+          "destructive": true
         },
         {
           "type": "example",
-          "text": "convert ASCII ordinal values back to a string",
+          "text": "вывести числовые коды символов ASCII в строке",
+          "command": "perl -le 'print join \" \", map{ord} split //, shift' 'Hello'",
+          "explanation": "Вывести числовые коды символов ASCII в строке."
+        },
+        {
+          "type": "example",
+          "text": "преобразовать Hello в последовательность значений ord",
+          "command": "perl -le 'print join \" \", map{ord} split //, shift' 'Hello'",
+          "explanation": "Вывести числовые коды символов ASCII в строке."
+        },
+        {
+          "type": "example",
+          "text": "собрать строку из числовых кодов ASCII",
           "command": "perl -le 'print map{chr} @ARGV' 72 101 108 108 111",
-          "explanation": "Converts a list of numbers to their character equivalents"
+          "explanation": "Собрать строку из числовых кодов ASCII."
+        },
+        {
+          "type": "example",
+          "text": "превратить числа 72 101 108 108 111 в текст",
+          "command": "perl -le 'print map{chr} @ARGV' 72 101 108 108 111",
+          "explanation": "Собрать строку из числовых кодов ASCII."
         }
       ]
     },
     {
       "name": "perl log analysis",
       "synopsis": "perl -ne 'log parsing expression' | perl -ane 'log field extraction'",
-      "description": "Parse log files, extract timestamps, count errors, and analyze patterns in log data with Perl",
+      "description": "Разбор журналов, временных меток и подсчёт ошибок средствами Perl",
       "patterns": [
         {
           "type": "example",
-          "text": "count occurrences of each HTTP status code in an access log",
+          "text": "посчитать HTTP-коды ответов в access.log",
           "command": "perl -ane '$c{$F[8]}++; END { printf \"%s: %d\\n\", $_, $c{$_} for sort keys %c }' access.log",
-          "explanation": "Extracts the HTTP status code field and counts each unique code"
+          "explanation": "Посчитать HTTP-коды ответов в access.log."
         },
         {
           "type": "example",
-          "text": "find the top 10 most frequent IP addresses in a web server log",
+          "text": "сгруппировать строки веб-журнала по девятому полю статуса",
+          "command": "perl -ane '$c{$F[8]}++; END { printf \"%s: %d\\n\", $_, $c{$_} for sort keys %c }' access.log",
+          "explanation": "Посчитать HTTP-коды ответов в access.log."
+        },
+        {
+          "type": "example",
+          "text": "найти десять самых частых IP в журнале веб-сервера",
           "command": "perl -ane '$ip{$F[0]}++; END { @ips=sort {$ip{$b}<=>$ip{$a} || $a cmp $b} keys %ip; for ($i=0; $i<@ips && $i<10; $i++) { printf \"%-16s %d\\n\", $ips[$i], $ip{$ips[$i]} } }' access.log",
-          "explanation": "Prints up to ten real IP keys ordered by request count, breaking ties by address; short and empty logs do not create missing entries."
+          "explanation": "Выводит до десяти реально встречавшихся IP по числу запросов с разрешением равенств по адресу; короткие и пустые журналы не создают пустых элементов."
         },
         {
           "type": "example",
-          "text": "extract all error messages from a log file with timestamps",
+          "text": "посчитать запросы по адресам и вывести лидеров по частоте",
+          "command": "perl -ane '$ip{$F[0]}++; END { @ips=sort {$ip{$b}<=>$ip{$a} || $a cmp $b} keys %ip; for ($i=0; $i<@ips && $i<10; $i++) { printf \"%-16s %d\\n\", $ips[$i], $ip{$ips[$i]} } }' access.log",
+          "explanation": "Выводит до десяти реально встречавшихся IP по числу запросов с разрешением равенств по адресу; короткие и пустые журналы не создают пустых элементов."
+        },
+        {
+          "type": "example",
+          "text": "вывести строки с временной отметкой и уровнями ERROR, FATAL или CRITICAL",
           "command": "perl -ne 'print if /^\\[.*?\\].*\\b(ERROR|FATAL|CRITICAL)\\b/' app.log",
-          "explanation": "Prints log lines containing ERROR, FATAL, or CRITICAL severity levels"
+          "explanation": "Вывести строки с временной отметкой и уровнями ERROR, FATAL или CRITICAL."
         },
         {
           "type": "example",
-          "text": "show requests per hour from an Apache or Nginx access log",
+          "text": "отфильтровать серьёзные ошибки из журнала приложения",
+          "command": "perl -ne 'print if /^\\[.*?\\].*\\b(ERROR|FATAL|CRITICAL)\\b/' app.log",
+          "explanation": "Вывести строки с временной отметкой и уровнями ERROR, FATAL или CRITICAL."
+        },
+        {
+          "type": "example",
+          "text": "посчитать запросы веб-сервера по часам",
           "command": "perl -ne '$h{$1}++ if m{(\\d{2}/\\w+/\\d{4}:\\d{2})}; END { printf \"%s: %d\\n\", $_, $h{$_} for sort keys %h }' access.log",
-          "explanation": "Extracts the date:hour portion of timestamps and counts requests per hour"
+          "explanation": "Посчитать запросы веб-сервера по часам."
         },
         {
           "type": "example",
-          "text": "find all unique user agents in an access log",
+          "text": "сгруппировать записи access.log по дате и часу",
+          "command": "perl -ne '$h{$1}++ if m{(\\d{2}/\\w+/\\d{4}:\\d{2})}; END { printf \"%s: %d\\n\", $_, $h{$_} for sort keys %h }' access.log",
+          "explanation": "Посчитать запросы веб-сервера по часам."
+        },
+        {
+          "type": "example",
+          "text": "извлечь уникальные User-Agent из последнего поля журнала",
           "command": "perl -ne 'print \"$1\\n\" if /\"([^\"]*?)\"\\s*$/' access.log | sort -u",
-          "explanation": "Extracts the user agent string from the last quoted field of each log line"
+          "explanation": "Извлечь уникальные User-Agent из последнего поля журнала."
         },
         {
           "type": "example",
-          "text": "calculate average response time from log entries",
+          "text": "показать различные строки браузеров в access.log",
+          "command": "perl -ne 'print \"$1\\n\" if /\"([^\"]*?)\"\\s*$/' access.log | sort -u",
+          "explanation": "Извлечь уникальные User-Agent из последнего поля журнала."
+        },
+        {
+          "type": "example",
+          "text": "посчитать среднее время ответа из значений с суффиксом ms",
           "command": "perl -ne 'while (/(\\d+(?:\\.\\d+)?)ms/g) { $t+=$1; $n++ } END { die \"no timing samples\\n\" unless $n; printf \"avg: %.1fms\\n\", $t/$n }' app.log",
-          "explanation": "Averages all nonnegative integer or decimal millisecond values found in the log and rejects input with no timing samples."
+          "explanation": "Усредняет все неотрицательные целые и дробные значения миллисекунд в журнале; ввод без замеров отклоняется."
         },
         {
           "type": "example",
-          "text": "show log entries from the last hour only",
+          "text": "получить среднюю задержку по строкам журнала приложения",
+          "command": "perl -ne 'while (/(\\d+(?:\\.\\d+)?)ms/g) { $t+=$1; $n++ } END { die \"no timing samples\\n\" unless $n; printf \"avg: %.1fms\\n\", $t/$n }' app.log",
+          "explanation": "Усредняет все неотрицательные целые и дробные значения миллисекунд в журнале; ввод без замеров отклоняется."
+        },
+        {
+          "type": "example",
+          "text": "показать записи журнала за последний час без будущих дат",
           "command": "perl -ne 'use POSIX qw(mktime); if (/^(\\d{4})-(\\d{2})-(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})/) { $t=mktime($6,$5,$4,$3,$2-1,$1-1900); $age=time()-$t; print if $age>=0 && $age<3600 }' app.log",
-          "explanation": "Interprets leading timestamps in local time and selects only records from now back to less than one hour ago, excluding future records."
+          "explanation": "Читает начальные временные метки в локальном часовом поясе и выбирает только записи не старше часа, исключая будущее."
         },
         {
           "type": "example",
-          "text": "group and count log messages by error type ignoring details",
+          "text": "отобрать недавние сообщения с локальной временной меткой не старше часа",
+          "command": "perl -ne 'use POSIX qw(mktime); if (/^(\\d{4})-(\\d{2})-(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})/) { $t=mktime($6,$5,$4,$3,$2-1,$1-1900); $age=time()-$t; print if $age>=0 && $age<3600 }' app.log",
+          "explanation": "Читает начальные временные метки в локальном часовом поясе и выбирает только записи не старше часа, исключая будущее."
+        },
+        {
+          "type": "example",
+          "text": "сгруппировать сообщения ERROR и WARN по тексту до at",
           "command": "perl -ne 'if (/(?:ERROR|WARN).*?:\\s*(.+?)(?:\\s*at\\s|$)/) { $c{$1}++ } END { printf \"%5d %s\\n\", $c{$_}, $_ for sort { $c{$b}<=>$c{$a} } keys %c }' app.log",
-          "explanation": "Normalizes error messages by stripping stack trace details and counts each unique type"
+          "explanation": "Сгруппировать сообщения ERROR и WARN по тексту до at."
+        },
+        {
+          "type": "example",
+          "text": "посчитать частоту типов ошибок, отбросив начало трассировки",
+          "command": "perl -ne 'if (/(?:ERROR|WARN).*?:\\s*(.+?)(?:\\s*at\\s|$)/) { $c{$1}++ } END { printf \"%5d %s\\n\", $c{$_}, $_ for sort { $c{$b}<=>$c{$a} } keys %c }' app.log",
+          "explanation": "Сгруппировать сообщения ERROR и WARN по тексту до at."
         }
       ]
     },
     {
       "name": "perl network/sysadmin",
       "synopsis": "perl -ne 'sysadmin expression' | perl -e 'network operation'",
-      "description": "IP extraction, URL parsing, config file editing, and system administration tasks with Perl",
+      "description": "Работа с адресами, конфигурацией и административными задачами средствами Perl",
       "patterns": [
         {
           "type": "example",
-          "text": "extract and sort all unique IP addresses from a file",
+          "text": "извлечь корректные уникальные IPv4-адреса и отсортировать по октетам",
           "command": "perl -ne '$ip{$_}++ for /(?<![0-9.])((?:(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9]))(?![0-9.])/g; END { print \"$_\\n\" for sort { pack(\"C4\",split/\\./,$a) cmp pack(\"C4\",split/\\./,$b) } keys %ip }' file.txt",
-          "explanation": "Extracts distinct dotted-decimal IPv4 addresses with octets 0–255, then sorts by their four numeric components."
+          "explanation": "Извлекает уникальные IPv4-адреса с октетами 0–255 и сортирует по четырём числовым компонентам."
         },
         {
           "type": "example",
-          "text": "convert a subnet CIDR notation to IP range",
+          "text": "упорядочить адреса из текста по числовым компонентам без ошибочных октетов",
+          "command": "perl -ne '$ip{$_}++ for /(?<![0-9.])((?:(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9]))(?![0-9.])/g; END { print \"$_\\n\" for sort { pack(\"C4\",split/\\./,$a) cmp pack(\"C4\",split/\\./,$b) } keys %ip }' file.txt",
+          "explanation": "Извлекает уникальные IPv4-адреса с октетами 0–255 и сортирует по четырём числовым компонентам."
+        },
+        {
+          "type": "example",
+          "text": "преобразовать подсеть CIDR в первый и последний IPv4-адреса",
           "command": "perl -e 'use Socket; ($ip,$m)=split/\\//,$ARGV[0]; $n=unpack(\"N\",inet_aton($ip)); $mask=(0xFFFFFFFF<<(32-$m))&0xFFFFFFFF; printf \"%s - %s\\n\", inet_ntoa(pack(\"N\",$n&$mask)), inet_ntoa(pack(\"N\",($n&$mask)|(~$mask&0xFFFFFFFF)))' '192.168.1.0/24'",
-          "explanation": "Calculates the first and last IP address in a CIDR subnet range"
+          "explanation": "Преобразовать подсеть CIDR в первый и последний IPv4-адреса."
         },
         {
           "type": "example",
-          "text": "check which ports are open on localhost",
+          "text": "вычислить полный диапазон сети вместе с сетевым и широковещательным адресами",
+          "command": "perl -e 'use Socket; ($ip,$m)=split/\\//,$ARGV[0]; $n=unpack(\"N\",inet_aton($ip)); $mask=(0xFFFFFFFF<<(32-$m))&0xFFFFFFFF; printf \"%s - %s\\n\", inet_ntoa(pack(\"N\",$n&$mask)), inet_ntoa(pack(\"N\",($n&$mask)|(~$mask&0xFFFFFFFF)))' '192.168.1.0/24'",
+          "explanation": "Преобразовать подсеть CIDR в первый и последний IPv4-адреса."
+        },
+        {
+          "type": "example",
+          "text": "проверить TCP-порты localhost с первого по 1024",
           "command": "perl -MIO::Socket::INET -e 'for $p (1..1024) { $s=IO::Socket::INET->new(PeerAddr=>\"127.0.0.1\",PeerPort=>$p,Timeout=>1,Proto=>\"tcp\") and print \"Port $p open\\n\" }'",
-          "explanation": "Scans TCP ports 1-1024 on localhost and reports which ones accept connections"
+          "explanation": "Проверить TCP-порты localhost с первого по 1024."
         },
         {
           "type": "example",
-          "text": "set max_connections to 200 only in the mysqld section of a MySQL config",
+          "text": "найти локальные порты, принимающие соединения через IO::Socket",
+          "command": "perl -MIO::Socket::INET -e 'for $p (1..1024) { $s=IO::Socket::INET->new(PeerAddr=>\"127.0.0.1\",PeerPort=>$p,Timeout=>1,Proto=>\"tcp\") and print \"Port $p open\\n\" }'",
+          "explanation": "Проверить TCP-порты localhost с первого по 1024."
+        },
+        {
+          "type": "example",
+          "text": "установить max_connections равным 200 только в секции mysqld",
           "command": "perl -i -pe '$in = /^\\s*\\[mysqld\\]\\s*(?:[;#].*)?$/ ? 1 : 0 if /^\\s*\\[/; s/^([ \\t]*max_connections[ \\t]*=[ \\t]*).*/${1}200/ if $in' /etc/my.cnf",
-          "explanation": "Tracks INI section headers and edits max_connections only within [mysqld], leaving similarly named settings in other sections unchanged.",
+          "explanation": "Отслеживает секции INI и меняет max_connections только в [mysqld], сохраняя одноимённые параметры остальных секций.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "show all listening network connections with their PIDs",
+          "text": "изменить ограничение подключений MySQL, не затрагивая другие секции конфигурации",
+          "command": "perl -i -pe '$in = /^\\s*\\[mysqld\\]\\s*(?:[;#].*)?$/ ? 1 : 0 if /^\\s*\\[/; s/^([ \\t]*max_connections[ \\t]*=[ \\t]*).*/${1}200/ if $in' /etc/my.cnf",
+          "explanation": "Отслеживает секции INI и меняет max_connections только в [mysqld], сохраняя одноимённые параметры остальных секций.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "вывести слушающие TCP-сокеты с протоколом, адресом и PID",
           "command": "netstat -tlnp 2>/dev/null | perl -ane 'printf \"%-6s %-22s %s\\n\", $F[0], $F[3], $F[6] if $. > 2'",
-          "explanation": "Formats netstat output into a clean table of protocol, address, and PID"
+          "explanation": "Вывести слушающие TCP-сокеты с протоколом, адресом и PID."
         },
         {
           "type": "example",
-          "text": "check a simplified email address pattern",
+          "text": "переформатировать netstat в компактную таблицу серверных портов",
+          "command": "netstat -tlnp 2>/dev/null | perl -ane 'printf \"%-6s %-22s %s\\n\", $F[0], $F[3], $F[6] if $. > 2'",
+          "explanation": "Вывести слушающие TCP-сокеты с протоколом, адресом и PID."
+        },
+        {
+          "type": "example",
+          "text": "проверить адрес электронной почты простым регулярным выражением",
           "command": "perl -e 'print $ARGV[0] =~ /^[\\w.+-]+@[a-zA-Z\\d.-]+\\.[a-zA-Z]{2,}$/ ? \"Valid\\n\" : \"Invalid\\n\"' 'user@example.com'",
-          "explanation": "Tests a simplified email-like syntax; it is not complete standards validation or a mailbox existence check."
+          "explanation": "Проверяет упрощённый синтаксис адреса электронной почты; не выполняет полную проверку стандартов и существования ящика."
         },
         {
           "type": "example",
-          "text": "extract domain names from a list of URLs",
+          "text": "определить, похожа ли строка на email в указанном формате",
+          "command": "perl -e 'print $ARGV[0] =~ /^[\\w.+-]+@[a-zA-Z\\d.-]+\\.[a-zA-Z]{2,}$/ ? \"Valid\\n\" : \"Invalid\\n\"' 'user@example.com'",
+          "explanation": "Проверяет упрощённый синтаксис адреса электронной почты; не выполняет полную проверку стандартов и существования ящика."
+        },
+        {
+          "type": "example",
+          "text": "извлечь имена хостов из всех HTTP-ссылок в строках файла",
           "command": "perl -ne 'print \"$1\\n\" while m{https?://([^/\\s:]+)}g' urls.txt",
-          "explanation": "Extracts host fragments from every simple HTTP/HTTPS URL on each line, without path or port."
+          "explanation": "Извлекает имена узлов из всех простых HTTP/HTTPS URL в строке, без пути и порта."
         },
         {
           "type": "example",
-          "text": "comment out a specific line in a config file",
+          "text": "получить доменные части простых HTTP и HTTPS URL без путей и портов",
+          "command": "perl -ne 'print \"$1\\n\" while m{https?://([^/\\s:]+)}g' urls.txt",
+          "explanation": "Извлекает имена узлов из всех простых HTTP/HTTPS URL в строке, без пути и порта."
+        },
+        {
+          "type": "example",
+          "text": "закомментировать строки PermitRootLogin в конфигурации SSH",
           "command": "perl -i -pe 's/^([ \\t]*PermitRootLogin\\b.*)/#$1/' /etc/ssh/sshd_config",
-          "explanation": "Comments matching PermitRootLogin lines, including indented settings; this removes the explicit setting rather than guaranteeing a particular default policy.",
+          "explanation": "Комментирует строки PermitRootLogin, включая строки с отступом; явная настройка удаляется, но конкретная политика по умолчанию не гарантируется.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "добавить решётку перед настройкой входа root в sshd_config",
+          "command": "perl -i -pe 's/^([ \\t]*PermitRootLogin\\b.*)/#$1/' /etc/ssh/sshd_config",
+          "explanation": "Комментирует строки PermitRootLogin, включая строки с отступом; явная настройка удаляется, но конкретная политика по умолчанию не гарантируется.",
           "destructive": true
         }
       ]
@@ -759,582 +1444,1102 @@
     {
       "name": "perl json/xml processing",
       "synopsis": "perl -MJSON -e 'expression' | perl -MXML::Simple -e 'expression'",
-      "description": "JSON manipulation, XML extraction, and structured data processing with Perl one-liners",
+      "description": "Обработка JSON, XML и других структурированных данных средствами Perl",
       "patterns": [
         {
           "type": "example",
-          "text": "pretty print a JSON file",
+          "text": "красиво отформатировать JSON с отступами",
           "command": "perl -MJSON::PP -e 'local $/; print JSON::PP->new->pretty->encode(decode_json(<STDIN>))' < data.json",
-          "explanation": "Reads JSON from stdin, parses it, and outputs with indentation and formatting"
+          "explanation": "Красиво отформатировать JSON с отступами."
         },
         {
           "type": "example",
-          "text": "extract a specific field from a JSON file",
+          "text": "разобрать JSON-файл и вывести читаемое представление",
+          "command": "perl -MJSON::PP -e 'local $/; print JSON::PP->new->pretty->encode(decode_json(<STDIN>))' < data.json",
+          "explanation": "Красиво отформатировать JSON с отступами."
+        },
+        {
+          "type": "example",
+          "text": "извлечь значение поля name из объекта JSON",
           "command": "perl -MJSON::PP -e 'local $/; $d=decode_json(<STDIN>); print $d->{name}, \"\\n\"' < data.json",
-          "explanation": "Parses JSON and prints the value of the name field"
+          "explanation": "Извлечь значение поля name из объекта JSON."
         },
         {
           "type": "example",
-          "text": "convert a JSON array of flat objects to quoted CSV rows",
+          "text": "показать конкретное свойство структурированных данных через модуль JSON",
+          "command": "perl -MJSON::PP -e 'local $/; $d=decode_json(<STDIN>); print $d->{name}, \"\\n\"' < data.json",
+          "explanation": "Извлечь значение поля name из объекта JSON."
+        },
+        {
+          "type": "example",
+          "text": "преобразовать массив объектов JSON в простые CSV-строки без заголовка",
           "command": "perl -MJSON::PP -e 'local $/; $d=decode_json(<STDIN>); binmode STDOUT, \":encoding(UTF-8)\"; @keys=sort keys %{$d->[0] // {}}; for $row (@$d) { @v=map { defined $row->{$_} ? $row->{$_} : \"\" } @keys; for (@v) { s/\"/\"\"/g; $_=qq(\"$_\") } print join(\",\", @v), \"\\n\" }' < data.json",
-          "explanation": "Uses sorted keys from the first object, emits no header, doubles embedded quotes, and quotes values containing line breaks; input fields must be scalar."
+          "explanation": "Использует отсортированные ключи первого объекта, без заголовка; удваивает кавычки и заключает поля с переносами в кавычки; значения должны быть скалярными."
         },
         {
           "type": "example",
-          "text": "merge two JSON files together",
+          "text": "вывести значения объектов в порядке отсортированных ключей первого объекта",
+          "command": "perl -MJSON::PP -e 'local $/; $d=decode_json(<STDIN>); binmode STDOUT, \":encoding(UTF-8)\"; @keys=sort keys %{$d->[0] // {}}; for $row (@$d) { @v=map { defined $row->{$_} ? $row->{$_} : \"\" } @keys; for (@v) { s/\"/\"\"/g; $_=qq(\"$_\") } print join(\",\", @v), \"\\n\" }' < data.json",
+          "explanation": "Использует отсортированные ключи первого объекта, без заголовка; удваивает кавычки и заключает поля с переносами в кавычки; значения должны быть скалярными."
+        },
+        {
+          "type": "example",
+          "text": "объединить два объекта JSON с приоритетом второго файла",
           "command": "perl -MJSON::PP -e 'local $/; @ARGV==2 or die \"usage: a.json b.json\\n\"; open my $a,\"<\",$ARGV[0] or die $!; open my $b,\"<\",$ARGV[1] or die $!; $x=decode_json(<$a>); $y=decode_json(<$b>); ref($x) eq \"HASH\" && ref($y) eq \"HASH\" or die \"JSON objects required\\n\"; print encode_json({%$x,%$y}), \"\\n\"' a.json b.json",
-          "explanation": "Reads two JSON objects independently and merges top-level keys, with keys from the second file taking precedence."
+          "explanation": "Читает два JSON-объекта отдельно и объединяет верхний уровень; значения второго файла имеют приоритет."
         },
         {
           "type": "example",
-          "text": "filter a JSON array keeping only matching objects",
+          "text": "слить верхнеуровневые ключи файлов a.json и b.json",
+          "command": "perl -MJSON::PP -e 'local $/; @ARGV==2 or die \"usage: a.json b.json\\n\"; open my $a,\"<\",$ARGV[0] or die $!; open my $b,\"<\",$ARGV[1] or die $!; $x=decode_json(<$a>); $y=decode_json(<$b>); ref($x) eq \"HASH\" && ref($y) eq \"HASH\" or die \"JSON objects required\\n\"; print encode_json({%$x,%$y}), \"\\n\"' a.json b.json",
+          "explanation": "Читает два JSON-объекта отдельно и объединяет верхний уровень; значения второго файла имеют приоритет."
+        },
+        {
+          "type": "example",
+          "text": "оставить в JSON-массиве только объекты со статусом active",
           "command": "perl -MJSON::PP -e 'local $/; $d=decode_json(<STDIN>); print encode_json([grep{$_->{status} eq \"active\"}@$d])' < data.json",
-          "explanation": "Filters a JSON array to include only objects where status equals active"
+          "explanation": "Оставить в JSON-массиве только объекты со статусом active."
         },
         {
           "type": "example",
-          "text": "extract all values for a specific key from nested JSON",
+          "text": "отфильтровать список JSON по значению поля status",
+          "command": "perl -MJSON::PP -e 'local $/; $d=decode_json(<STDIN>); print encode_json([grep{$_->{status} eq \"active\"}@$d])' < data.json",
+          "explanation": "Оставить в JSON-массиве только объекты со статусом active."
+        },
+        {
+          "type": "example",
+          "text": "рекурсивно извлечь все значения ключа name из вложенного JSON",
           "command": "perl -MJSON::PP -e 'local $/; $d=decode_json(<STDIN>); sub f{my$d=shift;if(ref$d eq\"HASH\"){print \"$d->{$ARGV[0]}\\n\" if exists$d->{$ARGV[0]};f($_)for values%$d}elsif(ref$d eq\"ARRAY\"){f($_)for@$d}} f($d)' name < data.json",
-          "explanation": "Recursively walks a JSON structure and prints every occurrence of the specified key"
+          "explanation": "Рекурсивно извлечь все значения ключа name из вложенного JSON."
         },
         {
           "type": "example",
-          "text": "count objects in a JSON array grouped by a field value",
+          "text": "найти заданное свойство на любой глубине объектов и массивов",
+          "command": "perl -MJSON::PP -e 'local $/; $d=decode_json(<STDIN>); sub f{my$d=shift;if(ref$d eq\"HASH\"){print \"$d->{$ARGV[0]}\\n\" if exists$d->{$ARGV[0]};f($_)for values%$d}elsif(ref$d eq\"ARRAY\"){f($_)for@$d}} f($d)' name < data.json",
+          "explanation": "Рекурсивно извлечь все значения ключа name из вложенного JSON."
+        },
+        {
+          "type": "example",
+          "text": "посчитать объекты JSON по значению поля type",
           "command": "perl -MJSON::PP -e 'local $/; $d=decode_json(<STDIN>); $c{$_->{type}}++ for @$d; printf \"%-20s %d\\n\",$_,$c{$_} for sort keys %c' < data.json",
-          "explanation": "Groups JSON array objects by their type field and prints counts for each value"
+          "explanation": "Посчитать объекты JSON по значению поля type."
         },
         {
           "type": "example",
-          "text": "extract text between simple title tags in an XML-like file",
+          "text": "сгруппировать массив записей по типу и вывести количество",
+          "command": "perl -MJSON::PP -e 'local $/; $d=decode_json(<STDIN>); $c{$_->{type}}++ for @$d; printf \"%-20s %d\\n\",$_,$c{$_} for sort keys %c' < data.json",
+          "explanation": "Посчитать объекты JSON по значению поля type."
+        },
+        {
+          "type": "example",
+          "text": "извлечь содержимое парных тегов title, включая переносы строк",
           "command": "perl -0777 -ne 'print \"$1\\n\" while /<title>(.*?)<\\/title>/gs' file.xml",
-          "explanation": "Extracts multiline content between exact <title> and </title> tags; attributes, namespaces and XML entity decoding require a real XML parser."
+          "explanation": "Извлекает многострочное содержимое между точными тегами <title> и </title>; атрибуты, пространства имён и сущности XML требуют полноценного парсера."
+        },
+        {
+          "type": "example",
+          "text": "найти текст между простыми XML-тегами title через регулярное выражение",
+          "command": "perl -0777 -ne 'print \"$1\\n\" while /<title>(.*?)<\\/title>/gs' file.xml",
+          "explanation": "Извлекает многострочное содержимое между точными тегами <title> и </title>; атрибуты, пространства имён и сущности XML требуют полноценного парсера."
         }
       ]
     },
     {
       "name": "perl date/time",
       "synopsis": "perl -e 'time expression' | perl -MPOSIX -e 'date formatting'",
-      "description": "Date formatting, epoch conversion, duration calculation, and time manipulation with Perl",
+      "description": "Преобразование дат, времени и длительностей средствами Perl",
       "patterns": [
         {
           "type": "example",
-          "text": "convert unix epoch timestamp to human readable date",
+          "text": "преобразовать Unix-время в читаемую локальную дату",
           "command": "perl -e 'print scalar localtime($ARGV[0]), \"\\n\"' 1700000000",
-          "explanation": "Converts a Unix epoch timestamp to a human-readable local time string"
+          "explanation": "Преобразовать Unix-время в читаемую локальную дату."
         },
         {
           "type": "example",
-          "text": "get the current date and time in ISO 8601 format",
+          "text": "показать дату и время по числу секунд с начала эпохи через localtime",
+          "command": "perl -e 'print scalar localtime($ARGV[0]), \"\\n\"' 1700000000",
+          "explanation": "Преобразовать Unix-время в читаемую локальную дату."
+        },
+        {
+          "type": "example",
+          "text": "вывести текущую дату ISO 8601 со смещением часового пояса",
           "command": "perl -MPOSIX -e 'print strftime(\"%Y-%m-%dT%H:%M:%S%z\", localtime), \"\\n\"'",
-          "explanation": "Prints the current date and time formatted as ISO 8601 with timezone offset"
+          "explanation": "Вывести текущую дату ISO 8601 со смещением часового пояса."
         },
         {
           "type": "example",
-          "text": "convert a human readable date to unix epoch timestamp",
+          "text": "получить системное время в формате год-месяц-деньTчасы:минуты:секунды",
+          "command": "perl -MPOSIX -e 'print strftime(\"%Y-%m-%dT%H:%M:%S%z\", localtime), \"\\n\"'",
+          "explanation": "Вывести текущую дату ISO 8601 со смещением часового пояса."
+        },
+        {
+          "type": "example",
+          "text": "превратить дату и время из строки в Unix timestamp",
           "command": "perl -MPOSIX -e 'use Time::Piece; $t=Time::Piece->strptime($ARGV[0],\"%Y-%m-%d %H:%M:%S\"); print $t->epoch, \"\\n\"' '2024-06-15 14:30:00'",
-          "explanation": "Parses a date string and outputs the corresponding Unix epoch seconds"
+          "explanation": "Превратить дату и время из строки в Unix timestamp."
         },
         {
           "type": "example",
-          "text": "calculate the number of days between two dates",
+          "text": "разобрать запись год-месяц-день часы:минуты:секунды через Time::Piece",
+          "command": "perl -MPOSIX -e 'use Time::Piece; $t=Time::Piece->strptime($ARGV[0],\"%Y-%m-%d %H:%M:%S\"); print $t->epoch, \"\\n\"' '2024-06-15 14:30:00'",
+          "explanation": "Превратить дату и время из строки в Unix timestamp."
+        },
+        {
+          "type": "example",
+          "text": "посчитать количество дней между двумя датами",
           "command": "perl -e 'use Time::Piece; $a=Time::Piece->strptime($ARGV[0],\"%Y-%m-%d\"); $b=Time::Piece->strptime($ARGV[1],\"%Y-%m-%d\"); print int(($b-$a)->days), \" days\\n\"' '2024-01-01' '2024-12-31'",
-          "explanation": "Parses two dates and computes the difference in days"
+          "explanation": "Посчитать количество дней между двумя датами."
         },
         {
           "type": "example",
-          "text": "add or subtract days from a date",
+          "text": "вычислить разницу дат, заданных в формате год-месяц-день",
+          "command": "perl -e 'use Time::Piece; $a=Time::Piece->strptime($ARGV[0],\"%Y-%m-%d\"); $b=Time::Piece->strptime($ARGV[1],\"%Y-%m-%d\"); print int(($b-$a)->days), \" days\\n\"' '2024-01-01' '2024-12-31'",
+          "explanation": "Посчитать количество дней между двумя датами."
+        },
+        {
+          "type": "example",
+          "text": "прибавить тридцать дней к указанной дате",
           "command": "perl -e 'use Time::Piece; use Time::Seconds; $t=Time::Piece->strptime($ARGV[0],\"%Y-%m-%d\") + ONE_DAY*$ARGV[1]; print $t->strftime(\"%Y-%m-%d\"), \"\\n\"' '2024-06-15' 30",
-          "explanation": "Adds the specified number of days to a date and prints the result"
+          "explanation": "Прибавить тридцать дней к указанной дате."
         },
         {
           "type": "example",
-          "text": "format seconds into human readable hours minutes seconds duration",
+          "text": "сдвинуть календарную дату вперёд на заданное число суток",
+          "command": "perl -e 'use Time::Piece; use Time::Seconds; $t=Time::Piece->strptime($ARGV[0],\"%Y-%m-%d\") + ONE_DAY*$ARGV[1]; print $t->strftime(\"%Y-%m-%d\"), \"\\n\"' '2024-06-15' 30",
+          "explanation": "Прибавить тридцать дней к указанной дате."
+        },
+        {
+          "type": "example",
+          "text": "разложить количество секунд на дни, часы, минуты и секунды",
           "command": "perl -e '$s=$ARGV[0]; printf \"%dd %02dh %02dm %02ds\\n\", $s/86400, $s%86400/3600, $s%3600/60, $s%60' 90061",
-          "explanation": "Converts total seconds into a human-readable days/hours/minutes/seconds format"
+          "explanation": "Разложить количество секунд на дни, часы, минуты и секунды."
         },
         {
           "type": "example",
-          "text": "show the day of the week for a given date",
+          "text": "показать длительность в удобном виде вместо общего числа секунд",
+          "command": "perl -e '$s=$ARGV[0]; printf \"%dd %02dh %02dm %02ds\\n\", $s/86400, $s%86400/3600, $s%3600/60, $s%60' 90061",
+          "explanation": "Разложить количество секунд на дни, часы, минуты и секунды."
+        },
+        {
+          "type": "example",
+          "text": "определить день недели по календарной дате",
           "command": "perl -e 'use Time::Piece; $t=Time::Piece->strptime($ARGV[0],\"%Y-%m-%d\"); print $t->fullday, \"\\n\"' '2024-07-04'",
-          "explanation": "Parses a date string and prints the full day name like Monday or Friday"
+          "explanation": "Определить день недели по календарной дате."
         },
         {
           "type": "example",
-          "text": "convert timestamps in a log file from epoch to readable dates",
+          "text": "вывести полное название дня для даты год-месяц-день",
+          "command": "perl -e 'use Time::Piece; $t=Time::Piece->strptime($ARGV[0],\"%Y-%m-%d\"); print $t->fullday, \"\\n\"' '2024-07-04'",
+          "explanation": "Определить день недели по календарной дате."
+        },
+        {
+          "type": "example",
+          "text": "заменить десятизначные Unix timestamp в логе читаемыми датами",
           "command": "perl -MPOSIX -pe 's/(?<!\\d)(\\d{10})(?!\\d)/strftime(\"%Y-%m-%d %H:%M:%S\", localtime($1))/ge' log.txt",
-          "explanation": "Converts standalone ten-digit sequences to local dates, without matching inside longer digit sequences."
+          "explanation": "Преобразует отдельные десятизначные последовательности в локальные даты, не выбирая фрагменты более длинных чисел."
+        },
+        {
+          "type": "example",
+          "text": "преобразовать найденные значения эпохи в локальное время внутри текста",
+          "command": "perl -MPOSIX -pe 's/(?<!\\d)(\\d{10})(?!\\d)/strftime(\"%Y-%m-%d %H:%M:%S\", localtime($1))/ge' log.txt",
+          "explanation": "Преобразует отдельные десятизначные последовательности в локальные даты, не выбирая фрагменты более длинных чисел."
         }
       ]
     },
     {
       "name": "perl spacing",
       "synopsis": "perl -pe '...' | perl -ne '...'",
-      "description": "Add or remove vertical spacing in text files using Perl one-liners",
+      "description": "Добавление и удаление пустых строк средствами Perl",
       "patterns": [
         {
           "type": "example",
-          "text": "double-space a file",
+          "text": "добавить пустую строку после каждой исходной строки",
           "command": "perl -pe '$_ .= \"\\n\"' file.txt",
-          "explanation": "Appends an extra newline after each line"
+          "explanation": "Добавить пустую строку после каждой исходной строки."
         },
         {
           "type": "example",
-          "text": "double-space a file except blank lines",
+          "text": "сделать двойные межстрочные интервалы в выводе файла",
+          "command": "perl -pe '$_ .= \"\\n\"' file.txt",
+          "explanation": "Добавить пустую строку после каждой исходной строки."
+        },
+        {
+          "type": "example",
+          "text": "добавить дополнительный перевод строки только после непустых строк",
           "command": "perl -pe '$_ .= \"\\n\" if /\\S/' file.txt",
-          "explanation": "Only adds spacing after lines containing non-whitespace"
+          "explanation": "Добавить дополнительный перевод строки только после непустых строк."
         },
         {
           "type": "example",
-          "text": "triple-space a file",
+          "text": "увеличить интервалы текста, не дублируя уже пустые записи",
+          "command": "perl -pe '$_ .= \"\\n\" if /\\S/' file.txt",
+          "explanation": "Добавить дополнительный перевод строки только после непустых строк."
+        },
+        {
+          "type": "example",
+          "text": "добавить по две пустые строки после каждой строки файла",
           "command": "perl -pe '$_ .= \"\\n\\n\"' file.txt",
-          "explanation": "Appends two extra newlines after each line"
+          "explanation": "Добавить по две пустые строки после каждой строки файла."
         },
         {
           "type": "example",
-          "text": "remove all blank lines from a file",
+          "text": "сделать тройной межстрочный интервал в тексте",
+          "command": "perl -pe '$_ .= \"\\n\\n\"' file.txt",
+          "explanation": "Добавить по две пустые строки после каждой строки файла."
+        },
+        {
+          "type": "example",
+          "text": "вывести только строки с непробельными символами",
           "command": "perl -ne 'print if /\\S/' file.txt",
-          "explanation": "Only prints lines that contain non-whitespace characters"
+          "explanation": "Вывести только строки с непробельными символами."
         },
         {
           "type": "example",
-          "text": "remove all consecutive blank lines leaving just one",
+          "text": "убрать из вывода пустые строки и строки из пробелов",
+          "command": "perl -ne 'print if /\\S/' file.txt",
+          "explanation": "Вывести только строки с непробельными символами."
+        },
+        {
+          "type": "example",
+          "text": "оставить один пустой разделитель между абзацами",
           "command": "perl -00 -pe '' file.txt",
-          "explanation": "Paragraph mode collapses multiple blank lines into a single separator"
+          "explanation": "Оставить один пустой разделитель между абзацами."
         },
         {
           "type": "example",
-          "text": "compress multiple blank lines into a single blank line",
+          "text": "сократить несколько подряд идущих пустых строк",
+          "command": "perl -00 -pe '' file.txt",
+          "explanation": "Оставить один пустой разделитель между абзацами."
+        },
+        {
+          "type": "example",
+          "text": "нормализовать пустые промежутки между абзацами через Perl -00",
           "command": "perl -00pe0 file.txt",
-          "explanation": "Shortest form using paragraph slurp mode to normalize spacing"
+          "explanation": "Нормализовать пустые промежутки между абзацами через Perl -00."
         },
         {
           "type": "example",
-          "text": "add a blank line before every line in a file",
+          "text": "сжать повторные пустые строки краткой командой в режиме абзацев",
+          "command": "perl -00pe0 file.txt",
+          "explanation": "Нормализовать пустые промежутки между абзацами через Perl -00."
+        },
+        {
+          "type": "example",
+          "text": "добавить пустую строку перед каждой строкой исходного текста",
           "command": "perl -pe 'print \"\\n\"' file.txt",
-          "explanation": "Prints an empty line before each original line"
+          "explanation": "Добавить пустую строку перед каждой строкой исходного текста."
         },
         {
           "type": "example",
-          "text": "add a blank line after every line matching a pattern",
+          "text": "предварять все строки файла дополнительным переводом строки",
+          "command": "perl -pe 'print \"\\n\"' file.txt",
+          "explanation": "Добавить пустую строку перед каждой строкой исходного текста."
+        },
+        {
+          "type": "example",
+          "text": "добавить пустую строку после совпадения с PATTERN",
           "command": "perl -pe '$_ .= \"\\n\" if /PATTERN/' file.txt",
-          "explanation": "Adds extra spacing only after lines matching the regex"
+          "explanation": "Добавить пустую строку после совпадения с PATTERN."
+        },
+        {
+          "type": "example",
+          "text": "увеличить интервал только после строк с заданным выражением",
+          "command": "perl -pe '$_ .= \"\\n\" if /PATTERN/' file.txt",
+          "explanation": "Добавить пустую строку после совпадения с PATTERN."
         }
       ]
     },
     {
       "name": "perl numbering",
       "synopsis": "perl -pe '...' | perl -ne '...'",
-      "description": "Number lines, count words, and add numeric formatting using Perl one-liners",
+      "description": "Нумерация строк и числовое оформление средствами Perl",
       "patterns": [
         {
           "type": "example",
-          "text": "number all lines in a file",
+          "text": "пронумеровать каждую строку текстового файла",
           "command": "perl -pe '$_ = \"$. $_\"' file.txt",
-          "explanation": "Prepends the current line number using the $. variable"
+          "explanation": "Пронумеровать каждую строку текстового файла."
         },
         {
           "type": "example",
-          "text": "number only non-empty lines in a file",
+          "text": "добавить перед строками последовательные номера и пробел",
+          "command": "perl -pe '$_ = \"$. $_\"' file.txt",
+          "explanation": "Пронумеровать каждую строку текстового файла."
+        },
+        {
+          "type": "example",
+          "text": "нумеровать только строки с непробельными символами",
           "command": "perl -pe '$_ = ++$x.\" $_\" if /\\S/' file.txt",
-          "explanation": "Increments counter only for non-blank lines"
+          "explanation": "Нумеровать только строки с непробельными символами."
         },
         {
           "type": "example",
-          "text": "number lines but only print numbers for non-empty lines",
+          "text": "оставить пустые строки без номера и считать только содержательные",
+          "command": "perl -pe '$_ = ++$x.\" $_\" if /\\S/' file.txt",
+          "explanation": "Нумеровать только строки с непробельными символами."
+        },
+        {
+          "type": "example",
+          "text": "добавить номера непустым строкам, нормализовав остальные до пустых",
           "command": "perl -pe '$_ = /\\S/ ? ++$x.\" $_\" : \"\\n\"' file.txt",
-          "explanation": "Numbers non-blank lines, prints blank lines without numbers"
+          "explanation": "Добавить номера непустым строкам, нормализовав остальные до пустых."
         },
         {
           "type": "example",
-          "text": "count total number of lines in a file like wc -l",
+          "text": "вести отдельный счёт содержательных строк и не печатать номер для пробельных",
+          "command": "perl -pe '$_ = /\\S/ ? ++$x.\" $_\" : \"\\n\"' file.txt",
+          "explanation": "Добавить номера непустым строкам, нормализовав остальные до пустых."
+        },
+        {
+          "type": "example",
+          "text": "посчитать переводы строк в файле как wc -l",
           "command": "perl -ne '$n += tr/\\n//; END { print 0+$n, \"\\n\" }' file.txt",
-          "explanation": "Counts LF characters like wc -l; a final unterminated record does not add another line."
+          "explanation": "Считает символы LF, как wc -l; последняя запись без завершающего перевода строки отдельно не учитывается."
         },
         {
           "type": "example",
-          "text": "count non-empty lines in a file",
+          "text": "вывести количество LF без добавления незавершённой последней строки",
+          "command": "perl -ne '$n += tr/\\n//; END { print 0+$n, \"\\n\" }' file.txt",
+          "explanation": "Считает символы LF, как wc -l; последняя запись без завершающего перевода строки отдельно не учитывается."
+        },
+        {
+          "type": "example",
+          "text": "посчитать только непустые строки",
           "command": "perl -ne '$x++ if /\\S/; END { print \"$x\\n\" }' file.txt",
-          "explanation": "Counts lines containing non-whitespace characters"
+          "explanation": "Посчитать только непустые строки."
         },
         {
           "type": "example",
-          "text": "count total number of words across all lines",
+          "text": "узнать количество строк, содержащих что-либо кроме пробелов",
+          "command": "perl -ne '$x++ if /\\S/; END { print \"$x\\n\" }' file.txt",
+          "explanation": "Посчитать только непустые строки."
+        },
+        {
+          "type": "example",
+          "text": "посчитать слова, разделённые пробелами, во всём файле",
           "command": "perl -ne '$x += scalar split; END { print \"$x\\n\" }' file.txt",
-          "explanation": "Splits each line on whitespace and accumulates word count"
+          "explanation": "Посчитать слова, разделённые пробелами, во всём файле."
         },
         {
           "type": "example",
-          "text": "number lines across multiple files without resetting",
+          "text": "сложить количество текстовых полей по всем строкам",
+          "command": "perl -ne '$x += scalar split; END { print \"$x\\n\" }' file.txt",
+          "explanation": "Посчитать слова, разделённые пробелами, во всём файле."
+        },
+        {
+          "type": "example",
+          "text": "пронумеровать несколько файлов одним непрерывным счётчиком",
           "command": "perl -ne 'print \"$. $_\"' file1.txt file2.txt",
-          "explanation": "Line counter continues across file boundaries"
+          "explanation": "Пронумеровать несколько файлов одним непрерывным счётчиком."
         },
         {
           "type": "example",
-          "text": "number lines and reset counter for each file",
+          "text": "сохранить сквозные номера строк при переходе между файлами",
+          "command": "perl -ne 'print \"$. $_\"' file1.txt file2.txt",
+          "explanation": "Пронумеровать несколько файлов одним непрерывным счётчиком."
+        },
+        {
+          "type": "example",
+          "text": "сбрасывать нумерацию строк в начале каждого файла",
           "command": "perl -ne 'print \"$. $_\"; close ARGV if eof' file1.txt file2.txt",
-          "explanation": "Resets $. at end of each file using close ARGV"
+          "explanation": "Сбрасывать нумерацию строк в начале каждого файла."
+        },
+        {
+          "type": "example",
+          "text": "пронумеровать несколько текстов отдельно через закрытие ARGV",
+          "command": "perl -ne 'print \"$. $_\"; close ARGV if eof' file1.txt file2.txt",
+          "explanation": "Сбрасывать нумерацию строк в начале каждого файла."
         }
       ]
     },
     {
       "name": "perl calculations",
       "synopsis": "perl -e '...' | perl -le '...' | perl -ne '...'",
-      "description": "Mathematical calculations, number theory, and numeric operations with Perl one-liners",
+      "description": "Математические вычисления и числовые операции средствами Perl",
       "patterns": [
         {
           "type": "example",
-          "text": "check if a number is prime",
+          "text": "проверить, является ли целое число простым",
           "command": "perl -le 'print \"prime\" if (1 x shift) !~ /^1?$|^(11+?)\\1+$/' 17",
-          "explanation": "Uses a regex on unary representation to test primality"
+          "explanation": "Проверить, является ли целое число простым."
         },
         {
           "type": "example",
-          "text": "generate the first 20 fibonacci numbers",
+          "text": "протестировать простоту числа регулярным выражением на унарной записи",
+          "command": "perl -le 'print \"prime\" if (1 x shift) !~ /^1?$|^(11+?)\\1+$/' 17",
+          "explanation": "Проверить, является ли целое число простым."
+        },
+        {
+          "type": "example",
+          "text": "сгенерировать первые двадцать чисел Фибоначчи, начиная с единицы",
           "command": "perl -le '$a=$b=1; for(1..20){print $a; ($a,$b)=($b,$a+$b)}'",
-          "explanation": "Iteratively generates Fibonacci sequence using parallel assignment"
+          "explanation": "Сгенерировать первые двадцать чисел Фибоначчи, начиная с единицы."
         },
         {
           "type": "example",
-          "text": "calculate the factorial of a number",
+          "text": "вывести последовательность 1, 1, 2, 3 и далее до двадцатого элемента",
+          "command": "perl -le '$a=$b=1; for(1..20){print $a; ($a,$b)=($b,$a+$b)}'",
+          "explanation": "Сгенерировать первые двадцать чисел Фибоначчи, начиная с единицы."
+        },
+        {
+          "type": "example",
+          "text": "вычислить факториал целого неотрицательного числа",
           "command": "perl -le '$f=1; $f*=$_ for 1..shift; print $f' 10",
-          "explanation": "Multiplies all integers from 1 to N to compute N factorial"
+          "explanation": "Вычислить факториал целого неотрицательного числа."
         },
         {
           "type": "example",
-          "text": "generate a random 8-character alphanumeric password",
+          "text": "перемножить числа от единицы до N через Perl",
+          "command": "perl -le '$f=1; $f*=$_ for 1..shift; print $f' 10",
+          "explanation": "Вычислить факториал целого неотрицательного числа."
+        },
+        {
+          "type": "example",
+          "text": "сгенерировать восьмисимвольный пароль из латинских букв и цифр",
           "command": "perl -le 'print map{(\"a\"..\"z\",\"A\"..\"Z\",0..9)[rand 62]} 1..8'",
-          "explanation": "Picks 8 random characters from alphanumeric pool"
+          "explanation": "Сгенерировать восьмисимвольный пароль из латинских букв и цифр."
         },
         {
           "type": "example",
-          "text": "generate a random 16-character printable ASCII sample string",
+          "text": "получить случайную буквенно-цифровую строку длиной восемь",
+          "command": "perl -le 'print map{(\"a\"..\"z\",\"A\"..\"Z\",0..9)[rand 62]} 1..8'",
+          "explanation": "Сгенерировать восьмисимвольный пароль из латинских букв и цифр."
+        },
+        {
+          "type": "example",
+          "text": "сгенерировать случайную строку из шестнадцати печатных ASCII-символов",
           "command": "perl -le 'print map { chr(33 + int rand 94) } 1..16'",
-          "explanation": "Produces sixteen printable ASCII symbols; Perl rand is a demonstration PRNG, not a cryptographic password generator."
+          "explanation": "Генерирует 16 печатных ASCII-символов; rand в Perl — демонстрационный, а не криптографически стойкий генератор паролей."
         },
         {
           "type": "example",
-          "text": "convert an IP address to its decimal representation",
+          "text": "получить демонстрационную случайную строку с пунктуацией длиной 16",
+          "command": "perl -le 'print map { chr(33 + int rand 94) } 1..16'",
+          "explanation": "Генерирует 16 печатных ASCII-символов; rand в Perl — демонстрационный, а не криптографически стойкий генератор паролей."
+        },
+        {
+          "type": "example",
+          "text": "преобразовать IPv4-адрес в беззнаковое 32-битное число",
           "command": "perl -le 'print unpack(\"N\",pack(\"C4\",split /\\./,shift))' 127.0.0.1",
-          "explanation": "Packs IP octets into a 32-bit integer using pack/unpack"
+          "explanation": "Преобразовать IPv4-адрес в беззнаковое 32-битное число."
         },
         {
           "type": "example",
-          "text": "convert a decimal number to an IP address",
+          "text": "получить десятичную запись упакованных октетов IP",
+          "command": "perl -le 'print unpack(\"N\",pack(\"C4\",split /\\./,shift))' 127.0.0.1",
+          "explanation": "Преобразовать IPv4-адрес в беззнаковое 32-битное число."
+        },
+        {
+          "type": "example",
+          "text": "перевести десятичное 32-битное число в IPv4-адрес",
           "command": "perl -le 'print join \".\",unpack(\"C4\",pack(\"N\",shift))' 2130706433",
-          "explanation": "Unpacks a 32-bit integer into four octets"
+          "explanation": "Перевести десятичное 32-битное число в IPv4-адрес."
         },
         {
           "type": "example",
-          "text": "calculate the greatest common divisor of two numbers",
+          "text": "восстановить четыре октета IP из целого значения",
+          "command": "perl -le 'print join \".\",unpack(\"C4\",pack(\"N\",shift))' 2130706433",
+          "explanation": "Перевести десятичное 32-битное число в IPv4-адрес."
+        },
+        {
+          "type": "example",
+          "text": "найти наибольший общий делитель двух чисел",
           "command": "perl -le 'sub g{$_[1]?g($_[1],$_[0]%$_[1]):$_[0]} print g(36,24)'",
-          "explanation": "Recursive Euclidean algorithm for GCD"
+          "explanation": "Найти наибольший общий делитель двух чисел."
         },
         {
           "type": "example",
-          "text": "calculate the least common multiple of two numbers",
+          "text": "вычислить НОД рекурсивным алгоритмом Евклида",
+          "command": "perl -le 'sub g{$_[1]?g($_[1],$_[0]%$_[1]):$_[0]} print g(36,24)'",
+          "explanation": "Найти наибольший общий делитель двух чисел."
+        },
+        {
+          "type": "example",
+          "text": "посчитать наименьшее общее кратное двух целых чисел",
           "command": "perl -le 'sub g { my ($a,$b)=map {abs} @_; ($a,$b)=($b,$a%$b) while $b; return $a } @ARGV==2 or die \"two integers required\\n\"; for (@ARGV) { /\\A-?\\d+\\z/ or die \"integers required\\n\" } ($a,$b)=@ARGV; print(($a==0 || $b==0) ? 0 : abs($a/g($a,$b)*$b))' -- 36 24",
-          "explanation": "Computes abs(a/GCD(a,b)*b) for two integers, returning zero when either input is zero."
+          "explanation": "Вычисляет abs(a/GCD(a,b)*b) для двух целых чисел; если одно из них равно нулю, возвращает ноль."
         },
         {
           "type": "example",
-          "text": "generate all permutations of a list",
+          "text": "вычислить НОК через наибольший общий делитель",
+          "command": "perl -le 'sub g { my ($a,$b)=map {abs} @_; ($a,$b)=($b,$a%$b) while $b; return $a } @ARGV==2 or die \"two integers required\\n\"; for (@ARGV) { /\\A-?\\d+\\z/ or die \"integers required\\n\" } ($a,$b)=@ARGV; print(($a==0 || $b==0) ? 0 : abs($a/g($a,$b)*$b))' -- 36 24",
+          "explanation": "Вычисляет abs(a/GCD(a,b)*b) для двух целых чисел; если одно из них равно нулю, возвращает ноль."
+        },
+        {
+          "type": "example",
+          "text": "получить все перестановки элементов списка",
           "command": "perl -e 'sub p { return ([]) unless @_; my @out; for my $i (0..$#_) { my @rest=@_; my $item=splice(@rest,$i,1); push @out, map {[$item,@$_]} p(@rest) } return @out } print join(\" \", @$_), \"\\n\" for p(@ARGV)' 1 2 3 4",
-          "explanation": "Recursively removes and remembers each chosen element, then prepends it to all permutations of the remaining input."
+          "explanation": "Рекурсивно убирает выбранный элемент и добавляет его перед всеми перестановками оставшихся элементов."
         },
         {
           "type": "example",
-          "text": "calculate the power set of a set",
+          "text": "перечислить варианты порядка чисел от одного до четырёх",
+          "command": "perl -e 'sub p { return ([]) unless @_; my @out; for my $i (0..$#_) { my @rest=@_; my $item=splice(@rest,$i,1); push @out, map {[$item,@$_]} p(@rest) } return @out } print join(\" \", @$_), \"\\n\" for p(@ARGV)' 1 2 3 4",
+          "explanation": "Рекурсивно убирает выбранный элемент и добавляет его перед всеми перестановками оставшихся элементов."
+        },
+        {
+          "type": "example",
+          "text": "перечислить все подмножества заданного набора",
           "command": "perl -le '@a=@ARGV; for $i (0..2**@a-1) { print join \",\", map {$a[$_]} grep {$i & (1<<$_)} 0..$#a }' a b c d",
-          "explanation": "Uses bitmasks to enumerate subsets of the actual command-line elements, including the empty subset."
+          "explanation": "Перебирает подмножества фактических аргументов командной строки через битовые маски, включая пустое подмножество."
         },
         {
           "type": "example",
-          "text": "convert between decimal hexadecimal octal and binary",
+          "text": "построить множество всех сочетаний элементов битовыми масками",
+          "command": "perl -le '@a=@ARGV; for $i (0..2**@a-1) { print join \",\", map {$a[$_]} grep {$i & (1<<$_)} 0..$#a }' a b c d",
+          "explanation": "Перебирает подмножества фактических аргументов командной строки через битовые маски, включая пустое подмножество."
+        },
+        {
+          "type": "example",
+          "text": "показать число в десятичной, шестнадцатеричной, восьмеричной и двоичной системах",
           "command": "perl -le 'printf \"%d %x %o %b\\n\", 255, 255, 255, 255'",
-          "explanation": "Printf format specifiers for decimal, hex, octal, and binary"
+          "explanation": "Показать число в десятичной, шестнадцатеричной, восьмеричной и двоичной системах."
         },
         {
           "type": "example",
-          "text": "sum all numbers piped from stdin",
+          "text": "вывести разные формы записи значения 255 через printf",
+          "command": "perl -le 'printf \"%d %x %o %b\\n\", 255, 255, 255, 255'",
+          "explanation": "Показать число в десятичной, шестнадцатеричной, восьмеричной и двоичной системах."
+        },
+        {
+          "type": "example",
+          "text": "сложить числа, поданные по стандартному вводу",
           "command": "perl -lne '$s+=$_; END{print $s}'",
-          "explanation": "Accumulates each line as a number and prints the total"
+          "explanation": "Сложить числа, поданные по стандартному вводу."
+        },
+        {
+          "type": "example",
+          "text": "получить сумму числовых строк конвейера",
+          "command": "perl -lne '$s+=$_; END{print $s}'",
+          "explanation": "Сложить числа, поданные по стандартному вводу."
         }
       ]
     },
     {
       "name": "perl string generation",
       "synopsis": "perl -e '...' | perl -le '...'",
-      "description": "Generate strings, arrays, sequences, and structured data with Perl one-liners",
+      "description": "Генерация строк, массивов и последовательностей средствами Perl",
       "patterns": [
         {
           "type": "example",
-          "text": "generate the alphabet as a string",
+          "text": "вывести латинский алфавит одной строкой",
           "command": "perl -le 'print join \"\", \"a\"..\"z\"'",
-          "explanation": "Uses Perl's range operator to generate a through z"
+          "explanation": "Вывести латинский алфавит одной строкой."
         },
         {
           "type": "example",
-          "text": "generate the alphabet as a comma-separated list",
+          "text": "сгенерировать последовательность букв от a до z без разделителей",
+          "command": "perl -le 'print join \"\", \"a\"..\"z\"'",
+          "explanation": "Вывести латинский алфавит одной строкой."
+        },
+        {
+          "type": "example",
+          "text": "получить латинские буквы от a до z через запятую",
           "command": "perl -le 'print join \",\", \"a\"..\"z\"'",
-          "explanation": "Joins the alphabet range with commas"
+          "explanation": "Получить латинские буквы от a до z через запятую."
         },
         {
           "type": "example",
-          "text": "generate a string of N repeated characters",
+          "text": "создать список символов алфавита с разделителями",
+          "command": "perl -le 'print join \",\", \"a\"..\"z\"'",
+          "explanation": "Получить латинские буквы от a до z через запятую."
+        },
+        {
+          "type": "example",
+          "text": "создать строку из восьмидесяти символов x",
           "command": "perl -le 'print \"x\" x 80'",
-          "explanation": "String repetition operator creates 80 x's"
+          "explanation": "Создать строку из восьмидесяти символов x."
         },
         {
           "type": "example",
-          "text": "generate a sequence of numbers like seq command",
+          "text": "повторить заданный символ указанное количество раз",
+          "command": "perl -le 'print \"x\" x 80'",
+          "explanation": "Создать строку из восьмидесяти символов x."
+        },
+        {
+          "type": "example",
+          "text": "вывести числа от одного до ста по одному на строку",
           "command": "perl -le 'print for 1..100'",
-          "explanation": "Range operator generates numbers from 1 to 100"
+          "explanation": "Вывести числа от одного до ста по одному на строку."
         },
         {
           "type": "example",
-          "text": "generate a multiplication table",
+          "text": "сгенерировать целочисленную последовательность через Perl",
+          "command": "perl -le 'print for 1..100'",
+          "explanation": "Вывести числа от одного до ста по одному на строку."
+        },
+        {
+          "type": "example",
+          "text": "напечатать таблицу умножения размером двенадцать на двенадцать",
           "command": "perl -le 'for $i(1..12){print join\"\\t\",map{$i*$_}1..12}'",
-          "explanation": "Nested loop prints a 12x12 multiplication grid"
+          "explanation": "Напечатать таблицу умножения размером двенадцать на двенадцать."
         },
         {
           "type": "example",
-          "text": "create a comma-separated list of quoted strings",
+          "text": "создать сетку произведений чисел от 1 до 12",
+          "command": "perl -le 'for $i(1..12){print join\"\\t\",map{$i*$_}1..12}'",
+          "explanation": "Напечатать таблицу умножения размером двенадцать на двенадцать."
+        },
+        {
+          "type": "example",
+          "text": "обрамить аргументы двойными кавычками и соединить запятыми",
           "command": "perl -le 'for (@ARGV) { s/\"/\"\"/g } print join \",\", map {qq(\"$_\")} @ARGV' foo bar baz",
-          "explanation": "Quotes each argument as a CSV field and doubles embedded double quotes before joining with commas."
+          "explanation": "Заключает каждый аргумент в CSV-кавычки, удваивает внутренние двойные кавычки и соединяет поля запятыми."
         },
         {
           "type": "example",
-          "text": "generate a random hex string of N bytes",
+          "text": "превратить список строк в запись вида \"foo\",\"bar\",\"baz\"",
+          "command": "perl -le 'for (@ARGV) { s/\"/\"\"/g } print join \",\", map {qq(\"$_\")} @ARGV' foo bar baz",
+          "explanation": "Заключает каждый аргумент в CSV-кавычки, удваивает внутренние двойные кавычки и соединяет поля запятыми."
+        },
+        {
+          "type": "example",
+          "text": "сгенерировать шестнадцатеричную строку из шестнадцати случайных байтов",
           "command": "perl -le 'print unpack \"H*\", pack \"C*\", map{int rand 256} 1..16'",
-          "explanation": "Generates 16 random bytes and converts to hex string"
+          "explanation": "Сгенерировать шестнадцатеричную строку из шестнадцати случайных байтов."
         },
         {
           "type": "example",
-          "text": "repeat a string pattern N times with separator",
+          "text": "вывести 32 hex-символа псевдослучайных данных",
+          "command": "perl -le 'print unpack \"H*\", pack \"C*\", map{int rand 256} 1..16'",
+          "explanation": "Сгенерировать шестнадцатеричную строку из шестнадцати случайных байтов."
+        },
+        {
+          "type": "example",
+          "text": "повторить шаблон пять раз с разделителем из дефисов",
           "command": "perl -le 'print join \"\\n---\\n\", (\"template\") x 5'",
-          "explanation": "Repeats a template string with custom separator between copies"
+          "explanation": "Повторить шаблон пять раз с разделителем из дефисов."
+        },
+        {
+          "type": "example",
+          "text": "создать несколько копий текста, разделённых строкой ---",
+          "command": "perl -le 'print join \"\\n---\\n\", (\"template\") x 5'",
+          "explanation": "Повторить шаблон пять раз с разделителем из дефисов."
         }
       ]
     },
     {
       "name": "perl text conversion",
       "synopsis": "perl -pe '...' | perl -le '...'",
-      "description": "Convert text formats, encodings, and character transformations with Perl one-liners",
+      "description": "Преобразование текстовых форматов и кодировок средствами Perl",
       "patterns": [
         {
           "type": "example",
-          "text": "ROT13 encode or decode a string",
+          "text": "закодировать или декодировать строку через ROT13",
           "command": "perl -le '$s=shift; $s=~tr/a-zA-Z/n-za-mN-ZA-M/; print $s' 'Hello World'",
-          "explanation": "Transliterates letters by 13 positions for ROT13 cipher"
+          "explanation": "Закодировать или декодировать строку через ROT13."
         },
         {
           "type": "example",
-          "text": "convert all text to uppercase",
+          "text": "сдвинуть латинские буквы аргумента на тринадцать позиций",
+          "command": "perl -le '$s=shift; $s=~tr/a-zA-Z/n-za-mN-ZA-M/; print $s' 'Hello World'",
+          "explanation": "Закодировать или декодировать строку через ROT13."
+        },
+        {
+          "type": "example",
+          "text": "сделать весь текст файла заглавными буквами",
           "command": "perl -pe '$_=uc' file.txt",
-          "explanation": "Applies uppercase transformation to every line"
+          "explanation": "Сделать весь текст файла заглавными буквами."
         },
         {
           "type": "example",
-          "text": "convert all text to lowercase",
+          "text": "перевести прочитанные строки в верхний регистр",
+          "command": "perl -pe '$_=uc' file.txt",
+          "explanation": "Сделать весь текст файла заглавными буквами."
+        },
+        {
+          "type": "example",
+          "text": "привести файл к строчным буквам",
           "command": "perl -pe '$_=lc' file.txt",
-          "explanation": "Applies lowercase transformation to every line"
+          "explanation": "Привести файл к строчным буквам."
         },
         {
           "type": "example",
-          "text": "capitalize the first letter of each word title case",
+          "text": "преобразовать каждую строку текста в нижний регистр",
+          "command": "perl -pe '$_=lc' file.txt",
+          "explanation": "Привести файл к строчным буквам."
+        },
+        {
+          "type": "example",
+          "text": "оформить каждое слово с заглавной первой буквой",
           "command": "perl -pe 's/(\\w+)/ucfirst lc $1/ge' file.txt",
-          "explanation": "Lowercases then capitalizes the first letter of every word"
+          "explanation": "Оформить каждое слово с заглавной первой буквой."
         },
         {
           "type": "example",
-          "text": "strip simple HTML-like tags from a file",
+          "text": "перевести слова в формат Title Case",
+          "command": "perl -pe 's/(\\w+)/ucfirst lc $1/ge' file.txt",
+          "explanation": "Оформить каждое слово с заглавной первой буквой."
+        },
+        {
+          "type": "example",
+          "text": "убрать простые HTML-теги из файла",
           "command": "perl -pe 's/<[^>]*>//g' file.html",
-          "explanation": "Removes simple fragments between angle brackets without parsing HTML structure or decoding entities."
+          "explanation": "Удаляет простые фрагменты в угловых скобках, не разбирая структуру HTML и не декодируя сущности."
         },
         {
           "type": "example",
-          "text": "convert simple ASCII camelCase boundaries to underscores",
+          "text": "удалить фрагменты между угловыми скобками, оставив остальной текст",
+          "command": "perl -pe 's/<[^>]*>//g' file.html",
+          "explanation": "Удаляет простые фрагменты в угловых скобках, не разбирая структуру HTML и не декодируя сущности."
+        },
+        {
+          "type": "example",
+          "text": "вставить подчёркивания на границах строчной и заглавной букв",
           "command": "perl -pe 's/([a-z])([A-Z])/$1_\\L$2/g' file.txt",
-          "explanation": "Replaces lowercase-ASCII to uppercase-ASCII boundaries with underscores; acronyms and general Unicode casing are not handled."
+          "explanation": "Вставляет подчёркивание на границе строчной и прописной ASCII-букв; аббревиатуры и общий регистр Unicode не обрабатываются."
         },
         {
           "type": "example",
-          "text": "convert snake_case to camelCase",
+          "text": "преобразовать простые имена camelCase в snake_case",
+          "command": "perl -pe 's/([a-z])([A-Z])/$1_\\L$2/g' file.txt",
+          "explanation": "Вставляет подчёркивание на границе строчной и прописной ASCII-букв; аббревиатуры и общий регистр Unicode не обрабатываются."
+        },
+        {
+          "type": "example",
+          "text": "убрать подчёркивания перед строчными буквами и сделать буквы заглавными",
           "command": "perl -pe 's/_([a-z])/uc $1/ge' file.txt",
-          "explanation": "Removes underscores and capitalizes the following letter"
+          "explanation": "Убрать подчёркивания перед строчными буквами и сделать буквы заглавными."
         },
         {
           "type": "example",
-          "text": "URL encode a string for use in URLs",
+          "text": "перевести простые имена snake_case в camelCase",
+          "command": "perl -pe 's/_([a-z])/uc $1/ge' file.txt",
+          "explanation": "Убрать подчёркивания перед строчными буквами и сделать буквы заглавными."
+        },
+        {
+          "type": "example",
+          "text": "закодировать специальные символы строки последовательностями %XX",
           "command": "perl -MEncode=encode -CA -le '$s=encode(\"UTF-8\", shift); $s=~s/([^A-Za-z0-9\\-_.~])/sprintf \"%%%02X\",ord $1/ge; print $s' 'hello world!'",
-          "explanation": "Decodes the UTF-8 command-line argument, re-encodes it as UTF-8 bytes, and percent-escapes non-unreserved bytes."
+          "explanation": "Декодирует аргумент командной строки как UTF-8, снова получает UTF-8-байты и кодирует неразрешённые байты через проценты."
         },
         {
           "type": "example",
-          "text": "URL decode a percent-encoded string",
+          "text": "сделать процентное экранирование аргумента без модуля URI",
+          "command": "perl -MEncode=encode -CA -le '$s=encode(\"UTF-8\", shift); $s=~s/([^A-Za-z0-9\\-_.~])/sprintf \"%%%02X\",ord $1/ge; print $s' 'hello world!'",
+          "explanation": "Декодирует аргумент командной строки как UTF-8, снова получает UTF-8-байты и кодирует неразрешённые байты через проценты."
+        },
+        {
+          "type": "example",
+          "text": "заменить последовательности %XX исходными символами",
           "command": "perl -le '$s=shift; $s=~s/%([0-9A-Fa-f]{2})/chr hex $1/ge; print $s' 'hello%20world%21'",
-          "explanation": "Converts percent-hex sequences back to original characters"
+          "explanation": "Заменить последовательности %XX исходными символами."
         },
         {
           "type": "example",
-          "text": "convert tabs to spaces with configurable width",
+          "text": "декодировать процентные escapes в аргументе командной строки",
+          "command": "perl -le '$s=shift; $s=~s/%([0-9A-Fa-f]{2})/chr hex $1/ge; print $s' 'hello%20world%21'",
+          "explanation": "Заменить последовательности %XX исходными символами."
+        },
+        {
+          "type": "example",
+          "text": "заменить табуляции пробелами с шагом восемь",
           "command": "perl -CSD -MText::Tabs -pe '$Text::Tabs::tabstop=8; $_=expand($_)' file.txt",
-          "explanation": "Uses core Text::Tabs to expand UTF-8 text using tab stops every eight character positions."
+          "explanation": "Разворачивает табуляцию в UTF-8-тексте стандартным Text::Tabs с шагом восемь символьных позиций."
         },
         {
           "type": "example",
-          "text": "encode a string as base64",
+          "text": "развернуть табы по восьмипозиционным колонкам",
+          "command": "perl -CSD -MText::Tabs -pe '$Text::Tabs::tabstop=8; $_=expand($_)' file.txt",
+          "explanation": "Разворачивает табуляцию в UTF-8-тексте стандартным Text::Tabs с шагом восемь символьных позиций."
+        },
+        {
+          "type": "example",
+          "text": "закодировать строку аргумента в Base64",
           "command": "perl -le 'use MIME::Base64; print encode_base64(shift)' 'Hello World'",
-          "explanation": "Uses the MIME::Base64 module to base64 encode input"
+          "explanation": "Закодировать строку аргумента в Base64."
         },
         {
           "type": "example",
-          "text": "decode a base64 encoded string",
+          "text": "получить base64-представление текста через MIME::Base64",
+          "command": "perl -le 'use MIME::Base64; print encode_base64(shift)' 'Hello World'",
+          "explanation": "Закодировать строку аргумента в Base64."
+        },
+        {
+          "type": "example",
+          "text": "восстановить исходную строку из Base64",
           "command": "perl -le 'use MIME::Base64; print decode_base64(shift)' 'SGVsbG8gV29ybGQ='",
-          "explanation": "Decodes a base64 string back to its original form"
+          "explanation": "Восстановить исходную строку из Base64."
+        },
+        {
+          "type": "example",
+          "text": "декодировать аргумент с данными base64 через Perl",
+          "command": "perl -le 'use MIME::Base64; print decode_base64(shift)' 'SGVsbG8gV29ybGQ='",
+          "explanation": "Восстановить исходную строку из Base64."
         }
       ]
     },
     {
       "name": "perl selective printing",
       "synopsis": "perl -ne '...'",
-      "description": "Selectively print lines based on patterns, positions, and conditions with Perl one-liners",
+      "description": "Выборочный вывод строк по шаблонам, позициям и условиям средствами Perl",
       "patterns": [
         {
           "type": "example",
-          "text": "print the first line of a file like head -1",
+          "text": "вывести только первую строку файла",
           "command": "perl -ne 'print; exit' file.txt",
-          "explanation": "Prints the first line then immediately exits"
+          "explanation": "Вывести только первую строку файла."
         },
         {
           "type": "example",
-          "text": "print the last line of a file like tail -1",
+          "text": "прочитать начало текста и сразу завершиться",
+          "command": "perl -ne 'print; exit' file.txt",
+          "explanation": "Вывести только первую строку файла."
+        },
+        {
+          "type": "example",
+          "text": "напечатать последнюю строку файла",
           "command": "perl -ne '$l=$_; END{print $l}' file.txt",
-          "explanation": "Saves each line, prints the last one at END"
+          "explanation": "Напечатать последнюю строку файла."
         },
         {
           "type": "example",
-          "text": "print the longest line in a file",
+          "text": "сохранить последнюю прочитанную запись и вывести в конце",
+          "command": "perl -ne '$l=$_; END{print $l}' file.txt",
+          "explanation": "Напечатать последнюю строку файла."
+        },
+        {
+          "type": "example",
+          "text": "найти самую длинную строку файла",
           "command": "perl -ne '$l=$_ if length>length$l; END{print $l}' file.txt",
-          "explanation": "Tracks the longest line seen and prints it at the end"
+          "explanation": "Найти самую длинную строку файла."
         },
         {
           "type": "example",
-          "text": "print the shortest line in a file",
+          "text": "вывести первую строку максимальной длины",
+          "command": "perl -ne '$l=$_ if length>length$l; END{print $l}' file.txt",
+          "explanation": "Найти самую длинную строку файла."
+        },
+        {
+          "type": "example",
+          "text": "показать самую короткую строку, включая пустые",
           "command": "perl -ne '$l=$_ if !$l||length<length$l; END{print $l}' file.txt",
-          "explanation": "Tracks the shortest input record, including blank lines, and prints it at the end."
+          "explanation": "Запоминает самую короткую входную запись, включая пустые строки, и выводит её в конце."
         },
         {
           "type": "example",
-          "text": "print lines that are longer than 80 characters",
+          "text": "найти минимальную длину записи в тексте без исключения пустых строк",
+          "command": "perl -ne '$l=$_ if !$l||length<length$l; END{print $l}' file.txt",
+          "explanation": "Запоминает самую короткую входную запись, включая пустые строки, и выводит её в конце."
+        },
+        {
+          "type": "example",
+          "text": "показать строки длиннее восьмидесяти символов без учёта перевода строки",
           "command": "perl -CSD -ne '$line=$_; $line =~ s/\\r?\\n\\z//; print if length($line)>80' file.txt",
-          "explanation": "Decodes UTF-8, counts characters after excluding LF/CRLF, and prints original records longer than 80 characters."
+          "explanation": "Декодирует UTF-8, считает символы без LF/CRLF и выводит исходные записи длиной более 80 символов."
         },
         {
           "type": "example",
-          "text": "print only unique lines in order like uniq without sort",
+          "text": "отобрать текстовые строки, в которых больше 80 символов",
+          "command": "perl -CSD -ne '$line=$_; $line =~ s/\\r?\\n\\z//; print if length($line)>80' file.txt",
+          "explanation": "Декодирует UTF-8, считает символы без LF/CRLF и выводит исходные записи длиной более 80 символов."
+        },
+        {
+          "type": "example",
+          "text": "вывести уникальные строки без изменения исходного порядка",
           "command": "perl -ne 'print unless $seen{$_}++' file.txt",
-          "explanation": "Uses a hash to track and skip duplicate lines preserving order"
+          "explanation": "Вывести уникальные строки без изменения исходного порядка."
         },
         {
           "type": "example",
-          "text": "print one copy of each repeated line at its second occurrence",
+          "text": "убрать повторы текста, оставив первое появление каждой строки",
+          "command": "perl -ne 'print unless $seen{$_}++' file.txt",
+          "explanation": "Вывести уникальные строки без изменения исходного порядка."
+        },
+        {
+          "type": "example",
+          "text": "вывести по одной копии строк, которые встречаются повторно",
           "command": "perl -ne 'print if $seen{$_}++ == 1' file.txt",
-          "explanation": "Prints the second appearance of every repeated line once; first and later appearances are not printed."
+          "explanation": "Выводит второе появление каждой повторяющейся строки один раз; первое и последующие появления пропускаются."
         },
         {
           "type": "example",
-          "text": "print lines from two files that are different like diff",
+          "text": "показать повторяющиеся строки в порядке их второго появления",
+          "command": "perl -ne 'print if $seen{$_}++ == 1' file.txt",
+          "explanation": "Выводит второе появление каждой повторяющейся строки один раз; первое и последующие появления пропускаются."
+        },
+        {
+          "type": "example",
+          "text": "найти различающиеся строки двух текстовых файлов",
           "command": "perl -e '@ARGV==2 or die \"two files required\\n\"; for my $i (0,1) { open my $f,\"<\",$ARGV[$i] or die $!; while (<$f>) { chomp; push @order,$_ unless exists $seen{$_}; $seen{$_}|=1<<$i } } print \"$_\\n\" for grep {$seen{$_}!=3} @order' file1.txt file2.txt",
-          "explanation": "Prints each distinct line present in only one input file, preserving first-seen order and ignoring the presence of a final LF."
+          "explanation": "Выводит уникальные строки, присутствующие только в одном входном файле, в исходном порядке появления и без учёта наличия последнего LF."
         },
         {
           "type": "example",
-          "text": "print every Nth line of a file",
+          "text": "вывести строки, присутствующие только в одном из двух файлов",
+          "command": "perl -e '@ARGV==2 or die \"two files required\\n\"; for my $i (0,1) { open my $f,\"<\",$ARGV[$i] or die $!; while (<$f>) { chomp; push @order,$_ unless exists $seen{$_}; $seen{$_}|=1<<$i } } print \"$_\\n\" for grep {$seen{$_}!=3} @order' file1.txt file2.txt",
+          "explanation": "Выводит уникальные строки, присутствующие только в одном входном файле, в исходном порядке появления и без учёта наличия последнего LF."
+        },
+        {
+          "type": "example",
+          "text": "напечатать строки с номерами, кратными пяти",
           "command": "perl -ne 'print if $. % 5 == 0' file.txt",
-          "explanation": "Prints every 5th line using modulo on line number"
+          "explanation": "Напечатать строки с номерами, кратными пяти."
         },
         {
           "type": "example",
-          "text": "print lines matching a pattern and the N lines after it",
+          "text": "показать каждую пятую запись входного текста",
+          "command": "perl -ne 'print if $. % 5 == 0' file.txt",
+          "explanation": "Напечатать строки с номерами, кратными пяти."
+        },
+        {
+          "type": "example",
+          "text": "вывести совпадение с PATTERN и три следующие строки",
           "command": "perl -ne 'if (/PATTERN/) { $c=4 } print if $c-->0' file.txt",
-          "explanation": "Prints each matching line and the next three lines, merging overlapping context windows."
+          "explanation": "Выводит совпавшую строку и три следующие строки, объединяя перекрывающиеся окна контекста."
+        },
+        {
+          "type": "example",
+          "text": "показать найденные строки с контекстом из трёх строк после совпадения",
+          "command": "perl -ne 'if (/PATTERN/) { $c=4 } print if $c-->0' file.txt",
+          "explanation": "Выводит совпавшую строку и три следующие строки, объединяя перекрывающиеся окна контекста."
         }
       ]
     },
     {
       "name": "perl selective deleting",
       "synopsis": "perl -ne '...' | perl -i -ne '...'",
-      "description": "Selectively delete lines, characters, and content from files with Perl one-liners",
+      "description": "Выборочное удаление строк и символов средствами Perl",
       "patterns": [
         {
           "type": "example",
-          "text": "delete all blank lines from a file in place",
+          "text": "удалить пустые и пробельные строки непосредственно из файла",
           "command": "perl -i -ne 'print if /\\S/' file.txt",
-          "explanation": "Removes lines that contain only whitespace",
+          "explanation": "Удалить пустые и пробельные строки непосредственно из файла.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "delete trailing whitespace from every line",
+          "text": "оставить в исходном тексте только строки с содержимым",
+          "command": "perl -i -ne 'print if /\\S/' file.txt",
+          "explanation": "Удалить пустые и пробельные строки непосредственно из файла.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "убрать пробельный хвост каждой строки, сохранив один перевод строки",
           "command": "perl -i -pe 's/[ \\t]+(?=\\r?$)//' file.txt",
-          "explanation": "Removes trailing spaces and tabs in place without changing LF/CRLF line endings.",
+          "explanation": "Удаляет завершающие пробелы и табуляцию на месте, сохраняя LF/CRLF.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "delete leading whitespace from every line",
+          "text": "очистить завершающие пробелы и табуляции в файле",
+          "command": "perl -i -pe 's/[ \\t]+(?=\\r?$)//' file.txt",
+          "explanation": "Удаляет завершающие пробелы и табуляцию на месте, сохраняя LF/CRLF.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "удалить начальные пробелы и табуляции, сохранив пустые строки",
           "command": "perl -i -pe 's/^[ \\t]+//' file.txt",
-          "explanation": "Removes leading spaces and tabs in place while retaining blank lines and their line endings.",
+          "explanation": "Удаляет начальные пробелы и табуляцию на месте, сохраняя пустые строки и их окончания.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "delete both leading and trailing whitespace from lines",
+          "text": "убрать отступы в файле без удаления переводов строк",
+          "command": "perl -i -pe 's/^[ \\t]+//' file.txt",
+          "explanation": "Удаляет начальные пробелы и табуляцию на месте, сохраняя пустые строки и их окончания.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "убрать пробелы по краям строк прямо в файле без их склеивания",
           "command": "perl -i -pe 's/^[ \\t]+//; s/[ \\t]+(?=\\r?$)//' file.txt",
-          "explanation": "Trims leading and trailing spaces and tabs in place without deleting LF/CRLF record separators.",
+          "explanation": "Убирает крайние пробелы и табуляцию на месте, не удаляя разделители записей LF/CRLF.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "delete all lines that match a pattern from a file",
+          "text": "очистить отступы и хвостовые пробелы с сохранением окончаний строк",
+          "command": "perl -i -pe 's/^[ \\t]+//; s/[ \\t]+(?=\\r?$)//' file.txt",
+          "explanation": "Убирает крайние пробелы и табуляцию на месте, не удаляя разделители записей LF/CRLF.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "удалить из файла все строки с заданным выражением",
           "command": "perl -i -ne 'print unless /PATTERN/' file.txt",
-          "explanation": "Removes lines matching the regex in-place",
+          "explanation": "Удалить из файла все строки с заданным выражением.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "delete all duplicate lines from a file",
+          "text": "исключить записи, содержащие PATTERN, с изменением исходника",
+          "command": "perl -i -ne 'print unless /PATTERN/' file.txt",
+          "explanation": "Удалить из файла все строки с заданным выражением.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "убрать повторяющиеся строки непосредственно из файла",
           "command": "perl -i -ne 'print unless $seen{$_}++' file.txt",
-          "explanation": "Keeps only the first occurrence of each unique line",
+          "explanation": "Убрать повторяющиеся строки непосредственно из файла.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "delete all characters except letters and numbers",
+          "text": "сохранить только первое вхождение каждой уникальной строки",
+          "command": "perl -i -ne 'print unless $seen{$_}++' file.txt",
+          "explanation": "Убрать повторяющиеся строки непосредственно из файла.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "удалить пробелы и пунктуацию, сохранив буквы любого алфавита и цифры",
           "command": "perl -CSD -i -pe 's/[^\\p{L}\\p{N}\\r\\n]//g' file.txt",
-          "explanation": "Retains Unicode letters, Unicode numbers and LF/CRLF line endings in a UTF-8 file, removing spaces and punctuation.",
+          "explanation": "Сохраняет буквы Unicode, числа Unicode и LF/CRLF в UTF-8-файле, удаляя пробелы и пунктуацию.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "delete the last line of a file",
+          "text": "очистить UTF-8-файл до букв, чисел и переводов строк",
+          "command": "perl -CSD -i -pe 's/[^\\p{L}\\p{N}\\r\\n]//g' file.txt",
+          "explanation": "Сохраняет буквы Unicode, числа Unicode и LF/CRLF в UTF-8-файле, удаляя пробелы и пунктуацию.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "удалить последнюю строку файла",
           "command": "perl -i -ne 'print if !eof' file.txt",
-          "explanation": "Prints all lines except when end-of-file is reached",
+          "explanation": "Удалить последнюю строку файла.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "delete lines from N to end of file",
+          "text": "сохранить все прочитанные строки, кроме заключительной",
+          "command": "perl -i -ne 'print if !eof' file.txt",
+          "explanation": "Удалить последнюю строку файла.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "удалить десятую и все последующие строки",
           "command": "perl -i -ne 'print if $. < 10' file.txt",
-          "explanation": "Keeps only lines before line 10, deleting the rest",
+          "explanation": "Удалить десятую и все последующие строки.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "squeeze multiple consecutive blank lines into one",
+          "text": "оставить в файле только первые девять записей",
+          "command": "perl -i -ne 'print if $. < 10' file.txt",
+          "explanation": "Удалить десятую и все последующие строки.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "сжать повторные пустые строки прямо в файле",
           "command": "perl -i -00pe0 file.txt",
-          "explanation": "Paragraph mode normalizes runs of blank lines to single separators",
+          "explanation": "Сжать повторные пустые строки прямо в файле.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "нормализовать разделители абзацев с изменением исходного текста",
+          "command": "perl -i -00pe0 file.txt",
+          "explanation": "Сжать повторные пустые строки прямо в файле.",
           "destructive": true
         }
       ]
@@ -1342,110 +2547,207 @@
     {
       "name": "perl useful regexes",
       "synopsis": "perl -ne '...'",
-      "description": "Common regex patterns for matching IPs, emails, dates, and structured data with Perl",
+      "description": "Регулярные выражения Perl для адресов, дат и структурированных данных",
       "patterns": [
         {
           "type": "example",
-          "text": "match and extract valid IPv4 addresses from text",
+          "text": "извлечь IPv4-адреса с проверкой октетов от нуля до 255",
           "command": "perl -ne 'print \"$_\\n\" for /\\b((?:(?:25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}(?:25[0-5]|2[0-4]\\d|[01]?\\d\\d?))\\b/g'",
-          "explanation": "Validates each octet is 0-255 for proper IP matching"
+          "explanation": "Извлечь IPv4-адреса с проверкой октетов от нуля до 255."
         },
         {
           "type": "example",
-          "text": "match hex color codes in CSS or HTML files",
+          "text": "найти в тексте адреса с допустимыми значениями четырёх компонентов",
+          "command": "perl -ne 'print \"$_\\n\" for /\\b((?:(?:25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}(?:25[0-5]|2[0-4]\\d|[01]?\\d\\d?))\\b/g'",
+          "explanation": "Извлечь IPv4-адреса с проверкой октетов от нуля до 255."
+        },
+        {
+          "type": "example",
+          "text": "извлечь трёх- и шестизначные шестнадцатеричные цвета",
           "command": "perl -ne 'print \"$_\\n\" for /(#(?:[0-9a-fA-F]{6}|[0-9a-fA-F]{3}))\\b/g' style.css",
-          "explanation": "Extracts complete #RGB and #RRGGBB tokens, retaining the leading hash and all six digits when present."
+          "explanation": "Извлекает целые токены #RGB и #RRGGBB, сохраняя знак # и все шесть цифр, если они присутствуют."
         },
         {
           "type": "example",
-          "text": "match dates in YYYY-MM-DD format",
+          "text": "найти CSS-коды цветов вида #abc и #aabbcc",
+          "command": "perl -ne 'print \"$_\\n\" for /(#(?:[0-9a-fA-F]{6}|[0-9a-fA-F]{3}))\\b/g' style.css",
+          "explanation": "Извлекает целые токены #RGB и #RRGGBB, сохраняя знак # и все шесть цифр, если они присутствуют."
+        },
+        {
+          "type": "example",
+          "text": "найти даты в формате год-месяц-день с проверкой диапазонов месяца и дня",
           "command": "perl -ne 'print \"$_\\n\" for /\\b(\\d{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\\d|3[01]))\\b/g'",
-          "explanation": "Checks YYYY-MM-DD shape with month 01–12 and day 01–31; month lengths and leap years are not validated."
+          "explanation": "Проверяет форму YYYY-MM-DD, месяц 01–12 и день 01–31; длина месяца и високосные годы не проверяются."
         },
         {
           "type": "example",
-          "text": "match and extract all URLs from a text file",
+          "text": "извлечь записи YYYY-MM-DD с месяцами 01–12 и днями 01–31",
+          "command": "perl -ne 'print \"$_\\n\" for /\\b(\\d{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\\d|3[01]))\\b/g'",
+          "explanation": "Проверяет форму YYYY-MM-DD, месяц 01–12 и день 01–31; длина месяца и високосные годы не проверяются."
+        },
+        {
+          "type": "example",
+          "text": "вывести все HTTP- и HTTPS-ссылки из текстового файла",
           "command": "perl -ne 'print \"$_\\n\" for m{(https?://\\S+)}g' file.txt",
-          "explanation": "Extracts HTTP and HTTPS URLs from each line"
+          "explanation": "Вывести все HTTP- и HTTPS-ссылки из текстового файла."
         },
         {
           "type": "example",
-          "text": "match numbers with optional decimal places",
+          "text": "извлечь URL до ближайшего пробельного символа",
+          "command": "perl -ne 'print \"$_\\n\" for m{(https?://\\S+)}g' file.txt",
+          "explanation": "Вывести все HTTP- и HTTPS-ссылки из текстового файла."
+        },
+        {
+          "type": "example",
+          "text": "найти неотрицательные целые и десятичные числа в тексте",
           "command": "perl -ne 'print \"$_\\n\" for /\\b(\\d+\\.?\\d*)\\b/g'",
-          "explanation": "Matches integers and floating point numbers"
+          "explanation": "Найти неотрицательные целые и десятичные числа в тексте."
         },
         {
           "type": "example",
-          "text": "match lines containing only printable ASCII characters",
+          "text": "вывести цифровые последовательности с необязательной дробной частью",
+          "command": "perl -ne 'print \"$_\\n\" for /\\b(\\d+\\.?\\d*)\\b/g'",
+          "explanation": "Найти неотрицательные целые и десятичные числа в тексте."
+        },
+        {
+          "type": "example",
+          "text": "оставить строки только из печатных ASCII-символов",
           "command": "perl -ne 'print if /^[\\x20-\\x7E]*$/'",
-          "explanation": "Filters for lines with only standard printable characters"
+          "explanation": "Оставить строки только из печатных ASCII-символов."
         },
         {
           "type": "example",
-          "text": "find lines with unbalanced parentheses or brackets",
+          "text": "отфильтровать текст без управляющих и не-ASCII знаков",
+          "command": "perl -ne 'print if /^[\\x20-\\x7E]*$/'",
+          "explanation": "Оставить строки только из печатных ASCII-символов."
+        },
+        {
+          "type": "example",
+          "text": "найти строки с незакрытыми или неправильно вложенными скобками",
           "command": "perl -ne '@s=(); $bad=0; for $c (/[()\\[\\]]/g) { if ($c eq \"(\" || $c eq \"[\") { push @s,$c } else { $want=$c eq \")\" ? \"(\" : \"[\"; if (!@s || pop(@s) ne $want) { $bad=1; last } } } print if $bad || @s' file.txt",
-          "explanation": "Uses a stack to detect unmatched, incorrectly ordered or incorrectly nested parentheses and square brackets on each line."
+          "explanation": "Использует стек для обнаружения незакрытых, перепутанных или неправильно вложенных круглых и квадратных скобок в каждой строке."
         },
         {
           "type": "example",
-          "text": "match and highlight words with mixed case like camelCase",
+          "text": "проверить порядок круглых и квадратных скобок в строках файла",
+          "command": "perl -ne '@s=(); $bad=0; for $c (/[()\\[\\]]/g) { if ($c eq \"(\" || $c eq \"[\") { push @s,$c } else { $want=$c eq \")\" ? \"(\" : \"[\"; if (!@s || pop(@s) ne $want) { $bad=1; last } } } print if $bad || @s' file.txt",
+          "explanation": "Использует стек для обнаружения незакрытых, перепутанных или неправильно вложенных круглых и квадратных скобок в каждой строке."
+        },
+        {
+          "type": "example",
+          "text": "найти строки с camelCase и подсветить такие идентификаторы",
           "command": "perl -ne 'if (/\\b[a-z]+[A-Z]\\w*\\b/) { s/(\\b[a-z]+[A-Z]\\w*\\b)/\\e[31m$1\\e[0m/g; print }' file.txt",
-          "explanation": "Selects lines with simple ASCII camelCase identifiers and wraps those identifiers in red ANSI color escapes."
+          "explanation": "Выбирает строки с простыми ASCII-идентификаторами camelCase и выделяет идентификаторы красными ANSI-последовательностями."
+        },
+        {
+          "type": "example",
+          "text": "выделить красным простые имена camelCase в найденных строках",
+          "command": "perl -ne 'if (/\\b[a-z]+[A-Z]\\w*\\b/) { s/(\\b[a-z]+[A-Z]\\w*\\b)/\\e[31m$1\\e[0m/g; print }' file.txt",
+          "explanation": "Выбирает строки с простыми ASCII-идентификаторами camelCase и выделяет идентификаторы красными ANSI-последовательностями."
         }
       ]
     },
     {
       "name": "perl tricks",
       "synopsis": "perl -e '...' | perl -0777 -e '...'",
-      "description": "Advanced Perl one-liner tricks: slurp mode, BEGIN/END blocks, and special variables",
+      "description": "Приёмы Perl с чтением файла целиком, блоками BEGIN/END и специальными переменными",
       "patterns": [
         {
           "type": "example",
-          "text": "read an entire file at once and print its byte length",
+          "text": "прочитать файл целиком и вывести число байтов",
           "command": "perl -0777 -ne 'print length, \" bytes\\n\"' file.txt",
-          "explanation": "Slurps the input into one string and prints its byte length rather than printing the file content."
+          "explanation": "Читает ввод в одну строку и выводит длину в байтах, а не содержимое файла."
         },
         {
           "type": "example",
-          "text": "process a file in paragraph mode separated by blank lines",
+          "text": "посчитать длину всего содержимого через режим slurp",
+          "command": "perl -0777 -ne 'print length, \" bytes\\n\"' file.txt",
+          "explanation": "Читает ввод в одну строку и выводит длину в байтах, а не содержимое файла."
+        },
+        {
+          "type": "example",
+          "text": "вывести абзацы, содержащие keyword",
           "command": "perl -00 -ne 'print if /keyword/' file.txt",
-          "explanation": "Paragraph mode (-00) treats blocks separated by blank lines as records"
+          "explanation": "Вывести абзацы, содержащие keyword."
         },
         {
           "type": "example",
-          "text": "run code before processing any input lines",
+          "text": "искать слово в блоках текста, разделённых пустыми строками",
+          "command": "perl -00 -ne 'print if /keyword/' file.txt",
+          "explanation": "Вывести абзацы, содержащие keyword."
+        },
+        {
+          "type": "example",
+          "text": "добавить строку header перед содержимым файла",
           "command": "perl -ne 'BEGIN{print \"header\\n\"} print' file.txt",
-          "explanation": "BEGIN block executes once before the input loop starts"
+          "explanation": "Добавить строку header перед содержимым файла."
         },
         {
           "type": "example",
-          "text": "run code after all input lines are processed",
+          "text": "выполнить начальную печать один раз до построчной обработки",
+          "command": "perl -ne 'BEGIN{print \"header\\n\"} print' file.txt",
+          "explanation": "Добавить строку header перед содержимым файла."
+        },
+        {
+          "type": "example",
+          "text": "сложить числа и напечатать итог после чтения всего файла",
           "command": "perl -ne '$s+=$_; END{print \"total: $s\\n\"}' numbers.txt",
-          "explanation": "END block executes once after all input is consumed"
+          "explanation": "Сложить числа и напечатать итог после чтения всего файла."
         },
         {
           "type": "example",
-          "text": "use perl as a command-line calculator",
+          "text": "выполнить заключительный вывод суммы через блок END",
+          "command": "perl -ne '$s+=$_; END{print \"total: $s\\n\"}' numbers.txt",
+          "explanation": "Сложить числа и напечатать итог после чтения всего файла."
+        },
+        {
+          "type": "example",
+          "text": "вычислить два в тридцать второй степени в терминале",
           "command": "perl -le 'print 2**32'",
-          "explanation": "Quick arithmetic evaluation with automatic output"
+          "explanation": "Вычислить два в тридцать второй степени в терминале."
         },
         {
           "type": "example",
-          "text": "create a simple TCP server one-liner",
+          "text": "использовать Perl как калькулятор для выражения 2**32",
+          "command": "perl -le 'print 2**32'",
+          "explanation": "Вычислить два в тридцать второй степени в терминале."
+        },
+        {
+          "type": "example",
+          "text": "запустить простой HTTP-сервер на порту 8080 с ответом Hello",
           "command": "perl -MIO::Socket::INET -e '$s=IO::Socket::INET->new(LocalPort=>8080,Listen=>1,Reuse=>1);while($c=$s->accept){print $c \"HTTP/1.0 200 OK\\r\\n\\r\\nHello\\n\";close $c}'",
-          "explanation": "Minimal HTTP server responding with Hello on port 8080"
+          "explanation": "Запустить простой HTTP-сервер на порту 8080 с ответом Hello."
         },
         {
           "type": "example",
-          "text": "use autosplit mode to process fields like awk",
+          "text": "принимать TCP-подключения и возвращать минимальный ответ HTTP 200",
+          "command": "perl -MIO::Socket::INET -e '$s=IO::Socket::INET->new(LocalPort=>8080,Listen=>1,Reuse=>1);while($c=$s->accept){print $c \"HTTP/1.0 200 OK\\r\\n\\r\\nHello\\n\";close $c}'",
+          "explanation": "Запустить простой HTTP-сервер на порту 8080 с ответом Hello."
+        },
+        {
+          "type": "example",
+          "text": "вывести имена пользователей из первого поля passwd",
           "command": "perl -F: -lane 'print $F[0]' /etc/passwd",
-          "explanation": "Splits each line on colon and prints the first field (usernames)"
+          "explanation": "Вывести имена пользователей из первого поля passwd."
         },
         {
           "type": "example",
-          "text": "edit a file in place and keep a fixed .bak backup",
+          "text": "разделить строки двоеточиями и извлечь первый столбец",
+          "command": "perl -F: -lane 'print $F[0]' /etc/passwd",
+          "explanation": "Вывести имена пользователей из первого поля passwd."
+        },
+        {
+          "type": "example",
+          "text": "заменить foo на bar в файле, сохранив копию .bak",
           "command": "perl -i.bak -pe 's/foo/bar/g' file.txt",
-          "explanation": "Saves the original as file.txt.bak before modifying file.txt; repeated runs do not create numbered backups.",
+          "explanation": "Сохраняет исходный file.txt в file.txt.bak перед изменением; повторные запуски не создают пронумерованных копий.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "отредактировать текст на месте с резервным сохранением оригинала",
+          "command": "perl -i.bak -pe 's/foo/bar/g' file.txt",
+          "explanation": "Сохраняет исходный file.txt в file.txt.bak перед изменением; повторные запуски не создают пронумерованных копий.",
           "destructive": true
         }
       ]

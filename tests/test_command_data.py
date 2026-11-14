@@ -16,7 +16,7 @@ DATA = Path(__file__).parent.parent / "src/cf/data/commands"
 
 def pattern(category, command_index, pattern_index):
     source = json.loads((DATA / f"{category}.json").read_text(encoding="utf-8"))
-    return source["commands"][command_index]["patterns"][pattern_index]
+    return source["commands"][command_index]["patterns"][2 * pattern_index]
 
 
 def run_recipe(category, command_index, pattern_index, directory, *, env=None):
@@ -247,3 +247,15 @@ def test_root_scan_templates_do_not_cross_filesystems_or_enter_host_mounts():
     for pi in (0, 2):
         ncdu = shlex.split(pattern("disk", 19, pi)["command"])
         assert "-x" in ncdu and ncdu[ncdu.index("--exclude") + 1] == "/mnt"
+
+
+def test_dictionary_search_text_and_previews_are_in_russian():
+    cyrillic = re.compile("[А-Яа-яЁё]")
+    for path in DATA.glob("*.json"):
+        source = json.loads(path.read_text(encoding="utf-8"))
+        for command in source["commands"]:
+            assert cyrillic.search(command["description"]), (path.name, command["name"])
+            for entry in command["patterns"]:
+                assert cyrillic.search(entry["text"]), (path.name, entry["command"])
+                if entry.get("explanation"):
+                    assert cyrillic.search(entry["explanation"]), (path.name, entry["command"])

@@ -1,6 +1,6 @@
 """Tests for cf.selector module — command selection UI logic."""
 
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, mock_open, patch
 
 import pytest
 
@@ -27,15 +27,15 @@ class TestFormatEntry:
 class TestFormatPreview:
     def test_includes_all_fields(self, sample_results):
         preview = _format_preview(sample_results[0])
-        assert "Command: ls" in preview
-        assert "Synopsis: ls [options] [file...]" in preview
-        assert "Pattern: list files in a directory" in preview
-        assert "Template: ls -la" in preview
-        assert "Explanation: Show all files with details" in preview
+        assert "Команда: ls" in preview
+        assert "Синтаксис: ls [options] [file...]" in preview
+        assert "Запрос: list files in a directory" in preview
+        assert "Шаблон: ls -la" in preview
+        assert "Пояснение: Show all files with details" in preview
 
     def test_omits_explanation_when_none(self, sample_results):
         preview = _format_preview(sample_results[2])
-        assert "Explanation" not in preview
+        assert "Пояснение" not in preview
 
 
 class TestSelectCommand:
@@ -127,3 +127,13 @@ class TestSelectWithInput:
         with patch("builtins.input", return_value="3"):
             result = _select_with_input(sample_results, verbose=False, has_more=False)
         assert result == "find . -name '*.txt'"
+
+
+@pytest.mark.parametrize("answer,accepted", [("да\n", True), ("ДА\n", True), ("yes\n", True), ("нет\n", False)])
+def test_destructive_confirmation_accepts_explicit_russian_or_english_yes(sample_results, answer, accepted):
+    from cf.selector import _confirm_destructive
+
+    terminal = mock_open(read_data=answer)
+    with patch("builtins.open", terminal):
+        assert _confirm_destructive(sample_results[0]) is accepted
+    assert "ОПАСНАЯ КОМАНДА" in terminal().write.call_args.args[0]

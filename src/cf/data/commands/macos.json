@@ -4,482 +4,831 @@
     {
       "name": "sw_vers",
       "synopsis": "sw_vers [-productName|-productVersion|-buildVersion]",
-      "description": "Print macOS product name, version, and build (system profiler shortcut)",
+      "description": "Просмотр названия, версии и номера сборки macOS",
       "patterns": [
         {
           "type": "example",
-          "text": "see which macOS version you are running",
+          "text": "Узнать версию установленной macOS",
           "command": "sw_vers",
-          "explanation": "Shows product name, version, and build number"
+          "explanation": "Узнать версию установленной macOS."
         },
         {
           "type": "example",
-          "text": "print only the macOS version number for scripts",
+          "text": "Показать сведения о выпуске macOS на этом Mac",
+          "command": "sw_vers",
+          "explanation": "Узнать версию установленной macOS."
+        },
+        {
+          "type": "example",
+          "text": "Вывести только номер версии macOS",
           "command": "sw_vers -productVersion",
-          "explanation": "Outputs a single line like 14.2.1 suitable for automation"
+          "explanation": "Вывести только номер версии macOS."
         },
         {
           "type": "example",
-          "text": "get the build number for troubleshooting or compatibility checks",
+          "text": "Получить версию macOS одной строкой для скрипта",
+          "command": "sw_vers -productVersion",
+          "explanation": "Вывести только номер версии macOS."
+        },
+        {
+          "type": "example",
+          "text": "Узнать номер сборки macOS",
           "command": "sw_vers -buildVersion",
-          "explanation": "Shows the internal build identifier (e.g. 23C71)"
+          "explanation": "Узнать номер сборки macOS."
+        },
+        {
+          "type": "example",
+          "text": "Показать идентификатор сборки системы для проверки совместимости",
+          "command": "sw_vers -buildVersion",
+          "explanation": "Узнать номер сборки macOS."
         }
       ]
     },
     {
       "name": "diskutil",
       "synopsis": "diskutil [verb] [options]",
-      "description": "Manage local disks, volumes, and APFS containers on macOS",
+      "description": "Управление дисками, томами и контейнерами APFS в macOS",
       "patterns": [
         {
           "type": "example",
-          "text": "list all disks and partitions with identifiers",
+          "text": "Перечислить диски и разделы на Mac",
           "command": "diskutil list",
-          "explanation": "Shows disk0, synthesized volumes, and APFS structure"
+          "explanation": "Перечислить диски и разделы на Mac."
         },
         {
           "type": "example",
-          "text": "see detailed information about one disk or volume",
+          "text": "Показать идентификаторы всех дисков и их разделов",
+          "command": "diskutil list",
+          "explanation": "Перечислить диски и разделы на Mac."
+        },
+        {
+          "type": "example",
+          "text": "Посмотреть подробности диска disk0",
           "command": "diskutil info disk0",
-          "explanation": "Prints filesystem type, size, mount point, and UUID"
+          "explanation": "Посмотреть подробности диска disk0."
         },
         {
           "type": "example",
-          "text": "safely eject an external drive or disk image",
+          "text": "Получить сведения о выбранном диске в macOS",
+          "command": "diskutil info disk0",
+          "explanation": "Посмотреть подробности диска disk0."
+        },
+        {
+          "type": "example",
+          "text": "Безопасно извлечь внешний диск MyDrive",
           "command": "diskutil eject /Volumes/MyDrive",
-          "explanation": "Unmounts and powers down the device when possible"
+          "explanation": "Безопасно извлечь внешний диск MyDrive."
         },
         {
           "type": "example",
-          "text": "verify the filesystem on the macOS boot volume without repairing it",
+          "text": "Отключить том MyDrive перед отсоединением накопителя",
+          "command": "diskutil eject /Volumes/MyDrive",
+          "explanation": "Безопасно извлечь внешний диск MyDrive."
+        },
+        {
+          "type": "example",
+          "text": "Проверить файловую систему корневого тома Mac",
           "command": "diskutil verifyVolume /",
-          "explanation": "Runs a read-only filesystem verification of the selected volume; does not repair permissions"
+          "explanation": "Проверяет файловую систему выбранного тома без изменений; права доступа не восстанавливает."
         },
         {
           "type": "example",
-          "text": "erase and reformat a USB stick as ExFAT with a label",
+          "text": "Выполнить проверку тома macOS без исправления ошибок",
+          "command": "diskutil verifyVolume /",
+          "explanation": "Проверяет файловую систему выбранного тома без изменений; права доступа не восстанавливает."
+        },
+        {
+          "type": "example",
+          "text": "Стереть диск disk4 и отформатировать в ExFAT",
           "command": "diskutil eraseDisk ExFAT MYUSB MBRFormat /dev/disk4",
-          "explanation": "Destructively repartitions disk4; triple-check the device node first"
+          "explanation": "Стереть диск disk4 и отформатировать в ExFAT."
+        },
+        {
+          "type": "example",
+          "text": "Пересоздать разметку флешки с именем MYUSB и файловой системой ExFAT",
+          "command": "diskutil eraseDisk ExFAT MYUSB MBRFormat /dev/disk4",
+          "explanation": "Стереть диск disk4 и отформатировать в ExFAT."
         }
       ]
     },
     {
       "name": "launchctl",
       "synopsis": "launchctl subcommand [arguments]",
-      "description": "Interface to launchd for user and system services on macOS",
+      "description": "Управление пользовательскими и системными службами launchd",
       "patterns": [
         {
           "type": "example",
-          "text": "list all loaded user launch agents",
+          "text": "Показать загруженные пользовательские службы launchd",
           "command": "launchctl list",
-          "explanation": "Shows PID, exit status, and label for GUI session services"
+          "explanation": "Показать загруженные пользовательские службы launchd."
         },
         {
           "type": "example",
-          "text": "unload a user LaunchAgent plist you are debugging",
+          "text": "Перечислить активные задания через launchctl",
+          "command": "launchctl list",
+          "explanation": "Показать загруженные пользовательские службы launchd."
+        },
+        {
+          "type": "example",
+          "text": "Выгрузить пользовательский LaunchAgent из plist",
           "command": "launchctl unload ~/Library/LaunchAgents/com.example.app.plist",
-          "explanation": "Stops the job and removes it from launchd until loaded again"
+          "explanation": "Выгрузить пользовательский LaunchAgent из plist."
         },
         {
           "type": "example",
-          "text": "load a LaunchAgent after editing its plist",
+          "text": "Отключить агент com.example.app через launchctl",
+          "command": "launchctl unload ~/Library/LaunchAgents/com.example.app.plist",
+          "explanation": "Выгрузить пользовательский LaunchAgent из plist."
+        },
+        {
+          "type": "example",
+          "text": "Загрузить LaunchAgent после изменения plist",
           "command": "launchctl load ~/Library/LaunchAgents/com.example.app.plist",
-          "explanation": "Registers and starts the agent in the current user domain"
+          "explanation": "Загрузить LaunchAgent после изменения plist."
         },
         {
           "type": "example",
-          "text": "bootstrap a service in the user domain (modern launchctl on newer macOS)",
+          "text": "Подключить пользовательский агент com.example.app",
+          "command": "launchctl load ~/Library/LaunchAgents/com.example.app.plist",
+          "explanation": "Загрузить LaunchAgent после изменения plist."
+        },
+        {
+          "type": "example",
+          "text": "Зарегистрировать службу в графической сессии пользователя",
           "command": "launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.example.app.plist",
-          "explanation": "Preferred on recent macOS instead of load for some workflows"
+          "explanation": "Зарегистрировать службу в графической сессии пользователя."
         },
         {
           "type": "example",
-          "text": "print the PATH environment variable from the launchd context",
+          "text": "Добавить LaunchAgent в домен gui текущего пользователя",
+          "command": "launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.example.app.plist",
+          "explanation": "Зарегистрировать службу в графической сессии пользователя."
+        },
+        {
+          "type": "example",
+          "text": "Узнать PATH из окружения launchd",
           "command": "launchctl getenv PATH",
-          "explanation": "Reads only PATH from the caller's launchd context"
+          "explanation": "Читает только PATH из текущего контекста launchd."
+        },
+        {
+          "type": "example",
+          "text": "Показать значение переменной PATH для служб пользовательской сессии",
+          "command": "launchctl getenv PATH",
+          "explanation": "Читает только PATH из текущего контекста launchd."
         }
       ]
     },
     {
       "name": "plutil",
       "synopsis": "plutil [options] file",
-      "description": "Convert, lint, and edit Apple property list files",
+      "description": "Проверка, изменение и преобразование файлов plist",
       "patterns": [
         {
           "type": "example",
-          "text": "check whether a plist is valid XML or binary",
+          "text": "Проверить корректность файла plist",
           "command": "plutil -lint com.example.plist",
-          "explanation": "Validates syntax and prints OK or an error"
+          "explanation": "Проверить корректность файла plist."
         },
         {
           "type": "example",
-          "text": "convert a binary plist to readable XML",
+          "text": "Найти ошибки синтаксиса в XML или бинарном plist",
+          "command": "plutil -lint com.example.plist",
+          "explanation": "Проверить корректность файла plist."
+        },
+        {
+          "type": "example",
+          "text": "Вывести бинарный plist как читаемый XML",
           "command": "plutil -convert xml1 -o - file.plist",
-          "explanation": "Outputs XML to stdout for inspection or diffing"
+          "explanation": "Вывести бинарный plist как читаемый XML."
         },
         {
           "type": "example",
-          "text": "convert XML plist to binary for smaller on-disk size",
+          "text": "Посмотреть XML-представление plist без перезаписи исходника",
+          "command": "plutil -convert xml1 -o - file.plist",
+          "explanation": "Вывести бинарный plist как читаемый XML."
+        },
+        {
+          "type": "example",
+          "text": "Преобразовать Info.plist в бинарный формат",
           "command": "plutil -convert binary1 Info.plist",
-          "explanation": "Rewrites the file in binary1 format in place"
+          "explanation": "Преобразовать Info.plist в бинарный формат."
         },
         {
           "type": "example",
-          "text": "pretty-print JSON as an XML plist",
+          "text": "Уменьшить plist на диске, записав его в binary1",
+          "command": "plutil -convert binary1 Info.plist",
+          "explanation": "Преобразовать Info.plist в бинарный формат."
+        },
+        {
+          "type": "example",
+          "text": "Создать XML plist из JSON-файла",
           "command": "plutil -convert xml1 data.json -o data.plist",
-          "explanation": "Useful when bridging JSON configs into plist-only tools"
+          "explanation": "Создать XML plist из JSON-файла."
+        },
+        {
+          "type": "example",
+          "text": "Перевести данные JSON в файл data.plist",
+          "command": "plutil -convert xml1 data.json -o data.plist",
+          "explanation": "Создать XML plist из JSON-файла."
         }
       ]
     },
     {
       "name": "mdfind",
       "synopsis": "mdfind [-live] [query]",
-      "description": "Search files using Spotlight metadata indexes",
+      "description": "Поиск файлов через индекс метаданных Spotlight",
       "patterns": [
         {
           "type": "example",
-          "text": "find PDF documents indexed by Spotlight",
+          "text": "Найти PDF через индекс Spotlight",
           "command": "mdfind kind:pdf",
-          "explanation": "Uses the kind query token to match PDF content type"
+          "explanation": "Найти PDF через индекс Spotlight."
         },
         {
           "type": "example",
-          "text": "search only your home folder for a phrase in indexed content",
+          "text": "Показать PDF-документы, известные поиску macOS",
+          "command": "mdfind kind:pdf",
+          "explanation": "Найти PDF через индекс Spotlight."
+        },
+        {
+          "type": "example",
+          "text": "Найти фразу invoice 2024 только в домашней папке",
           "command": "mdfind -onlyin ~ 'invoice 2024'",
-          "explanation": "Restricts the query to your home directory tree"
+          "explanation": "Найти фразу invoice 2024 только в домашней папке."
         },
         {
           "type": "example",
-          "text": "live search that updates as the index changes",
+          "text": "Ограничить поиск Spotlight домашним каталогом",
+          "command": "mdfind -onlyin ~ 'invoice 2024'",
+          "explanation": "Найти фразу invoice 2024 только в домашней папке."
+        },
+        {
+          "type": "example",
+          "text": "Следить за файлами автора Ada Lovelace через Spotlight",
           "command": "mdfind -live 'kMDItemAuthors == \"Ada Lovelace\"'",
-          "explanation": "Keeps streaming new matches until you interrupt it"
+          "explanation": "Следить за файлами автора Ada Lovelace через Spotlight."
+        },
+        {
+          "type": "example",
+          "text": "Запустить обновляемый поиск по автору в индексе macOS",
+          "command": "mdfind -live 'kMDItemAuthors == \"Ada Lovelace\"'",
+          "explanation": "Следить за файлами автора Ada Lovelace через Spotlight."
         }
       ]
     },
     {
       "name": "mdls",
       "synopsis": "mdls [-raw] [-name attr] file",
-      "description": "Display Spotlight metadata attributes for a file",
+      "description": "Просмотр метаданных Spotlight для файла",
       "patterns": [
         {
           "type": "example",
-          "text": "see all metadata Spotlight stores for one file",
+          "text": "Показать метаданные Spotlight для PDF",
           "command": "mdls ~/Documents/report.pdf",
-          "explanation": "Lists attributes like dates, dimensions, and where from"
+          "explanation": "Показать метаданные Spotlight для PDF."
         },
         {
           "type": "example",
-          "text": "read a single attribute such as pixel dimensions",
+          "text": "Посмотреть все индексируемые атрибуты файла report.pdf",
+          "command": "mdls ~/Documents/report.pdf",
+          "explanation": "Показать метаданные Spotlight для PDF."
+        },
+        {
+          "type": "example",
+          "text": "Узнать ширину и высоту изображения через Spotlight",
           "command": "mdls -name kMDItemPixelHeight -name kMDItemPixelWidth photo.png",
-          "explanation": "Filters output to specific keys only"
+          "explanation": "Узнать ширину и высоту изображения через Spotlight."
+        },
+        {
+          "type": "example",
+          "text": "Вывести размеры photo.png в пикселях из метаданных",
+          "command": "mdls -name kMDItemPixelHeight -name kMDItemPixelWidth photo.png",
+          "explanation": "Узнать ширину и высоту изображения через Spotlight."
         }
       ]
     },
     {
       "name": "ditto",
       "synopsis": "ditto [options] src ... dst",
-      "description": "Copy directories while preserving resource forks, ACLs, and HFS+ metadata",
+      "description": "Копирование каталогов с сохранением расширенных атрибутов и метаданных macOS",
       "patterns": [
         {
           "type": "example",
-          "text": "clone a folder for backup keeping extended attributes",
+          "text": "Скопировать папку с сохранением расширенных атрибутов macOS",
           "command": "ditto src_folder dst_folder",
-          "explanation": "Preferred over cp -R for macOS bundles and xattrs"
+          "explanation": "Скопировать папку с сохранением расширенных атрибутов macOS."
         },
         {
           "type": "example",
-          "text": "copy an app bundle to another volume safely",
+          "text": "Сделать копию каталога через ditto для резервного хранения",
+          "command": "ditto src_folder dst_folder",
+          "explanation": "Скопировать папку с сохранением расширенных атрибутов macOS."
+        },
+        {
+          "type": "example",
+          "text": "Скопировать приложение Mac на резервный том",
           "command": "ditto /Applications/MyApp.app /Volumes/Backup/MyApp.app",
-          "explanation": "Preserves code signing extended attributes and bundle structure"
+          "explanation": "Скопировать приложение Mac на резервный том."
         },
         {
           "type": "example",
-          "text": "copy a directory while showing each processed path",
+          "text": "Перенести копию пакета MyApp.app на диск Backup",
+          "command": "ditto /Applications/MyApp.app /Volumes/Backup/MyApp.app",
+          "explanation": "Скопировать приложение Mac на резервный том."
+        },
+        {
+          "type": "example",
+          "text": "Скопировать каталог с подробным выводом действий",
           "command": "ditto -V src dst",
-          "explanation": "Copies src to dst and prints paths as they are processed; -V is not a dry-run"
+          "explanation": "Копирует src в dst и выводит обрабатываемые пути; параметр -V не означает пробный запуск."
+        },
+        {
+          "type": "example",
+          "text": "Показывать копируемые файлы при работе ditto",
+          "command": "ditto -V src dst",
+          "explanation": "Копирует src в dst и выводит обрабатываемые пути; параметр -V не означает пробный запуск."
         }
       ]
     },
     {
       "name": "xattr",
       "synopsis": "xattr [-lrs] [options] file",
-      "description": "List, read, set, and remove extended attributes on files",
+      "description": "Просмотр и изменение расширенных атрибутов файлов",
       "patterns": [
         {
           "type": "example",
-          "text": "list extended attributes on a downloaded file",
+          "text": "Перечислить расширенные атрибуты скачанного архива",
           "command": "xattr file.zip",
-          "explanation": "Shows quarantine and other attribute names"
+          "explanation": "Перечислить расширенные атрибуты скачанного архива."
         },
         {
           "type": "example",
-          "text": "remove the quarantine flag so Gatekeeper stops warning",
+          "text": "Посмотреть имена атрибутов xattr у файла",
+          "command": "xattr file.zip",
+          "explanation": "Перечислить расширенные атрибуты скачанного архива."
+        },
+        {
+          "type": "example",
+          "text": "Удалить атрибут карантина у скачанного образа",
           "command": "xattr -d com.apple.quarantine ~/Downloads/myapp.dmg",
-          "explanation": "Only do this for files you trust; it removes download tagging"
+          "explanation": "Удалить атрибут карантина у скачанного образа."
         },
         {
           "type": "example",
-          "text": "clear all extended attributes from a file",
+          "text": "Снять метку com.apple.quarantine с файла приложения",
+          "command": "xattr -d com.apple.quarantine ~/Downloads/myapp.dmg",
+          "explanation": "Удалить атрибут карантина у скачанного образа."
+        },
+        {
+          "type": "example",
+          "text": "Очистить все расширенные атрибуты файла",
           "command": "xattr -c suspicious.bin",
-          "explanation": "Strips every xattr; use with care"
+          "explanation": "Очистить все расширенные атрибуты файла."
         },
         {
           "type": "example",
-          "text": "recursively list attributes in a directory tree",
+          "text": "Удалить все xattr у выбранного файла",
+          "command": "xattr -c suspicious.bin",
+          "explanation": "Очистить все расширенные атрибуты файла."
+        },
+        {
+          "type": "example",
+          "text": "Рекурсивно показать расширенные атрибуты каталога",
           "command": "xattr -lr ~/Library/Developer",
-          "explanation": "Useful when debugging codesign or custom metadata"
+          "explanation": "Рекурсивно показать расширенные атрибуты каталога."
+        },
+        {
+          "type": "example",
+          "text": "Посмотреть значения xattr для дерева файлов Developer",
+          "command": "xattr -lr ~/Library/Developer",
+          "explanation": "Рекурсивно показать расширенные атрибуты каталога."
         }
       ]
     },
     {
       "name": "softwareupdate",
       "synopsis": "softwareupdate [command] [args]",
-      "description": "Install macOS system updates from the command line",
+      "description": "Установка системных обновлений macOS из терминала",
       "patterns": [
         {
           "type": "example",
-          "text": "list available software updates without installing",
+          "text": "Показать доступные обновления macOS без установки",
           "command": "softwareupdate -l",
-          "explanation": "Shows recommended updates and labels"
+          "explanation": "Показать доступные обновления macOS без установки."
         },
         {
           "type": "example",
-          "text": "install all available macOS updates non-interactively",
+          "text": "Проверить список обновлений системы из терминала",
+          "command": "softwareupdate -l",
+          "explanation": "Показать доступные обновления macOS без установки."
+        },
+        {
+          "type": "example",
+          "text": "Установить все доступные обновления macOS",
           "command": "sudo softwareupdate -ia",
-          "explanation": "Installs all available updates, not only recommended items; may require a reboot",
+          "explanation": "Устанавливает все доступные обновления, а не только рекомендуемые; может потребоваться перезагрузка.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "download available updates without installing them yet",
+          "text": "Запустить установку всех обновлений через softwareupdate",
+          "command": "sudo softwareupdate -ia",
+          "explanation": "Устанавливает все доступные обновления, а не только рекомендуемые; может потребоваться перезагрузка.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "Скачать все обновления macOS без установки",
           "command": "sudo softwareupdate -d -a",
-          "explanation": "Fetches update packages to disk so you can install later offline or after review"
+          "explanation": "Скачать все обновления macOS без установки."
+        },
+        {
+          "type": "example",
+          "text": "Заранее загрузить обновления системы на диск",
+          "command": "sudo softwareupdate -d -a",
+          "explanation": "Скачать все обновления macOS без установки."
         }
       ]
     },
     {
       "name": "osascript",
       "synopsis": "osascript [-l language] script",
-      "description": "Run AppleScript or JavaScript for Automation from the shell",
+      "description": "Запуск AppleScript и JavaScript for Automation из оболочки",
       "patterns": [
         {
           "type": "example",
-          "text": "show a notification from a shell script",
+          "text": "Показать уведомление macOS из командной строки",
           "command": "osascript -e 'display notification \"Build finished\" with title \"CI\"'",
-          "explanation": "Posts a user notification without opening Script Editor"
+          "explanation": "Показать уведомление macOS из командной строки."
         },
         {
           "type": "example",
-          "text": "set the Mac volume to 50 percent",
+          "text": "Сообщить о завершении сборки системным уведомлением",
+          "command": "osascript -e 'display notification \"Build finished\" with title \"CI\"'",
+          "explanation": "Показать уведомление macOS из командной строки."
+        },
+        {
+          "type": "example",
+          "text": "Установить громкость Mac на пятьдесят процентов",
           "command": "osascript -e 'set volume output volume 50'",
-          "explanation": "Controls system audio via AppleScript"
+          "explanation": "Установить громкость Mac на пятьдесят процентов."
         },
         {
           "type": "example",
-          "text": "run an AppleScript file",
+          "text": "Изменить выходную громкость macOS до 50 процентов",
+          "command": "osascript -e 'set volume output volume 50'",
+          "explanation": "Установить громкость Mac на пятьдесят процентов."
+        },
+        {
+          "type": "example",
+          "text": "Запустить файл AppleScript из терминала",
           "command": "osascript myscript.scpt",
-          "explanation": "Executes a compiled or plain .scpt file"
+          "explanation": "Запустить файл AppleScript из терминала."
+        },
+        {
+          "type": "example",
+          "text": "Выполнить сценарий myscript.scpt",
+          "command": "osascript myscript.scpt",
+          "explanation": "Запустить файл AppleScript из терминала."
         }
       ]
     },
     {
       "name": "networksetup",
       "synopsis": "networksetup -listallhardwareports | ...",
-      "description": "Configure network locations, proxies, and Wi-Fi on macOS",
+      "description": "Настройка сетевых подключений, прокси и Wi-Fi в macOS",
       "patterns": [
         {
           "type": "example",
-          "text": "list hardware ports and their device names",
+          "text": "Перечислить аппаратные сетевые порты Mac",
           "command": "networksetup -listallhardwareports",
-          "explanation": "Maps Ethernet vs Wi-Fi to en0, en1, etc."
+          "explanation": "Перечислить аппаратные сетевые порты Mac."
         },
         {
           "type": "example",
-          "text": "turn off Wi-Fi power on interface en0",
+          "text": "Показать сетевые интерфейсы и их аппаратные имена",
+          "command": "networksetup -listallhardwareports",
+          "explanation": "Перечислить аппаратные сетевые порты Mac."
+        },
+        {
+          "type": "example",
+          "text": "Выключить Wi-Fi на интерфейсе en0",
           "command": "sudo networksetup -setairportpower en0 off",
-          "explanation": "Disables wireless; replace en0 with your Wi-Fi interface"
+          "explanation": "Выключить Wi-Fi на интерфейсе en0."
         },
         {
           "type": "example",
-          "text": "show DNS servers for a service",
+          "text": "Отключить питание беспроводного адаптера Mac",
+          "command": "sudo networksetup -setairportpower en0 off",
+          "explanation": "Выключить Wi-Fi на интерфейсе en0."
+        },
+        {
+          "type": "example",
+          "text": "Показать DNS-серверы службы Wi-Fi",
           "command": "networksetup -getdnsservers Wi-Fi",
-          "explanation": "Reads resolver configuration for the named service"
+          "explanation": "Показать DNS-серверы службы Wi-Fi."
+        },
+        {
+          "type": "example",
+          "text": "Узнать настроенные адреса DNS для беспроводного подключения",
+          "command": "networksetup -getdnsservers Wi-Fi",
+          "explanation": "Показать DNS-серверы службы Wi-Fi."
         }
       ]
     },
     {
       "name": "scutil",
       "synopsis": "scutil [--dns|--nc|--proxy]",
-      "description": "Query system configuration including DNS and proxy settings",
+      "description": "Просмотр системной сетевой конфигурации, DNS и прокси",
       "patterns": [
         {
           "type": "example",
-          "text": "see resolver order and search domains",
+          "text": "Посмотреть настройки DNS-резолверов macOS",
           "command": "scutil --dns",
-          "explanation": "Shows how macOS resolves hostnames including VPN split DNS"
+          "explanation": "Посмотреть настройки DNS-резолверов macOS."
         },
         {
           "type": "example",
-          "text": "inspect active proxy configuration",
+          "text": "Показать порядок DNS-разрешения и поисковые домены",
+          "command": "scutil --dns",
+          "explanation": "Посмотреть настройки DNS-резолверов macOS."
+        },
+        {
+          "type": "example",
+          "text": "Узнать текущие настройки прокси Mac",
           "command": "scutil --proxy",
-          "explanation": "Disables HTTP proxy state useful when debugging connectivity"
+          "explanation": "Узнать текущие настройки прокси Mac."
+        },
+        {
+          "type": "example",
+          "text": "Показать активную конфигурацию сетевых прокси",
+          "command": "scutil --proxy",
+          "explanation": "Узнать текущие настройки прокси Mac."
         }
       ]
     },
     {
       "name": "security",
       "synopsis": "security [command] [options]",
-      "description": "Manage keychains, certificates, and secure storage from the CLI",
+      "description": "Управление связками ключей, сертификатами и защищённым хранилищем",
       "patterns": [
         {
           "type": "example",
-          "text": "list keychains the user search list uses",
+          "text": "Перечислить связки ключей из списка поиска пользователя",
           "command": "security list-keychains",
-          "explanation": "Shows paths to login.keychain-db and others"
+          "explanation": "Перечислить связки ключей из списка поиска пользователя."
         },
         {
           "type": "example",
-          "text": "find a generic password item by account name",
+          "text": "Посмотреть, какие keychain используются для поиска учётных данных",
+          "command": "security list-keychains",
+          "explanation": "Перечислить связки ключей из списка поиска пользователя."
+        },
+        {
+          "type": "example",
+          "text": "Вывести пароль учётной записи myuser для myservice",
           "command": "security find-generic-password -a myuser -s myservice -w",
-          "explanation": "-w prints only the password to stdout; avoid logging"
+          "explanation": "Вывести пароль учётной записи myuser для myservice."
         },
         {
           "type": "example",
-          "text": "import a certificate into the login keychain",
+          "text": "Получить сохранённый пароль сервиса из связки ключей",
+          "command": "security find-generic-password -a myuser -s myservice -w",
+          "explanation": "Вывести пароль учётной записи myuser для myservice."
+        },
+        {
+          "type": "example",
+          "text": "Импортировать сертификат в связку ключей login",
           "command": "security import cert.pem -k ~/Library/Keychains/login.keychain-db",
-          "explanation": "Adds a PEM certificate for apps that use the keychain"
+          "explanation": "Импортировать сертификат в связку ключей login."
+        },
+        {
+          "type": "example",
+          "text": "Добавить cert.pem в пользовательский keychain macOS",
+          "command": "security import cert.pem -k ~/Library/Keychains/login.keychain-db",
+          "explanation": "Импортировать сертификат в связку ключей login."
         }
       ]
     },
     {
       "name": "codesign",
       "synopsis": "codesign -s identity | -dv path",
-      "description": "Sign and verify code signatures on macOS binaries and bundles",
+      "description": "Подпись и проверка подписи программ и пакетов macOS",
       "patterns": [
         {
           "type": "example",
-          "text": "verify whether an app is signed and not modified",
+          "text": "Проверить подпись приложения и целостность вложенных компонентов",
           "command": "codesign --verify --deep --strict /Applications/SomeApp.app",
-          "explanation": "Exits 0 if the bundle signature is intact"
+          "explanation": "Проверить подпись приложения и целостность вложенных компонентов."
         },
         {
           "type": "example",
-          "text": "display signing identity and entitlements of a binary",
+          "text": "Убедиться, что пакет приложения Mac не изменён после подписания",
+          "command": "codesign --verify --deep --strict /Applications/SomeApp.app",
+          "explanation": "Проверить подпись приложения и целостность вложенных компонентов."
+        },
+        {
+          "type": "example",
+          "text": "Посмотреть подпись и entitlements исполняемого файла",
           "command": "codesign -dv --entitlements :- /path/to/binary",
-          "explanation": "-d verbose shows Team ID and CDHash; entitlements print to stdout"
+          "explanation": "Посмотреть подпись и entitlements исполняемого файла."
+        },
+        {
+          "type": "example",
+          "text": "Вывести сведения о подписанте и разрешениях бинарника macOS",
+          "command": "codesign -dv --entitlements :- /path/to/binary",
+          "explanation": "Посмотреть подпись и entitlements исполняемого файла."
         }
       ]
     },
     {
       "name": "log",
       "synopsis": "log [show|stream|collect]",
-      "description": "View and stream unified logging data (substitute for tailing /var/log on modern macOS)",
+      "description": "Просмотр и отслеживание объединённого журнала macOS",
       "patterns": [
         {
           "type": "example",
-          "text": "stream live logs filtered by process name",
+          "text": "Следить за системными логами процесса mydaemon",
           "command": "log stream --predicate 'process == \"mydaemon\"' --level debug",
-          "explanation": "Shows unified log messages as they arrive"
+          "explanation": "Следить за системными логами процесса mydaemon."
         },
         {
           "type": "example",
-          "text": "show logs from the last hour for a subsystem",
+          "text": "Показывать новые отладочные записи указанного процесса macOS",
+          "command": "log stream --predicate 'process == \"mydaemon\"' --level debug",
+          "explanation": "Следить за системными логами процесса mydaemon."
+        },
+        {
+          "type": "example",
+          "text": "Посмотреть журналы сетевой подсистемы за последний час",
           "command": "log show --last 1h --predicate 'subsystem == \"com.apple.network\"'",
-          "explanation": "Reads persisted logs with a time window and filter"
+          "explanation": "Посмотреть журналы сетевой подсистемы за последний час."
+        },
+        {
+          "type": "example",
+          "text": "Вывести записи com.apple.network за прошедший час",
+          "command": "log show --last 1h --predicate 'subsystem == \"com.apple.network\"'",
+          "explanation": "Посмотреть журналы сетевой подсистемы за последний час."
         }
       ]
     },
     {
       "name": "pmset",
       "synopsis": "pmset [-g] [command]",
-      "description": "Manage power management settings (sleep, wakeup, assertions)",
+      "description": "Управление сном, пробуждением и другими параметрами энергосбережения",
       "patterns": [
         {
           "type": "example",
-          "text": "prevent the mac from sleeping temporarily",
+          "text": "Временно запретить Mac переходить в сон",
           "command": "pmset noidle",
-          "explanation": "Creates a power assertion to prevent idle sleep"
+          "explanation": "Временно запретить Mac переходить в сон."
         },
         {
           "type": "example",
-          "text": "display current macOS power management settings",
+          "text": "Держать компьютер бодрствующим, пока работает команда",
+          "command": "pmset noidle",
+          "explanation": "Временно запретить Mac переходить в сон."
+        },
+        {
+          "type": "example",
+          "text": "Показать параметры управления питанием Mac",
           "command": "pmset -g",
-          "explanation": "Shows the active power management settings; use pmset -g batt for battery state"
+          "explanation": "Показывает активные настройки энергопотребления; состояние батареи запрашивается через pmset -g batt."
         },
         {
           "type": "example",
-          "text": "schedule the Mac to wake tomorrow at 8 AM",
+          "text": "Посмотреть текущие настройки энергосбережения через pmset",
+          "command": "pmset -g",
+          "explanation": "Показывает активные настройки энергопотребления; состояние батареи запрашивается через pmset -g batt."
+        },
+        {
+          "type": "example",
+          "text": "запланировать пробуждение Mac завтра в восемь утра",
           "command": "sudo pmset schedule wake \"$(date -v+1d '+%m/%d/%y') 08:00:00\"",
-          "explanation": "Uses BSD date to provide tomorrow's date and a complete quoted MM/dd/yy HH:mm:ss wake event"
+          "explanation": "Использует BSD date для получения завтрашней даты и полной строки пробуждения MM/dd/yy HH:mm:ss в кавычках."
+        },
+        {
+          "type": "example",
+          "text": "назначить одноразовый выход Mac из сна на завтра в 08:00",
+          "command": "sudo pmset schedule wake \"$(date -v+1d '+%m/%d/%y') 08:00:00\"",
+          "explanation": "Использует BSD date для получения завтрашней даты и полной строки пробуждения MM/dd/yy HH:mm:ss в кавычках."
         }
       ]
     },
     {
       "name": "system_profiler",
       "synopsis": "system_profiler [dataType]",
-      "description": "Report system hardware and software configuration",
+      "description": "Просмотр аппаратной и программной конфигурации системы",
       "patterns": [
         {
           "type": "example",
-          "text": "get detailed hardware and software profile of the mac",
+          "text": "Получить подробный отчёт об оборудовании и ПО Mac",
           "command": "system_profiler",
-          "explanation": "Dumps a comprehensive report of all system components"
+          "explanation": "Получить подробный отчёт об оборудовании и ПО Mac."
         },
         {
           "type": "example",
-          "text": "list all USB devices connected to the mac",
+          "text": "Показать полный профиль системы через system_profiler",
+          "command": "system_profiler",
+          "explanation": "Получить подробный отчёт об оборудовании и ПО Mac."
+        },
+        {
+          "type": "example",
+          "text": "Показать все подключённые USB-устройства Mac",
           "command": "system_profiler SPUSBDataType",
-          "explanation": "Shows only the USB device tree and connection details"
+          "explanation": "Показать все подключённые USB-устройства Mac."
         },
         {
           "type": "example",
-          "text": "show the Mac battery charge cycle count",
+          "text": "Посмотреть дерево устройств на шине USB",
+          "command": "system_profiler SPUSBDataType",
+          "explanation": "Показать все подключённые USB-устройства Mac."
+        },
+        {
+          "type": "example",
+          "text": "Узнать число циклов зарядки батареи Mac",
           "command": "system_profiler SPPowerDataType | grep \"Cycle Count\"",
-          "explanation": "Extracts Cycle Count from the power report without displaying the full battery health report"
+          "explanation": "Извлекает число циклов зарядки из отчёта питания, без полного отчёта о состоянии батареи."
+        },
+        {
+          "type": "example",
+          "text": "Вывести строку Cycle Count из отчёта о питании",
+          "command": "system_profiler SPPowerDataType | grep \"Cycle Count\"",
+          "explanation": "Извлекает число циклов зарядки из отчёта питания, без полного отчёта о состоянии батареи."
         }
       ]
     },
     {
       "name": "screencapture",
       "synopsis": "screencapture [options] file",
-      "description": "Take screenshots from the command line",
+      "description": "Создание снимков экрана из терминала",
       "patterns": [
         {
           "type": "example",
-          "text": "capture the whole screen to a file",
+          "text": "Сохранить снимок всего экрана Mac в файл",
           "command": "screencapture screen.png",
-          "explanation": "Saves an image of the entire screen to the specified file"
+          "explanation": "Сохранить снимок всего экрана Mac в файл."
         },
         {
           "type": "example",
-          "text": "capture a selected portion of the screen interactively",
+          "text": "Сделать полноэкранный скриншот screen.png",
+          "command": "screencapture screen.png",
+          "explanation": "Сохранить снимок всего экрана Mac в файл."
+        },
+        {
+          "type": "example",
+          "text": "Выбрать область экрана для снимка мышью",
           "command": "screencapture -i selection.png",
-          "explanation": "Allows the user to click and drag to select an area to capture"
+          "explanation": "Выбрать область экрана для снимка мышью."
         },
         {
           "type": "example",
-          "text": "copy the screenshot directly to the clipboard",
+          "text": "Сделать интерактивный скриншот выбранного участка",
+          "command": "screencapture -i selection.png",
+          "explanation": "Выбрать область экрана для снимка мышью."
+        },
+        {
+          "type": "example",
+          "text": "Скопировать скриншот Mac в буфер обмена",
           "command": "screencapture -c",
-          "explanation": "Captures the screen to the clipboard instead of a file"
+          "explanation": "Скопировать скриншот Mac в буфер обмена."
+        },
+        {
+          "type": "example",
+          "text": "Снять экран без сохранения картинки в файл",
+          "command": "screencapture -c",
+          "explanation": "Скопировать скриншот Mac в буфер обмена."
         }
       ]
     },
     {
       "name": "qlmanage",
       "synopsis": "qlmanage [options]",
-      "description": "Quick Look Server debug and management tool",
+      "description": "Управление предпросмотром файлов Quick Look",
       "patterns": [
         {
           "type": "example",
-          "text": "preview a file using quick look from the terminal",
+          "text": "Открыть предпросмотр файла через Quick Look",
           "command": "qlmanage -p file.txt",
-          "explanation": "Opens a Quick Look window for the specified file"
+          "explanation": "Открыть предпросмотр файла через Quick Look."
         },
         {
           "type": "example",
-          "text": "clear the quick look thumbnail cache",
+          "text": "Быстро посмотреть файл из терминала macOS",
+          "command": "qlmanage -p file.txt",
+          "explanation": "Открыть предпросмотр файла через Quick Look."
+        },
+        {
+          "type": "example",
+          "text": "Очистить кеш миниатюр Quick Look",
           "command": "qlmanage -r cache",
-          "explanation": "Resets the Quick Look memory and disk caches"
+          "explanation": "Очистить кеш миниатюр Quick Look."
+        },
+        {
+          "type": "example",
+          "text": "Сбросить сохранённые эскизы предпросмотра macOS",
+          "command": "qlmanage -r cache",
+          "explanation": "Очистить кеш миниатюр Quick Look."
         }
       ]
     }

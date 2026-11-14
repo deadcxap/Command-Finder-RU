@@ -17,7 +17,7 @@ pytestmark = pytest.mark.skipif(sys.platform != 'linux', reason='Linux-specific 
 
 def pattern(category, command_index, pattern_index):
     data = json.loads((DATA / f'{category}.json').read_text())
-    return data['commands'][command_index]['patterns'][pattern_index]
+    return data['commands'][command_index]['patterns'][2 * pattern_index]
 
 
 def executable(path, body):

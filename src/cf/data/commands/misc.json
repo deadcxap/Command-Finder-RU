@@ -4,390 +4,697 @@
     {
       "name": "echo",
       "synopsis": "echo [options] [string...]",
-      "description": "Display a line of text to standard output",
+      "description": "Вывод строки текста в стандартный вывод",
       "patterns": [
         {
           "type": "example",
-          "text": "print a message to the terminal",
+          "text": "Напечатать приветствие в терминале",
           "command": "echo \"Hello, world!\"",
-          "explanation": "Outputs the text to stdout"
+          "explanation": "Напечатать приветствие в терминале."
         },
         {
           "type": "example",
-          "text": "print text without a trailing newline",
+          "text": "Вывести текстовое сообщение через echo",
+          "command": "echo \"Hello, world!\"",
+          "explanation": "Напечатать приветствие в терминале."
+        },
+        {
+          "type": "example",
+          "text": "Вывести текст без перевода строки",
           "command": "echo -n \"Enter your name: \"",
-          "explanation": "Suppresses the newline at the end, useful for prompts"
+          "explanation": "Вывести текст без перевода строки."
         },
         {
           "type": "example",
-          "text": "print text with escape sequences like tabs and newlines",
+          "text": "Показать приглашение ввода на текущей строке",
+          "command": "echo -n \"Enter your name: \"",
+          "explanation": "Вывести текст без перевода строки."
+        },
+        {
+          "type": "example",
+          "text": "Вывести текст с табуляцией и переносами строк",
           "command": "echo -e \"Line1\\nLine2\\tTabbed\"",
-          "explanation": "Interprets backslash escape characters"
+          "explanation": "Вывести текст с табуляцией и переносами строк."
         },
         {
           "type": "example",
-          "text": "write text to a file",
+          "text": "Обработать escape-последовательности в сообщении echo",
+          "command": "echo -e \"Line1\\nLine2\\tTabbed\"",
+          "explanation": "Вывести текст с табуляцией и переносами строк."
+        },
+        {
+          "type": "example",
+          "text": "Записать строку настройки в файл с перезаписью",
           "command": "echo \"config=value\" > settings.conf",
-          "explanation": "Redirects output to create or overwrite a file"
+          "explanation": "Записать строку настройки в файл с перезаписью."
         },
         {
           "type": "example",
-          "text": "append text to a file",
+          "text": "Создать settings.conf с заданным текстом",
+          "command": "echo \"config=value\" > settings.conf",
+          "explanation": "Записать строку настройки в файл с перезаписью."
+        },
+        {
+          "type": "example",
+          "text": "Дописать строку в конец файла",
           "command": "echo \"new line\" >> logfile.txt",
-          "explanation": "Adds text to the end of an existing file"
+          "explanation": "Дописать строку в конец файла."
+        },
+        {
+          "type": "example",
+          "text": "Добавить сообщение в журнал, сохранив прежнее содержимое",
+          "command": "echo \"new line\" >> logfile.txt",
+          "explanation": "Дописать строку в конец файла."
         }
       ]
     },
     {
       "name": "printf",
       "synopsis": "printf FORMAT [ARGUMENT...]",
-      "description": "Format and print data with precise control",
+      "description": "Форматированный вывод данных",
       "patterns": [
         {
           "type": "example",
-          "text": "print formatted text with variables",
+          "text": "Напечатать строку с подстановкой текста и числа",
           "command": "printf \"Name: %s, Age: %d\\n\" \"Alice\" 30",
-          "explanation": "Uses format specifiers for type-safe output"
+          "explanation": "Напечатать строку с подстановкой текста и числа."
         },
         {
           "type": "example",
-          "text": "print a number with leading zeros",
+          "text": "Сформатировать имя и возраст через printf",
+          "command": "printf \"Name: %s, Age: %d\\n\" \"Alice\" 30",
+          "explanation": "Напечатать строку с подстановкой текста и числа."
+        },
+        {
+          "type": "example",
+          "text": "Вывести число с ведущими нулями до пяти знаков",
           "command": "printf \"%05d\\n\" 42",
-          "explanation": "Pads the number with zeros to 5 digits"
+          "explanation": "Вывести число с ведущими нулями до пяти знаков."
         },
         {
           "type": "example",
-          "text": "print a floating point number with precision",
+          "text": "Дополнить 42 нулями слева в форматированном выводе",
+          "command": "printf \"%05d\\n\" 42",
+          "explanation": "Вывести число с ведущими нулями до пяти знаков."
+        },
+        {
+          "type": "example",
+          "text": "Напечатать дробное число с двумя знаками после запятой",
           "command": "printf \"%.2f\\n\" 3.14159",
-          "explanation": "Rounds and displays with exactly 2 decimal places"
+          "explanation": "Напечатать дробное число с двумя знаками после запятой."
         },
         {
           "type": "example",
-          "text": "create a formatted table row",
+          "text": "Округлить вывод числа через формат printf",
+          "command": "printf \"%.2f\\n\" 3.14159",
+          "explanation": "Напечатать дробное число с двумя знаками после запятой."
+        },
+        {
+          "type": "example",
+          "text": "Вывести выровненную строку таблицы",
           "command": "printf \"%-20s %10s %8s\\n\" \"Filename\" \"Size\" \"Type\"",
-          "explanation": "Left-aligns the first column and right-aligns the others"
+          "explanation": "Вывести выровненную строку таблицы."
+        },
+        {
+          "type": "example",
+          "text": "Расположить текст по колонкам фиксированной ширины",
+          "command": "printf \"%-20s %10s %8s\\n\" \"Filename\" \"Size\" \"Type\"",
+          "explanation": "Вывести выровненную строку таблицы."
         }
       ]
     },
     {
       "name": "read",
       "synopsis": "read [options] [name...]",
-      "description": "Read a line from standard input into a variable",
+      "description": "Чтение строки стандартного ввода в переменную",
       "patterns": [
         {
           "type": "example",
-          "text": "prompt the user for input in a script",
+          "text": "Спросить имя пользователя в shell-скрипте",
           "command": "read -p \"Enter your name: \" name",
-          "explanation": "Displays a prompt and stores the input in the name variable"
+          "explanation": "Спросить имя пользователя в shell-скрипте."
         },
         {
           "type": "example",
-          "text": "read a password without showing it on screen",
+          "text": "Прочитать введённую строку в переменную name",
+          "command": "read -p \"Enter your name: \" name",
+          "explanation": "Спросить имя пользователя в shell-скрипте."
+        },
+        {
+          "type": "example",
+          "text": "Прочитать пароль без отображения символов",
           "command": "read -sp \"Password: \" password",
-          "explanation": "Silently reads input without echoing characters"
+          "explanation": "Прочитать пароль без отображения символов."
         },
         {
           "type": "example",
-          "text": "read input with a timeout",
+          "text": "Запросить секретный ввод в терминале",
+          "command": "read -sp \"Password: \" password",
+          "explanation": "Прочитать пароль без отображения символов."
+        },
+        {
+          "type": "example",
+          "text": "Ждать пользовательский ввод не больше десяти секунд",
           "command": "read -t 10 -p \"Quick, enter something: \" answer",
-          "explanation": "Waits 10 seconds for input before timing out"
+          "explanation": "Ждать пользовательский ввод не больше десяти секунд."
         },
         {
           "type": "example",
-          "text": "read a single character without pressing Enter",
+          "text": "Прочитать ответ с ограничением времени",
+          "command": "read -t 10 -p \"Quick, enter something: \" answer",
+          "explanation": "Ждать пользовательский ввод не больше десяти секунд."
+        },
+        {
+          "type": "example",
+          "text": "Прочитать один символ без нажатия Enter",
           "command": "read -n 1 -p \"Continue? (y/n) \" choice",
-          "explanation": "Reads exactly one character of input"
+          "explanation": "Прочитать один символ без нажатия Enter."
         },
         {
           "type": "example",
-          "text": "read a file line by line",
+          "text": "Получить ответ на вопрос одним нажатием клавиши",
+          "command": "read -n 1 -p \"Continue? (y/n) \" choice",
+          "explanation": "Прочитать один символ без нажатия Enter."
+        },
+        {
+          "type": "example",
+          "text": "Прочитать файл построчно с сохранением пробелов и обратных слешей",
           "command": "while IFS= read -r line; do echo \"$line\"; done < file.txt",
-          "explanation": "Processes each line of a file preserving whitespace"
+          "explanation": "Прочитать файл построчно с сохранением пробелов и обратных слешей."
+        },
+        {
+          "type": "example",
+          "text": "Обработать каждую строку file.txt в shell-цикле",
+          "command": "while IFS= read -r line; do echo \"$line\"; done < file.txt",
+          "explanation": "Прочитать файл построчно с сохранением пробелов и обратных слешей."
         }
       ]
     },
     {
       "name": "test",
       "synopsis": "test EXPRESSION",
-      "description": "Evaluate conditional expressions for use in shell scripts",
+      "description": "Проверка условий в сценариях оболочки",
       "patterns": [
         {
           "type": "example",
-          "text": "check whether a path exists and is a regular file",
+          "text": "Проверить существование обычного файла",
           "command": "test -f /path/to/file && echo \"exists\"",
-          "explanation": "Returns true if the file exists and is a regular file"
+          "explanation": "Проверить существование обычного файла."
         },
         {
           "type": "example",
-          "text": "check if a directory exists",
+          "text": "Вывести сообщение, если указанный путь является файлом",
+          "command": "test -f /path/to/file && echo \"exists\"",
+          "explanation": "Проверить существование обычного файла."
+        },
+        {
+          "type": "example",
+          "text": "Проверить наличие каталога",
           "command": "test -d /path/to/dir && echo \"is a directory\"",
-          "explanation": "Returns true if the path exists and is a directory"
+          "explanation": "Проверить наличие каталога."
         },
         {
           "type": "example",
-          "text": "compare two strings",
+          "text": "Убедиться, что заданный путь является директорией",
+          "command": "test -d /path/to/dir && echo \"is a directory\"",
+          "explanation": "Проверить наличие каталога."
+        },
+        {
+          "type": "example",
+          "text": "Проверить равенство двух строк",
           "command": "test \"$a\" = \"$b\" && echo \"equal\"",
-          "explanation": "Tests if two strings are identical"
+          "explanation": "Проверить равенство двух строк."
         },
         {
           "type": "example",
-          "text": "check if a string is empty",
+          "text": "Сравнить значения переменных a и b",
+          "command": "test \"$a\" = \"$b\" && echo \"equal\"",
+          "explanation": "Проверить равенство двух строк."
+        },
+        {
+          "type": "example",
+          "text": "Определить, пуста ли строковая переменная",
           "command": "test -z \"$var\" && echo \"empty\"",
-          "explanation": "Returns true if the string has zero length"
+          "explanation": "Определить, пуста ли строковая переменная."
         },
         {
           "type": "example",
-          "text": "compare two numbers",
+          "text": "Проверить отсутствие символов в var",
+          "command": "test -z \"$var\" && echo \"empty\"",
+          "explanation": "Определить, пуста ли строковая переменная."
+        },
+        {
+          "type": "example",
+          "text": "Проверить, что одно целое число больше другого",
           "command": "test 5 -gt 3 && echo \"greater\"",
-          "explanation": "Tests if the first number is greater than the second"
+          "explanation": "Проверить, что одно целое число больше другого."
+        },
+        {
+          "type": "example",
+          "text": "Сравнить пять и три численно через test",
+          "command": "test 5 -gt 3 && echo \"greater\"",
+          "explanation": "Проверить, что одно целое число больше другого."
         }
       ]
     },
     {
       "name": "expr",
       "synopsis": "expr EXPRESSION",
-      "description": "Evaluate expressions for arithmetic and string operations",
+      "description": "Вычисление арифметических и строковых выражений",
       "patterns": [
         {
           "type": "example",
-          "text": "do basic arithmetic in the shell",
+          "text": "Сложить два целых числа в оболочке",
           "command": "expr 5 + 3",
-          "explanation": "Evaluates and prints the sum of 5 and 3"
+          "explanation": "Сложить два целых числа в оболочке."
         },
         {
           "type": "example",
-          "text": "multiply two numbers using expr",
+          "text": "Вычислить сумму пяти и трёх через expr",
+          "command": "expr 5 + 3",
+          "explanation": "Сложить два целых числа в оболочке."
+        },
+        {
+          "type": "example",
+          "text": "Перемножить целые числа через expr",
           "command": "expr 6 \\* 7",
-          "explanation": "The asterisk must be escaped to prevent shell globbing"
+          "explanation": "Перемножить целые числа через expr."
         },
         {
           "type": "example",
-          "text": "get the length of a string",
+          "text": "Посчитать произведение шести и семи в shell",
+          "command": "expr 6 \\* 7",
+          "explanation": "Перемножить целые числа через expr."
+        },
+        {
+          "type": "example",
+          "text": "Узнать длину текстовой строки",
           "command": "expr length \"hello world\"",
-          "explanation": "Returns the number of characters in the string"
+          "explanation": "Узнать длину текстовой строки."
         },
         {
           "type": "example",
-          "text": "extract a substring",
+          "text": "Посчитать число символов через expr length",
+          "command": "expr length \"hello world\"",
+          "explanation": "Узнать длину текстовой строки."
+        },
+        {
+          "type": "example",
+          "text": "Извлечь первые пять символов строки",
           "command": "expr substr \"hello world\" 1 5",
-          "explanation": "Extracts 5 characters starting at position 1"
+          "explanation": "Извлечь первые пять символов строки."
+        },
+        {
+          "type": "example",
+          "text": "Получить подстроку с заданной позицией и длиной",
+          "command": "expr substr \"hello world\" 1 5",
+          "explanation": "Извлечь первые пять символов строки."
         }
       ]
     },
     {
       "name": "bc",
       "synopsis": "bc [options] [file...]",
-      "description": "An arbitrary precision calculator language",
+      "description": "Вычисления с произвольной точностью",
       "patterns": [
         {
           "type": "example",
-          "text": "do floating point math in the shell",
+          "text": "Разделить числа с двумя десятичными знаками",
           "command": "echo 'scale=2; 22/7' | bc",
-          "explanation": "Calculates 22 divided by 7 with 2 decimal places"
+          "explanation": "Разделить числа с двумя десятичными знаками."
         },
         {
           "type": "example",
-          "text": "convert between number bases",
+          "text": "Вычислить 22 на 7 через консольный калькулятор bc",
+          "command": "echo 'scale=2; 22/7' | bc",
+          "explanation": "Разделить числа с двумя десятичными знаками."
+        },
+        {
+          "type": "example",
+          "text": "Перевести десятичное число в шестнадцатеричное",
           "command": "echo 'obase=16; 255' | bc",
-          "explanation": "Converts decimal 255 to hexadecimal"
+          "explanation": "Перевести десятичное число в шестнадцатеричное."
         },
         {
           "type": "example",
-          "text": "calculate a square root",
+          "text": "Получить запись числа 255 по основанию шестнадцать",
+          "command": "echo 'obase=16; 255' | bc",
+          "explanation": "Перевести десятичное число в шестнадцатеричное."
+        },
+        {
+          "type": "example",
+          "text": "Вычислить квадратный корень с четырьмя десятичными знаками",
           "command": "echo 'scale=4; sqrt(2)' | bc -l",
-          "explanation": "Computes the square root with 4 decimal places"
+          "explanation": "Вычислить квадратный корень с четырьмя десятичными знаками."
         },
         {
           "type": "example",
-          "text": "do a complex calculation",
+          "text": "Посчитать корень из двух через bc -l",
+          "command": "echo 'scale=4; sqrt(2)' | bc -l",
+          "explanation": "Вычислить квадратный корень с четырьмя десятичными знаками."
+        },
+        {
+          "type": "example",
+          "text": "Вычислить площадь круга по формуле с дробной точностью",
           "command": "echo 'scale=6; (3.14159 * 5^2)' | bc",
-          "explanation": "Calculates the area of a circle with radius 5"
+          "explanation": "Вычислить площадь круга по формуле с дробной точностью."
+        },
+        {
+          "type": "example",
+          "text": "Посчитать выражение с возведением в квадрат через bc",
+          "command": "echo 'scale=6; (3.14159 * 5^2)' | bc",
+          "explanation": "Вычислить площадь круга по формуле с дробной точностью."
         }
       ]
     },
     {
       "name": "dc",
       "synopsis": "dc [options] [file...]",
-      "description": "Reverse-polish desk calculator",
+      "description": "Калькулятор с обратной польской записью",
       "patterns": [
         {
           "type": "example",
-          "text": "add two numbers with reverse-polish notation",
+          "text": "Сложить числа в обратной польской записи",
           "command": "echo '5 3 + p' | dc",
-          "explanation": "Pushes 5 and 3, adds them, and prints the result"
+          "explanation": "Сложить числа в обратной польской записи."
         },
         {
           "type": "example",
-          "text": "multiply numbers using dc",
+          "text": "Получить сумму пяти и трёх через dc",
+          "command": "echo '5 3 + p' | dc",
+          "explanation": "Сложить числа в обратной польской записи."
+        },
+        {
+          "type": "example",
+          "text": "Вычислить произведение чисел в стековом калькуляторе",
           "command": "echo '6 7 * p' | dc",
-          "explanation": "Calculates 6 times 7 using postfix notation"
+          "explanation": "Вычислить произведение чисел в стековом калькуляторе."
         },
         {
           "type": "example",
-          "text": "calculate with precision in dc",
+          "text": "Перемножить шесть и семь через dc",
+          "command": "echo '6 7 * p' | dc",
+          "explanation": "Вычислить произведение чисел в стековом калькуляторе."
+        },
+        {
+          "type": "example",
+          "text": "Разделить числа с четырьмя знаками через dc",
           "command": "echo '4 k 22 7 / p' | dc",
-          "explanation": "Sets 4 decimal places then divides 22 by 7"
+          "explanation": "Разделить числа с четырьмя знаками через dc."
         },
         {
           "type": "example",
-          "text": "compute a power using dc",
+          "text": "Задать точность стекового калькулятора для деления 22 на 7",
+          "command": "echo '4 k 22 7 / p' | dc",
+          "explanation": "Разделить числа с четырьмя знаками через dc."
+        },
+        {
+          "type": "example",
+          "text": "Возвести два в десятую степень через dc",
           "command": "echo '2 10 ^ p' | dc",
-          "explanation": "Calculates 2 to the power of 10"
+          "explanation": "Возвести два в десятую степень через dc."
+        },
+        {
+          "type": "example",
+          "text": "Вычислить целую степень в обратной польской записи",
+          "command": "echo '2 10 ^ p' | dc",
+          "explanation": "Возвести два в десятую степень через dc."
         }
       ]
     },
     {
       "name": "yes",
       "synopsis": "yes [string]",
-      "description": "Output a string repeatedly until killed",
+      "description": "Непрерывный повтор строки до остановки процесса",
       "patterns": [
         {
           "type": "example",
-          "text": "automatically answer yes to all prompts",
+          "text": "Автоматически подтверждать установку nginx ответом yes",
           "command": "yes | sudo apt-get install nginx",
-          "explanation": "Pipes a continuous stream of 'y' to the command"
+          "explanation": "Автоматически подтверждать установку nginx ответом yes."
         },
         {
           "type": "example",
-          "text": "repeat a custom string indefinitely",
+          "text": "Подавать положительные ответы интерактивному установщику",
+          "command": "yes | sudo apt-get install nginx",
+          "explanation": "Автоматически подтверждать установку nginx ответом yes."
+        },
+        {
+          "type": "example",
+          "text": "Бесконечно печатать заданную строку",
           "command": "yes \"hello\"",
-          "explanation": "Outputs hello on every line until interrupted"
+          "explanation": "Бесконечно печатать заданную строку."
         },
         {
           "type": "example",
-          "text": "generate exactly one hundred empty lines",
+          "text": "Создать повторяющийся поток текста hello",
+          "command": "yes \"hello\"",
+          "explanation": "Бесконечно печатать заданную строку."
+        },
+        {
+          "type": "example",
+          "text": "Вывести сто пустых строк",
           "command": "yes '' | head -n 100",
-          "explanation": "Produces 100 blank lines"
+          "explanation": "Вывести сто пустых строк."
         },
         {
           "type": "example",
-          "text": "answer no to all prompts in a script",
+          "text": "Сгенерировать ограниченный поток пустых строк через yes и head",
+          "command": "yes '' | head -n 100",
+          "explanation": "Вывести сто пустых строк."
+        },
+        {
+          "type": "example",
+          "text": "Автоматически отвечать нет на вопросы скрипта",
           "command": "yes n | ./installer.sh",
-          "explanation": "Pipes 'n' responses to every prompt"
+          "explanation": "Автоматически отвечать нет на вопросы скрипта."
+        },
+        {
+          "type": "example",
+          "text": "Передавать установщику повторяющийся ответ n",
+          "command": "yes n | ./installer.sh",
+          "explanation": "Автоматически отвечать нет на вопросы скрипта."
         }
       ]
     },
     {
       "name": "seq",
       "synopsis": "seq [options] LAST or seq FIRST LAST or seq FIRST INCREMENT LAST",
-      "description": "Print a sequence of numbers",
+      "description": "Генерация последовательности чисел",
       "patterns": [
         {
           "type": "example",
-          "text": "generate numbers from 1 to 10",
+          "text": "Вывести целые числа от одного до десяти",
           "command": "seq 1 10",
-          "explanation": "Prints each number from 1 to 10 on its own line"
+          "explanation": "Вывести целые числа от одного до десяти."
         },
         {
           "type": "example",
-          "text": "generate even numbers from 2 to 20",
+          "text": "Сгенерировать последовательность 1–10",
+          "command": "seq 1 10",
+          "explanation": "Вывести целые числа от одного до десяти."
+        },
+        {
+          "type": "example",
+          "text": "Перечислить чётные числа от двух до двадцати",
           "command": "seq 2 2 20",
-          "explanation": "Starts at 2, increments by 2, stops at 20"
+          "explanation": "Перечислить чётные числа от двух до двадцати."
         },
         {
           "type": "example",
-          "text": "generate numbers separated by commas",
+          "text": "Вывести последовательность с шагом два",
+          "command": "seq 2 2 20",
+          "explanation": "Перечислить чётные числа от двух до двадцати."
+        },
+        {
+          "type": "example",
+          "text": "Напечатать числа от одного до пяти через запятую",
           "command": "seq -s, 1 5",
-          "explanation": "Outputs 1,2,3,4,5 on a single line"
+          "explanation": "Напечатать числа от одного до пяти через запятую."
         },
         {
           "type": "example",
-          "text": "generate zero-padded numbers",
+          "text": "Задать запятую разделителем последовательности seq",
+          "command": "seq -s, 1 5",
+          "explanation": "Напечатать числа от одного до пяти через запятую."
+        },
+        {
+          "type": "example",
+          "text": "Вывести числа до ста одинаковой ширины с нулями",
           "command": "seq -w 1 100",
-          "explanation": "Pads with leading zeros so all numbers have equal width"
+          "explanation": "Вывести числа до ста одинаковой ширины с нулями."
+        },
+        {
+          "type": "example",
+          "text": "Дополнить номера последовательности ведущими нулями",
+          "command": "seq -w 1 100",
+          "explanation": "Вывести числа до ста одинаковой ширины с нулями."
         }
       ]
     },
     {
       "name": "shuf",
       "synopsis": "shuf [options] [file]",
-      "description": "Generate random permutations",
+      "description": "Перемешивание строк и генерация случайных перестановок",
       "patterns": [
         {
           "type": "example",
-          "text": "shuffle the lines of a file randomly",
+          "text": "Случайно перемешать строки файла",
           "command": "shuf file.txt",
-          "explanation": "Outputs the lines of the file in random order"
+          "explanation": "Случайно перемешать строки файла."
         },
         {
           "type": "example",
-          "text": "pick a random line from a file",
+          "text": "Показать file.txt в случайном порядке",
+          "command": "shuf file.txt",
+          "explanation": "Случайно перемешать строки файла."
+        },
+        {
+          "type": "example",
+          "text": "Выбрать случайную строку из файла",
           "command": "shuf -n 1 file.txt",
-          "explanation": "Selects one random line from the file"
+          "explanation": "Выбрать случайную строку из файла."
         },
         {
           "type": "example",
-          "text": "generate a random number in a range",
+          "text": "Получить одну запись случайной выборкой",
+          "command": "shuf -n 1 file.txt",
+          "explanation": "Выбрать случайную строку из файла."
+        },
+        {
+          "type": "example",
+          "text": "Сгенерировать целое число от одного до ста",
           "command": "shuf -i 1-100 -n 1",
-          "explanation": "Picks one random number between 1 and 100"
+          "explanation": "Сгенерировать целое число от одного до ста."
         },
         {
           "type": "example",
-          "text": "sample 5 random lines from a file",
+          "text": "Получить случайное значение в заданном диапазоне",
+          "command": "shuf -i 1-100 -n 1",
+          "explanation": "Сгенерировать целое число от одного до ста."
+        },
+        {
+          "type": "example",
+          "text": "Выбрать пять случайных строк из файла",
           "command": "shuf -n 5 file.txt",
-          "explanation": "Selects 5 random lines without replacement"
+          "explanation": "Выбрать пять случайных строк из файла."
+        },
+        {
+          "type": "example",
+          "text": "Сделать случайную выборку из file.txt размером пять строк",
+          "command": "shuf -n 5 file.txt",
+          "explanation": "Выбрать пять случайных строк из файла."
         }
       ]
     },
     {
       "name": "sleep",
       "synopsis": "sleep NUMBER[smhd]",
-      "description": "Delay for a specified amount of time",
+      "description": "Приостановка выполнения на указанное время",
       "patterns": [
         {
           "type": "example",
-          "text": "pause for 5 seconds in a script",
+          "text": "Приостановить скрипт на пять секунд",
           "command": "sleep 5",
-          "explanation": "Waits for 5 seconds before continuing"
+          "explanation": "Приостановить скрипт на пять секунд."
         },
         {
           "type": "example",
-          "text": "sleep for 2 minutes",
+          "text": "Сделать короткую паузу через sleep",
+          "command": "sleep 5",
+          "explanation": "Приостановить скрипт на пять секунд."
+        },
+        {
+          "type": "example",
+          "text": "Подождать две минуты",
           "command": "sleep 2m",
-          "explanation": "Pauses execution for 2 minutes"
+          "explanation": "Подождать две минуты."
         },
         {
           "type": "example",
-          "text": "sleep for half a second",
+          "text": "Задержать выполнение скрипта на 120 секунд",
+          "command": "sleep 2m",
+          "explanation": "Подождать две минуты."
+        },
+        {
+          "type": "example",
+          "text": "Сделать паузу на полсекунды",
           "command": "sleep 0.5",
-          "explanation": "Pauses for 500 milliseconds"
+          "explanation": "Сделать паузу на полсекунды."
         },
         {
           "type": "example",
-          "text": "delay between retries in a loop",
+          "text": "Приостановить выполнение на 0,5 секунды",
+          "command": "sleep 0.5",
+          "explanation": "Сделать паузу на полсекунды."
+        },
+        {
+          "type": "example",
+          "text": "Повторять запрос к локальному серверу с паузой три секунды до успеха",
           "command": "while ! curl -s http://localhost:8080; do sleep 3; done",
-          "explanation": "Retries a connection every 3 seconds until successful"
+          "explanation": "Повторять запрос к локальному серверу с паузой три секунды до успеха."
+        },
+        {
+          "type": "example",
+          "text": "Дождаться успешного curl к localhost:8080 через цикл повторов",
+          "command": "while ! curl -s http://localhost:8080; do sleep 3; done",
+          "explanation": "Повторять запрос к локальному серверу с паузой три секунды до успеха."
         }
       ]
     },
     {
       "name": "true",
       "synopsis": "true",
-      "description": "Do nothing, successfully (return exit code 0)",
+      "description": "Успешное завершение без выполнения действий с кодом 0",
       "patterns": [
         {
           "type": "example",
-          "text": "create an infinite loop",
+          "text": "Запустить бесконечный цикл с секундной паузой",
           "command": "while true; do echo \"running\"; sleep 1; done",
-          "explanation": "The loop condition always succeeds, running forever"
+          "explanation": "Запустить бесконечный цикл с секундной паузой."
         },
         {
           "type": "example",
-          "text": "use true as a no-op placeholder",
+          "text": "Печатать running каждую секунду без ограничения",
+          "command": "while true; do echo \"running\"; sleep 1; done",
+          "explanation": "Запустить бесконечный цикл с секундной паузой."
+        },
+        {
+          "type": "example",
+          "text": "Ничего не делать при наличии config",
           "command": "if [ -f config ]; then true; else echo \"missing\"; fi",
-          "explanation": "Acts as a do-nothing command in the then branch"
+          "explanation": "Ничего не делать при наличии config."
         },
         {
           "type": "example",
-          "text": "override a command to always succeed",
+          "text": "Использовать успешную пустую операцию в ветке условия",
+          "command": "if [ -f config ]; then true; else echo \"missing\"; fi",
+          "explanation": "Ничего не делать при наличии config."
+        },
+        {
+          "type": "example",
+          "text": "Игнорировать ошибку команды для продолжения выполнения",
           "command": "some_command || true",
-          "explanation": "Ensures the pipeline succeeds even if some_command fails"
+          "explanation": "Игнорировать ошибку команды для продолжения выполнения."
         },
         {
           "type": "example",
-          "text": "create an empty file or truncate an existing file to zero bytes",
+          "text": "Сделать итоговый статус выражения успешным через true",
+          "command": "some_command || true",
+          "explanation": "Игнорировать ошибку команды для продолжения выполнения."
+        },
+        {
+          "type": "example",
+          "text": "Создать или очистить пустой файл перенаправлением",
           "command": "true > empty_file.txt",
-          "explanation": "Creates a missing file or discards the contents of an existing file",
+          "explanation": "Создаёт отсутствующий файл или полностью очищает содержимое существующего.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "Обнулить содержимое файла командой true",
+          "command": "true > empty_file.txt",
+          "explanation": "Создаёт отсутствующий файл или полностью очищает содержимое существующего.",
           "destructive": true
         }
       ]
@@ -395,1083 +702,1935 @@
     {
       "name": "false",
       "synopsis": "false",
-      "description": "Do nothing, unsuccessfully (return exit code 1)",
+      "description": "Завершение без выполнения действий с кодом 1",
       "patterns": [
         {
           "type": "example",
-          "text": "force a script to fail at a certain point",
+          "text": "Вернуть неуспешный код завершения",
           "command": "false",
-          "explanation": "Returns a non-zero exit code to signal failure"
+          "explanation": "Вернуть неуспешный код завершения."
         },
         {
           "type": "example",
-          "text": "skip the next command when the previous command fails",
+          "text": "Сымитировать ошибку командой false",
+          "command": "false",
+          "explanation": "Вернуть неуспешный код завершения."
+        },
+        {
+          "type": "example",
+          "text": "Не выполнять правую часть после неуспешной команды",
           "command": "false && echo \"this won't print\"",
-          "explanation": "The second command is skipped because false returns failure"
+          "explanation": "Не выполнять правую часть после неуспешной команды."
         },
         {
           "type": "example",
-          "text": "use as a disabled loop condition",
+          "text": "Проверить короткое замыкание оператора && при ошибке",
+          "command": "false && echo \"this won't print\"",
+          "explanation": "Не выполнять правую часть после неуспешной команды."
+        },
+        {
+          "type": "example",
+          "text": "Создать цикл с заведомо ложным условием",
           "command": "while false; do echo \"never runs\"; done",
-          "explanation": "The loop body never executes"
+          "explanation": "Создать цикл с заведомо ложным условием."
         },
         {
           "type": "example",
-          "text": "trigger an ERR trap for testing",
+          "text": "Не запускать тело while, если условие false",
+          "command": "while false; do echo \"never runs\"; done",
+          "explanation": "Создать цикл с заведомо ложным условием."
+        },
+        {
+          "type": "example",
+          "text": "Проверить обработчик ERR искусственной ошибкой",
           "command": "trap 'echo caught' ERR; false",
-          "explanation": "Deliberately triggers the error trap"
+          "explanation": "Проверить обработчик ERR искусственной ошибкой."
+        },
+        {
+          "type": "example",
+          "text": "Назначить ловушку ошибки и вызвать её через false",
+          "command": "trap 'echo caught' ERR; false",
+          "explanation": "Проверить обработчик ERR искусственной ошибкой."
         }
       ]
     },
     {
       "name": "xdg-open",
       "synopsis": "xdg-open file|URL",
-      "description": "Open a file or URL with the default application on Linux",
+      "description": "Открытие файла или URL приложением по умолчанию в Linux",
       "patterns": [
         {
           "type": "example",
-          "text": "open a URL in the default browser on Linux",
+          "text": "Открыть сайт в браузере Linux по умолчанию",
           "command": "xdg-open https://example.com",
-          "explanation": "Launches the default web browser with the URL"
+          "explanation": "Открыть сайт в браузере Linux по умолчанию."
         },
         {
           "type": "example",
-          "text": "open a file with its associated application on Linux",
+          "text": "Перейти по URL через xdg-open",
+          "command": "xdg-open https://example.com",
+          "explanation": "Открыть сайт в браузере Linux по умолчанию."
+        },
+        {
+          "type": "example",
+          "text": "Открыть PDF стандартным приложением Linux",
           "command": "xdg-open document.pdf",
-          "explanation": "Opens the PDF with the default PDF viewer"
+          "explanation": "Открыть PDF стандартным приложением Linux."
         },
         {
           "type": "example",
-          "text": "open the current directory in a file manager",
+          "text": "Передать документ ассоциированной программе рабочего стола",
+          "command": "xdg-open document.pdf",
+          "explanation": "Открыть PDF стандартным приложением Linux."
+        },
+        {
+          "type": "example",
+          "text": "Открыть текущую папку в файловом менеджере Linux",
           "command": "xdg-open .",
-          "explanation": "Launches the default file manager in the current directory"
+          "explanation": "Открыть текущую папку в файловом менеджере Linux."
         },
         {
           "type": "example",
-          "text": "open an image with the default viewer",
+          "text": "Показать рабочий каталог графически через xdg-open",
+          "command": "xdg-open .",
+          "explanation": "Открыть текущую папку в файловом менеджере Linux."
+        },
+        {
+          "type": "example",
+          "text": "Открыть изображение стандартным просмотрщиком Linux",
           "command": "xdg-open photo.jpg",
-          "explanation": "Launches the default image viewer"
+          "explanation": "Открыть изображение стандартным просмотрщиком Linux."
+        },
+        {
+          "type": "example",
+          "text": "Посмотреть photo.jpg через системную ассоциацию файлов",
+          "command": "xdg-open photo.jpg",
+          "explanation": "Открыть изображение стандартным просмотрщиком Linux."
         }
       ]
     },
     {
       "name": "open",
       "synopsis": "open [options] file|URL|application",
-      "description": "Open files, directories, and URLs on macOS",
+      "description": "Открытие файлов, каталогов и URL в macOS",
       "patterns": [
         {
           "type": "example",
-          "text": "open a URL in the default browser on macOS",
+          "text": "Открыть сайт в браузере macOS по умолчанию",
           "command": "open https://example.com",
-          "explanation": "Launches the default browser with the URL"
+          "explanation": "Открыть сайт в браузере macOS по умолчанию."
         },
         {
           "type": "example",
-          "text": "open a file with its default application on macOS",
+          "text": "Перейти по ссылке с помощью команды open на Mac",
+          "command": "open https://example.com",
+          "explanation": "Открыть сайт в браузере macOS по умолчанию."
+        },
+        {
+          "type": "example",
+          "text": "Открыть PDF стандартным приложением Mac",
           "command": "open document.pdf",
-          "explanation": "Opens the file with the associated application"
+          "explanation": "Открыть PDF стандартным приложением Mac."
         },
         {
           "type": "example",
-          "text": "open a file with a specific application",
+          "text": "Показать document.pdf через ассоциацию файлов macOS",
+          "command": "open document.pdf",
+          "explanation": "Открыть PDF стандартным приложением Mac."
+        },
+        {
+          "type": "example",
+          "text": "Открыть папку проекта в Visual Studio Code на Mac",
           "command": "open -a \"Visual Studio Code\" project/",
-          "explanation": "Opens the project directory in VS Code"
+          "explanation": "Открыть папку проекта в Visual Studio Code на Mac."
         },
         {
           "type": "example",
-          "text": "reveal a file in Finder",
+          "text": "Выбрать конкретное приложение для открытия каталога",
+          "command": "open -a \"Visual Studio Code\" project/",
+          "explanation": "Открыть папку проекта в Visual Studio Code на Mac."
+        },
+        {
+          "type": "example",
+          "text": "Показать файл в Finder, не открывая его",
           "command": "open -R ~/Downloads/file.zip",
-          "explanation": "Opens Finder and highlights the file"
+          "explanation": "Показать файл в Finder, не открывая его."
         },
         {
           "type": "example",
-          "text": "open the current directory in Finder",
+          "text": "Выделить архив в содержащей его папке macOS",
+          "command": "open -R ~/Downloads/file.zip",
+          "explanation": "Показать файл в Finder, не открывая его."
+        },
+        {
+          "type": "example",
+          "text": "Открыть текущую папку в Finder",
           "command": "open .",
-          "explanation": "Launches Finder showing the current working directory"
+          "explanation": "Открыть текущую папку в Finder."
+        },
+        {
+          "type": "example",
+          "text": "Показать рабочий каталог в файловом менеджере Mac",
+          "command": "open .",
+          "explanation": "Открыть текущую папку в Finder."
         }
       ]
     },
     {
       "name": "pbcopy",
       "synopsis": "pbcopy",
-      "description": "Copy data from stdin to the macOS clipboard",
+      "description": "Копирование стандартного ввода в буфер обмена macOS",
       "patterns": [
         {
           "type": "example",
-          "text": "copy text to the clipboard on macOS",
+          "text": "Скопировать текст в буфер обмена macOS",
           "command": "echo \"Hello\" | pbcopy",
-          "explanation": "Copies the text to the system clipboard"
+          "explanation": "Скопировать текст в буфер обмена macOS."
         },
         {
           "type": "example",
-          "text": "copy a file's contents to the clipboard",
+          "text": "Передать строку из терминала в clipboard Mac",
+          "command": "echo \"Hello\" | pbcopy",
+          "explanation": "Скопировать текст в буфер обмена macOS."
+        },
+        {
+          "type": "example",
+          "text": "Скопировать содержимое публичного SSH-ключа на Mac",
           "command": "pbcopy < ~/.ssh/id_rsa.pub",
-          "explanation": "Copies the SSH public key to the clipboard"
+          "explanation": "Скопировать содержимое публичного SSH-ключа на Mac."
         },
         {
           "type": "example",
-          "text": "copy the output of a command to the clipboard",
+          "text": "Поместить текст файла в буфер через pbcopy",
+          "command": "pbcopy < ~/.ssh/id_rsa.pub",
+          "explanation": "Скопировать содержимое публичного SSH-ключа на Mac."
+        },
+        {
+          "type": "example",
+          "text": "Скопировать путь текущего каталога в буфер Mac",
           "command": "pwd | pbcopy",
-          "explanation": "Copies the current working directory path to the clipboard"
+          "explanation": "Скопировать путь текущего каталога в буфер Mac."
         },
         {
           "type": "example",
-          "text": "copy a filtered command output to clipboard",
+          "text": "Направить результат pwd в clipboard macOS",
+          "command": "pwd | pbcopy",
+          "explanation": "Скопировать путь текущего каталога в буфер Mac."
+        },
+        {
+          "type": "example",
+          "text": "Скопировать краткий журнал последних пяти коммитов на Mac",
           "command": "git log --oneline -5 | pbcopy",
-          "explanation": "Copies the last 5 commit messages to the clipboard"
+          "explanation": "Скопировать краткий журнал последних пяти коммитов на Mac."
+        },
+        {
+          "type": "example",
+          "text": "Поместить отфильтрованный вывод Git в буфер обмена",
+          "command": "git log --oneline -5 | pbcopy",
+          "explanation": "Скопировать краткий журнал последних пяти коммитов на Mac."
         }
       ]
     },
     {
       "name": "pbpaste",
       "synopsis": "pbpaste",
-      "description": "Output the contents of the macOS clipboard to stdout",
+      "description": "Вывод содержимого буфера обмена macOS",
       "patterns": [
         {
           "type": "example",
-          "text": "paste clipboard contents to the terminal",
+          "text": "Вывести содержимое буфера обмена macOS в терминал",
           "command": "pbpaste",
-          "explanation": "Outputs whatever is currently on the clipboard"
+          "explanation": "Вывести содержимое буфера обмена macOS в терминал."
         },
         {
           "type": "example",
-          "text": "save clipboard contents to a file",
+          "text": "Прочитать скопированный текст через pbpaste",
+          "command": "pbpaste",
+          "explanation": "Вывести содержимое буфера обмена macOS в терминал."
+        },
+        {
+          "type": "example",
+          "text": "Сохранить буфер обмена Mac в файл с перезаписью",
           "command": "pbpaste > clipboard.txt",
-          "explanation": "Writes the clipboard text to a file"
+          "explanation": "Сохранить буфер обмена Mac в файл с перезаписью."
         },
         {
           "type": "example",
-          "text": "pipe clipboard contents to another command",
+          "text": "Записать скопированный текст в clipboard.txt",
+          "command": "pbpaste > clipboard.txt",
+          "explanation": "Сохранить буфер обмена Mac в файл с перезаписью."
+        },
+        {
+          "type": "example",
+          "text": "Посчитать строки в буфере обмена macOS",
           "command": "pbpaste | wc -l",
-          "explanation": "Counts the number of lines in the clipboard text"
+          "explanation": "Посчитать строки в буфере обмена macOS."
         },
         {
           "type": "example",
-          "text": "sort the contents of the clipboard",
+          "text": "Передать скопированный текст в wc -l",
+          "command": "pbpaste | wc -l",
+          "explanation": "Посчитать строки в буфере обмена macOS."
+        },
+        {
+          "type": "example",
+          "text": "Отсортировать строки буфера обмена Mac и вернуть их обратно",
           "command": "pbpaste | sort | pbcopy",
-          "explanation": "Sorts clipboard lines and puts the result back on the clipboard"
+          "explanation": "Отсортировать строки буфера обмена Mac и вернуть их обратно."
+        },
+        {
+          "type": "example",
+          "text": "Заменить clipboard macOS отсортированным содержимым",
+          "command": "pbpaste | sort | pbcopy",
+          "explanation": "Отсортировать строки буфера обмена Mac и вернуть их обратно."
         }
       ]
     },
     {
       "name": "defaults",
       "synopsis": "defaults [command] [domain [key [value]]]",
-      "description": "Read and write macOS user defaults (preferences)",
+      "description": "Просмотр и изменение пользовательских настроек macOS",
       "patterns": [
         {
           "type": "example",
-          "text": "show hidden files in Finder",
+          "text": "Включить показ скрытых файлов в Finder",
           "command": "defaults write com.apple.finder AppleShowAllFiles -bool true",
-          "explanation": "Enables showing hidden files in Finder"
+          "explanation": "Включить показ скрытых файлов в Finder."
         },
         {
           "type": "example",
-          "text": "read a preference value",
+          "text": "Изменить настройку AppleShowAllFiles на true",
+          "command": "defaults write com.apple.finder AppleShowAllFiles -bool true",
+          "explanation": "Включить показ скрытых файлов в Finder."
+        },
+        {
+          "type": "example",
+          "text": "Узнать, включено ли автоскрытие Dock",
           "command": "defaults read com.apple.dock autohide",
-          "explanation": "Shows whether the Dock is set to auto-hide"
+          "explanation": "Узнать, включено ли автоскрытие Dock."
         },
         {
           "type": "example",
-          "text": "change the screenshot save location",
+          "text": "Прочитать параметр autohide через defaults",
+          "command": "defaults read com.apple.dock autohide",
+          "explanation": "Узнать, включено ли автоскрытие Dock."
+        },
+        {
+          "type": "example",
+          "text": "Изменить папку сохранения скриншотов macOS",
           "command": "defaults write com.apple.screencapture location ~/Screenshots",
-          "explanation": "Saves screenshots to the specified directory"
+          "explanation": "Изменить папку сохранения скриншотов macOS."
         },
         {
           "type": "example",
-          "text": "speed up Dock animations",
+          "text": "Направить новые снимки экрана в Screenshots",
+          "command": "defaults write com.apple.screencapture location ~/Screenshots",
+          "explanation": "Изменить папку сохранения скриншотов macOS."
+        },
+        {
+          "type": "example",
+          "text": "Ускорить анимацию автоскрытия Dock",
           "command": "defaults write com.apple.dock autohide-time-modifier -float 0.2",
-          "explanation": "Makes the Dock appear and disappear faster"
+          "explanation": "Ускорить анимацию автоскрытия Dock."
         },
         {
           "type": "example",
-          "text": "list all preferences for an application",
+          "text": "Установить модификатор времени анимации Dock в 0,2",
+          "command": "defaults write com.apple.dock autohide-time-modifier -float 0.2",
+          "explanation": "Ускорить анимацию автоскрытия Dock."
+        },
+        {
+          "type": "example",
+          "text": "Показать все настройки Finder",
           "command": "defaults read com.apple.finder",
-          "explanation": "Shows all preference keys and values for Finder"
+          "explanation": "Показать все настройки Finder."
+        },
+        {
+          "type": "example",
+          "text": "Прочитать домен предпочтений com.apple.finder",
+          "command": "defaults read com.apple.finder",
+          "explanation": "Показать все настройки Finder."
         }
       ]
     },
     {
       "name": "say",
       "synopsis": "say [options] [text]",
-      "description": "Convert text to audible speech on macOS",
+      "description": "Преобразование текста в речь в macOS",
       "patterns": [
         {
           "type": "example",
-          "text": "make the Mac speak some text",
+          "text": "Произнести текст системным голосом Mac",
           "command": "say \"Hello, how are you?\"",
-          "explanation": "Uses the default text-to-speech voice to speak the text"
+          "explanation": "Произнести текст системным голосом Mac."
         },
         {
           "type": "example",
-          "text": "use a specific voice for speech",
+          "text": "Озвучить сообщение из терминала через say",
+          "command": "say \"Hello, how are you?\"",
+          "explanation": "Произнести текст системным голосом Mac."
+        },
+        {
+          "type": "example",
+          "text": "Произнести сообщение выбранным голосом Samantha",
           "command": "say -v Samantha \"Task complete\"",
-          "explanation": "Uses the Samantha voice for the speech"
+          "explanation": "Произнести сообщение выбранным голосом Samantha."
         },
         {
           "type": "example",
-          "text": "save speech to an audio file",
+          "text": "Указать конкретный голос синтезатора речи macOS",
+          "command": "say -v Samantha \"Task complete\"",
+          "explanation": "Произнести сообщение выбранным голосом Samantha."
+        },
+        {
+          "type": "example",
+          "text": "Сохранить синтезированную речь в AIFF-файл",
           "command": "say -o output.aiff \"This is a test\"",
-          "explanation": "Writes the spoken audio to a file instead of playing it"
+          "explanation": "Сохранить синтезированную речь в AIFF-файл."
         },
         {
           "type": "example",
-          "text": "speak text from a file",
+          "text": "Создать аудиозапись текста через say",
+          "command": "say -o output.aiff \"This is a test\"",
+          "explanation": "Сохранить синтезированную речь в AIFF-файл."
+        },
+        {
+          "type": "example",
+          "text": "Озвучить содержимое текстового файла на Mac",
           "command": "say -f document.txt",
-          "explanation": "Reads the contents of the file aloud"
+          "explanation": "Озвучить содержимое текстового файла на Mac."
         },
         {
           "type": "example",
-          "text": "announce when a long command finishes",
+          "text": "Прочитать document.txt системным синтезатором речи",
+          "command": "say -f document.txt",
+          "explanation": "Озвучить содержимое текстового файла на Mac."
+        },
+        {
+          "type": "example",
+          "text": "Голосом сообщить об успехе или ошибке сборки",
           "command": "make build && say \"Build complete\" || say \"Build failed\"",
-          "explanation": "Speaks a notification when the build finishes"
+          "explanation": "Голосом сообщить об успехе или ошибке сборки."
+        },
+        {
+          "type": "example",
+          "text": "Озвучить результат выполнения make build",
+          "command": "make build && say \"Build complete\" || say \"Build failed\"",
+          "explanation": "Голосом сообщить об успехе или ошибке сборки."
         }
       ]
     },
     {
       "name": "caffeinate",
       "synopsis": "caffeinate [options] [command]",
-      "description": "Prevent macOS from sleeping",
+      "description": "Предотвращение перехода macOS в режим сна",
       "patterns": [
         {
           "type": "example",
-          "text": "prevent the Mac from sleeping",
+          "text": "Запретить автоматический сон Mac на время работы команды",
           "command": "caffeinate",
-          "explanation": "Keeps the system awake until you press Ctrl+C"
+          "explanation": "Запретить автоматический сон Mac на время работы команды."
         },
         {
           "type": "example",
-          "text": "keep the Mac awake for a specific duration",
+          "text": "Держать компьютер бодрствующим через caffeinate",
+          "command": "caffeinate",
+          "explanation": "Запретить автоматический сон Mac на время работы команды."
+        },
+        {
+          "type": "example",
+          "text": "Не давать Mac уснуть в течение часа",
           "command": "caffeinate -t 3600",
-          "explanation": "Prevents sleep for 3600 seconds (1 hour)"
+          "explanation": "Не давать Mac уснуть в течение часа."
         },
         {
           "type": "example",
-          "text": "keep the screen on while a command runs",
+          "text": "Ограничить запрет сна длительностью 3600 секунд",
+          "command": "caffeinate -t 3600",
+          "explanation": "Не давать Mac уснуть в течение часа."
+        },
+        {
+          "type": "example",
+          "text": "Держать экран включённым во время сборки",
           "command": "caffeinate -d make build",
-          "explanation": "Prevents the display from sleeping during the build"
+          "explanation": "Держать экран включённым во время сборки."
         },
         {
           "type": "example",
-          "text": "prevent system sleep during a download while the Mac uses AC power",
+          "text": "Предотвратить выключение дисплея, пока выполняется make build",
+          "command": "caffeinate -d make build",
+          "explanation": "Держать экран включённым во время сборки."
+        },
+        {
+          "type": "example",
+          "text": "запретить системный сон Mac во время скачивания при питании от сети",
           "command": "caffeinate -s curl -O https://example.com/largefile.iso",
-          "explanation": "Prevents system sleep while the download runs, only when connected to AC power"
+          "explanation": "Не даёт системе заснуть во время загрузки, только при питании от сети."
+        },
+        {
+          "type": "example",
+          "text": "удерживать Mac активным при загрузке файла, когда подключена зарядка",
+          "command": "caffeinate -s curl -O https://example.com/largefile.iso",
+          "explanation": "Не даёт системе заснуть во время загрузки, только при питании от сети."
         }
       ]
     },
     {
       "name": "alias",
       "synopsis": "alias [name[=value]]",
-      "description": "Create a shortcut name for a command",
+      "description": "Создание псевдонимов команд",
       "patterns": [
         {
           "type": "example",
-          "text": "create a shortcut for a long command",
+          "text": "Создать сокращение ll для подробного списка файлов",
           "command": "alias ll='ls -alF'",
-          "explanation": "Defines ll as an alias for the detailed ls command"
+          "explanation": "Создать сокращение ll для подробного списка файлов."
         },
         {
           "type": "example",
-          "text": "list all defined aliases",
+          "text": "Назначить alias длинной команде ls",
+          "command": "alias ll='ls -alF'",
+          "explanation": "Создать сокращение ll для подробного списка файлов."
+        },
+        {
+          "type": "example",
+          "text": "Перечислить все псевдонимы текущей оболочки",
           "command": "alias",
-          "explanation": "Shows every alias currently set in the shell"
+          "explanation": "Перечислить все псевдонимы текущей оболочки."
         },
         {
           "type": "example",
-          "text": "create an alias for a common git command",
+          "text": "Показать настроенные shell-алиасы",
+          "command": "alias",
+          "explanation": "Перечислить все псевдонимы текущей оболочки."
+        },
+        {
+          "type": "example",
+          "text": "Создать сокращение gs для git status",
           "command": "alias gs='git status'",
-          "explanation": "Makes gs a shortcut for git status"
+          "explanation": "Создать сокращение gs для git status."
         },
         {
           "type": "example",
-          "text": "create an alias for navigating to a project",
+          "text": "Назначить короткую команду проверки Git-статуса",
+          "command": "alias gs='git status'",
+          "explanation": "Создать сокращение gs для git status."
+        },
+        {
+          "type": "example",
+          "text": "Сделать псевдоним перехода в проект с выводом файлов",
           "command": "alias proj='cd ~/projects/myapp && ls'",
-          "explanation": "Jumps to the project directory and lists files"
+          "explanation": "Сделать псевдоним перехода в проект с выводом файлов."
+        },
+        {
+          "type": "example",
+          "text": "Открывать папку myapp короткой командой proj",
+          "command": "alias proj='cd ~/projects/myapp && ls'",
+          "explanation": "Сделать псевдоним перехода в проект с выводом файлов."
         }
       ]
     },
     {
       "name": "unalias",
       "synopsis": "unalias [-a] [name...]",
-      "description": "Remove alias definitions",
+      "description": "Удаление псевдонимов команд",
       "patterns": [
         {
           "type": "example",
-          "text": "remove a specific alias",
+          "text": "Удалить псевдоним ll",
           "command": "unalias ll",
-          "explanation": "Deletes the ll alias from the current shell"
+          "explanation": "Удалить псевдоним ll."
         },
         {
           "type": "example",
-          "text": "remove all aliases",
+          "text": "Убрать одно сокращение команды в оболочке",
+          "command": "unalias ll",
+          "explanation": "Удалить псевдоним ll."
+        },
+        {
+          "type": "example",
+          "text": "Удалить все shell-алиасы",
           "command": "unalias -a",
-          "explanation": "Clears every alias defined in the current shell session"
+          "explanation": "Удалить все shell-алиасы."
         },
         {
           "type": "example",
-          "text": "bypass an alias temporarily without removing it",
+          "text": "Сбросить весь список псевдонимов текущей сессии",
+          "command": "unalias -a",
+          "explanation": "Удалить все shell-алиасы."
+        },
+        {
+          "type": "example",
+          "text": "Один раз выполнить ls в обход алиаса",
           "command": "\\ls",
-          "explanation": "Prefixing with backslash runs the original command, not the alias"
+          "explanation": "Один раз выполнить ls в обход алиаса."
         },
         {
           "type": "example",
-          "text": "check if a name is an alias before removing",
+          "text": "Временно не применять псевдоним, сохранив его настройку",
+          "command": "\\ls",
+          "explanation": "Один раз выполнить ls в обход алиаса."
+        },
+        {
+          "type": "example",
+          "text": "Показать тип команды ll и попытаться удалить её алиас",
           "command": "alias ll >/dev/null 2>&1 && unalias ll",
-          "explanation": "Checks specifically for an alias named ll and removes it only when that alias exists"
+          "explanation": "Проверяет именно псевдоним ll и удаляет его, только если он существует."
+        },
+        {
+          "type": "example",
+          "text": "Выполнить unalias после успешной проверки имени через type",
+          "command": "alias ll >/dev/null 2>&1 && unalias ll",
+          "explanation": "Проверяет именно псевдоним ll и удаляет его, только если он существует."
         }
       ]
     },
     {
       "name": "history",
       "synopsis": "history [options] [n]",
-      "description": "Display or manipulate the command history list",
+      "description": "Просмотр и изменение истории команд",
       "patterns": [
         {
           "type": "example",
-          "text": "show all previous commands",
+          "text": "Показать историю команд текущей оболочки",
           "command": "history",
-          "explanation": "Displays the full command history with line numbers"
+          "explanation": "Показать историю команд текущей оболочки."
         },
         {
           "type": "example",
-          "text": "show the last 20 commands",
+          "text": "Посмотреть ранее введённые команды",
+          "command": "history",
+          "explanation": "Показать историю команд текущей оболочки."
+        },
+        {
+          "type": "example",
+          "text": "Вывести последние двадцать команд",
           "command": "history 20",
-          "explanation": "Displays only the 20 most recent commands"
+          "explanation": "Вывести последние двадцать команд."
         },
         {
           "type": "example",
-          "text": "search command history for a pattern",
+          "text": "Посмотреть конец истории терминала",
+          "command": "history 20",
+          "explanation": "Вывести последние двадцать команд."
+        },
+        {
+          "type": "example",
+          "text": "Найти команды SSH в истории",
           "command": "history | grep ssh",
-          "explanation": "Filters history to show only commands containing ssh"
+          "explanation": "Найти команды SSH в истории."
         },
         {
           "type": "example",
-          "text": "clear the current Bash session history in memory",
+          "text": "Отфильтровать журнал введённых команд по слову ssh",
+          "command": "history | grep ssh",
+          "explanation": "Найти команды SSH в истории."
+        },
+        {
+          "type": "example",
+          "text": "Очистить историю текущей shell-сессии",
           "command": "history -c",
-          "explanation": "Removes the in-memory history list; does not overwrite the history file by itself"
+          "explanation": "Очищает историю в памяти; сам файл истории при этом не перезаписывается."
         },
         {
           "type": "example",
-          "text": "re-run a previous command by its history number",
+          "text": "Удалить сохранённый в памяти список команд через history -c",
+          "command": "history -c",
+          "explanation": "Очищает историю в памяти; сам файл истории при этом не перезаписывается."
+        },
+        {
+          "type": "example",
+          "text": "Повторно выполнить команду номер 42 из истории",
           "command": "!42",
-          "explanation": "Executes command number 42 from the history"
+          "explanation": "Повторно выполнить команду номер 42 из истории."
+        },
+        {
+          "type": "example",
+          "text": "Запустить прежнюю строку по номеру события",
+          "command": "!42",
+          "explanation": "Повторно выполнить команду номер 42 из истории."
         }
       ]
     },
     {
       "name": "fc",
       "synopsis": "fc [options] [first] [last]",
-      "description": "Fix command - list or edit and re-execute commands from history",
+      "description": "Просмотр, редактирование и повторный запуск команд из истории",
       "patterns": [
         {
           "type": "example",
-          "text": "edit and re-run the last command in an editor",
+          "text": "Отредактировать последнюю команду и выполнить её снова",
           "command": "fc",
-          "explanation": "Opens the last command in the default editor for modification"
+          "explanation": "Отредактировать последнюю команду и выполнить её снова."
         },
         {
           "type": "example",
-          "text": "list the last 10 commands with numbers",
+          "text": "Открыть предыдущую строку истории в редакторе через fc",
+          "command": "fc",
+          "explanation": "Отредактировать последнюю команду и выполнить её снова."
+        },
+        {
+          "type": "example",
+          "text": "Показать последние десять команд с номерами",
           "command": "fc -l -10",
-          "explanation": "Displays the 10 most recent history entries"
+          "explanation": "Показать последние десять команд с номерами."
         },
         {
           "type": "example",
-          "text": "re-run the last command with a substitution",
+          "text": "Вывести короткий список истории через fc -l",
+          "command": "fc -l -10",
+          "explanation": "Показать последние десять команд с номерами."
+        },
+        {
+          "type": "example",
+          "text": "Повторить прошлую команду с заменой old на new",
           "command": "fc -s old=new",
-          "explanation": "Replaces old with new in the previous command and runs it"
+          "explanation": "Повторить прошлую команду с заменой old на new."
         },
         {
           "type": "example",
-          "text": "edit a range of commands from history",
+          "text": "Исправить часть последней строки истории перед запуском",
+          "command": "fc -s old=new",
+          "explanation": "Повторить прошлую команду с заменой old на new."
+        },
+        {
+          "type": "example",
+          "text": "Отредактировать и выполнить команды истории с 100 по 110",
           "command": "fc 100 110",
-          "explanation": "Opens commands 100 through 110 in the editor for re-execution"
+          "explanation": "Отредактировать и выполнить команды истории с 100 по 110."
+        },
+        {
+          "type": "example",
+          "text": "Открыть диапазон прежних команд в редакторе",
+          "command": "fc 100 110",
+          "explanation": "Отредактировать и выполнить команды истории с 100 по 110."
         }
       ]
     },
     {
       "name": "source",
       "synopsis": "source filename [arguments]",
-      "description": "Execute commands from a file in the current shell environment",
+      "description": "Выполнение файла в окружении текущей оболочки",
       "patterns": [
         {
           "type": "example",
-          "text": "reload the shell configuration",
+          "text": "Перезагрузить настройки Bash в текущей сессии",
           "command": "source ~/.bashrc",
-          "explanation": "Re-reads and applies the bash configuration file"
+          "explanation": "Перезагрузить настройки Bash в текущей сессии."
         },
         {
           "type": "example",
-          "text": "load shell assignments from a trusted .env file into the current shell",
+          "text": "Применить изменения bashrc без нового терминала",
+          "command": "source ~/.bashrc",
+          "explanation": "Перезагрузить настройки Bash в текущей сессии."
+        },
+        {
+          "type": "example",
+          "text": "Загрузить переменные из .env в текущую оболочку",
           "command": "source .env",
-          "explanation": "Executes the file in the current shell; only variables marked for export become environment variables"
+          "explanation": "Выполняет файл в текущей оболочке; в окружение дочерних процессов попадают только экспортированные переменные."
         },
         {
           "type": "example",
-          "text": "activate a Python virtual environment",
+          "text": "Выполнить содержимое файла окружения через source",
+          "command": "source .env",
+          "explanation": "Выполняет файл в текущей оболочке; в окружение дочерних процессов попадают только экспортированные переменные."
+        },
+        {
+          "type": "example",
+          "text": "Активировать виртуальное Python-окружение venv",
           "command": "source venv/bin/activate",
-          "explanation": "Sets up the virtual environment in the current shell"
+          "explanation": "Активировать виртуальное Python-окружение venv."
         },
         {
           "type": "example",
-          "text": "load a shared library of shell functions",
+          "text": "Подключить shell-настройки окружения через activate",
+          "command": "source venv/bin/activate",
+          "explanation": "Активировать виртуальное Python-окружение venv."
+        },
+        {
+          "type": "example",
+          "text": "Загрузить библиотеку shell-функций в текущую сессию",
           "command": "source /usr/lib/bash/helpers.sh",
-          "explanation": "Makes all functions in the file available in the current shell"
+          "explanation": "Загрузить библиотеку shell-функций в текущую сессию."
+        },
+        {
+          "type": "example",
+          "text": "Подключить helpers.sh без запуска отдельной оболочки",
+          "command": "source /usr/lib/bash/helpers.sh",
+          "explanation": "Загрузить библиотеку shell-функций в текущую сессию."
         }
       ]
     },
     {
       "name": "eval",
       "synopsis": "eval [arguments]",
-      "description": "Evaluate arguments as a shell command",
+      "description": "Интерпретация аргументов как команды оболочки",
       "patterns": [
         {
           "type": "example",
-          "text": "execute a command stored in a variable",
+          "text": "Выполнить команду, хранящуюся в переменной",
           "command": "cmd='ls -la'; eval $cmd",
-          "explanation": "Interprets the string as a command and executes it"
+          "explanation": "Выполнить команду, хранящуюся в переменной."
         },
         {
           "type": "example",
-          "text": "set up SSH agent in the current shell",
+          "text": "Интерпретировать текст cmd как shell-код",
+          "command": "cmd='ls -la'; eval $cmd",
+          "explanation": "Выполнить команду, хранящуюся в переменной."
+        },
+        {
+          "type": "example",
+          "text": "Запустить SSH-agent и применить его переменные окружения",
           "command": "eval $(ssh-agent -s)",
-          "explanation": "Runs ssh-agent and evaluates its output to set environment variables"
+          "explanation": "Запустить SSH-agent и применить его переменные окружения."
         },
         {
           "type": "example",
-          "text": "dynamically build and execute a command",
+          "text": "Подключить текущую оболочку к новому агенту SSH",
+          "command": "eval $(ssh-agent -s)",
+          "explanation": "Запустить SSH-agent и применить его переменные окружения."
+        },
+        {
+          "type": "example",
+          "text": "Выполнить строку с дополнительным раскрытием HOME",
           "command": "eval \"echo \\$HOME\"",
-          "explanation": "Double-evaluates the variable expansion"
+          "explanation": "Выполнить строку с дополнительным раскрытием HOME."
         },
         {
           "type": "example",
-          "text": "initialize a tool that outputs shell commands",
+          "text": "Передать динамически собранную команду в eval",
+          "command": "eval \"echo \\$HOME\"",
+          "explanation": "Выполнить строку с дополнительным раскрытием HOME."
+        },
+        {
+          "type": "example",
+          "text": "Подключить хук direnv к текущему Bash",
           "command": "eval \"$(direnv hook bash)\"",
-          "explanation": "Executes the shell hook output from direnv"
+          "explanation": "Подключить хук direnv к текущему Bash."
+        },
+        {
+          "type": "example",
+          "text": "Выполнить shell-код инициализации, выданный инструментом",
+          "command": "eval \"$(direnv hook bash)\"",
+          "explanation": "Подключить хук direnv к текущему Bash."
         }
       ]
     },
     {
       "name": "exec",
       "synopsis": "exec [command [arguments]]",
-      "description": "Replace the current shell with a command",
+      "description": "Замена текущего процесса оболочки другой программой",
       "patterns": [
         {
           "type": "example",
-          "text": "replace the current shell with a new one",
+          "text": "Заменить текущую оболочку на zsh",
           "command": "exec zsh",
-          "explanation": "Replaces the current bash process with zsh"
+          "explanation": "Заменить текущую оболочку на zsh."
         },
         {
           "type": "example",
-          "text": "redirect all script output to a log file",
+          "text": "Перейти в новую shell без дочернего процесса оболочки",
+          "command": "exec zsh",
+          "explanation": "Заменить текущую оболочку на zsh."
+        },
+        {
+          "type": "example",
+          "text": "Перенаправить весь последующий вывод скрипта в лог",
           "command": "exec > output.log 2>&1",
-          "explanation": "Sends all subsequent stdout and stderr to the file"
+          "explanation": "Перенаправить весь последующий вывод скрипта в лог."
         },
         {
           "type": "example",
-          "text": "replace the shell with an application in a Docker entrypoint",
+          "text": "Записывать stdout и stderr текущей оболочки в output.log",
+          "command": "exec > output.log 2>&1",
+          "explanation": "Перенаправить весь последующий вывод скрипта в лог."
+        },
+        {
+          "type": "example",
+          "text": "Заменить процесс entrypoint приложением Python",
           "command": "exec python app.py",
-          "explanation": "Replaces the shell so the app receives signals directly"
+          "explanation": "Заменить процесс entrypoint приложением Python."
         },
         {
           "type": "example",
-          "text": "open a file descriptor for reading",
+          "text": "Запустить app.py как основной процесс контейнера",
+          "command": "exec python app.py",
+          "explanation": "Заменить процесс entrypoint приложением Python."
+        },
+        {
+          "type": "example",
+          "text": "Открыть третий файловый дескриптор для чтения",
           "command": "exec 3< input.txt",
-          "explanation": "Assigns file descriptor 3 to the input file"
+          "explanation": "Открыть третий файловый дескриптор для чтения."
+        },
+        {
+          "type": "example",
+          "text": "Подключить input.txt к дескриптору 3 текущей оболочки",
+          "command": "exec 3< input.txt",
+          "explanation": "Открыть третий файловый дескриптор для чтения."
         }
       ]
     },
     {
       "name": "trap",
       "synopsis": "trap [command] [signal...]",
-      "description": "Execute a command when the shell receives a signal",
+      "description": "Обработка сигналов и событий оболочки",
       "patterns": [
         {
           "type": "example",
-          "text": "clean up temporary files when a script exits",
+          "text": "Удалять временные файлы при выходе из скрипта",
           "command": "trap 'rm -f /tmp/myapp_*' EXIT",
-          "explanation": "Runs the cleanup command whenever the script exits"
+          "explanation": "Удалять временные файлы при выходе из скрипта."
         },
         {
           "type": "example",
-          "text": "handle Ctrl+C gracefully in a script",
+          "text": "Назначить очистку по сигналу EXIT через trap",
+          "command": "trap 'rm -f /tmp/myapp_*' EXIT",
+          "explanation": "Удалять временные файлы при выходе из скрипта."
+        },
+        {
+          "type": "example",
+          "text": "Обработать Ctrl+C сообщением и завершением с ошибкой",
           "command": "trap 'echo \"Interrupted!\"; exit 1' INT",
-          "explanation": "Catches SIGINT and runs custom cleanup before exiting"
+          "explanation": "Обработать Ctrl+C сообщением и завершением с ошибкой."
         },
         {
           "type": "example",
-          "text": "ignore the hangup signal",
+          "text": "Перехватить SIGINT в shell-скрипте",
+          "command": "trap 'echo \"Interrupted!\"; exit 1' INT",
+          "explanation": "Обработать Ctrl+C сообщением и завершением с ошибкой."
+        },
+        {
+          "type": "example",
+          "text": "Игнорировать сигнал разрыва терминальной сессии HUP",
           "command": "trap '' HUP",
-          "explanation": "Prevents the script from being killed when the terminal closes"
+          "explanation": "Игнорировать сигнал разрыва терминальной сессии HUP."
         },
         {
           "type": "example",
-          "text": "debug by printing each command before execution",
+          "text": "Не завершать оболочку при получении SIGHUP",
+          "command": "trap '' HUP",
+          "explanation": "Игнорировать сигнал разрыва терминальной сессии HUP."
+        },
+        {
+          "type": "example",
+          "text": "Печатать каждую Bash-команду перед выполнением",
           "command": "trap 'echo \"+ $BASH_COMMAND\"' DEBUG",
-          "explanation": "Shows each command as it runs, similar to set -x"
+          "explanation": "Печатать каждую Bash-команду перед выполнением."
         },
         {
           "type": "example",
-          "text": "reset a trap to its default behavior",
+          "text": "Настроить DEBUG-ловушку для трассировки скрипта",
+          "command": "trap 'echo \"+ $BASH_COMMAND\"' DEBUG",
+          "explanation": "Печатать каждую Bash-команду перед выполнением."
+        },
+        {
+          "type": "example",
+          "text": "Вернуть стандартную обработку SIGINT",
           "command": "trap - INT",
-          "explanation": "Restores the default SIGINT handling"
+          "explanation": "Вернуть стандартную обработку SIGINT."
+        },
+        {
+          "type": "example",
+          "text": "Сбросить установленную ловушку INT",
+          "command": "trap - INT",
+          "explanation": "Вернуть стандартную обработку SIGINT."
         }
       ]
     },
     {
       "name": "xclip",
       "synopsis": "xclip [options]",
-      "description": "Command-line interface to X selections (clipboard) on Linux",
+      "description": "Работа с буфером обмена X11 в Linux",
       "patterns": [
         {
           "type": "example",
-          "text": "copy text to the clipboard on Linux",
+          "text": "Скопировать текст в буфер обмена Linux через xclip",
           "command": "echo \"Hello\" | xclip -selection clipboard",
-          "explanation": "Copies text to the system clipboard"
+          "explanation": "Скопировать текст в буфер обмена Linux через xclip."
         },
         {
           "type": "example",
-          "text": "copy a file's contents to the clipboard on Linux",
+          "text": "Передать строку в clipboard графической X11-сессии",
+          "command": "echo \"Hello\" | xclip -selection clipboard",
+          "explanation": "Скопировать текст в буфер обмена Linux через xclip."
+        },
+        {
+          "type": "example",
+          "text": "Скопировать содержимое публичного SSH-ключа через xclip",
           "command": "xclip -selection clipboard < ~/.ssh/id_rsa.pub",
-          "explanation": "Reads the file and places its content on the clipboard"
+          "explanation": "Скопировать содержимое публичного SSH-ключа через xclip."
         },
         {
           "type": "example",
-          "text": "paste from the clipboard on Linux",
+          "text": "Поместить текст файла в буфер обмена Linux",
+          "command": "xclip -selection clipboard < ~/.ssh/id_rsa.pub",
+          "explanation": "Скопировать содержимое публичного SSH-ключа через xclip."
+        },
+        {
+          "type": "example",
+          "text": "Вставить текст из clipboard Linux в терминал",
           "command": "xclip -selection clipboard -o",
-          "explanation": "Outputs the current clipboard contents to stdout"
+          "explanation": "Вставить текст из clipboard Linux в терминал."
         },
         {
           "type": "example",
-          "text": "copy an image to the clipboard",
+          "text": "Прочитать содержимое буфера через xclip -o",
+          "command": "xclip -selection clipboard -o",
+          "explanation": "Вставить текст из clipboard Linux в терминал."
+        },
+        {
+          "type": "example",
+          "text": "Скопировать PNG-изображение в буфер Linux",
           "command": "xclip -selection clipboard -t image/png -i screenshot.png",
-          "explanation": "Places a PNG image on the clipboard"
+          "explanation": "Скопировать PNG-изображение в буфер Linux."
+        },
+        {
+          "type": "example",
+          "text": "Передать screenshot.png как изображение в X11 clipboard",
+          "command": "xclip -selection clipboard -t image/png -i screenshot.png",
+          "explanation": "Скопировать PNG-изображение в буфер Linux."
         }
       ]
     },
     {
       "name": "jq",
       "synopsis": "jq [options] filter [file...]",
-      "description": "Command-line JSON processor",
+      "description": "Обработка JSON из командной строки",
       "patterns": [
         {
           "type": "example",
-          "text": "pretty-print a JSON file",
+          "text": "Красиво отформатировать JSON для просмотра",
           "command": "jq '.' data.json",
-          "explanation": "Formats and colorizes the JSON output"
+          "explanation": "Красиво отформатировать JSON для просмотра."
         },
         {
           "type": "example",
-          "text": "extract a specific field from JSON",
+          "text": "Показать data.json с отступами через jq",
+          "command": "jq '.' data.json",
+          "explanation": "Красиво отформатировать JSON для просмотра."
+        },
+        {
+          "type": "example",
+          "text": "Извлечь поле name из JSON",
           "command": "jq '.name' data.json",
-          "explanation": "Pulls the value of the name key from the JSON"
+          "explanation": "Извлечь поле name из JSON."
         },
         {
           "type": "example",
-          "text": "filter an array of objects by a condition",
+          "text": "Получить конкретный атрибут объекта через jq",
+          "command": "jq '.name' data.json",
+          "explanation": "Извлечь поле name из JSON."
+        },
+        {
+          "type": "example",
+          "text": "Выбрать объекты массива с возрастом больше тридцати",
           "command": "jq '.[] | select(.age > 30)' people.json",
-          "explanation": "Returns only objects where age is greater than 30"
+          "explanation": "Выбрать объекты массива с возрастом больше тридцати."
         },
         {
           "type": "example",
-          "text": "extract values from a nested JSON API response",
+          "text": "Отфильтровать people.json по условию age > 30",
+          "command": "jq '.[] | select(.age > 30)' people.json",
+          "explanation": "Выбрать объекты массива с возрастом больше тридцати."
+        },
+        {
+          "type": "example",
+          "text": "Получить имена из вложенного массива ответа API",
           "command": "curl -s https://api.example.com/data | jq '.results[].name'",
-          "explanation": "Fetches JSON and extracts the name from each result"
+          "explanation": "Получить имена из вложенного массива ответа API."
         },
         {
           "type": "example",
-          "text": "transform JSON by creating new objects",
+          "text": "Извлечь results[].name из JSON по HTTP",
+          "command": "curl -s https://api.example.com/data | jq '.results[].name'",
+          "explanation": "Получить имена из вложенного массива ответа API."
+        },
+        {
+          "type": "example",
+          "text": "Построить новый JSON-объект с полным именем и возрастом",
           "command": "jq '{fullName: (.first + \" \" + .last), age: .age}' person.json",
-          "explanation": "Constructs new JSON objects from existing fields"
+          "explanation": "Построить новый JSON-объект с полным именем и возрастом."
+        },
+        {
+          "type": "example",
+          "text": "Преобразовать поля first и last в fullName через jq",
+          "command": "jq '{fullName: (.first + \" \" + .last), age: .age}' person.json",
+          "explanation": "Построить новый JSON-объект с полным именем и возрастом."
         }
       ]
     },
     {
       "name": "yq",
       "synopsis": "yq [options] expression [file...]",
-      "description": "Command-line YAML/XML/TOML processor",
+      "description": "Обработка YAML, XML и TOML из командной строки",
       "patterns": [
         {
           "type": "example",
-          "text": "read a value from a YAML file",
+          "text": "Прочитать имя объекта из YAML-манифеста",
           "command": "yq '.metadata.name' deployment.yaml",
-          "explanation": "Extracts the name from the YAML metadata section"
+          "explanation": "Прочитать имя объекта из YAML-манифеста."
         },
         {
           "type": "example",
-          "text": "convert YAML to JSON",
+          "text": "Получить значение metadata.name через yq",
+          "command": "yq '.metadata.name' deployment.yaml",
+          "explanation": "Прочитать имя объекта из YAML-манифеста."
+        },
+        {
+          "type": "example",
+          "text": "Преобразовать YAML в JSON",
           "command": "yq -o json '.' config.yaml",
-          "explanation": "Reads YAML and outputs it as formatted JSON"
+          "explanation": "Преобразовать YAML в JSON."
         },
         {
           "type": "example",
-          "text": "update a value in a YAML file in place",
+          "text": "Вывести конфигурацию YAML в JSON-формате",
+          "command": "yq -o json '.' config.yaml",
+          "explanation": "Преобразовать YAML в JSON."
+        },
+        {
+          "type": "example",
+          "text": "Изменить число реплик в YAML-файле на три",
           "command": "yq -i '.spec.replicas = 3' deployment.yaml",
-          "explanation": "Modifies the replicas count directly in the file"
+          "explanation": "Изменить число реплик в YAML-файле на три."
         },
         {
           "type": "example",
-          "text": "merge two YAML files",
+          "text": "Перезаписать spec.replicas прямо в deployment.yaml",
+          "command": "yq -i '.spec.replicas = 3' deployment.yaml",
+          "explanation": "Изменить число реплик в YAML-файле на три."
+        },
+        {
+          "type": "example",
+          "text": "Объединить два YAML-файла с наложением настроек",
           "command": "yq eval-all 'select(fileIndex == 0) * select(fileIndex == 1)' base.yaml override.yaml",
-          "explanation": "Deep-merges the override file into the base file"
+          "explanation": "Объединить два YAML-файла с наложением настроек."
+        },
+        {
+          "type": "example",
+          "text": "Применить значения override.yaml поверх base.yaml",
+          "command": "yq eval-all 'select(fileIndex == 0) * select(fileIndex == 1)' base.yaml override.yaml",
+          "explanation": "Объединить два YAML-файла с наложением настроек."
         }
       ]
     },
     {
       "name": "bat",
       "synopsis": "bat [options] [file...]",
-      "description": "A cat clone with syntax highlighting and line numbers",
+      "description": "Просмотр файлов с подсветкой синтаксиса и номерами строк",
       "patterns": [
         {
           "type": "example",
-          "text": "view a file with syntax highlighting",
+          "text": "Посмотреть Python-файл с подсветкой синтаксиса",
           "command": "bat script.py",
-          "explanation": "Displays the file with colors, line numbers, and git changes"
+          "explanation": "Посмотреть Python-файл с подсветкой синтаксиса."
         },
         {
           "type": "example",
-          "text": "show a file without line numbers or decorations",
+          "text": "Открыть исходник через bat вместо cat",
+          "command": "bat script.py",
+          "explanation": "Посмотреть Python-файл с подсветкой синтаксиса."
+        },
+        {
+          "type": "example",
+          "text": "Показать файл без номеров строк и оформления",
           "command": "bat --plain file.txt",
-          "explanation": "Outputs the file content without any extra formatting"
+          "explanation": "Показать файл без номеров строк и оформления."
         },
         {
           "type": "example",
-          "text": "highlight a specific language for stdin",
+          "text": "Вывести простой текст через bat --plain",
+          "command": "bat --plain file.txt",
+          "explanation": "Показать файл без номеров строк и оформления."
+        },
+        {
+          "type": "example",
+          "text": "Подсветить входной поток как JSON",
           "command": "echo '{\"key\": \"value\"}' | bat -l json",
-          "explanation": "Applies JSON syntax highlighting to piped input"
+          "explanation": "Подсветить входной поток как JSON."
         },
         {
           "type": "example",
-          "text": "show only a range of lines from a file",
+          "text": "Указать язык подсветки для stdin команды bat",
+          "command": "echo '{\"key\": \"value\"}' | bat -l json",
+          "explanation": "Подсветить входной поток как JSON."
+        },
+        {
+          "type": "example",
+          "text": "Показать только строки файла с десятой по двадцатую",
           "command": "bat --line-range 10:20 largefile.py",
-          "explanation": "Displays only lines 10 through 20"
+          "explanation": "Показать только строки файла с десятой по двадцатую."
+        },
+        {
+          "type": "example",
+          "text": "Ограничить просмотр bat заданным диапазоном",
+          "command": "bat --line-range 10:20 largefile.py",
+          "explanation": "Показать только строки файла с десятой по двадцатую."
         }
       ]
     },
     {
       "name": "exa",
       "synopsis": "exa [options] [files...]",
-      "description": "A modern replacement for ls with colors and git integration",
+      "description": "Просмотр файлов с цветовым оформлением и интеграцией Git",
       "patterns": [
         {
           "type": "example",
-          "text": "list files with colors and icons",
+          "text": "Показать файлы с иконками через exa",
           "command": "exa --icons",
-          "explanation": "Shows directory contents with file type icons"
+          "explanation": "Показать файлы с иконками через exa."
         },
         {
           "type": "example",
-          "text": "show a detailed file listing with git status",
+          "text": "Вывести современный список содержимого каталога",
+          "command": "exa --icons",
+          "explanation": "Показать файлы с иконками через exa."
+        },
+        {
+          "type": "example",
+          "text": "Показать подробный список со скрытыми файлами и Git-статусом",
           "command": "exa -la --git",
-          "explanation": "Long listing showing permissions, size, and git status for each file"
+          "explanation": "Показать подробный список со скрытыми файлами и Git-статусом."
         },
         {
           "type": "example",
-          "text": "show a tree view of the directory",
+          "text": "Посмотреть состояние файлов репозитория через exa",
+          "command": "exa -la --git",
+          "explanation": "Показать подробный список со скрытыми файлами и Git-статусом."
+        },
+        {
+          "type": "example",
+          "text": "Вывести дерево каталогов до второго уровня",
           "command": "exa --tree --level=2",
-          "explanation": "Displays a tree structure limited to 2 levels deep"
+          "explanation": "Вывести дерево каталогов до второго уровня."
         },
         {
           "type": "example",
-          "text": "sort files by modification time",
+          "text": "Показать вложенную структуру через exa --tree",
+          "command": "exa --tree --level=2",
+          "explanation": "Вывести дерево каталогов до второго уровня."
+        },
+        {
+          "type": "example",
+          "text": "Отсортировать подробный список файлов по времени изменения",
           "command": "exa -la --sort=modified",
-          "explanation": "Lists files ordered by when they were last changed"
+          "explanation": "Отсортировать подробный список файлов по времени изменения."
+        },
+        {
+          "type": "example",
+          "text": "Посмотреть файлы в порядке modified через exa",
+          "command": "exa -la --sort=modified",
+          "explanation": "Отсортировать подробный список файлов по времени изменения."
         }
       ]
     },
     {
       "name": "eza",
       "synopsis": "eza [options] [files...]",
-      "description": "A modern replacement for ls (maintained fork of exa)",
+      "description": "Современная замена ls на основе поддерживаемого форка exa",
       "patterns": [
         {
           "type": "example",
-          "text": "list files with icons and colors using eza",
+          "text": "Вывести цветной список файлов с иконками через eza",
           "command": "eza --icons --color=always",
-          "explanation": "Displays files with type icons and ANSI colors"
+          "explanation": "Вывести цветной список файлов с иконками через eza."
         },
         {
           "type": "example",
-          "text": "show a directory tree with git status",
+          "text": "Посмотреть содержимое каталога в оформлении eza",
+          "command": "eza --icons --color=always",
+          "explanation": "Вывести цветной список файлов с иконками через eza."
+        },
+        {
+          "type": "example",
+          "text": "Показать дерево до третьего уровня вместе с Git-статусом",
           "command": "eza --tree --git --level=3",
-          "explanation": "Renders a tree view with git modification indicators"
+          "explanation": "Показать дерево до третьего уровня вместе с Git-статусом."
         },
         {
           "type": "example",
-          "text": "long listing with human-readable sizes",
+          "text": "Посмотреть структуру проекта и состояния его файлов",
+          "command": "eza --tree --git --level=3",
+          "explanation": "Показать дерево до третьего уровня вместе с Git-статусом."
+        },
+        {
+          "type": "example",
+          "text": "Вывести подробный список со скрытыми файлами и удобными размерами",
           "command": "eza -lah",
-          "explanation": "Detailed listing with all files and human-readable sizes"
+          "explanation": "Вывести подробный список со скрытыми файлами и удобными размерами."
         },
         {
           "type": "example",
-          "text": "list files sorted by size",
+          "text": "Показать файлы через eza -lah",
+          "command": "eza -lah",
+          "explanation": "Вывести подробный список со скрытыми файлами и удобными размерами."
+        },
+        {
+          "type": "example",
+          "text": "Отсортировать подробный список файлов по размеру",
           "command": "eza -la --sort=size",
-          "explanation": "Shows files ordered from smallest to largest"
+          "explanation": "Отсортировать подробный список файлов по размеру."
+        },
+        {
+          "type": "example",
+          "text": "Упорядочить содержимое каталога через eza --sort=size",
+          "command": "eza -la --sort=size",
+          "explanation": "Отсортировать подробный список файлов по размеру."
         }
       ]
     },
     {
       "name": "man",
       "synopsis": "man [section] name",
-      "description": "Display the manual page for a command",
+      "description": "Просмотр руководства по команде",
       "patterns": [
         {
           "type": "example",
-          "text": "read the manual for a command",
+          "text": "Открыть руководство по команде ls",
           "command": "man ls",
-          "explanation": "Opens the manual page for the ls command"
+          "explanation": "Открыть руководство по команде ls."
         },
         {
           "type": "example",
-          "text": "look up a system call manual page",
+          "text": "Посмотреть man-страницу консольной утилиты",
+          "command": "man ls",
+          "explanation": "Открыть руководство по команде ls."
+        },
+        {
+          "type": "example",
+          "text": "Почитать справку системного вызова open из раздела 2",
           "command": "man 2 open",
-          "explanation": "Shows the manual for the open() system call in section 2"
+          "explanation": "Почитать справку системного вызова open из раздела 2."
         },
         {
           "type": "example",
-          "text": "search manual page names and short descriptions for keywords",
+          "text": "Открыть руководство по API ядра, а не shell-команде",
+          "command": "man 2 open",
+          "explanation": "Почитать справку системного вызова open из раздела 2."
+        },
+        {
+          "type": "example",
+          "text": "Найти man-страницы по словам copy files",
           "command": "man -k \"copy files\"",
-          "explanation": "Searches manual page descriptions for the keyword"
+          "explanation": "Найти man-страницы по словам copy files."
         },
         {
           "type": "example",
-          "text": "read the manual for a configuration file format",
+          "text": "Поискать ключевую фразу в именах и кратких описаниях руководств",
+          "command": "man -k \"copy files\"",
+          "explanation": "Найти man-страницы по словам copy files."
+        },
+        {
+          "type": "example",
+          "text": "Посмотреть описание формата файла crontab",
           "command": "man 5 crontab",
-          "explanation": "Shows the file format manual for crontab in section 5"
+          "explanation": "Посмотреть описание формата файла crontab."
+        },
+        {
+          "type": "example",
+          "text": "Открыть справку раздела 5 для конфигурации cron",
+          "command": "man 5 crontab",
+          "explanation": "Посмотреть описание формата файла crontab."
         }
       ]
     },
     {
       "name": "info",
       "synopsis": "info [options] [menu-item...]",
-      "description": "Read Info documents (GNU help system)",
+      "description": "Чтение документации в формате GNU Info",
       "patterns": [
         {
           "type": "example",
-          "text": "read the GNU info documentation for a tool",
+          "text": "Открыть GNU Info-документацию coreutils",
           "command": "info coreutils",
-          "explanation": "Opens the detailed coreutils Info documentation"
+          "explanation": "Открыть GNU Info-документацию coreutils."
         },
         {
           "type": "example",
-          "text": "go directly to a specific info node",
+          "text": "Посмотреть руководство утилит в формате info",
+          "command": "info coreutils",
+          "explanation": "Открыть GNU Info-документацию coreutils."
+        },
+        {
+          "type": "example",
+          "text": "Перейти к разделу регулярных выражений в справке grep",
           "command": "info grep 'Regular Expressions'",
-          "explanation": "Opens the grep info page at the regex section"
+          "explanation": "Перейти к разделу регулярных выражений в справке grep."
         },
         {
           "type": "example",
-          "text": "read the Bash scripting documentation",
+          "text": "Открыть конкретный узел GNU Info",
+          "command": "info grep 'Regular Expressions'",
+          "explanation": "Перейти к разделу регулярных выражений в справке grep."
+        },
+        {
+          "type": "example",
+          "text": "Почитать документацию Bash в формате Info",
           "command": "info bash",
-          "explanation": "Opens the comprehensive Bash reference manual"
+          "explanation": "Почитать документацию Bash в формате Info."
         },
         {
           "type": "example",
-          "text": "output info documentation as plain text",
+          "text": "Посмотреть подробное руководство shell-скриптов",
+          "command": "info bash",
+          "explanation": "Почитать документацию Bash в формате Info."
+        },
+        {
+          "type": "example",
+          "text": "Вывести руководство GNU Make обычным текстом",
           "command": "info --output=- make",
-          "explanation": "Prints the entire make info document to stdout"
+          "explanation": "Вывести руководство GNU Make обычным текстом."
+        },
+        {
+          "type": "example",
+          "text": "Напечатать Info-документацию в стандартный вывод",
+          "command": "info --output=- make",
+          "explanation": "Вывести руководство GNU Make обычным текстом."
         }
       ]
     },
     {
       "name": "help",
       "synopsis": "help [pattern]",
-      "description": "Display information about shell builtin commands",
+      "description": "Справка по встроенным командам оболочки",
       "patterns": [
         {
           "type": "example",
-          "text": "get help on a shell builtin command",
+          "text": "Получить справку встроенной команды cd",
           "command": "help cd",
-          "explanation": "Shows usage information for the cd builtin"
+          "explanation": "Получить справку встроенной команды cd."
         },
         {
           "type": "example",
-          "text": "list all available shell builtins",
+          "text": "Посмотреть помощь по builtin текущего Bash",
+          "command": "help cd",
+          "explanation": "Получить справку встроенной команды cd."
+        },
+        {
+          "type": "example",
+          "text": "Перечислить встроенные команды Bash",
           "command": "help",
-          "explanation": "Displays a summary of all bash builtin commands"
+          "explanation": "Перечислить встроенные команды Bash."
         },
         {
           "type": "example",
-          "text": "show a short description of a Bash builtin or keyword",
+          "text": "Показать доступные темы встроенной справки оболочки",
+          "command": "help",
+          "explanation": "Перечислить встроенные команды Bash."
+        },
+        {
+          "type": "example",
+          "text": "Показать краткое описание встроенной конструкции for",
           "command": "help -d for",
-          "explanation": "Displays a short description of the for loop builtin"
+          "explanation": "Показать краткое описание встроенной конструкции for."
         },
         {
           "type": "example",
-          "text": "get the synopsis for a builtin command",
+          "text": "Получить однострочное назначение builtin через help -d",
+          "command": "help -d for",
+          "explanation": "Показать краткое описание встроенной конструкции for."
+        },
+        {
+          "type": "example",
+          "text": "Показать синтаксис встроенной команды declare",
           "command": "help -s declare",
-          "explanation": "Shows only the usage syntax for declare"
+          "explanation": "Показать синтаксис встроенной команды declare."
+        },
+        {
+          "type": "example",
+          "text": "Вывести краткую форму вызова shell-builtin",
+          "command": "help -s declare",
+          "explanation": "Показать синтаксис встроенной команды declare."
         }
       ]
     },
     {
       "name": "hash",
       "synopsis": "hash [options] [name...]",
-      "description": "Manage the shell's hash table of command locations",
+      "description": "Управление кешем путей к исполняемым файлам в оболочке",
       "patterns": [
         {
           "type": "example",
-          "text": "show cached command locations",
+          "text": "Показать кеш расположений команд Bash",
           "command": "hash",
-          "explanation": "Lists all commands and their cached paths in the hash table"
+          "explanation": "Показать кеш расположений команд Bash."
         },
         {
           "type": "example",
-          "text": "clear the command hash table",
+          "text": "Посмотреть таблицу запомненных путей исполняемых файлов",
+          "command": "hash",
+          "explanation": "Показать кеш расположений команд Bash."
+        },
+        {
+          "type": "example",
+          "text": "Очистить кеш путей команд оболочки",
           "command": "hash -r",
-          "explanation": "Forces the shell to re-find commands by clearing the cache"
+          "explanation": "Очистить кеш путей команд оболочки."
         },
         {
           "type": "example",
-          "text": "find where a command is cached",
+          "text": "Заставить Bash заново искать утилиты в PATH",
+          "command": "hash -r",
+          "explanation": "Очистить кеш путей команд оболочки."
+        },
+        {
+          "type": "example",
+          "text": "Посмотреть закешированный путь команды ls",
           "command": "hash -t ls",
-          "explanation": "Shows the cached path for the ls command"
+          "explanation": "Посмотреть закешированный путь команды ls."
         },
         {
           "type": "example",
-          "text": "manually set a command path in the hash table",
+          "text": "Узнать, какой исполняемый файл запомнен для имени",
+          "command": "hash -t ls",
+          "explanation": "Посмотреть закешированный путь команды ls."
+        },
+        {
+          "type": "example",
+          "text": "Вручную назначить путь /usr/local/bin/python3 для имени python",
           "command": "hash -p /usr/local/bin/python3 python",
-          "explanation": "Forces python to resolve to a specific path"
+          "explanation": "Вручную назначить путь /usr/local/bin/python3 для имени python."
+        },
+        {
+          "type": "example",
+          "text": "Добавить конкретное расположение команды в shell-кеш",
+          "command": "hash -p /usr/local/bin/python3 python",
+          "explanation": "Вручную назначить путь /usr/local/bin/python3 для имени python."
         }
       ]
     },
     {
       "name": "tput",
       "synopsis": "tput [options] capname [parameters]",
-      "description": "Query terminal capabilities and send control sequences",
+      "description": "Запрос возможностей терминала и вывод управляющих последовательностей",
       "patterns": [
         {
           "type": "example",
-          "text": "get the number of columns in the terminal",
+          "text": "Узнать ширину терминала в колонках",
           "command": "tput cols",
-          "explanation": "Returns the current terminal width in characters"
+          "explanation": "Узнать ширину терминала в колонках."
         },
         {
           "type": "example",
-          "text": "get the number of rows in the terminal",
+          "text": "Получить число столбцов текущего экрана",
+          "command": "tput cols",
+          "explanation": "Узнать ширину терминала в колонках."
+        },
+        {
+          "type": "example",
+          "text": "Узнать высоту терминала в строках",
           "command": "tput lines",
-          "explanation": "Returns the current terminal height in lines"
+          "explanation": "Узнать высоту терминала в строках."
         },
         {
           "type": "example",
-          "text": "set text color in a script",
+          "text": "Определить количество строк терминального окна",
+          "command": "tput lines",
+          "explanation": "Узнать высоту терминала в строках."
+        },
+        {
+          "type": "example",
+          "text": "Вывести красный текст и сбросить оформление",
           "command": "tput setaf 1; echo \"Red text\"; tput sgr0",
-          "explanation": "Sets foreground to red, prints text, then resets formatting"
+          "explanation": "Вывести красный текст и сбросить оформление."
         },
         {
           "type": "example",
-          "text": "make text bold in the terminal",
+          "text": "Установить цвет переднего плана через tput",
+          "command": "tput setaf 1; echo \"Red text\"; tput sgr0",
+          "explanation": "Вывести красный текст и сбросить оформление."
+        },
+        {
+          "type": "example",
+          "text": "Напечатать жирный текст в терминале",
           "command": "tput bold; echo \"Bold text\"; tput sgr0",
-          "explanation": "Enables bold mode, prints text, then resets"
+          "explanation": "Напечатать жирный текст в терминале."
         },
         {
           "type": "example",
-          "text": "hide the cursor",
+          "text": "Включить bold и затем вернуть обычное оформление",
+          "command": "tput bold; echo \"Bold text\"; tput sgr0",
+          "explanation": "Напечатать жирный текст в терминале."
+        },
+        {
+          "type": "example",
+          "text": "Скрыть курсор терминала",
           "command": "tput civis",
-          "explanation": "Makes the cursor invisible, useful for scripts with visual output"
+          "explanation": "Скрыть курсор терминала."
+        },
+        {
+          "type": "example",
+          "text": "Временно убрать мигающий указатель ввода",
+          "command": "tput civis",
+          "explanation": "Скрыть курсор терминала."
         }
       ]
     },
     {
       "name": "reset",
       "synopsis": "reset",
-      "description": "Reset the terminal to a sane state",
+      "description": "Восстановление настроек терминала",
       "patterns": [
         {
           "type": "example",
-          "text": "fix a messed up terminal after viewing binary data",
+          "text": "Восстановить терминал после вывода бинарных данных",
           "command": "reset",
-          "explanation": "Reinitializes the terminal to its default state"
+          "explanation": "Восстановить терминал после вывода бинарных данных."
         },
         {
           "type": "example",
-          "text": "reset the terminal when characters look garbled",
+          "text": "Исправить испорченное состояние терминальной сессии",
           "command": "reset",
-          "explanation": "Clears the screen and restores normal character encoding"
+          "explanation": "Восстановить терминал после вывода бинарных данных."
         },
         {
           "type": "example",
-          "text": "reset terminal settings without clearing the screen",
+          "text": "Сбросить терминал при нечитаемых символах",
+          "command": "reset",
+          "explanation": "Сбросить терминал при нечитаемых символах."
+        },
+        {
+          "type": "example",
+          "text": "Вернуть нормальное отображение командой reset",
+          "command": "reset",
+          "explanation": "Сбросить терминал при нечитаемых символах."
+        },
+        {
+          "type": "example",
+          "text": "Восстановить стандартные настройки tty без очистки экрана",
           "command": "stty sane",
-          "explanation": "Restores terminal line settings to sensible defaults"
+          "explanation": "Восстановить стандартные настройки tty без очистки экрана."
         },
         {
           "type": "example",
-          "text": "fix a terminal stuck in raw mode",
+          "text": "Исправить режим терминала через stty sane",
+          "command": "stty sane",
+          "explanation": "Восстановить стандартные настройки tty без очистки экрана."
+        },
+        {
+          "type": "example",
+          "text": "Вывести терминал из некорректного raw-режима",
           "command": "reset",
-          "explanation": "Restores cooked mode, echo, and other terminal settings"
+          "explanation": "Вывести терминал из некорректного raw-режима."
+        },
+        {
+          "type": "example",
+          "text": "Полностью переинициализировать терминал командой reset",
+          "command": "reset",
+          "explanation": "Вывести терминал из некорректного raw-режима."
         }
       ]
     },
     {
       "name": "openssl",
       "synopsis": "openssl command [options]",
-      "description": "Cryptography toolkit for TLS keys, CSRs, certificates, and message digests",
+      "description": "Работа с ключами TLS, запросами сертификатов, сертификатами и хешами",
       "patterns": [
         {
           "type": "example",
-          "text": "generate a 4096-bit RSA private key",
+          "text": "Создать приватный RSA-ключ длиной 4096 бит",
           "command": "openssl genrsa -out server.key 4096",
-          "explanation": "Creates a PEM-encoded private key file"
+          "explanation": "Создать приватный RSA-ключ длиной 4096 бит."
         },
         {
           "type": "example",
-          "text": "create a certificate signing request interactively",
+          "text": "Сгенерировать server.key через OpenSSL",
+          "command": "openssl genrsa -out server.key 4096",
+          "explanation": "Создать приватный RSA-ключ длиной 4096 бит."
+        },
+        {
+          "type": "example",
+          "text": "Интерактивно создать запрос на подпись сертификата",
           "command": "openssl req -new -key server.key -out server.csr",
-          "explanation": "Prompts for DN fields and writes a CSR for a CA to sign"
+          "explanation": "Интерактивно создать запрос на подпись сертификата."
         },
         {
           "type": "example",
-          "text": "inspect a certificate's subject and dates",
+          "text": "Подготовить CSR с существующим приватным ключом",
+          "command": "openssl req -new -key server.key -out server.csr",
+          "explanation": "Интерактивно создать запрос на подпись сертификата."
+        },
+        {
+          "type": "example",
+          "text": "Посмотреть владельца сертификата и сроки действия",
           "command": "openssl x509 -in cert.pem -noout -subject -dates",
-          "explanation": "Prints metadata without the full PEM body"
+          "explanation": "Посмотреть владельца сертификата и сроки действия."
         },
         {
           "type": "example",
-          "text": "compute SHA-256 checksum of a file",
+          "text": "Вывести subject и даты X.509-сертификата",
+          "command": "openssl x509 -in cert.pem -noout -subject -dates",
+          "explanation": "Посмотреть владельца сертификата и сроки действия."
+        },
+        {
+          "type": "example",
+          "text": "Посчитать SHA-256 файла через OpenSSL",
           "command": "openssl dgst -sha256 installer.pkg",
-          "explanation": "Outputs a hex digest independent of shasum command availability"
+          "explanation": "Посчитать SHA-256 файла через OpenSSL."
         },
         {
           "type": "example",
-          "text": "test a TLS handshake to a host on port 443",
+          "text": "Получить криптографическую контрольную сумму installer.pkg",
+          "command": "openssl dgst -sha256 installer.pkg",
+          "explanation": "Посчитать SHA-256 файла через OpenSSL."
+        },
+        {
+          "type": "example",
+          "text": "Проверить TLS-соединение с сервером на порту 443",
           "command": "openssl s_client -connect example.com:443 -servername example.com </dev/null",
-          "explanation": "Shows certificate chain and negotiated cipher; SNI matches virtual hosts"
+          "explanation": "Проверить TLS-соединение с сервером на порту 443."
         },
         {
           "type": "example",
-          "text": "generate 32 cryptographically random bytes as hex",
-          "command": "openssl rand -hex 32",
-          "explanation": "Prints 64 hex characters from the OS random source; common for secrets and key material"
+          "text": "Выполнить TLS-handshake с SNI для example.com",
+          "command": "openssl s_client -connect example.com:443 -servername example.com </dev/null",
+          "explanation": "Проверить TLS-соединение с сервером на порту 443."
         },
         {
           "type": "example",
-          "text": "generate 32 random bytes encoded as 64 hexadecimal digits",
+          "text": "Сгенерировать 32 случайных байта в шестнадцатеричном виде",
           "command": "openssl rand -hex 32",
-          "explanation": "Prints 32 random bytes as hexadecimal data; does not create or validate a wallet key"
+          "explanation": "Сгенерировать 32 случайных байта в шестнадцатеричном виде."
+        },
+        {
+          "type": "example",
+          "text": "Получить криптографически случайную строку из 64 hex-символов",
+          "command": "openssl rand -hex 32",
+          "explanation": "Сгенерировать 32 случайных байта в шестнадцатеричном виде."
+        },
+        {
+          "type": "example",
+          "text": "сгенерировать 32 случайных байта в шестнадцатеричном виде",
+          "command": "openssl rand -hex 32",
+          "explanation": "Выводит 32 случайных байта в шестнадцатеричном виде; не создаёт и не проверяет ключ криптокошелька."
+        },
+        {
+          "type": "example",
+          "text": "получить 64 шестнадцатеричных символа случайных данных",
+          "command": "openssl rand -hex 32",
+          "explanation": "Выводит 32 случайных байта в шестнадцатеричном виде; не создаёт и не проверяет ключ криптокошелька."
         }
       ]
     },
     {
       "name": "base64",
       "synopsis": "base64 [options] [infile]",
-      "description": "Encode or decode data in Base64",
+      "description": "Кодирование и декодирование Base64",
       "patterns": [
         {
           "type": "example",
-          "text": "encode a small secret to paste in JSON or YAML",
+          "text": "Закодировать строку в Base64",
           "command": "printf 'secret-value' | base64",
-          "explanation": "Outputs a single line of Base64 without a newline in the input"
+          "explanation": "Закодировать строку в Base64."
         },
         {
           "type": "example",
-          "text": "decode Base64 from the clipboard on macOS",
+          "text": "Подготовить текстовый секрет для вставки в JSON или YAML",
+          "command": "printf 'secret-value' | base64",
+          "explanation": "Закодировать строку в Base64."
+        },
+        {
+          "type": "example",
+          "text": "Раскодировать Base64 из буфера обмена Mac",
           "command": "pbpaste | base64 -D",
-          "explanation": "-D decodes on macOS BSD base64; use -d on GNU coreutils"
+          "explanation": "Раскодировать Base64 из буфера обмена Mac."
         },
         {
           "type": "example",
-          "text": "decode Base64 on Linux",
+          "text": "Прочитать скопированный текст через декодер macOS",
+          "command": "pbpaste | base64 -D",
+          "explanation": "Раскодировать Base64 из буфера обмена Mac."
+        },
+        {
+          "type": "example",
+          "text": "Декодировать Base64-файл в Linux",
           "command": "base64 -d encoded.txt",
-          "explanation": "GNU base64 uses -d for decode"
+          "explanation": "Декодировать Base64-файл в Linux."
+        },
+        {
+          "type": "example",
+          "text": "Показать исходные данные encoded.txt через base64 -d",
+          "command": "base64 -d encoded.txt",
+          "explanation": "Декодировать Base64-файл в Linux."
         }
       ]
     },
     {
       "name": "uuidgen",
       "synopsis": "uuidgen [options]",
-      "description": "Generate a random UUID (RFC 4122) on macOS and many Unix systems",
+      "description": "Генерация случайного UUID",
       "patterns": [
         {
           "type": "example",
-          "text": "create a unique ID for a temp resource or database row",
+          "text": "Сгенерировать новый UUID",
           "command": "uuidgen",
-          "explanation": "Prints an uppercase UUID string by default on macOS"
+          "explanation": "Сгенерировать новый UUID."
         },
         {
           "type": "example",
-          "text": "generate a lowercase UUID for Linux-friendly configs",
+          "text": "Создать уникальный идентификатор ресурса",
+          "command": "uuidgen",
+          "explanation": "Сгенерировать новый UUID."
+        },
+        {
+          "type": "example",
+          "text": "Получить UUID только строчными буквами",
           "command": "uuidgen | tr '[:upper:]' '[:lower:]'",
-          "explanation": "Some APIs expect lowercase hex UUIDs"
+          "explanation": "Получить UUID только строчными буквами."
+        },
+        {
+          "type": "example",
+          "text": "Нормализовать регистр уникального идентификатора",
+          "command": "uuidgen | tr '[:upper:]' '[:lower:]'",
+          "explanation": "Получить UUID только строчными буквами."
         }
       ]
     },
     {
       "name": "clear",
       "synopsis": "clear",
-      "description": "Clear the terminal screen",
+      "description": "Очистка экрана терминала",
       "patterns": [
         {
           "type": "example",
-          "text": "clear the terminal screen",
+          "text": "Очистить экран терминала",
           "command": "clear",
-          "explanation": "Scrolls the terminal so the prompt is at the top"
+          "explanation": "Очистить экран терминала."
         },
         {
           "type": "example",
-          "text": "clear the visible terminal screen while preserving scrollback",
+          "text": "Убрать текущий вывод с видимой области",
+          "command": "clear",
+          "explanation": "Очистить экран терминала."
+        },
+        {
+          "type": "example",
+          "text": "Очистить экран, сохранив историю прокрутки",
           "command": "clear -x",
-          "explanation": "Clears the visible screen without clearing scrollback history"
+          "explanation": "Очистить экран, сохранив историю прокрутки."
         },
         {
           "type": "example",
-          "text": "clear the screen using an escape sequence",
+          "text": "Не стирать scrollback при выполнении clear -x",
+          "command": "clear -x",
+          "explanation": "Очистить экран, сохранив историю прокрутки."
+        },
+        {
+          "type": "example",
+          "text": "Очистить экран ANSI-последовательностью и переместить курсор в начало",
           "command": "printf '\\033[2J\\033[H'",
-          "explanation": "Sends ANSI escape codes to clear screen and move cursor home"
+          "explanation": "Очистить экран ANSI-последовательностью и переместить курсор в начало."
         },
         {
           "type": "example",
-          "text": "clear the screen in a script",
+          "text": "Обновить видимую область терминала через printf",
+          "command": "printf '\\033[2J\\033[H'",
+          "explanation": "Очистить экран ANSI-последовательностью и переместить курсор в начало."
+        },
+        {
+          "type": "example",
+          "text": "Очистить терминал из скрипта через terminfo",
           "command": "tput clear",
-          "explanation": "Uses the terminfo capability to clear the terminal"
+          "explanation": "Очистить терминал из скрипта через terminfo."
+        },
+        {
+          "type": "example",
+          "text": "Выполнить очистку экрана командой tput clear",
+          "command": "tput clear",
+          "explanation": "Очистить терминал из скрипта через terminfo."
         }
       ]
     },
     {
       "name": "claude",
       "synopsis": "claude [options] [prompt]",
-      "description": "Claude Code CLI - run an AI coding assistant non-interactively with -p/--print to pipe its output into shell commands",
+      "description": "Запуск помощника Claude Code, в том числе в неинтерактивных конвейерах",
       "patterns": [
         {
           "type": "example",
-          "text": "let claude write the commit message and commit staged changes",
+          "text": "Попросить Claude составить сообщение и закоммитить подготовленные правки",
           "command": "git commit -m \"$(claude -p 'Review the staged changes with git diff --cached and write a concise conventional commit message. Output only the message text, no markdown, no explanation.')\"",
-          "explanation": "Runs claude in print mode; it inspects the staged diff and returns a commit message that is substituted into git commit -m"
+          "explanation": "Попросить Claude составить сообщение и закоммитить подготовленные правки."
         },
         {
           "type": "example",
-          "text": "claude commit - AI generated commit message for staged files",
+          "text": "Создать коммит содержимого индекса с сообщением от Claude",
+          "command": "git commit -m \"$(claude -p 'Review the staged changes with git diff --cached and write a concise conventional commit message. Output only the message text, no markdown, no explanation.')\"",
+          "explanation": "Попросить Claude составить сообщение и закоммитить подготовленные правки."
+        },
+        {
+          "type": "example",
+          "text": "Сделать коммит уже добавленных файлов с AI-сообщением",
           "command": "git commit -m \"$(claude -p 'Review the staged changes with git diff --cached and write a concise conventional commit message. Output only the commit message text, no markdown, no explanation.')\"",
-          "explanation": "One-liner that asks claude to read the staged diff and produce a commit message, then commits with it"
+          "explanation": "Сделать коммит уже добавленных файлов с AI-сообщением."
         },
         {
           "type": "example",
-          "text": "generate a commit message from the staged diff using claude",
+          "text": "Поручить Claude кратко описать изменения и передать текст в git commit",
+          "command": "git commit -m \"$(claude -p 'Review the staged changes with git diff --cached and write a concise conventional commit message. Output only the commit message text, no markdown, no explanation.')\"",
+          "explanation": "Сделать коммит уже добавленных файлов с AI-сообщением."
+        },
+        {
+          "type": "example",
+          "text": "Сгенерировать сообщение коммита по подготовленному diff без создания коммита",
           "command": "git diff --cached | claude -p 'Write a concise conventional commit message for this diff. Output only the commit message text, no markdown, no explanation.'",
-          "explanation": "Pipes the staged diff into claude, which returns just the commit message on stdout"
+          "explanation": "Сгенерировать сообщение коммита по подготовленному diff без создания коммита."
         },
         {
           "type": "example",
-          "text": "stage everything and let claude commit it",
+          "text": "Передать git diff --cached в Claude и получить только текст описания",
+          "command": "git diff --cached | claude -p 'Write a concise conventional commit message for this diff. Output only the commit message text, no markdown, no explanation.'",
+          "explanation": "Сгенерировать сообщение коммита по подготовленному diff без создания коммита."
+        },
+        {
+          "type": "example",
+          "text": "Добавить все изменения и закоммитить их с сообщением Claude",
           "command": "git add -A && git commit -m \"$(claude -p 'Review the staged changes with git diff --cached and write a concise conventional commit message. Output only the commit message text, no markdown, no explanation.')\"",
-          "explanation": "Stages all changes then asks claude to write the commit message before committing"
+          "explanation": "Добавить все изменения и закоммитить их с сообщением Claude."
         },
         {
           "type": "example",
-          "text": "ask claude a quick question from the shell without starting a session",
+          "text": "Проиндексировать весь репозиторий перед автоматическим AI-коммитом",
+          "command": "git add -A && git commit -m \"$(claude -p 'Review the staged changes with git diff --cached and write a concise conventional commit message. Output only the commit message text, no markdown, no explanation.')\"",
+          "explanation": "Добавить все изменения и закоммитить их с сообщением Claude."
+        },
+        {
+          "type": "example",
+          "text": "Задать Claude вопрос одной командой без интерактивной сессии",
           "command": "claude -p 'your question here'",
-          "explanation": "Runs claude non-interactively, prints the response, and exits — ideal for piping or command substitution"
+          "explanation": "Задать Claude вопрос одной командой без интерактивной сессии."
         },
         {
           "type": "example",
-          "text": "pipe a file into claude and get a response back on stdout",
+          "text": "Получить разовый ответ через claude -p",
+          "command": "claude -p 'your question here'",
+          "explanation": "Задать Claude вопрос одной командой без интерактивной сессии."
+        },
+        {
+          "type": "example",
+          "text": "Передать файл Claude и получить краткое резюме в stdout",
           "command": "cat file.txt | claude -p 'summarize this file in 3 bullet points'",
-          "explanation": "Sends file contents as context to claude in print mode and captures the reply"
+          "explanation": "Передать файл Claude и получить краткое резюме в stdout."
         },
         {
           "type": "example",
-          "text": "continue the most recent claude conversation in this directory",
+          "text": "Суммировать текстовый файл в трёх пунктах через конвейер",
+          "command": "cat file.txt | claude -p 'summarize this file in 3 bullet points'",
+          "explanation": "Передать файл Claude и получить краткое резюме в stdout."
+        },
+        {
+          "type": "example",
+          "text": "Продолжить последний диалог Claude в текущей папке",
           "command": "claude -c",
-          "explanation": "Resumes the last session so previous context is preserved"
+          "explanation": "Продолжить последний диалог Claude в текущей папке."
+        },
+        {
+          "type": "example",
+          "text": "Возобновить недавнюю беседу командой claude -c",
+          "command": "claude -c",
+          "explanation": "Продолжить последний диалог Claude в текущей папке."
         }
       ]
     }

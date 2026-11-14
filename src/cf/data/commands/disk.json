@@ -4,695 +4,1250 @@
     {
       "name": "fdisk",
       "synopsis": "fdisk [options] device",
-      "description": "Manipulate MBR disk partition tables",
+      "description": "Управление таблицами разделов MBR",
       "patterns": [
         {
           "type": "example",
-          "text": "list all disk partitions on the system",
+          "text": "показать таблицы разделов всех обнаруженных дисков",
           "command": "sudo fdisk -l",
-          "explanation": "Displays partition tables for all disks"
+          "explanation": "Показать таблицы разделов всех обнаруженных дисков."
         },
         {
           "type": "example",
-          "text": "show partitions for a specific disk",
+          "text": "перечислить дисковые разделы системы через fdisk",
+          "command": "sudo fdisk -l",
+          "explanation": "Показать таблицы разделов всех обнаруженных дисков."
+        },
+        {
+          "type": "example",
+          "text": "показать разделы конкретного диска /dev/sda",
           "command": "sudo fdisk -l /dev/sda",
-          "explanation": "Lists partition layout of the specified disk"
+          "explanation": "Показать разделы конкретного диска /dev/sda."
         },
         {
           "type": "example",
-          "text": "open the partition editor for a disk",
+          "text": "посмотреть таблицу разметки выбранного устройства",
+          "command": "sudo fdisk -l /dev/sda",
+          "explanation": "Показать разделы конкретного диска /dev/sda."
+        },
+        {
+          "type": "example",
+          "text": "открыть интерактивный редактор разделов диска /dev/sdb",
           "command": "sudo fdisk /dev/sdb",
-          "explanation": "Enters interactive mode to create, delete, or modify partitions"
+          "explanation": "Открыть интерактивный редактор разделов диска /dev/sdb."
         },
         {
           "type": "example",
-          "text": "dump partition table in sector format",
+          "text": "начать изменение разметки выбранного накопителя через fdisk",
+          "command": "sudo fdisk /dev/sdb",
+          "explanation": "Открыть интерактивный редактор разделов диска /dev/sdb."
+        },
+        {
+          "type": "example",
+          "text": "показать начало и конец разделов диска в секторах",
           "command": "sudo fdisk -l -o Device,Start,End,Sectors,Size,Type /dev/sda",
-          "explanation": "Shows specific partition details with custom columns"
+          "explanation": "Показать начало и конец разделов диска в секторах."
+        },
+        {
+          "type": "example",
+          "text": "вывести таблицу /dev/sda со столбцами устройства, границ, размера и типа",
+          "command": "sudo fdisk -l -o Device,Start,End,Sectors,Size,Type /dev/sda",
+          "explanation": "Показать начало и конец разделов диска в секторах."
         }
       ]
     },
     {
       "name": "gdisk",
       "synopsis": "gdisk [options] device",
-      "description": "Interactive GPT partition table manipulator",
+      "description": "Интерактивное управление таблицами разделов GPT",
       "patterns": [
         {
           "type": "example",
-          "text": "partition a disk using GPT",
+          "text": "открыть редактор GPT-разделов для диска /dev/sdb",
           "command": "sudo gdisk /dev/sdb",
-          "explanation": "Opens interactive GPT partitioning tool for the disk"
+          "explanation": "Открыть редактор GPT-разделов для диска /dev/sdb."
         },
         {
           "type": "example",
-          "text": "list GPT partitions on a disk",
+          "text": "разметить выбранный диск через интерактивный gdisk",
+          "command": "sudo gdisk /dev/sdb",
+          "explanation": "Открыть редактор GPT-разделов для диска /dev/sdb."
+        },
+        {
+          "type": "example",
+          "text": "посмотреть GPT-разметку диска /dev/sda",
           "command": "sudo gdisk -l /dev/sda",
-          "explanation": "Displays the GPT partition table"
+          "explanation": "Посмотреть GPT-разметку диска /dev/sda."
         },
         {
           "type": "example",
-          "text": "convert an MBR disk to GPT",
+          "text": "вывести список GPT-разделов выбранного накопителя",
+          "command": "sudo gdisk -l /dev/sda",
+          "explanation": "Посмотреть GPT-разметку диска /dev/sda."
+        },
+        {
+          "type": "example",
+          "text": "преобразовать таблицу разделов диска из MBR в GPT",
           "command": "sudo sgdisk -g /dev/sdb",
-          "explanation": "Converts the partition table from MBR to GPT format"
+          "explanation": "Преобразовать таблицу разделов диска из MBR в GPT."
         },
         {
           "type": "example",
-          "text": "backup the GPT partition table",
+          "text": "конвертировать разметку /dev/sdb в GPT через sgdisk",
+          "command": "sudo sgdisk -g /dev/sdb",
+          "explanation": "Преобразовать таблицу разделов диска из MBR в GPT."
+        },
+        {
+          "type": "example",
+          "text": "сохранить резервную копию GPT-таблицы разделов",
           "command": "sudo sgdisk --backup=table.bak /dev/sda",
-          "explanation": "Saves the partition table to a file for recovery"
+          "explanation": "Сохранить резервную копию GPT-таблицы разделов."
         },
         {
           "type": "example",
-          "text": "clone partition layout from one disk to another",
+          "text": "записать разметку диска /dev/sda в файл table.bak",
+          "command": "sudo sgdisk --backup=table.bak /dev/sda",
+          "explanation": "Сохранить резервную копию GPT-таблицы разделов."
+        },
+        {
+          "type": "example",
+          "text": "скопировать таблицу разделов с /dev/sda на /dev/sdb",
           "command": "sudo sgdisk -R /dev/sdb /dev/sda",
-          "explanation": "Replicates the partition scheme from sda to sdb"
+          "explanation": "Скопировать таблицу разделов с /dev/sda на /dev/sdb."
+        },
+        {
+          "type": "example",
+          "text": "перенести структуру GPT-разметки одного диска на другой",
+          "command": "sudo sgdisk -R /dev/sdb /dev/sda",
+          "explanation": "Скопировать таблицу разделов с /dev/sda на /dev/sdb."
         }
       ]
     },
     {
       "name": "parted",
       "synopsis": "parted [options] [device [command...]]",
-      "description": "A partition manipulation program supporting MBR and GPT",
+      "description": "Управление разделами диска с поддержкой MBR и GPT",
       "patterns": [
         {
           "type": "example",
-          "text": "list all partitions on all disks",
+          "text": "перечислить разделы всех дисков через parted",
           "command": "sudo parted -l",
-          "explanation": "Displays partition tables for every disk in the system"
+          "explanation": "Перечислить разделы всех дисков через parted."
         },
         {
           "type": "example",
-          "text": "create a new GPT partition table on a disk",
+          "text": "показать общую разметку подключённых накопителей",
+          "command": "sudo parted -l",
+          "explanation": "Перечислить разделы всех дисков через parted."
+        },
+        {
+          "type": "example",
+          "text": "создать новую GPT-таблицу разделов на диске /dev/sdb",
           "command": "sudo parted /dev/sdb mklabel gpt",
-          "explanation": "Initializes the disk with a fresh GPT partition table",
+          "explanation": "Создать новую GPT-таблицу разделов на диске /dev/sdb.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "create a partition using the entire disk",
+          "text": "заменить разметку выбранного диска новой меткой GPT",
+          "command": "sudo parted /dev/sdb mklabel gpt",
+          "explanation": "Создать новую GPT-таблицу разделов на диске /dev/sdb.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "создать основной раздел на весь диск с указанием типа ext4",
           "command": "sudo parted /dev/sdb mkpart primary ext4 0% 100%",
-          "explanation": "Creates a partition spanning the disk with an ext4 type hint; does not create an ext4 filesystem",
+          "explanation": "Создаёт раздел на весь диск с указанием типа ext4, но не создаёт файловую систему ext4.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "resize a partition",
+          "text": "выделить диапазон от 0 до 100 процентов диска под новый раздел",
+          "command": "sudo parted /dev/sdb mkpart primary ext4 0% 100%",
+          "explanation": "Создаёт раздел на весь диск с указанием типа ext4, но не создаёт файловую систему ext4.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "расширить второй раздел диска до его конца",
           "command": "sudo parted /dev/sda resizepart 2 100%",
-          "explanation": "Moves the end of partition 2 to the end of the disk; resizing its filesystem is a separate operation",
+          "explanation": "Переносит конец второго раздела к концу диска; размер файловой системы изменяется отдельно.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "print partition information for a disk",
+          "text": "изменить конечную границу раздела 2 на отметку 100%",
+          "command": "sudo parted /dev/sda resizepart 2 100%",
+          "explanation": "Переносит конец второго раздела к концу диска; размер файловой системы изменяется отдельно.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "показать сведения о разметке диска /dev/sda",
           "command": "sudo parted /dev/sda print",
-          "explanation": "Shows the partition table with sizes and filesystem types"
+          "explanation": "Показать сведения о разметке диска /dev/sda."
+        },
+        {
+          "type": "example",
+          "text": "напечатать таблицу разделов выбранного устройства через parted",
+          "command": "sudo parted /dev/sda print",
+          "explanation": "Показать сведения о разметке диска /dev/sda."
         }
       ]
     },
     {
       "name": "mkfs",
       "synopsis": "mkfs [options] [-t type] device",
-      "description": "Build a Linux filesystem on a partition",
+      "description": "Создание файловой системы Linux на разделе",
       "patterns": [
         {
           "type": "example",
-          "text": "format a partition as ext4",
+          "text": "отформатировать раздел в ext4",
           "command": "sudo mkfs.ext4 /dev/sdb1",
-          "explanation": "Creates an ext4 filesystem on the partition"
+          "explanation": "Отформатировать раздел в ext4."
         },
         {
           "type": "example",
-          "text": "create an XFS filesystem",
+          "text": "создать файловую систему ext4 на /dev/sdb1",
+          "command": "sudo mkfs.ext4 /dev/sdb1",
+          "explanation": "Отформатировать раздел в ext4."
+        },
+        {
+          "type": "example",
+          "text": "создать файловую систему XFS на разделе",
           "command": "sudo mkfs.xfs /dev/sdb1",
-          "explanation": "Formats the partition with the XFS filesystem"
+          "explanation": "Создать файловую систему XFS на разделе."
         },
         {
           "type": "example",
-          "text": "format a partition as FAT32 for USB drives",
+          "text": "отформатировать /dev/sdb1 в XFS",
+          "command": "sudo mkfs.xfs /dev/sdb1",
+          "explanation": "Создать файловую систему XFS на разделе."
+        },
+        {
+          "type": "example",
+          "text": "отформатировать раздел флешки в FAT32",
           "command": "sudo mkfs.vfat -F 32 /dev/sdb1",
-          "explanation": "Creates a FAT32 filesystem, compatible with most devices"
+          "explanation": "Отформатировать раздел флешки в FAT32."
         },
         {
           "type": "example",
-          "text": "create an ext4 filesystem with a label",
+          "text": "создать файловую систему FAT с разрядностью 32 на указанном устройстве",
+          "command": "sudo mkfs.vfat -F 32 /dev/sdb1",
+          "explanation": "Отформатировать раздел флешки в FAT32."
+        },
+        {
+          "type": "example",
+          "text": "создать ext4 с меткой mydisk",
           "command": "sudo mkfs.ext4 -L mydisk /dev/sdb1",
-          "explanation": "Formats and sets a human-readable label on the filesystem"
+          "explanation": "Создать ext4 с меткой mydisk."
         },
         {
           "type": "example",
-          "text": "create a Btrfs filesystem",
+          "text": "отформатировать раздел в ext4 и назначить ему название",
+          "command": "sudo mkfs.ext4 -L mydisk /dev/sdb1",
+          "explanation": "Создать ext4 с меткой mydisk."
+        },
+        {
+          "type": "example",
+          "text": "отформатировать раздел в Btrfs",
           "command": "sudo mkfs.btrfs /dev/sdb1",
-          "explanation": "Formats the partition with the Btrfs copy-on-write filesystem"
+          "explanation": "Отформатировать раздел в Btrfs."
+        },
+        {
+          "type": "example",
+          "text": "создать файловую систему Btrfs на выбранном устройстве",
+          "command": "sudo mkfs.btrfs /dev/sdb1",
+          "explanation": "Отформатировать раздел в Btrfs."
         }
       ]
     },
     {
       "name": "fsck",
       "synopsis": "fsck [options] [filesystem...]",
-      "description": "Check and repair a Linux filesystem",
+      "description": "Проверка и восстановление файловой системы Linux",
       "patterns": [
         {
           "type": "example",
-          "text": "check a filesystem for errors",
+          "text": "проверить файловую систему раздела на ошибки",
           "command": "sudo fsck /dev/sda1",
-          "explanation": "Scans the filesystem for corruption and reports issues"
+          "explanation": "Проверить файловую систему раздела на ошибки."
         },
         {
           "type": "example",
-          "text": "automatically repair filesystem errors",
+          "text": "запустить fsck для /dev/sda1",
+          "command": "sudo fsck /dev/sda1",
+          "explanation": "Проверить файловую систему раздела на ошибки."
+        },
+        {
+          "type": "example",
+          "text": "исправлять ошибки файловой системы с автоматическим подтверждением",
           "command": "sudo fsck -y /dev/sda1",
-          "explanation": "Fixes all errors automatically without prompting"
+          "explanation": "Исправлять ошибки файловой системы с автоматическим подтверждением."
         },
         {
           "type": "example",
-          "text": "check a filesystem without making changes",
+          "text": "проверить раздел и отвечать да на запросы восстановления fsck",
+          "command": "sudo fsck -y /dev/sda1",
+          "explanation": "Исправлять ошибки файловой системы с автоматическим подтверждением."
+        },
+        {
+          "type": "example",
+          "text": "проверить раздел без внесения исправлений",
           "command": "sudo fsck -n /dev/sda1",
-          "explanation": "Performs a read-only check and reports errors without fixing"
+          "explanation": "Проверить раздел без внесения исправлений."
         },
         {
           "type": "example",
-          "text": "force a filesystem check even if it appears clean",
+          "text": "запустить fsck в режиме отказа от изменений файловой системы",
+          "command": "sudo fsck -n /dev/sda1",
+          "explanation": "Проверить раздел без внесения исправлений."
+        },
+        {
+          "type": "example",
+          "text": "принудительно проверить файловую систему, даже если она помечена чистой",
           "command": "sudo fsck -f /dev/sda1",
-          "explanation": "Forces a check even if the filesystem is marked clean"
+          "explanation": "Принудительно проверить файловую систему, даже если она помечена чистой."
         },
         {
           "type": "example",
-          "text": "check all filesystems listed in fstab",
+          "text": "выполнить полную проверку раздела через fsck -f",
+          "command": "sudo fsck -f /dev/sda1",
+          "explanation": "Принудительно проверить файловую систему, даже если она помечена чистой."
+        },
+        {
+          "type": "example",
+          "text": "проверить файловые системы, настроенные для проверки в fstab",
           "command": "sudo fsck -A",
-          "explanation": "Runs checks on all filesystems in /etc/fstab"
+          "explanation": "Проверить файловые системы, настроенные для проверки в fstab."
+        },
+        {
+          "type": "example",
+          "text": "обработать записи /etc/fstab через общий запуск fsck",
+          "command": "sudo fsck -A",
+          "explanation": "Проверить файловые системы, настроенные для проверки в fstab."
         }
       ]
     },
     {
       "name": "mount",
       "synopsis": "mount [options] device directory",
-      "description": "Mount a filesystem to a directory",
+      "description": "Монтирование файловой системы в каталог",
       "patterns": [
         {
           "type": "example",
-          "text": "mount a partition to a directory",
+          "text": "смонтировать раздел /dev/sdb1 в папку /mnt/data",
           "command": "sudo mount /dev/sdb1 /mnt/data",
-          "explanation": "Attaches the filesystem on sdb1 to the /mnt/data mount point"
+          "explanation": "Смонтировать раздел /dev/sdb1 в папку /mnt/data."
         },
         {
           "type": "example",
-          "text": "mount an ISO image file",
+          "text": "подключить файловую систему дискового раздела к каталогу",
+          "command": "sudo mount /dev/sdb1 /mnt/data",
+          "explanation": "Смонтировать раздел /dev/sdb1 в папку /mnt/data."
+        },
+        {
+          "type": "example",
+          "text": "подключить ISO-образ через loop-устройство",
           "command": "sudo mount -o loop image.iso /mnt/iso",
-          "explanation": "Mounts an ISO file as a loopback device"
+          "explanation": "Подключить ISO-образ через loop-устройство."
         },
         {
           "type": "example",
-          "text": "mount an NFS share",
+          "text": "смонтировать файл image.iso в папку /mnt/iso",
+          "command": "sudo mount -o loop image.iso /mnt/iso",
+          "explanation": "Подключить ISO-образ через loop-устройство."
+        },
+        {
+          "type": "example",
+          "text": "подключить сетевую папку NFS",
           "command": "sudo mount -t nfs server:/share /mnt/nfs",
-          "explanation": "Mounts a remote NFS filesystem"
+          "explanation": "Подключить сетевую папку NFS."
         },
         {
           "type": "example",
-          "text": "mount a filesystem as read-only",
+          "text": "смонтировать ресурс server:/share в локальный каталог /mnt/nfs",
+          "command": "sudo mount -t nfs server:/share /mnt/nfs",
+          "explanation": "Подключить сетевую папку NFS."
+        },
+        {
+          "type": "example",
+          "text": "смонтировать раздел только для чтения",
           "command": "sudo mount -o ro /dev/sdb1 /mnt/readonly",
-          "explanation": "Attaches the filesystem in read-only mode"
+          "explanation": "Смонтировать раздел только для чтения."
         },
         {
           "type": "example",
-          "text": "show all currently mounted filesystems",
+          "text": "подключить /dev/sdb1 без возможности изменения содержимого",
+          "command": "sudo mount -o ro /dev/sdb1 /mnt/readonly",
+          "explanation": "Смонтировать раздел только для чтения."
+        },
+        {
+          "type": "example",
+          "text": "показать подключённые файловые системы с выравниванием столбцов",
           "command": "mount | column -t",
-          "explanation": "Lists all mounted filesystems in a formatted table"
+          "explanation": "Показать подключённые файловые системы с выравниванием столбцов."
+        },
+        {
+          "type": "example",
+          "text": "вывести список точек монтирования в табличном виде",
+          "command": "mount | column -t",
+          "explanation": "Показать подключённые файловые системы с выравниванием столбцов."
         }
       ]
     },
     {
       "name": "umount",
       "synopsis": "umount [options] directory|device",
-      "description": "Unmount a filesystem",
+      "description": "Отмонтирование файловой системы",
       "patterns": [
         {
           "type": "example",
-          "text": "unmount a filesystem",
+          "text": "отмонтировать файловую систему из /mnt/data",
           "command": "sudo umount /mnt/data",
-          "explanation": "Detaches the filesystem from the mount point"
+          "explanation": "Отмонтировать файловую систему из /mnt/data."
         },
         {
           "type": "example",
-          "text": "force unmount a busy filesystem",
+          "text": "отключить раздел, подключённый в указанной папке",
+          "command": "sudo umount /mnt/data",
+          "explanation": "Отмонтировать файловую систему из /mnt/data."
+        },
+        {
+          "type": "example",
+          "text": "попробовать принудительно отмонтировать /mnt/data",
           "command": "sudo umount -f /mnt/data",
-          "explanation": "Forces unmounting even if the filesystem is in use"
+          "explanation": "Попробовать принудительно отмонтировать /mnt/data."
         },
         {
           "type": "example",
-          "text": "lazy unmount a filesystem",
+          "text": "запросить принудительное отключение файловой системы",
+          "command": "sudo umount -f /mnt/data",
+          "explanation": "Попробовать принудительно отмонтировать /mnt/data."
+        },
+        {
+          "type": "example",
+          "text": "выполнить ленивое отмонтирование /mnt/data",
           "command": "sudo umount -l /mnt/data",
-          "explanation": "Detaches immediately and cleans up when no longer busy"
+          "explanation": "Выполнить ленивое отмонтирование /mnt/data."
         },
         {
           "type": "example",
-          "text": "unmount all filesystems of a given type",
+          "text": "отсоединить точку монтирования с завершением очистки после освобождения",
+          "command": "sudo umount -l /mnt/data",
+          "explanation": "Выполнить ленивое отмонтирование /mnt/data."
+        },
+        {
+          "type": "example",
+          "text": "отмонтировать все файловые системы NFS",
           "command": "sudo umount -a -t nfs",
-          "explanation": "Unmounts all mounted NFS filesystems"
+          "explanation": "Отмонтировать все файловые системы NFS."
+        },
+        {
+          "type": "example",
+          "text": "отключить подключённые сетевые ресурсы выбранного типа",
+          "command": "sudo umount -a -t nfs",
+          "explanation": "Отмонтировать все файловые системы NFS."
         }
       ]
     },
     {
       "name": "lsblk",
       "synopsis": "lsblk [options] [device...]",
-      "description": "List information about block devices",
+      "description": "Просмотр блочных устройств",
       "patterns": [
         {
           "type": "example",
-          "text": "list all block devices in a tree format",
+          "text": "показать блочные устройства и разделы деревом",
           "command": "lsblk",
-          "explanation": "Displays all disks and partitions in a hierarchical tree"
+          "explanation": "Показать блочные устройства и разделы деревом."
         },
         {
           "type": "example",
-          "text": "show filesystems and mount points",
+          "text": "посмотреть иерархию дисков и вложенных устройств",
+          "command": "lsblk",
+          "explanation": "Показать блочные устройства и разделы деревом."
+        },
+        {
+          "type": "example",
+          "text": "показать файловые системы, метки и точки монтирования устройств",
           "command": "lsblk -f",
-          "explanation": "Shows filesystem type, label, UUID, and mount point for each device"
+          "explanation": "Показать файловые системы, метки и точки монтирования устройств."
         },
         {
           "type": "example",
-          "text": "show disk sizes in bytes",
+          "text": "узнать, какие разделы подключены и в каком формате",
+          "command": "lsblk -f",
+          "explanation": "Показать файловые системы, метки и точки монтирования устройств."
+        },
+        {
+          "type": "example",
+          "text": "вывести размеры блочных устройств в байтах",
           "command": "lsblk -b",
-          "explanation": "Displays sizes in bytes instead of human-readable format"
+          "explanation": "Вывести размеры блочных устройств в байтах."
         },
         {
           "type": "example",
-          "text": "show specific columns only",
+          "text": "посмотреть точный объём дисков без округления в удобные единицы",
+          "command": "lsblk -b",
+          "explanation": "Вывести размеры блочных устройств в байтах."
+        },
+        {
+          "type": "example",
+          "text": "показать для дисков только имя, размер, тип и точку монтирования",
           "command": "lsblk -o NAME,SIZE,TYPE,MOUNTPOINT",
-          "explanation": "Displays only the selected columns"
+          "explanation": "Показать для дисков только имя, размер, тип и точку монтирования."
         },
         {
           "type": "example",
-          "text": "list devices as a flat list without tree",
+          "text": "выбрать конкретные столбцы в списке блочных устройств",
+          "command": "lsblk -o NAME,SIZE,TYPE,MOUNTPOINT",
+          "explanation": "Показать для дисков только имя, размер, тип и точку монтирования."
+        },
+        {
+          "type": "example",
+          "text": "показать блочные устройства плоским списком",
           "command": "lsblk -l",
-          "explanation": "Shows devices in a plain list format"
+          "explanation": "Показать блочные устройства плоским списком."
+        },
+        {
+          "type": "example",
+          "text": "убрать древовидное представление из вывода lsblk",
+          "command": "lsblk -l",
+          "explanation": "Показать блочные устройства плоским списком."
         }
       ]
     },
     {
       "name": "blkid",
       "synopsis": "blkid [options] [device...]",
-      "description": "Locate and print block device attributes",
+      "description": "Просмотр атрибутов блочных устройств",
       "patterns": [
         {
           "type": "example",
-          "text": "show UUIDs and filesystem types of all partitions",
+          "text": "показать UUID и типы файловых систем разделов",
           "command": "sudo blkid",
-          "explanation": "Lists all block devices with their UUIDs and filesystem info"
+          "explanation": "Показать UUID и типы файловых систем разделов."
         },
         {
           "type": "example",
-          "text": "get the UUID of a specific partition",
+          "text": "определить метки и идентификаторы блочных устройств через blkid",
+          "command": "sudo blkid",
+          "explanation": "Показать UUID и типы файловых систем разделов."
+        },
+        {
+          "type": "example",
+          "text": "узнать UUID и прочие обнаруженные атрибуты раздела /dev/sda1",
           "command": "sudo blkid /dev/sda1",
-          "explanation": "Shows the UUID, type, and label for the partition"
+          "explanation": "Узнать UUID и прочие обнаруженные атрибуты раздела /dev/sda1."
         },
         {
           "type": "example",
-          "text": "output only the UUID value",
+          "text": "показать идентификаторы выбранной файловой системы",
+          "command": "sudo blkid /dev/sda1",
+          "explanation": "Узнать UUID и прочие обнаруженные атрибуты раздела /dev/sda1."
+        },
+        {
+          "type": "example",
+          "text": "вывести только значение UUID указанного раздела",
           "command": "sudo blkid -s UUID -o value /dev/sda1",
-          "explanation": "Prints just the UUID string, useful for scripting"
+          "explanation": "Вывести только значение UUID указанного раздела."
         },
         {
           "type": "example",
-          "text": "find a device by its label",
+          "text": "получить чистый идентификатор файловой системы без подписей",
+          "command": "sudo blkid -s UUID -o value /dev/sda1",
+          "explanation": "Вывести только значение UUID указанного раздела."
+        },
+        {
+          "type": "example",
+          "text": "найти дисковое устройство по метке mydisk",
           "command": "sudo blkid -L mydisk",
-          "explanation": "Returns the device path that has the given label"
+          "explanation": "Найти дисковое устройство по метке mydisk."
+        },
+        {
+          "type": "example",
+          "text": "получить путь раздела с заданным названием файловой системы",
+          "command": "sudo blkid -L mydisk",
+          "explanation": "Найти дисковое устройство по метке mydisk."
         }
       ]
     },
     {
       "name": "tune2fs",
       "synopsis": "tune2fs [options] device",
-      "description": "Adjust tunable parameters on ext2/ext3/ext4 filesystems",
+      "description": "Настройка параметров файловых систем ext2, ext3 и ext4",
       "patterns": [
         {
           "type": "example",
-          "text": "set a label on an ext4 partition",
+          "text": "назначить ext-разделу метку mydata",
           "command": "sudo tune2fs -L mydata /dev/sda1",
-          "explanation": "Assigns the label mydata to the filesystem"
+          "explanation": "Назначить ext-разделу метку mydata."
         },
         {
           "type": "example",
-          "text": "show filesystem parameters",
+          "text": "изменить название файловой системы /dev/sda1 через tune2fs",
+          "command": "sudo tune2fs -L mydata /dev/sda1",
+          "explanation": "Назначить ext-разделу метку mydata."
+        },
+        {
+          "type": "example",
+          "text": "показать параметры файловой системы ext",
           "command": "sudo tune2fs -l /dev/sda1",
-          "explanation": "Lists all tunable parameters and superblock information"
+          "explanation": "Показать параметры файловой системы ext."
         },
         {
           "type": "example",
-          "text": "set the maximum mount count before a fsck is forced",
+          "text": "посмотреть свойства суперблока раздела через tune2fs",
+          "command": "sudo tune2fs -l /dev/sda1",
+          "explanation": "Показать параметры файловой системы ext."
+        },
+        {
+          "type": "example",
+          "text": "назначить проверку файловой системы после пятидесяти монтирований",
           "command": "sudo tune2fs -c 50 /dev/sda1",
-          "explanation": "Forces a filesystem check after 50 mounts"
+          "explanation": "Назначить проверку файловой системы после пятидесяти монтирований."
         },
         {
           "type": "example",
-          "text": "set reserved space percentage for root",
+          "text": "установить предельный счётчик подключений ext-раздела в 50",
+          "command": "sudo tune2fs -c 50 /dev/sda1",
+          "explanation": "Назначить проверку файловой системы после пятидесяти монтирований."
+        },
+        {
+          "type": "example",
+          "text": "оставить один процент блоков файловой системы в резерве",
           "command": "sudo tune2fs -m 1 /dev/sda1",
-          "explanation": "Reserves 1% of space for root instead of the default 5%"
+          "explanation": "Оставить один процент блоков файловой системы в резерве."
         },
         {
           "type": "example",
-          "text": "enable a filesystem feature",
+          "text": "уменьшить зарезервированное для root место раздела до 1%",
+          "command": "sudo tune2fs -m 1 /dev/sda1",
+          "explanation": "Оставить один процент блоков файловой системы в резерве."
+        },
+        {
+          "type": "example",
+          "text": "включить журналирование файловой системы ext",
           "command": "sudo tune2fs -O has_journal /dev/sda1",
-          "explanation": "Adds the journal feature to convert ext2 to ext3"
+          "explanation": "Включить журналирование файловой системы ext."
+        },
+        {
+          "type": "example",
+          "text": "добавить разделу признак has_journal через tune2fs",
+          "command": "sudo tune2fs -O has_journal /dev/sda1",
+          "explanation": "Включить журналирование файловой системы ext."
         }
       ]
     },
     {
       "name": "e2fsck",
       "synopsis": "e2fsck [options] device",
-      "description": "Check an ext2/ext3/ext4 filesystem",
+      "description": "Проверка файловой системы ext2, ext3 или ext4",
       "patterns": [
         {
           "type": "example",
-          "text": "check and repair an ext4 filesystem",
+          "text": "принудительно проверить файловую систему ext на ошибки",
           "command": "sudo e2fsck -f /dev/sda1",
-          "explanation": "Forces a full check of the ext filesystem"
+          "explanation": "Принудительно проверить файловую систему ext на ошибки."
         },
         {
           "type": "example",
-          "text": "automatically fix errors on an ext partition",
+          "text": "запустить полную проверку и возможное восстановление ext-раздела через e2fsck",
+          "command": "sudo e2fsck -f /dev/sda1",
+          "explanation": "Принудительно проверить файловую систему ext на ошибки."
+        },
+        {
+          "type": "example",
+          "text": "принудительно проверить ext-раздел с автоматическим исправлением",
           "command": "sudo e2fsck -fy /dev/sda1",
-          "explanation": "Forces a check and answers yes to all repair questions"
+          "explanation": "Принудительно проверить ext-раздел с автоматическим исправлением."
         },
         {
           "type": "example",
-          "text": "check an ext filesystem in read-only mode",
+          "text": "восстановить ошибки файловой системы, отвечая да на запросы e2fsck",
+          "command": "sudo e2fsck -fy /dev/sda1",
+          "explanation": "Принудительно проверить ext-раздел с автоматическим исправлением."
+        },
+        {
+          "type": "example",
+          "text": "проверить файловую систему ext без записи изменений",
           "command": "sudo e2fsck -n /dev/sda1",
-          "explanation": "Reports errors without making any changes"
+          "explanation": "Проверить файловую систему ext без записи изменений."
         },
         {
           "type": "example",
-          "text": "show progress during filesystem check",
+          "text": "запустить e2fsck в режиме только чтения с отказом от исправлений",
+          "command": "sudo e2fsck -n /dev/sda1",
+          "explanation": "Проверить файловую систему ext без записи изменений."
+        },
+        {
+          "type": "example",
+          "text": "показать прогресс принудительной проверки ext-раздела",
           "command": "sudo e2fsck -fC 0 /dev/sda1",
-          "explanation": "Displays a progress bar during the check"
+          "explanation": "Показать прогресс принудительной проверки ext-раздела."
+        },
+        {
+          "type": "example",
+          "text": "запустить e2fsck с индикатором выполнения в терминале",
+          "command": "sudo e2fsck -fC 0 /dev/sda1",
+          "explanation": "Показать прогресс принудительной проверки ext-раздела."
         }
       ]
     },
     {
       "name": "badblocks",
       "synopsis": "badblocks [options] device",
-      "description": "Search a device for bad blocks",
+      "description": "Поиск повреждённых блоков на устройстве",
       "patterns": [
         {
           "type": "example",
-          "text": "scan a disk for bad sectors",
+          "text": "просканировать диск на сбойные блоки в режиме чтения",
           "command": "sudo badblocks -v /dev/sda",
-          "explanation": "Performs a read-only scan and reports any bad blocks found"
+          "explanation": "Просканировать диск на сбойные блоки в режиме чтения."
         },
         {
           "type": "example",
-          "text": "do a non-destructive read-write test for bad blocks",
+          "text": "проверить /dev/sda утилитой badblocks с подробным выводом",
+          "command": "sudo badblocks -v /dev/sda",
+          "explanation": "Просканировать диск на сбойные блоки в режиме чтения."
+        },
+        {
+          "type": "example",
+          "text": "проверить блоки диска чтением и записью с восстановлением данных",
           "command": "sudo badblocks -nsv /dev/sdb",
-          "explanation": "Performs read/write tests and restores original block contents; use an unmounted device"
+          "explanation": "Проверяет чтение и запись с восстановлением исходного содержимого блоков; устройство должно быть отмонтировано."
         },
         {
           "type": "example",
-          "text": "write bad blocks list to a file",
+          "text": "выполнить недеструктивный тест badblocks с показом хода",
+          "command": "sudo badblocks -nsv /dev/sdb",
+          "explanation": "Проверяет чтение и запись с восстановлением исходного содержимого блоков; устройство должно быть отмонтировано."
+        },
+        {
+          "type": "example",
+          "text": "сохранить список обнаруженных плохих блоков в файл",
           "command": "sudo badblocks -v /dev/sda -o badblocks.txt",
-          "explanation": "Saves discovered bad block numbers to a file"
+          "explanation": "Сохранить список обнаруженных плохих блоков в файл."
         },
         {
           "type": "example",
-          "text": "show progress during a bad block scan",
+          "text": "просканировать диск и записать неисправные блоки в badblocks.txt",
+          "command": "sudo badblocks -v /dev/sda -o badblocks.txt",
+          "explanation": "Сохранить список обнаруженных плохих блоков в файл."
+        },
+        {
+          "type": "example",
+          "text": "проверить диск на плохие блоки с индикатором прогресса",
           "command": "sudo badblocks -sv /dev/sda",
-          "explanation": "Displays scan progress with verbose output"
+          "explanation": "Проверить диск на плохие блоки с индикатором прогресса."
+        },
+        {
+          "type": "example",
+          "text": "показать ход сканирования /dev/sda через badblocks",
+          "command": "sudo badblocks -sv /dev/sda",
+          "explanation": "Проверить диск на плохие блоки с индикатором прогресса."
         }
       ]
     },
     {
       "name": "hdparm",
       "synopsis": "hdparm [options] device",
-      "description": "Get/set SATA/IDE device parameters",
+      "description": "Просмотр и настройка параметров устройств SATA и IDE",
       "patterns": [
         {
           "type": "example",
-          "text": "test the read speed of a drive",
+          "text": "измерить скорость чтения диска и буферного кеша",
           "command": "sudo hdparm -Tt /dev/sda",
-          "explanation": "Benchmarks cached reads and buffered disk reads"
+          "explanation": "Измерить скорость чтения диска и буферного кеша."
         },
         {
           "type": "example",
-          "text": "show drive information and settings",
+          "text": "запустить тесты hdparm -T и -t для выбранного накопителя",
+          "command": "sudo hdparm -Tt /dev/sda",
+          "explanation": "Измерить скорость чтения диска и буферного кеша."
+        },
+        {
+          "type": "example",
+          "text": "показать идентификационные сведения и возможности диска",
           "command": "sudo hdparm -I /dev/sda",
-          "explanation": "Displays detailed identification info from the drive"
+          "explanation": "Показать идентификационные сведения и возможности диска."
         },
         {
           "type": "example",
-          "text": "enable write caching on a drive",
+          "text": "получить подробные параметры устройства через hdparm -I",
+          "command": "sudo hdparm -I /dev/sda",
+          "explanation": "Показать идентификационные сведения и возможности диска."
+        },
+        {
+          "type": "example",
+          "text": "включить кеширование записи на диске",
           "command": "sudo hdparm -W 1 /dev/sda",
-          "explanation": "Turns on the write cache for improved performance"
+          "explanation": "Включить кеширование записи на диске."
         },
         {
           "type": "example",
-          "text": "put a drive into standby mode",
+          "text": "разрешить дисковый write cache через hdparm",
+          "command": "sudo hdparm -W 1 /dev/sda",
+          "explanation": "Включить кеширование записи на диске."
+        },
+        {
+          "type": "example",
+          "text": "перевести накопитель в режим ожидания",
           "command": "sudo hdparm -y /dev/sda",
-          "explanation": "Sends the drive into low-power standby mode"
+          "explanation": "Перевести накопитель в режим ожидания."
         },
         {
           "type": "example",
-          "text": "check if a drive supports TRIM",
+          "text": "остановить вращение диска командой standby через hdparm",
+          "command": "sudo hdparm -y /dev/sda",
+          "explanation": "Перевести накопитель в режим ожидания."
+        },
+        {
+          "type": "example",
+          "text": "проверить упоминание поддержки TRIM в возможностях диска",
           "command": "sudo hdparm -I /dev/sda | grep TRIM",
-          "explanation": "Checks TRIM support for SSD maintenance"
+          "explanation": "Проверить упоминание поддержки TRIM в возможностях диска."
+        },
+        {
+          "type": "example",
+          "text": "вывести строки с TRIM из сведений hdparm об устройстве",
+          "command": "sudo hdparm -I /dev/sda | grep TRIM",
+          "explanation": "Проверить упоминание поддержки TRIM в возможностях диска."
         }
       ]
     },
     {
       "name": "smartctl",
       "synopsis": "smartctl [options] device",
-      "description": "Control and monitor SMART-enabled storage devices",
+      "description": "Контроль состояния накопителей с поддержкой SMART",
       "patterns": [
         {
           "type": "example",
-          "text": "check the health status of a drive",
+          "text": "показать итоговый статус здоровья диска по SMART",
           "command": "sudo smartctl -H /dev/sda",
-          "explanation": "Reports the overall SMART health assessment"
+          "explanation": "Показать итоговый статус здоровья диска по SMART."
         },
         {
           "type": "example",
-          "text": "show all SMART information for a drive",
+          "text": "проверить, проходит ли накопитель общую оценку SMART",
+          "command": "sudo smartctl -H /dev/sda",
+          "explanation": "Показать итоговый статус здоровья диска по SMART."
+        },
+        {
+          "type": "example",
+          "text": "вывести всю доступную SMART-информацию о диске",
           "command": "sudo smartctl -a /dev/sda",
-          "explanation": "Displays all SMART data including attributes and error logs"
+          "explanation": "Вывести всю доступную SMART-информацию о диске."
         },
         {
           "type": "example",
-          "text": "run a short self-test on a drive",
+          "text": "посмотреть атрибуты, журналы и состояние накопителя через smartctl",
+          "command": "sudo smartctl -a /dev/sda",
+          "explanation": "Вывести всю доступную SMART-информацию о диске."
+        },
+        {
+          "type": "example",
+          "text": "запустить короткую самопроверку диска SMART",
           "command": "sudo smartctl -t short /dev/sda",
-          "explanation": "Initiates a quick self-test that takes a few minutes"
+          "explanation": "Запустить короткую самопроверку диска SMART."
         },
         {
           "type": "example",
-          "text": "run a long self-test on a drive",
+          "text": "начать краткий внутренний тест накопителя",
+          "command": "sudo smartctl -t short /dev/sda",
+          "explanation": "Запустить короткую самопроверку диска SMART."
+        },
+        {
+          "type": "example",
+          "text": "запустить длительную самопроверку диска SMART",
           "command": "sudo smartctl -t long /dev/sda",
-          "explanation": "Starts a thorough self-test that may take hours"
+          "explanation": "Запустить длительную самопроверку диска SMART."
         },
         {
           "type": "example",
-          "text": "view the results of the last self-test",
+          "text": "начать расширенный внутренний тест накопителя",
+          "command": "sudo smartctl -t long /dev/sda",
+          "explanation": "Запустить длительную самопроверку диска SMART."
+        },
+        {
+          "type": "example",
+          "text": "показать журнал выполненных самопроверок диска",
           "command": "sudo smartctl -l selftest /dev/sda",
-          "explanation": "Shows the self-test log with results"
+          "explanation": "Показать журнал выполненных самопроверок диска."
+        },
+        {
+          "type": "example",
+          "text": "посмотреть результаты тестов SMART в логе selftest",
+          "command": "sudo smartctl -l selftest /dev/sda",
+          "explanation": "Показать журнал выполненных самопроверок диска."
         }
       ]
     },
     {
       "name": "mdadm",
       "synopsis": "mdadm [mode] [options] [device]",
-      "description": "Manage Linux software RAID arrays",
+      "description": "Управление программными RAID-массивами Linux",
       "patterns": [
         {
           "type": "example",
-          "text": "create a RAID 1 mirror array",
+          "text": "создать зеркальный RAID 1 из двух разделов",
           "command": "sudo mdadm --create /dev/md0 --level=1 --raid-devices=2 /dev/sdb1 /dev/sdc1",
-          "explanation": "Creates a mirrored RAID array from two partitions"
+          "explanation": "Создать зеркальный RAID 1 из двух разделов."
         },
         {
           "type": "example",
-          "text": "check the status of all RAID arrays",
+          "text": "собрать массив /dev/md0 с двумя копиями данных",
+          "command": "sudo mdadm --create /dev/md0 --level=1 --raid-devices=2 /dev/sdb1 /dev/sdc1",
+          "explanation": "Создать зеркальный RAID 1 из двух разделов."
+        },
+        {
+          "type": "example",
+          "text": "посмотреть состояние программных RAID-массивов",
           "command": "cat /proc/mdstat",
-          "explanation": "Shows the state and progress of all MD arrays"
+          "explanation": "Посмотреть состояние программных RAID-массивов."
         },
         {
           "type": "example",
-          "text": "show details of a RAID array",
+          "text": "вывести текущую сводку RAID из /proc/mdstat",
+          "command": "cat /proc/mdstat",
+          "explanation": "Посмотреть состояние программных RAID-массивов."
+        },
+        {
+          "type": "example",
+          "text": "показать подробное состояние массива /dev/md0",
           "command": "sudo mdadm --detail /dev/md0",
-          "explanation": "Displays configuration, state, and member disks"
+          "explanation": "Показать подробное состояние массива /dev/md0."
         },
         {
           "type": "example",
-          "text": "add a spare disk to a RAID array",
+          "text": "узнать параметры и участников выбранного RAID",
+          "command": "sudo mdadm --detail /dev/md0",
+          "explanation": "Показать подробное состояние массива /dev/md0."
+        },
+        {
+          "type": "example",
+          "text": "добавить раздел /dev/sdd1 в RAID-массив",
           "command": "sudo mdadm --add /dev/md0 /dev/sdd1",
-          "explanation": "Adds a hot spare or replacement disk to the array"
+          "explanation": "Добавить раздел /dev/sdd1 в RAID-массив."
         },
         {
           "type": "example",
-          "text": "remove a failed disk from a RAID array",
+          "text": "подключить дополнительный диск к существующему массиву md0",
+          "command": "sudo mdadm --add /dev/md0 /dev/sdd1",
+          "explanation": "Добавить раздел /dev/sdd1 в RAID-массив."
+        },
+        {
+          "type": "example",
+          "text": "удалить раздел /dev/sdb1 из состава RAID",
           "command": "sudo mdadm --remove /dev/md0 /dev/sdb1",
-          "explanation": "Removes a failed member from the array"
+          "explanation": "Удалить раздел /dev/sdb1 из состава RAID."
+        },
+        {
+          "type": "example",
+          "text": "отсоединить выбранный участник от массива /dev/md0",
+          "command": "sudo mdadm --remove /dev/md0 /dev/sdb1",
+          "explanation": "Удалить раздел /dev/sdb1 из состава RAID."
         }
       ]
     },
     {
       "name": "lvs",
       "synopsis": "lvs [options] [LogicalVolume...]",
-      "description": "Display information about logical volumes",
+      "description": "Просмотр логических томов LVM",
       "patterns": [
         {
           "type": "example",
-          "text": "list all logical volumes",
+          "text": "показать логические тома LVM",
           "command": "sudo lvs",
-          "explanation": "Shows all logical volumes with size and volume group"
+          "explanation": "Показать логические тома LVM."
         },
         {
           "type": "example",
-          "text": "show detailed logical volume information",
+          "text": "вывести краткий список созданных LV",
+          "command": "sudo lvs",
+          "explanation": "Показать логические тома LVM."
+        },
+        {
+          "type": "example",
+          "text": "показать все логические тома LVM вместе с физическими устройствами",
           "command": "sudo lvs -a -o +devices",
-          "explanation": "Displays all LVs including hidden ones with their physical devices"
+          "explanation": "Показать все логические тома LVM вместе с физическими устройствами."
         },
         {
           "type": "example",
-          "text": "show logical volumes in a specific volume group",
+          "text": "добавить сведения о дисках к расширенному списку LV",
+          "command": "sudo lvs -a -o +devices",
+          "explanation": "Показать все логические тома LVM вместе с физическими устройствами."
+        },
+        {
+          "type": "example",
+          "text": "вывести логические тома группы vg_data",
           "command": "sudo lvs vg_data",
-          "explanation": "Lists only the logical volumes in the vg_data group"
+          "explanation": "Вывести логические тома группы vg_data."
         },
         {
           "type": "example",
-          "text": "display LV attributes and segments",
+          "text": "ограничить список LVM одной группой томов",
+          "command": "sudo lvs vg_data",
+          "explanation": "Вывести логические тома группы vg_data."
+        },
+        {
+          "type": "example",
+          "text": "показать свойства логического тома и карту его сегментов",
           "command": "sudo lvdisplay --maps /dev/vg_data/lv_home",
-          "explanation": "Shows logical-volume properties and the mapping of logical extents to physical extents"
+          "explanation": "Показывает свойства логических томов и соответствие логических экстентов физическим."
+        },
+        {
+          "type": "example",
+          "text": "узнать соответствие логических и физических экстентов lv_home",
+          "command": "sudo lvdisplay --maps /dev/vg_data/lv_home",
+          "explanation": "Показывает свойства логических томов и соответствие логических экстентов физическим."
         }
       ]
     },
     {
       "name": "vgs",
       "synopsis": "vgs [options] [VolumeGroup...]",
-      "description": "Display information about volume groups",
+      "description": "Просмотр групп томов LVM",
       "patterns": [
         {
           "type": "example",
-          "text": "list all volume groups",
+          "text": "показать группы томов LVM",
           "command": "sudo vgs",
-          "explanation": "Shows all volume groups with free space and LV count"
+          "explanation": "Показать группы томов LVM."
         },
         {
           "type": "example",
-          "text": "show detailed volume group information",
+          "text": "вывести краткую сводку существующих VG",
+          "command": "sudo vgs",
+          "explanation": "Показать группы томов LVM."
+        },
+        {
+          "type": "example",
+          "text": "показать подробные сведения о группах томов",
           "command": "sudo vgdisplay",
-          "explanation": "Displays comprehensive details for all volume groups"
+          "explanation": "Показать подробные сведения о группах томов."
         },
         {
           "type": "example",
-          "text": "show free space in volume groups",
+          "text": "посмотреть расширенные параметры VG через vgdisplay",
+          "command": "sudo vgdisplay",
+          "explanation": "Показать подробные сведения о группах томов."
+        },
+        {
+          "type": "example",
+          "text": "показать размер и свободное место каждой группы LVM",
           "command": "sudo vgs -o vg_name,vg_size,vg_free",
-          "explanation": "Lists volume groups with their total and free space"
+          "explanation": "Показать размер и свободное место каждой группы LVM."
         },
         {
           "type": "example",
-          "text": "create a new volume group",
+          "text": "вывести имя, объём и доступную ёмкость групп томов",
+          "command": "sudo vgs -o vg_name,vg_size,vg_free",
+          "explanation": "Показать размер и свободное место каждой группы LVM."
+        },
+        {
+          "type": "example",
+          "text": "создать группу томов vg_data из двух разделов",
           "command": "sudo vgcreate vg_data /dev/sdb1 /dev/sdc1",
-          "explanation": "Creates a volume group spanning two physical volumes"
+          "explanation": "Создать группу томов vg_data из двух разделов."
+        },
+        {
+          "type": "example",
+          "text": "объединить /dev/sdb1 и /dev/sdc1 в новую VG",
+          "command": "sudo vgcreate vg_data /dev/sdb1 /dev/sdc1",
+          "explanation": "Создать группу томов vg_data из двух разделов."
         }
       ]
     },
     {
       "name": "pvs",
       "synopsis": "pvs [options] [PhysicalVolume...]",
-      "description": "Display information about physical volumes",
+      "description": "Просмотр физических томов LVM",
       "patterns": [
         {
           "type": "example",
-          "text": "list all physical volumes in LVM",
+          "text": "показать физические тома LVM",
           "command": "sudo pvs",
-          "explanation": "Shows all physical volumes with their volume group and free space"
+          "explanation": "Показать физические тома LVM."
         },
         {
           "type": "example",
-          "text": "show detailed physical volume information",
+          "text": "вывести краткую сводку устройств PV",
+          "command": "sudo pvs",
+          "explanation": "Показать физические тома LVM."
+        },
+        {
+          "type": "example",
+          "text": "показать подробные свойства физических томов",
           "command": "sudo pvdisplay",
-          "explanation": "Displays comprehensive details for all physical volumes"
+          "explanation": "Показать подробные свойства физических томов."
         },
         {
           "type": "example",
-          "text": "initialize a disk partition for LVM",
+          "text": "получить расширенную информацию LVM через pvdisplay",
+          "command": "sudo pvdisplay",
+          "explanation": "Показать подробные свойства физических томов."
+        },
+        {
+          "type": "example",
+          "text": "инициализировать раздел как физический том LVM",
           "command": "sudo pvcreate /dev/sdb1",
-          "explanation": "Creates a physical volume on the partition for use with LVM"
+          "explanation": "Инициализировать раздел как физический том LVM."
         },
         {
           "type": "example",
-          "text": "check the allocation map of a physical volume",
+          "text": "подготовить /dev/sdb1 для включения в группу томов",
+          "command": "sudo pvcreate /dev/sdb1",
+          "explanation": "Инициализировать раздел как физический том LVM."
+        },
+        {
+          "type": "example",
+          "text": "показать карту размещения данных на физическом томе",
           "command": "sudo pvdisplay --maps /dev/sdb1",
-          "explanation": "Shows which extents are allocated to which logical volumes"
+          "explanation": "Показать карту размещения данных на физическом томе."
+        },
+        {
+          "type": "example",
+          "text": "посмотреть соответствие физических и логических экстентов /dev/sdb1",
+          "command": "sudo pvdisplay --maps /dev/sdb1",
+          "explanation": "Показать карту размещения данных на физическом томе."
         }
       ]
     },
     {
       "name": "lvcreate",
       "synopsis": "lvcreate [options] VolumeGroup",
-      "description": "Create a logical volume in a volume group",
+      "description": "Создание логического тома в группе LVM",
       "patterns": [
         {
           "type": "example",
-          "text": "create a logical volume with a specific size",
+          "text": "создать логический том lv_data размером 50G",
           "command": "sudo lvcreate -L 50G -n lv_data vg_data",
-          "explanation": "Creates a 50GB logical volume named lv_data"
+          "explanation": "Создать логический том lv_data размером 50G."
         },
         {
           "type": "example",
-          "text": "create a logical volume using all free space",
+          "text": "выделить пятьдесят гибибайт в группе vg_data под новый LV",
+          "command": "sudo lvcreate -L 50G -n lv_data vg_data",
+          "explanation": "Создать логический том lv_data размером 50G."
+        },
+        {
+          "type": "example",
+          "text": "создать логический том на всё свободное место группы",
           "command": "sudo lvcreate -l 100%FREE -n lv_data vg_data",
-          "explanation": "Uses all remaining space in the volume group"
+          "explanation": "Создать логический том на всё свободное место группы."
         },
         {
           "type": "example",
-          "text": "create a thin-provisioned logical volume",
+          "text": "отдать все свободные экстенты vg_data новому lv_data",
+          "command": "sudo lvcreate -l 100%FREE -n lv_data vg_data",
+          "explanation": "Создать логический том на всё свободное место группы."
+        },
+        {
+          "type": "example",
+          "text": "создать тонкий логический том виртуальным размером 100G",
           "command": "sudo lvcreate -V 100G --thinpool pool0 -n lv_thin vg_data",
-          "explanation": "Creates a thin LV that can grow up to 100GB on demand"
+          "explanation": "Создать тонкий логический том виртуальным размером 100G."
         },
         {
           "type": "example",
-          "text": "create a snapshot of a logical volume",
+          "text": "выделить thin-volume lv_thin в пуле pool0 группы vg_data",
+          "command": "sudo lvcreate -V 100G --thinpool pool0 -n lv_thin vg_data",
+          "explanation": "Создать тонкий логический том виртуальным размером 100G."
+        },
+        {
+          "type": "example",
+          "text": "создать снимок логического тома с областью изменений 10G",
           "command": "sudo lvcreate -s -L 10G -n lv_data_snap /dev/vg_data/lv_data",
-          "explanation": "Creates a 10GB snapshot of the specified logical volume"
+          "explanation": "Создать снимок логического тома с областью изменений 10G."
         },
         {
           "type": "example",
-          "text": "resize a logical volume and its filesystem",
+          "text": "сделать LVM-снимок lv_data с именем lv_data_snap",
+          "command": "sudo lvcreate -s -L 10G -n lv_data_snap /dev/vg_data/lv_data",
+          "explanation": "Создать снимок логического тома с областью изменений 10G."
+        },
+        {
+          "type": "example",
+          "text": "увеличить логический том и файловую систему на 20G",
           "command": "sudo lvresize -r -L +20G /dev/vg_data/lv_data",
-          "explanation": "Extends the logical volume by 20GB and resizes the filesystem"
+          "explanation": "Увеличить логический том и файловую систему на 20G."
+        },
+        {
+          "type": "example",
+          "text": "расширить lv_data на двадцать гибибайт с автоматическим изменением файловой системы",
+          "command": "sudo lvresize -r -L +20G /dev/vg_data/lv_data",
+          "explanation": "Увеличить логический том и файловую систему на 20G."
         }
       ]
     },
     {
       "name": "ncdu",
       "synopsis": "ncdu [options] [directory]",
-      "description": "NCurses disk usage analyzer",
+      "description": "Интерактивный анализ занятого места на диске",
       "patterns": [
         {
           "type": "example",
-          "text": "inspect root filesystem disk usage without crossing mounts or scanning /mnt",
+          "text": "интерактивно проверить место на корневой файловой системе, исключив /mnt",
           "command": "ncdu -x --exclude /mnt /",
-          "explanation": "Scans only the root filesystem and excludes /mnt before opening the interactive browser"
+          "explanation": "Анализирует только корневую файловую систему, исключая /mnt, затем открывает интерактивный просмотр."
         },
         {
           "type": "example",
-          "text": "analyze disk usage of the home directory",
+          "text": "посмотреть размеры системных каталогов без перехода на другие файловые системы",
+          "command": "ncdu -x --exclude /mnt /",
+          "explanation": "Анализирует только корневую файловую систему, исключая /mnt, затем открывает интерактивный просмотр."
+        },
+        {
+          "type": "example",
+          "text": "посмотреть расход места в домашней папке через ncdu",
           "command": "ncdu ~",
-          "explanation": "Scans your home directory for the largest files and folders"
+          "explanation": "Посмотреть расход места в домашней папке через ncdu."
         },
         {
           "type": "example",
-          "text": "scan excluding certain directories",
+          "text": "интерактивно найти крупные каталоги в своём домашнем дереве",
+          "command": "ncdu ~",
+          "explanation": "Посмотреть расход места в домашней папке через ncdu."
+        },
+        {
+          "type": "example",
+          "text": "проверить занятое место в корневой файловой системе без /mnt и /proc",
           "command": "ncdu -x --exclude /mnt --exclude /proc /",
-          "explanation": "Scans only the root filesystem while excluding /mnt and /proc"
+          "explanation": "Анализирует только корневую файловую систему, исключая /mnt и /proc."
         },
         {
           "type": "example",
-          "text": "export disk usage data to a file for later viewing",
+          "text": "исключить /mnt, /proc и другие файловые системы из анализа ncdu",
+          "command": "ncdu -x --exclude /mnt --exclude /proc /",
+          "explanation": "Анализирует только корневую файловую систему, исключая /mnt и /proc."
+        },
+        {
+          "type": "example",
+          "text": "сохранить отчёт ncdu по каталогу /var в файл",
           "command": "ncdu -o report.json /var",
-          "explanation": "Saves the scan results to a JSON file"
+          "explanation": "Сохранить отчёт ncdu по каталогу /var в файл."
         },
         {
           "type": "example",
-          "text": "view a previously saved ncdu report",
+          "text": "экспортировать результаты анализа места для последующего просмотра",
+          "command": "ncdu -o report.json /var",
+          "explanation": "Сохранить отчёт ncdu по каталогу /var в файл."
+        },
+        {
+          "type": "example",
+          "text": "открыть ранее сохранённый отчёт ncdu",
           "command": "ncdu -f report.json",
-          "explanation": "Opens a saved report without rescanning"
+          "explanation": "Открыть ранее сохранённый отчёт ncdu."
+        },
+        {
+          "type": "example",
+          "text": "просмотреть использование диска по данным report.json без нового обхода",
+          "command": "ncdu -f report.json",
+          "explanation": "Открыть ранее сохранённый отчёт ncdu."
         }
       ]
     }

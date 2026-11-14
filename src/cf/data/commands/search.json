@@ -4,446 +4,809 @@
     {
       "name": "find",
       "synopsis": "find [path...] [expression]",
-      "description": "Search for files in a directory hierarchy",
+      "description": "Поиск файлов в дереве каталогов",
       "patterns": [
         {
           "type": "example",
-          "text": "find all files with a specific extension",
+          "text": "найти Python-файлы в текущей папке и всех подпапках",
           "command": "find . -type f -name '*.py'",
-          "explanation": "Recursively finds all Python files starting from the current directory"
+          "explanation": "Найти Python-файлы в текущей папке и всех подпапках."
         },
         {
           "type": "example",
-          "text": "find files modified in the last 24 hours",
+          "text": "показать обычные файлы с расширением .py в дереве текущего каталога",
+          "command": "find . -type f -name '*.py'",
+          "explanation": "Найти Python-файлы в текущей папке и всех подпапках."
+        },
+        {
+          "type": "example",
+          "text": "найти в /var/log элементы, изменённые менее суток назад",
           "command": "find /var/log -type f -mtime -1",
-          "explanation": "Finds files under /var/log that were modified within the last day"
+          "explanation": "Найти в /var/log элементы, изменённые менее суток назад."
         },
         {
           "type": "example",
-          "text": "find and delete all temporary files",
+          "text": "показать недавние изменения в каталоге системных журналов за последние 24 часа",
+          "command": "find /var/log -type f -mtime -1",
+          "explanation": "Найти в /var/log элементы, изменённые менее суток назад."
+        },
+        {
+          "type": "example",
+          "text": "найти и удалить временные файлы с расширением tmp",
           "command": "find . -type f -name '*.tmp' -delete",
-          "explanation": "Finds and removes all .tmp files recursively",
+          "explanation": "Найти и удалить временные файлы с расширением tmp.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "find files larger than 100 MiB on the root filesystem while excluding /mnt",
+          "text": "стереть обычные .tmp-файлы в текущем каталоге и его подпапках",
+          "command": "find . -type f -name '*.tmp' -delete",
+          "explanation": "Найти и удалить временные файлы с расширением tmp.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "найти файлы больше ста мебибайт на корневой файловой системе без /mnt",
           "command": "find / -xdev -path /mnt -prune -o -type f -size +100M -print",
-          "explanation": "Finds regular files larger than 100 MiB without crossing filesystem boundaries or entering /mnt"
+          "explanation": "Находит обычные файлы больше 100 МиБ без перехода на другие файловые системы и без входа в /mnt."
         },
         {
           "type": "example",
-          "text": "find empty directories",
+          "text": "показать файлы крупнее 100 МиБ, не переходя на другие файловые системы",
+          "command": "find / -xdev -path /mnt -prune -o -type f -size +100M -print",
+          "explanation": "Находит обычные файлы больше 100 МиБ без перехода на другие файловые системы и без входа в /mnt."
+        },
+        {
+          "type": "example",
+          "text": "найти пустые папки в текущем каталоге и ниже",
           "command": "find . -type d -empty",
-          "explanation": "Lists all directories that contain no files or subdirectories"
+          "explanation": "Найти пустые папки в текущем каталоге и ниже."
         },
         {
           "type": "example",
-          "text": "find files and execute a command on each one",
+          "text": "показать каталоги без файлов и подпапок начиная с текущего",
+          "command": "find . -type d -empty",
+          "explanation": "Найти пустые папки в текущем каталоге и ниже."
+        },
+        {
+          "type": "example",
+          "text": "найти журналы с окончанием log и сжать каждый через gzip",
           "command": "find . -type f -name '*.log' -exec gzip -- {} \\;",
-          "explanation": "Runs gzip once for each regular .log file; the escaped semicolon terminates -exec"
+          "explanation": "Запускает gzip для каждого обычного .log-файла; экранированная точка с запятой завершает -exec."
         },
         {
           "type": "example",
-          "text": "search only the current directory without subfolders",
+          "text": "упаковать найденные файлы *.log в текущей папке и подпапках",
+          "command": "find . -type f -name '*.log' -exec gzip -- {} \\;",
+          "explanation": "Запускает gzip для каждого обычного .log-файла; экранированная точка с запятой завершает -exec."
+        },
+        {
+          "type": "example",
+          "text": "показать только обычные файлы в текущей папке",
           "command": "find . -maxdepth 1 -type f",
-          "explanation": "-maxdepth 1 limits recursion to the starting directory"
+          "explanation": "Показать только обычные файлы в текущей папке."
         },
         {
           "type": "example",
-          "text": "skip heavy directories like node_modules while finding source files",
+          "text": "найти файлы здесь, не заходя в подпапки",
+          "command": "find . -maxdepth 1 -type f",
+          "explanation": "Показать только обычные файлы в текущей папке."
+        },
+        {
+          "type": "example",
+          "text": "найти имена с расширением ts, не заходя в node_modules",
           "command": "find . -path '*/node_modules' -prune -o -type f -name '*.ts' -print",
-          "explanation": "-prune stops descending into matched paths; -o chains the real predicate"
+          "explanation": "Найти имена с расширением ts, не заходя в node_modules."
         },
         {
           "type": "example",
-          "text": "run a command on many files with one process (faster than one exec per file)",
+          "text": "показать пути *.ts в текущем дереве с исключением каталогов зависимостей",
+          "command": "find . -path '*/node_modules' -prune -o -type f -name '*.ts' -print",
+          "explanation": "Найти имена с расширением ts, не заходя в node_modules."
+        },
+        {
+          "type": "example",
+          "text": "найти изображения jpg и передать их jpegoptim группами",
           "command": "find . -type f -name '*.jpg' -exec jpegoptim {} +",
-          "explanation": "The + form batches paths like xargs for efficiency"
+          "explanation": "Найти изображения jpg и передать их jpegoptim группами."
+        },
+        {
+          "type": "example",
+          "text": "оптимизировать найденные JPEG-файлы с пакетной передачей аргументов",
+          "command": "find . -type f -name '*.jpg' -exec jpegoptim {} +",
+          "explanation": "Найти изображения jpg и передать их jpegoptim группами."
         }
       ]
     },
     {
       "name": "locate",
       "synopsis": "locate [options] pattern",
-      "description": "Find files by name using a pre-built database",
+      "description": "Поиск файлов по имени в готовом индексе",
       "patterns": [
         {
           "type": "example",
-          "text": "quickly find a file by name anywhere on the system",
+          "text": "быстро найти myconfig.yaml по базе имён файлов",
           "command": "locate myconfig.yaml",
-          "explanation": "Searches the file database for paths matching 'myconfig.yaml'"
+          "explanation": "Быстро найти myconfig.yaml по базе имён файлов."
         },
         {
           "type": "example",
-          "text": "find files matching a pattern ignoring case",
+          "text": "посмотреть, где индекс locate знает путь к нужной конфигурации",
+          "command": "locate myconfig.yaml",
+          "explanation": "Быстро найти myconfig.yaml по базе имён файлов."
+        },
+        {
+          "type": "example",
+          "text": "найти пути с readme без учёта регистра через locate",
           "command": "locate -i readme",
-          "explanation": "Case-insensitive search for any file with 'readme' in its path"
+          "explanation": "Найти пути с readme без учёта регистра через locate."
         },
         {
           "type": "example",
-          "text": "update the file database before searching",
+          "text": "поискать README в индексе файлов независимо от больших и маленьких букв",
+          "command": "locate -i readme",
+          "explanation": "Найти пути с readme без учёта регистра через locate."
+        },
+        {
+          "type": "example",
+          "text": "обновить индекс файлов и затем найти report.pdf",
           "command": "sudo updatedb && locate report.pdf",
-          "explanation": "Refreshes the database then searches for report.pdf"
+          "explanation": "Обновить индекс файлов и затем найти report.pdf."
         },
         {
           "type": "example",
-          "text": "limit the number of results returned",
+          "text": "перестроить базу locate перед поиском PDF-отчёта",
+          "command": "sudo updatedb && locate report.pdf",
+          "explanation": "Обновить индекс файлов и затем найти report.pdf."
+        },
+        {
+          "type": "example",
+          "text": "вывести не более десяти путей к файлам conf из индекса",
           "command": "locate -n 10 '*.conf'",
-          "explanation": "Returns at most 10 matching results"
+          "explanation": "Вывести не более десяти путей к файлам conf из индекса."
         },
         {
           "type": "example",
-          "text": "count how many files match a pattern",
+          "text": "ограничить десятью результатами поиск *.conf через locate",
+          "command": "locate -n 10 '*.conf'",
+          "explanation": "Вывести не более десяти путей к файлам conf из индекса."
+        },
+        {
+          "type": "example",
+          "text": "посчитать индексированные пути с расширением jpg",
           "command": "locate -c '*.jpg'",
-          "explanation": "Prints the number of matching entries instead of listing them"
+          "explanation": "Посчитать индексированные пути с расширением jpg."
+        },
+        {
+          "type": "example",
+          "text": "узнать число совпадений *.jpg в базе locate",
+          "command": "locate -c '*.jpg'",
+          "explanation": "Посчитать индексированные пути с расширением jpg."
         }
       ]
     },
     {
       "name": "which",
       "synopsis": "which [options] command",
-      "description": "Locate the executable for a command in your PATH",
+      "description": "Поиск исполняемого файла в PATH",
       "patterns": [
         {
           "type": "example",
-          "text": "find out where a command is installed",
+          "text": "узнать, откуда будет запускаться python3",
           "command": "which python3",
-          "explanation": "Shows the full path of the python3 executable"
+          "explanation": "Узнать, откуда будет запускаться python3."
         },
         {
           "type": "example",
-          "text": "check if a command exists on the system",
+          "text": "показать путь к исполняемому файлу python3 из PATH",
+          "command": "which python3",
+          "explanation": "Узнать, откуда будет запускаться python3."
+        },
+        {
+          "type": "example",
+          "text": "проверить наличие docker в пути поиска команд",
           "command": "which docker && echo 'Docker is installed'",
-          "explanation": "Tests whether docker is available in PATH"
+          "explanation": "Проверить наличие docker в пути поиска команд."
         },
         {
           "type": "example",
-          "text": "find all locations of a command in PATH",
+          "text": "найти установленный Docker и вывести подтверждение при успехе",
+          "command": "which docker && echo 'Docker is installed'",
+          "explanation": "Проверить наличие docker в пути поиска команд."
+        },
+        {
+          "type": "example",
+          "text": "показать все найденные варианты python в PATH",
           "command": "which -a python",
-          "explanation": "Lists every matching executable found in all PATH directories"
+          "explanation": "Показать все найденные варианты python в PATH."
         },
         {
           "type": "example",
-          "text": "find which installation of a tool is selected by PATH",
+          "text": "перечислить пути ко всем исполняемым файлам python в каталогах поиска",
+          "command": "which -a python",
+          "explanation": "Показать все найденные варианты python в PATH."
+        },
+        {
+          "type": "example",
+          "text": "узнать путь к выбранному исполняемому файлу node",
           "command": "which node",
-          "explanation": "Shows the path to confirm you are using the intended installation"
+          "explanation": "Узнать путь к выбранному исполняемому файлу node."
+        },
+        {
+          "type": "example",
+          "text": "проверить, какой установленный Node.js найдётся через PATH",
+          "command": "which node",
+          "explanation": "Узнать путь к выбранному исполняемому файлу node."
         }
       ]
     },
     {
       "name": "whereis",
       "synopsis": "whereis [options] command",
-      "description": "Locate the binary, source, and manual page for a command",
+      "description": "Поиск исполняемого файла, исходников и страницы руководства",
       "patterns": [
         {
           "type": "example",
-          "text": "find the binary, source, and man page for a command",
+          "text": "найти программу gcc, её исходники и страницы руководства",
           "command": "whereis gcc",
-          "explanation": "Shows the paths to the gcc binary, source, and man page if available"
+          "explanation": "Найти программу gcc, её исходники и страницы руководства."
         },
         {
           "type": "example",
-          "text": "find only the binary location of a command",
+          "text": "показать известные расположения компонентов компилятора gcc",
+          "command": "whereis gcc",
+          "explanation": "Найти программу gcc, её исходники и страницы руководства."
+        },
+        {
+          "type": "example",
+          "text": "показать только расположение исполняемого файла ls",
           "command": "whereis -b ls",
-          "explanation": "Restricts output to just the binary path"
+          "explanation": "Показать только расположение исполняемого файла ls."
         },
         {
           "type": "example",
-          "text": "find only the man page location",
+          "text": "найти двоичный файл команды ls без документации",
+          "command": "whereis -b ls",
+          "explanation": "Показать только расположение исполняемого файла ls."
+        },
+        {
+          "type": "example",
+          "text": "найти страницу руководства для bash",
           "command": "whereis -m bash",
-          "explanation": "Shows only where the manual pages for bash are located"
+          "explanation": "Найти страницу руководства для bash."
         },
         {
           "type": "example",
-          "text": "find all known paths for a program",
+          "text": "показать путь к man-документации оболочки bash",
+          "command": "whereis -m bash",
+          "explanation": "Найти страницу руководства для bash."
+        },
+        {
+          "type": "example",
+          "text": "показать известные системные пути для python",
           "command": "whereis python",
-          "explanation": "Lists binary, source, and manual page paths for python"
+          "explanation": "Показать известные системные пути для python."
+        },
+        {
+          "type": "example",
+          "text": "найти установленные компоненты и документацию Python через whereis",
+          "command": "whereis python",
+          "explanation": "Показать известные системные пути для python."
         }
       ]
     },
     {
       "name": "whatis",
       "synopsis": "whatis command",
-      "description": "Display one-line manual page descriptions",
+      "description": "Просмотр краткого описания команды",
       "patterns": [
         {
           "type": "example",
-          "text": "get a quick description of what a command does",
+          "text": "получить короткое описание команды curl",
           "command": "whatis curl",
-          "explanation": "Shows the brief description from curl's man page"
+          "explanation": "Получить короткое описание команды curl."
         },
         {
           "type": "example",
-          "text": "look up several commands at once",
+          "text": "узнать назначение curl по базе справочных страниц",
+          "command": "whatis curl",
+          "explanation": "Получить короткое описание команды curl."
+        },
+        {
+          "type": "example",
+          "text": "показать краткие описания ls, cat и grep",
           "command": "whatis ls cat grep",
-          "explanation": "Shows one-line descriptions for ls, cat, and grep"
+          "explanation": "Показать краткие описания ls, cat и grep."
         },
         {
           "type": "example",
-          "text": "check what a command does before using it",
+          "text": "посмотреть назначение нескольких команд за один запрос",
+          "command": "whatis ls cat grep",
+          "explanation": "Показать краткие описания ls, cat и grep."
+        },
+        {
+          "type": "example",
+          "text": "узнать, для чего нужна команда rsync",
           "command": "whatis rsync",
-          "explanation": "Displays a brief summary of rsync from the manual database"
+          "explanation": "Узнать, для чего нужна команда rsync."
         },
         {
           "type": "example",
-          "text": "search for a description using a wildcard pattern",
+          "text": "прочитать однострочную справку о rsync перед использованием",
+          "command": "whatis rsync",
+          "explanation": "Узнать, для чего нужна команда rsync."
+        },
+        {
+          "type": "example",
+          "text": "найти краткие описания команд с именами, начинающимися на git",
           "command": "whatis -w 'git*'",
-          "explanation": "Shows descriptions for all commands matching the git wildcard"
+          "explanation": "Найти краткие описания команд с именами, начинающимися на git."
+        },
+        {
+          "type": "example",
+          "text": "поискать записи whatis по маске git*",
+          "command": "whatis -w 'git*'",
+          "explanation": "Найти краткие описания команд с именами, начинающимися на git."
         }
       ]
     },
     {
       "name": "apropos",
       "synopsis": "apropos [options] keyword",
-      "description": "Search the manual page names and descriptions for a keyword",
+      "description": "Поиск по названиям и описаниям страниц руководства",
       "patterns": [
         {
           "type": "example",
-          "text": "find commands related to a topic",
+          "text": "найти справочные команды, связанные со сжатием",
           "command": "apropos compress",
-          "explanation": "Lists all man pages whose descriptions mention 'compress'"
+          "explanation": "Найти справочные команды, связанные со сжатием."
         },
         {
           "type": "example",
-          "text": "search for commands that deal with user accounts",
+          "text": "поискать compress в названиях и описаниях man-страниц",
+          "command": "apropos compress",
+          "explanation": "Найти справочные команды, связанные со сжатием."
+        },
+        {
+          "type": "example",
+          "text": "найти команды по теме учётных записей пользователей",
           "command": "apropos 'user account'",
-          "explanation": "Finds commands related to user account management"
+          "explanation": "Найти команды по теме учётных записей пользователей."
         },
         {
           "type": "example",
-          "text": "find all commands related to network",
+          "text": "поискать выражение user account в справочной базе",
+          "command": "apropos 'user account'",
+          "explanation": "Найти команды по теме учётных записей пользователей."
+        },
+        {
+          "type": "example",
+          "text": "показать справочные команды, связанные с сетью",
           "command": "apropos network",
-          "explanation": "Lists man pages mentioning 'network' in name or description"
+          "explanation": "Показать справочные команды, связанные с сетью."
         },
         {
           "type": "example",
-          "text": "search for a command when you forgot its name",
+          "text": "найти упоминания network в названиях и кратких описаниях руководств",
+          "command": "apropos network",
+          "explanation": "Показать справочные команды, связанные с сетью."
+        },
+        {
+          "type": "example",
+          "text": "найти команду для работы с использованием диска по описанию",
           "command": "apropos 'disk usage'",
-          "explanation": "Helps rediscover commands like du or df by searching descriptions"
+          "explanation": "Найти команду для работы с использованием диска по описанию."
         },
         {
           "type": "example",
-          "text": "use a regex to search man page descriptions",
+          "text": "поискать disk usage в базе руководств, если название утилиты забыто",
+          "command": "apropos 'disk usage'",
+          "explanation": "Найти команду для работы с использованием диска по описанию."
+        },
+        {
+          "type": "example",
+          "text": "найти справочные записи по регулярному выражению ^copy",
           "command": "apropos -r '^copy'",
-          "explanation": "Searches using a regular expression to find commands starting with 'copy'"
+          "explanation": "Найти справочные записи по регулярному выражению ^copy."
+        },
+        {
+          "type": "example",
+          "text": "поискать названия и описания руководств, начинающиеся с copy",
+          "command": "apropos -r '^copy'",
+          "explanation": "Найти справочные записи по регулярному выражению ^copy."
         }
       ]
     },
     {
       "name": "type",
       "synopsis": "type [options] name",
-      "description": "Describe how a command name would be interpreted by the shell",
+      "description": "Определение способа интерпретации имени команды оболочкой",
       "patterns": [
         {
           "type": "example",
-          "text": "check if a command is a builtin, alias, or external program",
+          "text": "узнать, является ли ls алиасом, функцией или внешней программой",
           "command": "type ls",
-          "explanation": "Tells you whether ls is an alias, shell builtin, or file on disk"
+          "explanation": "Узнать, является ли ls алиасом, функцией или внешней программой."
         },
         {
           "type": "example",
-          "text": "see all definitions for a command name",
+          "text": "посмотреть, как оболочка интерпретирует команду ls",
+          "command": "type ls",
+          "explanation": "Узнать, является ли ls алиасом, функцией или внешней программой."
+        },
+        {
+          "type": "example",
+          "text": "показать все определения echo в оболочке и PATH",
           "command": "type -a echo",
-          "explanation": "Lists every interpretation of 'echo' including builtins and binaries"
+          "explanation": "Показать все определения echo в оболочке и PATH."
         },
         {
           "type": "example",
-          "text": "check if a name is a shell function",
+          "text": "перечислить встроенные и внешние варианты команды echo",
+          "command": "type -a echo",
+          "explanation": "Показать все определения echo в оболочке и PATH."
+        },
+        {
+          "type": "example",
+          "text": "проверить определение shell-функции my_function",
           "command": "type my_function",
-          "explanation": "Shows whether my_function is defined as a shell function and its body"
+          "explanation": "Проверить определение shell-функции my_function."
         },
         {
           "type": "example",
-          "text": "get just the type classification of a command",
+          "text": "узнать, что оболочка понимает под именем my_function",
+          "command": "type my_function",
+          "explanation": "Проверить определение shell-функции my_function."
+        },
+        {
+          "type": "example",
+          "text": "вывести только тип команды cd",
           "command": "type -t cd",
-          "explanation": "Outputs a single word like 'builtin', 'alias', 'function', or 'file'"
+          "explanation": "Вывести только тип команды cd."
+        },
+        {
+          "type": "example",
+          "text": "получить короткую классификацию cd как команды оболочки",
+          "command": "type -t cd",
+          "explanation": "Вывести только тип команды cd."
         }
       ]
     },
     {
       "name": "command",
       "synopsis": "command [options] command_name [args]",
-      "description": "Run a command bypassing shell functions and aliases",
+      "description": "Запуск команды в обход функций и псевдонимов оболочки",
       "patterns": [
         {
           "type": "example",
-          "text": "run the real command instead of an alias or function",
+          "text": "запустить ls, обходя одноимённую shell-функцию",
           "command": "command ls",
-          "explanation": "Executes the actual ls binary, ignoring any alias or function named ls"
+          "explanation": "Запустить ls, обходя одноимённую shell-функцию."
         },
         {
           "type": "example",
-          "text": "check if a command exists in a script",
+          "text": "вызвать команду ls через встроенный command",
+          "command": "command ls",
+          "explanation": "Запустить ls, обходя одноимённую shell-функцию."
+        },
+        {
+          "type": "example",
+          "text": "проверить доступность git в скрипте без вывода его пути",
           "command": "command -v git > /dev/null && echo 'git is available'",
-          "explanation": "Tests whether git is available without running it"
+          "explanation": "Проверить доступность git в скрипте без вывода его пути."
         },
         {
           "type": "example",
-          "text": "get the path of a command without running it",
+          "text": "напечатать подтверждение, только если оболочка находит git",
+          "command": "command -v git > /dev/null && echo 'git is available'",
+          "explanation": "Проверить доступность git в скрипте без вывода его пути."
+        },
+        {
+          "type": "example",
+          "text": "узнать, как оболочка разрешает имя python3, не запуская его",
           "command": "command -v python3",
-          "explanation": "Prints the path or alias definition without executing anything"
+          "explanation": "Узнать, как оболочка разрешает имя python3, не запуская его."
         },
         {
           "type": "example",
-          "text": "bypass a function override in a shell script",
+          "text": "получить расположение команды python3 через command -v",
+          "command": "command -v python3",
+          "explanation": "Узнать, как оболочка разрешает имя python3, не запуская его."
+        },
+        {
+          "type": "example",
+          "text": "вызвать echo в обход пользовательской функции",
           "command": "command echo 'using real echo'",
-          "explanation": "Ensures the builtin or binary echo is used even if a function named echo exists"
+          "explanation": "Вызвать echo в обход пользовательской функции."
+        },
+        {
+          "type": "example",
+          "text": "напечатать строку настоящей командой echo при наличии переопределения",
+          "command": "command echo 'using real echo'",
+          "explanation": "Вызвать echo в обход пользовательской функции."
         }
       ]
     },
     {
       "name": "fd",
       "synopsis": "fd [options] [pattern] [path...]",
-      "description": "A fast and user-friendly alternative to find",
+      "description": "Быстрый поиск файлов утилитой fd",
       "patterns": [
         {
           "type": "example",
-          "text": "find files matching a pattern with a simpler syntax than find",
+          "text": "найти имена, совпадающие с config, в каталоге src через fd",
           "command": "fd -t f 'config' src/",
-          "explanation": "Finds all files and directories containing 'config' in their name under src/"
+          "explanation": "Найти имена, совпадающие с config, в каталоге src через fd."
         },
         {
           "type": "example",
-          "text": "find only files with a specific extension",
+          "text": "поискать конфигурационные имена в дереве исходников с помощью fd",
+          "command": "fd -t f 'config' src/",
+          "explanation": "Найти имена, совпадающие с config, в каталоге src через fd."
+        },
+        {
+          "type": "example",
+          "text": "найти элементы с расширением json через fd",
           "command": "fd -t f -e json",
-          "explanation": "Finds all JSON files recursively from the current directory"
+          "explanation": "Найти элементы с расширением json через fd."
         },
         {
           "type": "example",
-          "text": "find hidden dotenv files even when ignore rules exclude them",
+          "text": "вывести пути к JSON-файлам стандартным поиском fd",
+          "command": "fd -t f -e json",
+          "explanation": "Найти элементы с расширением json через fd."
+        },
+        {
+          "type": "example",
+          "text": "найти скрытые .env-файлы, включая исключённые правилами ignore",
           "command": "fd -H -I -t f '^\\.env$'",
-          "explanation": "Includes hidden and ignored entries, restricts results to files and matches the exact .env name"
+          "explanation": "Включает скрытые и игнорируемые записи, выбирает только файлы и точное имя .env."
         },
         {
           "type": "example",
-          "text": "find files and run a command on each one",
+          "text": "поискать dotenv-файлы с точным именем .env во всех папках",
+          "command": "fd -H -I -t f '^\\.env$'",
+          "explanation": "Включает скрытые и игнорируемые записи, выбирает только файлы и точное имя .env."
+        },
+        {
+          "type": "example",
+          "text": "найти Python-файлы и запустить black для каждого",
           "command": "fd -t f -e py -x black {}",
-          "explanation": "Finds all Python files and runs the black formatter on each"
+          "explanation": "Найти Python-файлы и запустить black для каждого."
         },
         {
           "type": "example",
-          "text": "find files excluding certain directories",
+          "text": "отформатировать найденные файлы py через fd и black",
+          "command": "fd -t f -e py -x black {}",
+          "explanation": "Найти Python-файлы и запустить black для каждого."
+        },
+        {
+          "type": "example",
+          "text": "найти имена с test, исключив node_modules и .git",
           "command": "fd -t f -E node_modules -E .git 'test'",
-          "explanation": "Searches for files matching 'test' while excluding node_modules and .git"
+          "explanation": "Найти имена с test, исключив node_modules и .git."
+        },
+        {
+          "type": "example",
+          "text": "поискать тестовые пути без обхода зависимостей и служебной папки Git",
+          "command": "fd -t f -E node_modules -E .git 'test'",
+          "explanation": "Найти имена с test, исключив node_modules и .git."
         }
       ]
     },
     {
       "name": "rg",
       "synopsis": "rg [options] pattern [path...]",
-      "description": "Ripgrep - recursively search file contents using regex, very fast",
+      "description": "Быстрый рекурсивный поиск текста утилитой ripgrep",
       "patterns": [
         {
           "type": "example",
-          "text": "search for a string across all files in a project",
+          "text": "найти пометки TODO в исходниках проекта",
           "command": "rg 'TODO' src/",
-          "explanation": "Searches all files under src/ for the string 'TODO', respecting .gitignore"
+          "explanation": "Найти пометки TODO в исходниках проекта."
         },
         {
           "type": "example",
-          "text": "search only in files of a specific type",
+          "text": "показать строки с TODO в папке src",
+          "command": "rg 'TODO' src/",
+          "explanation": "Найти пометки TODO в исходниках проекта."
+        },
+        {
+          "type": "example",
+          "text": "найти import requests только в Python-файлах",
           "command": "rg -t py 'import requests'",
-          "explanation": "Restricts the search to Python files only"
+          "explanation": "Найти import requests только в Python-файлах."
         },
         {
           "type": "example",
-          "text": "show context lines around each match",
+          "text": "ограничить поиск импорта requests файлами типа py через ripgrep",
+          "command": "rg -t py 'import requests'",
+          "explanation": "Найти import requests только в Python-файлах."
+        },
+        {
+          "type": "example",
+          "text": "найти error в журналах и показать по три строки контекста",
           "command": "rg -C 3 'error' logs/",
-          "explanation": "Shows 3 lines of context before and after each match"
+          "explanation": "Найти error в журналах и показать по три строки контекста."
         },
         {
           "type": "example",
-          "text": "replace all occurrences of a literal string across matching files using GNU tools",
+          "text": "вывести совпадения error из logs вместе с соседними строками",
+          "command": "rg -C 3 'error' logs/",
+          "explanation": "Найти error в журналах и показать по три строки контекста."
+        },
+        {
+          "type": "example",
+          "text": "найти файлы с oldFunc и заменить все вхождения на newFunc",
           "command": "rg -l -0 -F 'oldFunc' . | xargs -0 -r sed -i -- 's/oldFunc/newFunc/g'",
-          "explanation": "Uses NUL-separated paths and GNU xargs -r/GNU sed -i to replace all oldFunc occurrences without corrupting unusual filenames",
+          "explanation": "Использует NUL-разделённые пути, GNU xargs -r и GNU sed -i, заменяя все oldFunc без повреждения необычных имён файлов.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "count the number of matches per file",
-          "command": "rg --count-matches -F 'console.log' src/",
-          "explanation": "Counts every literal console.log occurrence per file, including multiple occurrences on one line"
+          "text": "переименовать oldFunc в newFunc во всех совпадениях найденных файлов через sed",
+          "command": "rg -l -0 -F 'oldFunc' . | xargs -0 -r sed -i -- 's/oldFunc/newFunc/g'",
+          "explanation": "Использует NUL-разделённые пути, GNU xargs -r и GNU sed -i, заменяя все oldFunc без повреждения необычных имён файлов.",
+          "destructive": true
         },
         {
           "type": "example",
-          "text": "search for a literal string that contains special regex characters",
+          "text": "посчитать все вхождения console.log в каждом файле исходников",
+          "command": "rg --count-matches -F 'console.log' src/",
+          "explanation": "Считает все буквальные вхождения console.log в каждом файле, включая несколько в одной строке."
+        },
+        {
+          "type": "example",
+          "text": "вывести количество совпадений буквального текста console.log по файлам",
+          "command": "rg --count-matches -F 'console.log' src/",
+          "explanation": "Считает все буквальные вхождения console.log в каждом файле, включая несколько в одной строке."
+        },
+        {
+          "type": "example",
+          "text": "найти точный текст price[$i] без трактовки спецсимволов",
           "command": "rg -F 'price[$i]'",
-          "explanation": "Treats the pattern as a literal string, disabling regex interpretation"
+          "explanation": "Найти точный текст price[$i] без трактовки спецсимволов."
+        },
+        {
+          "type": "example",
+          "text": "поискать буквальную строку с квадратными скобками и долларом через rg",
+          "command": "rg -F 'price[$i]'",
+          "explanation": "Найти точный текст price[$i] без трактовки спецсимволов."
         }
       ]
     },
     {
       "name": "ag",
       "synopsis": "ag [options] pattern [path...]",
-      "description": "The Silver Searcher - a fast code searching tool similar to ack",
+      "description": "Поиск текста в исходном коде утилитой The Silver Searcher",
       "patterns": [
         {
           "type": "example",
-          "text": "search for a pattern in all source files",
+          "text": "найти в src строки по шаблону function.*export через ag",
           "command": "ag 'function.*export' src/",
-          "explanation": "Searches for the regex pattern in all files under src/"
+          "explanation": "Найти в src строки по шаблону function.*export через ag."
         },
         {
           "type": "example",
-          "text": "search only in specific file types",
+          "text": "поискать функцию и следующий за ней export в строках исходного кода",
+          "command": "ag 'function.*export' src/",
+          "explanation": "Найти в src строки по шаблону function.*export через ag."
+        },
+        {
+          "type": "example",
+          "text": "найти addEventListener только в JavaScript-файлах",
           "command": "ag --js 'addEventListener'",
-          "explanation": "Restricts the search to JavaScript files"
+          "explanation": "Найти addEventListener только в JavaScript-файлах."
         },
         {
           "type": "example",
-          "text": "search for a whole word match only",
+          "text": "ограничить поиск обработчиков событий типом файлов js через ag",
+          "command": "ag --js 'addEventListener'",
+          "explanation": "Найти addEventListener только в JavaScript-файлах."
+        },
+        {
+          "type": "example",
+          "text": "найти целое слово class в текущем дереве",
           "command": "ag -w 'class' .",
-          "explanation": "Matches the word 'class' but not 'subclass' or 'classify'"
+          "explanation": "Найти целое слово class в текущем дереве."
         },
         {
           "type": "example",
-          "text": "list just the filenames containing matches",
+          "text": "поискать class с границами слова, исключив частичные совпадения",
+          "command": "ag -w 'class' .",
+          "explanation": "Найти целое слово class в текущем дереве."
+        },
+        {
+          "type": "example",
+          "text": "показать только имена файлов с deprecated в каталоге lib",
           "command": "ag -l 'deprecated' lib/",
-          "explanation": "Shows only the file paths instead of the full matching lines"
+          "explanation": "Показать только имена файлов с deprecated в каталоге lib."
         },
         {
           "type": "example",
-          "text": "search ignoring certain directories",
+          "text": "найти, в каких файлах библиотеки встречается deprecated, без вывода строк",
+          "command": "ag -l 'deprecated' lib/",
+          "explanation": "Показать только имена файлов с deprecated в каталоге lib."
+        },
+        {
+          "type": "example",
+          "text": "найти config, пропуская каталоги vendor",
           "command": "ag --ignore-dir=vendor 'config'",
-          "explanation": "Skips the vendor directory while searching"
+          "explanation": "Найти config, пропуская каталоги vendor."
+        },
+        {
+          "type": "example",
+          "text": "исключить сторонние зависимости vendor из поиска текста через ag",
+          "command": "ag --ignore-dir=vendor 'config'",
+          "explanation": "Найти config, пропуская каталоги vendor."
         }
       ]
     },
     {
       "name": "fzf",
       "synopsis": "fzf [options]",
-      "description": "A command-line fuzzy finder for interactive filtering",
+      "description": "Интерактивный нечёткий поиск и выбор строк",
       "patterns": [
         {
           "type": "example",
-          "text": "interactively search and select a file to open",
+          "text": "интерактивно выбрать файл через fzf и открыть в vim",
           "command": "file=$(fzf) && vim -- \"$file\"",
-          "explanation": "Opens fzf to fuzzy-find a file then opens the selection in vim"
+          "explanation": "Интерактивно выбрать файл через fzf и открыть в vim."
         },
         {
           "type": "example",
-          "text": "fuzzy search through command history",
+          "text": "найти нужный файл нечётким поиском для редактирования в Vim",
+          "command": "file=$(fzf) && vim -- \"$file\"",
+          "explanation": "Интерактивно выбрать файл через fzf и открыть в vim."
+        },
+        {
+          "type": "example",
+          "text": "найти нужную команду в истории через fzf",
           "command": "history | fzf",
-          "explanation": "Pipes shell history into fzf for interactive searching"
+          "explanation": "Найти нужную команду в истории через fzf."
         },
         {
           "type": "example",
-          "text": "preview files while searching through them",
+          "text": "интерактивно отфильтровать список ранее выполненных команд",
+          "command": "history | fzf",
+          "explanation": "Найти нужную команду в истории через fzf."
+        },
+        {
+          "type": "example",
+          "text": "выбирать файл с предварительным просмотром содержимого",
           "command": "fzf --preview 'cat {}'",
-          "explanation": "Shows a preview of the highlighted file while browsing"
+          "explanation": "Выбирать файл с предварительным просмотром содержимого."
         },
         {
           "type": "example",
-          "text": "fuzzy find and switch to a git branch",
+          "text": "показывать текст выбранного файла рядом с нечётким поиском fzf",
+          "command": "fzf --preview 'cat {}'",
+          "explanation": "Выбирать файл с предварительным просмотром содержимого."
+        },
+        {
+          "type": "example",
+          "text": "выбрать Git-ветку через fzf и переключиться на неё",
           "command": "branch=$(git for-each-ref --format='%(refname:short)' refs/heads/ | fzf) && git switch -- \"$branch\"",
-          "explanation": "Lists clean local branch names, quotes the selected name and switches only when selection succeeds"
+          "explanation": "Перечисляет чистые имена локальных веток, заключает выбранное имя в кавычки и переключается только после успешного выбора."
         },
         {
           "type": "example",
-          "text": "interactively select log files and delete the selected files on Linux",
+          "text": "интерактивно найти локальную ветку для git checkout",
+          "command": "branch=$(git for-each-ref --format='%(refname:short)' refs/heads/ | fzf) && git switch -- \"$branch\"",
+          "explanation": "Перечисляет чистые имена локальных веток, заключает выбранное имя в кавычки и переключается только после успешного выбора."
+        },
+        {
+          "type": "example",
+          "text": "выбрать несколько лог-файлов через fzf и удалить их",
           "command": "find . -type f -name '*.log' -print0 | fzf --read0 --print0 -m | xargs -0 -r rm --",
-          "explanation": "Preserves filenames with NUL separators; GNU xargs -r skips rm when no files were selected",
+          "explanation": "Сохраняет имена файлов через NUL-разделители; GNU xargs -r не запускает rm при пустом выборе.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "интерактивно отметить журналы *.log для удаления из текущего дерева",
+          "command": "find . -type f -name '*.log' -print0 | fzf --read0 --print0 -m | xargs -0 -r rm --",
+          "explanation": "Сохраняет имена файлов через NUL-разделители; GNU xargs -r не запускает rm при пустом выборе.",
           "destructive": true
         }
       ]
@@ -451,80 +814,146 @@
     {
       "name": "xargs",
       "synopsis": "xargs [options] [command [initial-args]]",
-      "description": "Build and execute commands from standard input",
+      "description": "Построение и запуск команд из стандартного ввода",
       "patterns": [
         {
           "type": "example",
-          "text": "delete files from a list",
+          "text": "удалить файлы из списка files_to_remove.txt",
           "command": "cat files_to_remove.txt | xargs rm",
-          "explanation": "Reads filenames from the file and passes them as arguments to rm"
+          "explanation": "Удалить файлы из списка files_to_remove.txt."
         },
         {
           "type": "example",
-          "text": "run a command on each line of input separately",
+          "text": "передать перечисленные в текстовом файле имена команде rm через xargs",
+          "command": "cat files_to_remove.txt | xargs rm",
+          "explanation": "Удалить файлы из списка files_to_remove.txt."
+        },
+        {
+          "type": "example",
+          "text": "скачать адреса из urls.txt по одному с исходными именами файлов",
           "command": "cat urls.txt | xargs -I{} curl -O {}",
-          "explanation": "Downloads each URL from the file by replacing {} with each line"
+          "explanation": "Скачать адреса из urls.txt по одному с исходными именами файлов."
         },
         {
           "type": "example",
-          "text": "run multiple processes in parallel",
+          "text": "запустить curl -O отдельно для каждой строки списка URL",
+          "command": "cat urls.txt | xargs -I{} curl -O {}",
+          "explanation": "Скачать адреса из urls.txt по одному с исходными именами файлов."
+        },
+        {
+          "type": "example",
+          "text": "уменьшить PNG-изображения вдвое, обрабатывая до четырёх одновременно",
           "command": "find . -name '*.png' | xargs -P4 -I{} convert {} -resize 50% {}",
-          "explanation": "Resizes PNG images using 4 parallel processes"
+          "explanation": "Уменьшить PNG-изображения вдвое, обрабатывая до четырёх одновременно."
         },
         {
           "type": "example",
-          "text": "handle filenames with spaces safely",
+          "text": "параллельно изменить размеры найденных *.png до 50 процентов на месте",
+          "command": "find . -name '*.png' | xargs -P4 -I{} convert {} -resize 50% {}",
+          "explanation": "Уменьшить PNG-изображения вдвое, обрабатывая до четырёх одновременно."
+        },
+        {
+          "type": "example",
+          "text": "посчитать строки в txt-файлах с безопасной передачей имён через нулевой разделитель",
           "command": "find . -name '*.txt' -print0 | xargs -0 wc -l",
-          "explanation": "Uses null delimiter to safely handle filenames containing spaces"
+          "explanation": "Посчитать строки в txt-файлах с безопасной передачей имён через нулевой разделитель."
         },
         {
           "type": "example",
-          "text": "limit how many arguments are passed at once",
+          "text": "обработать текстовые файлы с пробелами в именах через find -print0 и xargs -0",
+          "command": "find . -name '*.txt' -print0 | xargs -0 wc -l",
+          "explanation": "Посчитать строки в txt-файлах с безопасной передачей имён через нулевой разделитель."
+        },
+        {
+          "type": "example",
+          "text": "отправить по одному ping каждому хосту из файла hosts.txt",
           "command": "cat hosts.txt | xargs -n1 ping -c1",
-          "explanation": "Passes one host at a time to ping instead of all at once"
+          "explanation": "Отправить по одному ping каждому хосту из файла hosts.txt."
+        },
+        {
+          "type": "example",
+          "text": "проверить доступность адресов, передавая ping по одному имени за вызов",
+          "command": "cat hosts.txt | xargs -n1 ping -c1",
+          "explanation": "Отправить по одному ping каждому хосту из файла hosts.txt."
         }
       ]
     },
     {
       "name": "parallel",
       "synopsis": "parallel [options] command [arguments]",
-      "description": "Execute jobs in parallel using multiple CPU cores",
+      "description": "Параллельный запуск заданий на нескольких ядрах CPU",
       "patterns": [
         {
           "type": "example",
-          "text": "run a command on multiple files in parallel",
+          "text": "параллельно сжать нескрытые файлы log через gzip",
           "command": "parallel gzip ::: *.log",
-          "explanation": "Compresses all log files in parallel, one per CPU core"
+          "explanation": "Параллельно сжать нескрытые файлы log через gzip."
         },
         {
           "type": "example",
-          "text": "download URLs from a file in parallel",
+          "text": "упаковать журналы текущей папки несколькими заданиями GNU parallel",
+          "command": "parallel gzip ::: *.log",
+          "explanation": "Параллельно сжать нескрытые файлы log через gzip."
+        },
+        {
+          "type": "example",
+          "text": "параллельно скачать URL из текстового списка с сохранением исходных имён",
           "command": "parallel -a urls.txt curl -O",
-          "explanation": "Runs concurrent curl -O downloads for addresses in urls.txt and creates local files using remote filenames"
+          "explanation": "Параллельно выполняет curl -O для адресов из urls.txt, создавая локальные файлы с удалёнными именами."
         },
         {
           "type": "example",
-          "text": "control how many jobs run simultaneously",
+          "text": "обработать адреса из urls.txt несколькими curl -O через GNU parallel",
+          "command": "parallel -a urls.txt curl -O",
+          "explanation": "Параллельно выполняет curl -O для адресов из urls.txt, создавая локальные файлы с удалёнными именами."
+        },
+        {
+          "type": "example",
+          "text": "преобразовать JPG в PNG, запуская не более четырёх процессов",
           "command": "parallel -j4 convert {} {.}.png ::: *.jpg",
-          "explanation": "Converts JPG to PNG with at most 4 concurrent jobs"
+          "explanation": "Преобразовать JPG в PNG, запуская не более четырёх процессов."
         },
         {
           "type": "example",
-          "text": "run the same command with different arguments in parallel",
+          "text": "ограничить параллельную конвертацию изображений четырьмя заданиями",
+          "command": "parallel -j4 convert {} {.}.png ::: *.jpg",
+          "explanation": "Преобразовать JPG в PNG, запуская не более четырёх процессов."
+        },
+        {
+          "type": "example",
+          "text": "параллельно вывести сообщение Processing для каждого заданного имени",
           "command": "parallel echo 'Processing {}' ::: file1 file2 file3",
-          "explanation": "Runs the echo command for each argument simultaneously"
+          "explanation": "Параллельно вывести сообщение Processing для каждого заданного имени."
         },
         {
           "type": "example",
-          "text": "pipe input and process each line in parallel",
+          "text": "выполнить одинаковую команду echo с тремя разными аргументами",
+          "command": "parallel echo 'Processing {}' ::: file1 file2 file3",
+          "explanation": "Параллельно вывести сообщение Processing для каждого заданного имени."
+        },
+        {
+          "type": "example",
+          "text": "обработать каждую строку tasks.txt скриптом в параллельных заданиях",
           "command": "cat tasks.txt | parallel ./process.sh {}",
-          "explanation": "Executes process.sh for each line of tasks.txt in parallel"
+          "explanation": "Обработать каждую строку tasks.txt скриптом в параллельных заданиях."
         },
         {
           "type": "example",
-          "text": "show a progress bar while processing files in parallel",
+          "text": "передать список задач через канал в GNU parallel для process.sh",
+          "command": "cat tasks.txt | parallel ./process.sh {}",
+          "explanation": "Обработать каждую строку tasks.txt скриптом в параллельных заданиях."
+        },
+        {
+          "type": "example",
+          "text": "параллельно сжать CSV-файлы с показом общей полосы прогресса",
           "command": "parallel --bar gzip ::: *.csv",
-          "explanation": "Compresses CSV files in parallel with a progress indicator"
+          "explanation": "Параллельно сжать CSV-файлы с показом общей полосы прогресса."
+        },
+        {
+          "type": "example",
+          "text": "упаковать *.csv через gzip и следить за выполнением в GNU parallel",
+          "command": "parallel --bar gzip ::: *.csv",
+          "explanation": "Параллельно сжать CSV-файлы с показом общей полосы прогресса."
         }
       ]
     }

@@ -13,7 +13,7 @@ ROOT = Path(__file__).absolute().parent.parent
 
 def recipe(category, command_index, pattern_index):
     data = json.loads((ROOT / f'src/cf/data/commands/{category}.json').read_text())
-    return data['commands'][command_index]['patterns'][pattern_index]
+    return data['commands'][command_index]['patterns'][2 * pattern_index]
 
 
 class GitRecipeTests(unittest.TestCase):

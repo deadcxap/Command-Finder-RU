@@ -4,1162 +4,2086 @@
     {
       "name": "uname",
       "synopsis": "uname [options]",
-      "description": "Print system information about the operating system and hardware",
+      "description": "Просмотр сведений об операционной системе и оборудовании",
       "patterns": [
         {
           "type": "example",
-          "text": "show all system information at once",
+          "text": "показать сведения о ядре, имени компьютера и архитектуре",
           "command": "uname -a",
-          "explanation": "Displays kernel name, hostname, version, architecture, and OS"
+          "explanation": "Показать сведения о ядре, имени компьютера и архитектуре."
         },
         {
           "type": "example",
-          "text": "find out what kernel version is running",
+          "text": "узнать полную информацию о системе через uname",
+          "command": "uname -a",
+          "explanation": "Показать сведения о ядре, имени компьютера и архитектуре."
+        },
+        {
+          "type": "example",
+          "text": "узнать версию работающего ядра",
           "command": "uname -r",
-          "explanation": "Prints only the kernel release version"
+          "explanation": "Узнать версию работающего ядра."
         },
         {
           "type": "example",
-          "text": "check the system hardware architecture",
+          "text": "показать релиз текущего ядра Linux",
+          "command": "uname -r",
+          "explanation": "Узнать версию работающего ядра."
+        },
+        {
+          "type": "example",
+          "text": "определить аппаратную архитектуру компьютера",
           "command": "uname -m",
-          "explanation": "Shows the machine hardware name like x86_64 or arm64"
+          "explanation": "Определить аппаратную архитектуру компьютера."
         },
         {
           "type": "example",
-          "text": "find out the operating system kernel name",
+          "text": "узнать, какая архитектура у этой машины",
+          "command": "uname -m",
+          "explanation": "Определить аппаратную архитектуру компьютера."
+        },
+        {
+          "type": "example",
+          "text": "показать название ядра операционной системы",
           "command": "uname -s",
-          "explanation": "Prints the kernel name such as Linux or Darwin"
+          "explanation": "Показать название ядра операционной системы."
+        },
+        {
+          "type": "example",
+          "text": "узнать, какое ядро используется: Linux или Darwin",
+          "command": "uname -s",
+          "explanation": "Показать название ядра операционной системы."
         }
       ]
     },
     {
       "name": "hostname",
       "synopsis": "hostname [options] [name]",
-      "description": "Show or set the system hostname",
+      "description": "Просмотр и изменение имени узла",
       "patterns": [
         {
           "type": "example",
-          "text": "display the current hostname of the machine",
+          "text": "узнать сетевое имя этого компьютера",
           "command": "hostname",
-          "explanation": "Prints the system hostname"
+          "explanation": "Узнать сетевое имя этого компьютера."
         },
         {
           "type": "example",
-          "text": "show the fully qualified domain name",
+          "text": "показать текущее имя хоста",
+          "command": "hostname",
+          "explanation": "Узнать сетевое имя этого компьютера."
+        },
+        {
+          "type": "example",
+          "text": "показать полное доменное имя компьютера",
           "command": "hostname -f",
-          "explanation": "Displays the FQDN of the machine"
+          "explanation": "Показать полное доменное имя компьютера."
         },
         {
           "type": "example",
-          "text": "get all IP addresses associated with the hostname",
+          "text": "узнать FQDN этой машины",
+          "command": "hostname -f",
+          "explanation": "Показать полное доменное имя компьютера."
+        },
+        {
+          "type": "example",
+          "text": "вывести IP-адреса сетевых интерфейсов компьютера",
           "command": "hostname -I",
-          "explanation": "Lists all network addresses assigned to the host"
+          "explanation": "Вывести IP-адреса сетевых интерфейсов компьютера."
         },
         {
           "type": "example",
-          "text": "temporarily change the system hostname",
+          "text": "узнать все назначенные хосту IP-адреса",
+          "command": "hostname -I",
+          "explanation": "Вывести IP-адреса сетевых интерфейсов компьютера."
+        },
+        {
+          "type": "example",
+          "text": "временно изменить имя компьютера до перезагрузки",
           "command": "hostname new-hostname",
-          "explanation": "Sets the hostname until the next reboot"
+          "explanation": "Временно изменить имя компьютера до перезагрузки."
+        },
+        {
+          "type": "example",
+          "text": "задать новое сетевое имя хоста на текущий сеанс",
+          "command": "hostname new-hostname",
+          "explanation": "Временно изменить имя компьютера до перезагрузки."
         }
       ]
     },
     {
       "name": "uptime",
       "synopsis": "uptime [options]",
-      "description": "Show how long the system has been running and load averages",
+      "description": "Просмотр времени работы и средней нагрузки системы",
       "patterns": [
         {
           "type": "example",
-          "text": "check how long the server has been running",
+          "text": "узнать, сколько времени сервер работает после загрузки",
           "command": "uptime",
-          "explanation": "Shows time since boot, number of users, and load averages"
+          "explanation": "Узнать, сколько времени сервер работает после загрузки."
         },
         {
           "type": "example",
-          "text": "show uptime in a human-readable pretty format",
+          "text": "показать время работы системы, пользователей и среднюю нагрузку",
+          "command": "uptime",
+          "explanation": "Узнать, сколько времени сервер работает после загрузки."
+        },
+        {
+          "type": "example",
+          "text": "показать время работы компьютера в понятном формате",
           "command": "uptime -p",
-          "explanation": "Displays uptime in a friendly format like 'up 3 days, 5 hours'"
+          "explanation": "Показать время работы компьютера в понятном формате."
         },
         {
           "type": "example",
-          "text": "find out when the system was last booted",
+          "text": "узнать продолжительность работы системы в днях и часах",
+          "command": "uptime -p",
+          "explanation": "Показать время работы компьютера в понятном формате."
+        },
+        {
+          "type": "example",
+          "text": "определить дату и время последней загрузки",
           "command": "uptime -s",
-          "explanation": "Shows the exact date and time when the system started"
+          "explanation": "Определить дату и время последней загрузки."
         },
         {
           "type": "example",
-          "text": "check the current system load averages",
+          "text": "показать, когда запустилась система",
+          "command": "uptime -s",
+          "explanation": "Определить дату и время последней загрузки."
+        },
+        {
+          "type": "example",
+          "text": "посмотреть среднюю нагрузку за одну, пять и пятнадцать минут",
           "command": "uptime",
-          "explanation": "The 1, 5, and 15 minute load averages are shown at the end of output"
+          "explanation": "Посмотреть среднюю нагрузку за одну, пять и пятнадцать минут."
+        },
+        {
+          "type": "example",
+          "text": "узнать текущие значения load average",
+          "command": "uptime",
+          "explanation": "Посмотреть среднюю нагрузку за одну, пять и пятнадцать минут."
         }
       ]
     },
     {
       "name": "date",
       "synopsis": "date [options] [+format]",
-      "description": "Display or set the system date and time",
+      "description": "Просмотр и установка системной даты и времени",
       "patterns": [
         {
           "type": "example",
-          "text": "show the current date and time",
+          "text": "показать текущую дату и время",
           "command": "date",
-          "explanation": "Displays the current date, time, and timezone"
+          "explanation": "Показать текущую дату и время."
         },
         {
           "type": "example",
-          "text": "display the date in ISO 8601 format",
+          "text": "узнать системное время и часовой пояс",
+          "command": "date",
+          "explanation": "Показать текущую дату и время."
+        },
+        {
+          "type": "example",
+          "text": "вывести дату и время в формате ISO 8601 с секундами",
           "command": "date -Iseconds",
-          "explanation": "Shows date and time in ISO format like 2024-01-15T10:30:00+00:00"
+          "explanation": "Вывести дату и время в формате ISO 8601 с секундами."
         },
         {
           "type": "example",
-          "text": "get the current Unix timestamp",
+          "text": "получить текущее время в стандартной записи с часовым поясом",
+          "command": "date -Iseconds",
+          "explanation": "Вывести дату и время в формате ISO 8601 с секундами."
+        },
+        {
+          "type": "example",
+          "text": "получить текущее время в секундах Unix",
           "command": "date +%s",
-          "explanation": "Outputs seconds since the Unix epoch (January 1, 1970)"
+          "explanation": "Получить текущее время в секундах Unix."
         },
         {
           "type": "example",
-          "text": "format the date as year-month-day",
+          "text": "показать количество секунд с начала эпохи Unix",
+          "command": "date +%s",
+          "explanation": "Получить текущее время в секундах Unix."
+        },
+        {
+          "type": "example",
+          "text": "вывести дату и время в формате год-месяц-день часы:минуты:секунды",
           "command": "date '+%Y-%m-%d %H:%M:%S'",
-          "explanation": "Displays the date in a custom format like 2024-01-15 14:30:00"
+          "explanation": "Вывести дату и время в формате год-месяц-день часы:минуты:секунды."
         },
         {
           "type": "example",
-          "text": "convert a Unix timestamp to a human-readable date",
+          "text": "получить системное время в виде 2024-01-15 14:30:00",
+          "command": "date '+%Y-%m-%d %H:%M:%S'",
+          "explanation": "Вывести дату и время в формате год-месяц-день часы:минуты:секунды."
+        },
+        {
+          "type": "example",
+          "text": "преобразовать Unix timestamp в обычную дату",
           "command": "date -d @1700000000",
-          "explanation": "Converts the given epoch timestamp to a readable date"
+          "explanation": "Преобразовать Unix timestamp в обычную дату."
+        },
+        {
+          "type": "example",
+          "text": "узнать дату и время по числу секунд с начала эпохи",
+          "command": "date -d @1700000000",
+          "explanation": "Преобразовать Unix timestamp в обычную дату."
         }
       ]
     },
     {
       "name": "cal",
       "synopsis": "cal [options] [[month] year]",
-      "description": "Display a calendar in the terminal",
+      "description": "Вывод календаря в терминале",
       "patterns": [
         {
           "type": "example",
-          "text": "show this month's calendar",
+          "text": "показать календарь текущего месяца",
           "command": "cal",
-          "explanation": "Displays the current month's calendar with today highlighted"
+          "explanation": "Показать календарь текущего месяца."
         },
         {
           "type": "example",
-          "text": "show the calendar for an entire year",
+          "text": "посмотреть дни этой недели в календаре месяца",
+          "command": "cal",
+          "explanation": "Показать календарь текущего месяца."
+        },
+        {
+          "type": "example",
+          "text": "вывести календарь на весь указанный год",
           "command": "cal 2024",
-          "explanation": "Displays all 12 months of the specified year"
+          "explanation": "Вывести календарь на весь указанный год."
         },
         {
           "type": "example",
-          "text": "display a specific month and year",
+          "text": "посмотреть все двенадцать месяцев одного года",
+          "command": "cal 2024",
+          "explanation": "Вывести календарь на весь указанный год."
+        },
+        {
+          "type": "example",
+          "text": "открыть календарь за март 2025 года",
           "command": "cal 3 2025",
-          "explanation": "Shows the calendar for March 2025"
+          "explanation": "Открыть календарь за март 2025 года."
         },
         {
           "type": "example",
-          "text": "show the previous, current, and next month together",
+          "text": "показать дни конкретного месяца и года",
+          "command": "cal 3 2025",
+          "explanation": "Открыть календарь за март 2025 года."
+        },
+        {
+          "type": "example",
+          "text": "показать предыдущий, текущий и следующий месяцы",
           "command": "cal -3",
-          "explanation": "Displays three months side by side centered on the current month"
+          "explanation": "Показать предыдущий, текущий и следующий месяцы."
+        },
+        {
+          "type": "example",
+          "text": "вывести календарь сразу на три соседних месяца",
+          "command": "cal -3",
+          "explanation": "Показать предыдущий, текущий и следующий месяцы."
         }
       ]
     },
     {
       "name": "timedatectl",
       "synopsis": "timedatectl [command]",
-      "description": "Control the system time, date, and timezone settings",
+      "description": "Настройка времени, даты и часового пояса",
       "patterns": [
         {
           "type": "example",
-          "text": "show the current time and timezone configuration",
+          "text": "посмотреть настройки времени, часового пояса и синхронизации",
           "command": "timedatectl status",
-          "explanation": "Displays local time, UTC time, timezone, and NTP sync status"
+          "explanation": "Посмотреть настройки времени, часового пояса и синхронизации."
         },
         {
           "type": "example",
-          "text": "change the system timezone",
+          "text": "проверить системные часы и состояние NTP",
+          "command": "timedatectl status",
+          "explanation": "Посмотреть настройки времени, часового пояса и синхронизации."
+        },
+        {
+          "type": "example",
+          "text": "установить часовой пояс Нью-Йорка",
           "command": "timedatectl set-timezone America/New_York",
-          "explanation": "Sets the system timezone to Eastern Time"
+          "explanation": "Установить часовой пояс Нью-Йорка."
         },
         {
           "type": "example",
-          "text": "enable automatic time synchronization via NTP",
+          "text": "перевести систему на зону America/New_York",
+          "command": "timedatectl set-timezone America/New_York",
+          "explanation": "Установить часовой пояс Нью-Йорка."
+        },
+        {
+          "type": "example",
+          "text": "включить автоматическую синхронизацию часов по NTP",
           "command": "timedatectl set-ntp true",
-          "explanation": "Turns on Network Time Protocol for automatic clock sync"
+          "explanation": "Включить автоматическую синхронизацию часов по NTP."
         },
         {
           "type": "example",
-          "text": "list all available timezones",
+          "text": "настроить получение точного времени через сеть",
+          "command": "timedatectl set-ntp true",
+          "explanation": "Включить автоматическую синхронизацию часов по NTP."
+        },
+        {
+          "type": "example",
+          "text": "показать список доступных часовых поясов",
           "command": "timedatectl list-timezones",
-          "explanation": "Shows every timezone that can be set on the system"
+          "explanation": "Показать список доступных часовых поясов."
         },
         {
           "type": "example",
-          "text": "manually set the system date and time",
+          "text": "найти название часовой зоны для настройки системы",
+          "command": "timedatectl list-timezones",
+          "explanation": "Показать список доступных часовых поясов."
+        },
+        {
+          "type": "example",
+          "text": "вручную установить системную дату и время",
           "command": "timedatectl set-time '2024-06-15 14:30:00'",
-          "explanation": "Sets the system clock to the specified date and time"
+          "explanation": "Вручную установить системную дату и время."
+        },
+        {
+          "type": "example",
+          "text": "задать часам компьютера конкретный момент времени",
+          "command": "timedatectl set-time '2024-06-15 14:30:00'",
+          "explanation": "Вручную установить системную дату и время."
         }
       ]
     },
     {
       "name": "systemctl",
       "synopsis": "systemctl [command] [unit]",
-      "description": "Control the systemd system and service manager",
+      "description": "Управление системой и службами systemd",
       "patterns": [
         {
           "type": "example",
-          "text": "check the status of a service",
+          "text": "проверить состояние службы nginx",
           "command": "systemctl status nginx",
-          "explanation": "Shows whether nginx is running, its PID, and recent log entries"
+          "explanation": "Проверить состояние службы nginx."
         },
         {
           "type": "example",
-          "text": "start a stopped service",
+          "text": "узнать, запущен ли nginx, и посмотреть сведения о службе",
+          "command": "systemctl status nginx",
+          "explanation": "Проверить состояние службы nginx."
+        },
+        {
+          "type": "example",
+          "text": "запустить службу nginx",
           "command": "systemctl start nginx",
-          "explanation": "Starts the nginx service immediately"
+          "explanation": "Запустить службу nginx."
         },
         {
           "type": "example",
-          "text": "enable a service to start automatically at boot",
+          "text": "включить остановленный сервис nginx прямо сейчас",
+          "command": "systemctl start nginx",
+          "explanation": "Запустить службу nginx."
+        },
+        {
+          "type": "example",
+          "text": "добавить nginx в автозапуск при загрузке",
           "command": "systemctl enable nginx",
-          "explanation": "Creates symlinks so the service starts on boot"
+          "explanation": "Добавить nginx в автозапуск при загрузке."
         },
         {
           "type": "example",
-          "text": "restart a service to apply configuration changes",
+          "text": "сделать запуск службы nginx автоматическим после включения системы",
+          "command": "systemctl enable nginx",
+          "explanation": "Добавить nginx в автозапуск при загрузке."
+        },
+        {
+          "type": "example",
+          "text": "перезапустить службу nginx",
           "command": "systemctl restart nginx",
-          "explanation": "Stops and then starts the service"
+          "explanation": "Перезапустить службу nginx."
         },
         {
           "type": "example",
-          "text": "list all running services",
+          "text": "остановить и снова запустить nginx для применения настроек",
+          "command": "systemctl restart nginx",
+          "explanation": "Перезапустить службу nginx."
+        },
+        {
+          "type": "example",
+          "text": "вывести работающие службы systemd",
           "command": "systemctl list-units --type=service --state=running",
-          "explanation": "Shows all services currently in the running state"
+          "explanation": "Вывести работающие службы systemd."
         },
         {
           "type": "example",
-          "text": "check if a service is enabled at boot",
+          "text": "показать сервисы, которые сейчас находятся в состоянии running",
+          "command": "systemctl list-units --type=service --state=running",
+          "explanation": "Вывести работающие службы systemd."
+        },
+        {
+          "type": "example",
+          "text": "проверить автозапуск nginx",
           "command": "systemctl is-enabled nginx",
-          "explanation": "Returns whether the service is set to start at boot time"
+          "explanation": "Проверить автозапуск nginx."
+        },
+        {
+          "type": "example",
+          "text": "узнать, включена ли загрузка службы nginx при старте системы",
+          "command": "systemctl is-enabled nginx",
+          "explanation": "Проверить автозапуск nginx."
         }
       ]
     },
     {
       "name": "service",
       "synopsis": "service name command",
-      "description": "Run a System V init script to manage services (legacy)",
+      "description": "Управление службами через сценарии System V",
       "patterns": [
         {
           "type": "example",
-          "text": "start a service using the legacy service command",
+          "text": "запустить Apache через команду service",
           "command": "service apache2 start",
-          "explanation": "Starts the Apache web server"
+          "explanation": "Запустить Apache через команду service."
         },
         {
           "type": "example",
-          "text": "check the status of a service",
+          "text": "включить службу apache2 старым способом через init-скрипт",
+          "command": "service apache2 start",
+          "explanation": "Запустить Apache через команду service."
+        },
+        {
+          "type": "example",
+          "text": "проверить состояние службы MySQL через service",
           "command": "service mysql status",
-          "explanation": "Shows whether the MySQL service is running"
+          "explanation": "Проверить состояние службы MySQL через service."
         },
         {
           "type": "example",
-          "text": "restart a service to reload its configuration",
+          "text": "узнать, работает ли сервис mysql",
+          "command": "service mysql status",
+          "explanation": "Проверить состояние службы MySQL через service."
+        },
+        {
+          "type": "example",
+          "text": "перезапустить сетевую службу через service",
           "command": "service networking restart",
-          "explanation": "Restarts the networking service"
+          "explanation": "Перезапустить сетевую службу через service."
         },
         {
           "type": "example",
-          "text": "list all available services and their statuses",
+          "text": "заново запустить сервис networking после изменения настроек",
+          "command": "service networking restart",
+          "explanation": "Перезапустить сетевую службу через service."
+        },
+        {
+          "type": "example",
+          "text": "показать состояние всех служб через service",
           "command": "service --status-all",
-          "explanation": "Shows all init scripts with their running/stopped status"
+          "explanation": "Показать состояние всех служб через service."
+        },
+        {
+          "type": "example",
+          "text": "получить список init-сервисов с отметкой работы или остановки",
+          "command": "service --status-all",
+          "explanation": "Показать состояние всех служб через service."
         }
       ]
     },
     {
       "name": "journalctl",
       "synopsis": "journalctl [options]",
-      "description": "Query and display logs from the systemd journal",
+      "description": "Просмотр журнала systemd",
       "patterns": [
         {
           "type": "example",
-          "text": "view recent system logs",
+          "text": "посмотреть последние пятьдесят записей системного журнала",
           "command": "journalctl -n 50",
-          "explanation": "Shows the last 50 log entries from the journal"
+          "explanation": "Посмотреть последние пятьдесят записей системного журнала."
         },
         {
           "type": "example",
-          "text": "follow logs in real time like tail -f",
+          "text": "показать свежие сообщения journald с ограничением в 50 строк",
+          "command": "journalctl -n 50",
+          "explanation": "Посмотреть последние пятьдесят записей системного журнала."
+        },
+        {
+          "type": "example",
+          "text": "следить за системным журналом в реальном времени",
           "command": "journalctl -f",
-          "explanation": "Continuously displays new log entries as they appear"
+          "explanation": "Следить за системным журналом в реальном времени."
         },
         {
           "type": "example",
-          "text": "view logs for a specific service",
+          "text": "показывать новые записи journal по мере появления",
+          "command": "journalctl -f",
+          "explanation": "Следить за системным журналом в реальном времени."
+        },
+        {
+          "type": "example",
+          "text": "открыть журнал службы nginx",
           "command": "journalctl -u nginx.service",
-          "explanation": "Shows all log entries from the nginx service"
+          "explanation": "Открыть журнал службы nginx."
         },
         {
           "type": "example",
-          "text": "show logs from the current boot only",
+          "text": "вывести сообщения systemd только для nginx.service",
+          "command": "journalctl -u nginx.service",
+          "explanation": "Открыть журнал службы nginx."
+        },
+        {
+          "type": "example",
+          "text": "показать системный журнал с текущей загрузки",
           "command": "journalctl -b",
-          "explanation": "Filters logs to only show entries since the last boot"
+          "explanation": "Показать системный журнал с текущей загрузки."
         },
         {
           "type": "example",
-          "text": "view logs within a specific time range",
+          "text": "посмотреть логи только после последнего запуска компьютера",
+          "command": "journalctl -b",
+          "explanation": "Показать системный журнал с текущей загрузки."
+        },
+        {
+          "type": "example",
+          "text": "вывести записи журнала за указанный промежуток времени",
           "command": "journalctl --since '2024-01-15 09:00' --until '2024-01-15 17:00'",
-          "explanation": "Shows log entries between the specified start and end times"
+          "explanation": "Вывести записи журнала за указанный промежуток времени."
         },
         {
           "type": "example",
-          "text": "show only error and critical log messages",
+          "text": "найти системные сообщения между началом и концом заданного интервала",
+          "command": "journalctl --since '2024-01-15 09:00' --until '2024-01-15 17:00'",
+          "explanation": "Вывести записи журнала за указанный промежуток времени."
+        },
+        {
+          "type": "example",
+          "text": "показать ошибки и более серьёзные сообщения системного журнала",
           "command": "journalctl -p err",
-          "explanation": "Filters log output to error priority and above"
+          "explanation": "Показать ошибки и более серьёзные сообщения системного журнала."
+        },
+        {
+          "type": "example",
+          "text": "отфильтровать journald по уровню err и выше",
+          "command": "journalctl -p err",
+          "explanation": "Показать ошибки и более серьёзные сообщения системного журнала."
         }
       ]
     },
     {
       "name": "dmesg",
       "synopsis": "dmesg [options]",
-      "description": "Display kernel ring buffer messages",
+      "description": "Просмотр сообщений кольцевого буфера ядра",
       "patterns": [
         {
           "type": "example",
-          "text": "view kernel messages with human-readable timestamps",
+          "text": "посмотреть сообщения ядра с обычными датами и временем",
           "command": "dmesg -T",
-          "explanation": "Shows kernel log messages with readable date and time"
+          "explanation": "Посмотреть сообщения ядра с обычными датами и временем."
         },
         {
           "type": "example",
-          "text": "watch kernel messages in real time",
+          "text": "вывести журнал ядра с читаемыми временными отметками",
+          "command": "dmesg -T",
+          "explanation": "Посмотреть сообщения ядра с обычными датами и временем."
+        },
+        {
+          "type": "example",
+          "text": "наблюдать новые сообщения ядра в реальном времени",
           "command": "dmesg -w",
-          "explanation": "Continuously displays new kernel messages as they occur"
+          "explanation": "Наблюдать новые сообщения ядра в реальном времени."
         },
         {
           "type": "example",
-          "text": "show only error and warning messages from the kernel",
+          "text": "следить за обновлением dmesg",
+          "command": "dmesg -w",
+          "explanation": "Наблюдать новые сообщения ядра в реальном времени."
+        },
+        {
+          "type": "example",
+          "text": "оставить в журнале ядра только ошибки и предупреждения",
           "command": "dmesg --level=err,warn",
-          "explanation": "Filters kernel messages to show only errors and warnings"
+          "explanation": "Оставить в журнале ядра только ошибки и предупреждения."
         },
         {
           "type": "example",
-          "text": "check for hardware detection messages after plugging in a USB device",
+          "text": "показать сообщения dmesg уровней err и warn",
+          "command": "dmesg --level=err,warn",
+          "explanation": "Оставить в журнале ядра только ошибки и предупреждения."
+        },
+        {
+          "type": "example",
+          "text": "показать последние сообщения ядра, относящиеся к USB",
           "command": "dmesg | grep -i 'usb' | tail -n 20",
-          "explanation": "Shows up to 20 recent kernel log lines mentioning USB"
+          "explanation": "Показывает до 20 последних строк журнала ядра с упоминанием USB."
         },
         {
           "type": "example",
-          "text": "clear the kernel ring buffer",
+          "text": "проверить обнаружение USB-устройства по отфильтрованному журналу dmesg",
+          "command": "dmesg | grep -i 'usb' | tail -n 20",
+          "explanation": "Показывает до 20 последних строк журнала ядра с упоминанием USB."
+        },
+        {
+          "type": "example",
+          "text": "очистить кольцевой буфер сообщений ядра",
           "command": "dmesg -C",
-          "explanation": "Clears all messages from the kernel ring buffer"
+          "explanation": "Очистить кольцевой буфер сообщений ядра."
+        },
+        {
+          "type": "example",
+          "text": "удалить накопленные записи dmesg из буфера",
+          "command": "dmesg -C",
+          "explanation": "Очистить кольцевой буфер сообщений ядра."
         }
       ]
     },
     {
       "name": "sysctl",
       "synopsis": "sysctl [options] [variable[=value]]",
-      "description": "Read and modify kernel parameters at runtime",
+      "description": "Просмотр и изменение параметров ядра",
       "patterns": [
         {
           "type": "example",
-          "text": "show all kernel parameters",
+          "text": "вывести все доступные параметры ядра и их значения",
           "command": "sysctl -a",
-          "explanation": "Lists all available kernel parameters and their current values"
+          "explanation": "Вывести все доступные параметры ядра и их значения."
         },
         {
           "type": "example",
-          "text": "check if IP forwarding is enabled",
+          "text": "посмотреть полный список настроек sysctl",
+          "command": "sysctl -a",
+          "explanation": "Вывести все доступные параметры ядра и их значения."
+        },
+        {
+          "type": "example",
+          "text": "проверить, разрешена ли пересылка пакетов IPv4",
           "command": "sysctl net.ipv4.ip_forward",
-          "explanation": "Displays the current value of the IP forwarding parameter"
+          "explanation": "Проверить, разрешена ли пересылка пакетов IPv4."
         },
         {
           "type": "example",
-          "text": "enable IP forwarding for routing traffic between interfaces",
+          "text": "узнать значение параметра net.ipv4.ip_forward",
+          "command": "sysctl net.ipv4.ip_forward",
+          "explanation": "Проверить, разрешена ли пересылка пакетов IPv4."
+        },
+        {
+          "type": "example",
+          "text": "временно включить пересылку IPv4 между интерфейсами",
           "command": "sysctl -w net.ipv4.ip_forward=1",
-          "explanation": "Temporarily enables IPv4 packet forwarding"
+          "explanation": "Временно включить пересылку IPv4 между интерфейсами."
         },
         {
           "type": "example",
-          "text": "reload sysctl settings from the configuration file",
+          "text": "разрешить маршрутизацию пакетов через net.ipv4.ip_forward",
+          "command": "sysctl -w net.ipv4.ip_forward=1",
+          "explanation": "Временно включить пересылку IPv4 между интерфейсами."
+        },
+        {
+          "type": "example",
+          "text": "повторно применить параметры из файла sysctl.conf",
           "command": "sysctl -p",
-          "explanation": "Applies settings already stored in /etc/sysctl.conf to the running kernel"
+          "explanation": "Применяет уже сохранённые параметры /etc/sysctl.conf к работающему ядру."
         },
         {
           "type": "example",
-          "text": "increase the maximum number of open file handles system-wide",
+          "text": "загрузить настройки ядра из конфигурации sysctl",
+          "command": "sysctl -p",
+          "explanation": "Применяет уже сохранённые параметры /etc/sysctl.conf к работающему ядру."
+        },
+        {
+          "type": "example",
+          "text": "установить общий лимит открытых файлов системы в сто тысяч",
           "command": "sysctl -w fs.file-max=100000",
-          "explanation": "Sets the kernel limit for the total number of open files"
+          "explanation": "Установить общий лимит открытых файлов системы в сто тысяч."
+        },
+        {
+          "type": "example",
+          "text": "изменить fs.file-max на 100000",
+          "command": "sysctl -w fs.file-max=100000",
+          "explanation": "Установить общий лимит открытых файлов системы в сто тысяч."
         }
       ]
     },
     {
       "name": "lscpu",
       "synopsis": "lscpu [options]",
-      "description": "Display information about the CPU architecture",
+      "description": "Просмотр архитектуры и характеристик CPU",
       "patterns": [
         {
           "type": "example",
-          "text": "show detailed CPU information",
+          "text": "показать подробные характеристики процессора",
           "command": "lscpu",
-          "explanation": "Displays CPU architecture, cores, threads, model, caches, and features"
+          "explanation": "Показать подробные характеристики процессора."
         },
         {
           "type": "example",
-          "text": "find out the total number of logical CPUs visible to the system",
+          "text": "узнать модель CPU, ядра, потоки, кеши и архитектуру",
+          "command": "lscpu",
+          "explanation": "Показать подробные характеристики процессора."
+        },
+        {
+          "type": "example",
+          "text": "узнать общее число логических процессоров",
           "command": "LC_ALL=C lscpu | grep '^CPU(s):'",
-          "explanation": "Selects the logical CPU count using stable English lscpu field names"
+          "explanation": "Получает число логических CPU по стабильным английским именам полей lscpu."
         },
         {
           "type": "example",
-          "text": "check if the CPU supports virtualization",
+          "text": "показать количество CPU, видимых операционной системе",
+          "command": "LC_ALL=C lscpu | grep '^CPU(s):'",
+          "explanation": "Получает число логических CPU по стабильным английским именам полей lscpu."
+        },
+        {
+          "type": "example",
+          "text": "проверить поддержку аппаратной виртуализации процессором",
           "command": "lscpu | grep Virtualization",
-          "explanation": "Shows the virtualization technology supported by the CPU"
+          "explanation": "Проверить поддержку аппаратной виртуализации процессором."
         },
         {
           "type": "example",
-          "text": "display CPU info in a parseable format",
+          "text": "посмотреть технологию виртуализации в характеристиках CPU",
+          "command": "lscpu | grep Virtualization",
+          "explanation": "Проверить поддержку аппаратной виртуализации процессором."
+        },
+        {
+          "type": "example",
+          "text": "получить характеристики процессора в JSON",
           "command": "lscpu -J",
-          "explanation": "Outputs CPU information in JSON format for scripting"
+          "explanation": "Получить характеристики процессора в JSON."
+        },
+        {
+          "type": "example",
+          "text": "вывести информацию lscpu в формате для обработки программой",
+          "command": "lscpu -J",
+          "explanation": "Получить характеристики процессора в JSON."
         }
       ]
     },
     {
       "name": "lsblk",
       "synopsis": "lsblk [options] [device]",
-      "description": "List information about block devices (disks and partitions)",
+      "description": "Просмотр дисков, разделов и других блочных устройств",
       "patterns": [
         {
           "type": "example",
-          "text": "show all disks and their partitions",
+          "text": "показать дерево дисков и разделов",
           "command": "lsblk",
-          "explanation": "Lists all block devices in a tree format showing disks and partitions"
+          "explanation": "Показать дерево дисков и разделов."
         },
         {
           "type": "example",
-          "text": "show disk sizes and filesystem types",
+          "text": "посмотреть список блочных устройств с их дочерними разделами",
+          "command": "lsblk",
+          "explanation": "Показать дерево дисков и разделов."
+        },
+        {
+          "type": "example",
+          "text": "показать размеры дисков, типы файловых систем, UUID и точки монтирования",
           "command": "lsblk -o NAME,SIZE,FSTYPE,LABEL,UUID,MOUNTPOINTS",
-          "explanation": "Displays device sizes together with filesystem type, label, UUID, and mount points"
+          "explanation": "Показывает размеры устройств, тип файловой системы, метку, UUID и точки монтирования."
         },
         {
           "type": "example",
-          "text": "list block devices without their dependency trees",
+          "text": "вывести сведения о файловых системах вместе с общим размером каждого устройства",
+          "command": "lsblk -o NAME,SIZE,FSTYPE,LABEL,UUID,MOUNTPOINTS",
+          "explanation": "Показывает размеры устройств, тип файловой системы, метку, UUID и точки монтирования."
+        },
+        {
+          "type": "example",
+          "text": "вывести блочные устройства без их дочерних зависимостей",
           "command": "lsblk -d",
-          "explanation": "Omits dependent devices such as partitions; virtual or loop devices can still appear"
+          "explanation": "Скрывает зависимые устройства, например разделы; виртуальные и loop-устройства могут остаться в списке."
         },
         {
           "type": "example",
-          "text": "show exact disk and partition sizes in bytes",
+          "text": "показать устройства lsblk без дерева разделов и зависимостей",
+          "command": "lsblk -d",
+          "explanation": "Скрывает зависимые устройства, например разделы; виртуальные и loop-устройства могут остаться в списке."
+        },
+        {
+          "type": "example",
+          "text": "показать размеры блочных устройств в байтах",
           "command": "lsblk -b",
-          "explanation": "Displays device sizes in bytes for precise measurements"
+          "explanation": "Показать размеры блочных устройств в байтах."
         },
         {
           "type": "example",
-          "text": "display specific columns like name, size, and type",
+          "text": "получить точные размеры дисков и разделов без сокращения единиц",
+          "command": "lsblk -b",
+          "explanation": "Показать размеры блочных устройств в байтах."
+        },
+        {
+          "type": "example",
+          "text": "вывести у дисков только имя, размер, тип и точку монтирования",
           "command": "lsblk -o NAME,SIZE,TYPE,MOUNTPOINT",
-          "explanation": "Shows only the selected columns in the output"
+          "explanation": "Вывести у дисков только имя, размер, тип и точку монтирования."
+        },
+        {
+          "type": "example",
+          "text": "настроить набор столбцов в списке блочных устройств",
+          "command": "lsblk -o NAME,SIZE,TYPE,MOUNTPOINT",
+          "explanation": "Вывести у дисков только имя, размер, тип и точку монтирования."
         }
       ]
     },
     {
       "name": "lspci",
       "synopsis": "lspci [options]",
-      "description": "List all PCI devices in the system",
+      "description": "Просмотр устройств PCI",
       "patterns": [
         {
           "type": "example",
-          "text": "show all PCI hardware devices",
+          "text": "перечислить устройства на шинах PCI",
           "command": "lspci",
-          "explanation": "Lists all PCI buses and devices connected to them"
+          "explanation": "Перечислить устройства на шинах PCI."
         },
         {
           "type": "example",
-          "text": "show detailed information about all PCI devices",
+          "text": "показать подключённое PCI-оборудование",
+          "command": "lspci",
+          "explanation": "Перечислить устройства на шинах PCI."
+        },
+        {
+          "type": "example",
+          "text": "получить подробные сведения об устройствах PCI",
           "command": "lspci -v",
-          "explanation": "Displays verbose details including drivers and memory regions"
+          "explanation": "Получить подробные сведения об устройствах PCI."
         },
         {
           "type": "example",
-          "text": "find the graphics card model",
+          "text": "вывести расширенную информацию о PCI-контроллерах",
+          "command": "lspci -v",
+          "explanation": "Получить подробные сведения об устройствах PCI."
+        },
+        {
+          "type": "example",
+          "text": "определить модель графического VGA-контроллера",
           "command": "lspci | grep -i vga",
-          "explanation": "Filters PCI devices to show only the VGA-compatible graphics controller"
+          "explanation": "Определить модель графического VGA-контроллера."
         },
         {
           "type": "example",
-          "text": "show PCI device tree structure",
+          "text": "найти видеокарту среди устройств PCI",
+          "command": "lspci | grep -i vga",
+          "explanation": "Определить модель графического VGA-контроллера."
+        },
+        {
+          "type": "example",
+          "text": "показать дерево соединений PCI",
           "command": "lspci -t",
-          "explanation": "Displays PCI devices in a tree hierarchy showing bus connections"
+          "explanation": "Показать дерево соединений PCI."
+        },
+        {
+          "type": "example",
+          "text": "посмотреть иерархию шин и устройств PCI",
+          "command": "lspci -t",
+          "explanation": "Показать дерево соединений PCI."
         }
       ]
     },
     {
       "name": "lsusb",
       "synopsis": "lsusb [options]",
-      "description": "List USB devices connected to the system",
+      "description": "Просмотр устройств USB",
       "patterns": [
         {
           "type": "example",
-          "text": "list all connected USB devices",
+          "text": "перечислить подключённые USB-устройства",
           "command": "lsusb",
-          "explanation": "Shows all USB buses and connected devices with vendor and product IDs"
+          "explanation": "Перечислить подключённые USB-устройства."
         },
         {
           "type": "example",
-          "text": "show detailed information about all USB devices",
+          "text": "показать USB-шины и идентификаторы оборудования",
+          "command": "lsusb",
+          "explanation": "Перечислить подключённые USB-устройства."
+        },
+        {
+          "type": "example",
+          "text": "вывести подробные дескрипторы USB-устройств",
           "command": "lsusb -v",
-          "explanation": "Displays verbose device descriptors for all USB devices"
+          "explanation": "Вывести подробные дескрипторы USB-устройств."
         },
         {
           "type": "example",
-          "text": "display USB devices in a tree hierarchy",
+          "text": "получить расширенные сведения обо всём USB-оборудовании",
+          "command": "lsusb -v",
+          "explanation": "Вывести подробные дескрипторы USB-устройств."
+        },
+        {
+          "type": "example",
+          "text": "показать USB-устройства деревом",
           "command": "lsusb -t",
-          "explanation": "Shows USB device topology as a tree with speed and driver info"
+          "explanation": "Показать USB-устройства деревом."
         },
         {
           "type": "example",
-          "text": "find a specific USB device by vendor ID",
+          "text": "посмотреть USB-топологию, скорости подключения и драйверы",
+          "command": "lsusb -t",
+          "explanation": "Показать USB-устройства деревом."
+        },
+        {
+          "type": "example",
+          "text": "найти USB-устройства производителя с кодом 046d",
           "command": "lsusb -d 046d:",
-          "explanation": "Filters to show only devices from the specified vendor (e.g., Logitech)"
+          "explanation": "Найти USB-устройства производителя с кодом 046d."
+        },
+        {
+          "type": "example",
+          "text": "отфильтровать USB-оборудование по идентификатору Logitech",
+          "command": "lsusb -d 046d:",
+          "explanation": "Найти USB-устройства производителя с кодом 046d."
         }
       ]
     },
     {
       "name": "lshw",
       "synopsis": "lshw [options]",
-      "description": "List detailed hardware configuration of the machine",
+      "description": "Просмотр подробной конфигурации оборудования",
       "patterns": [
         {
           "type": "example",
-          "text": "show a complete hardware inventory of the system",
+          "text": "получить полную опись оборудования компьютера",
           "command": "lshw",
-          "explanation": "Displays full hardware details including CPU, memory, storage, and network"
+          "explanation": "Получить полную опись оборудования компьютера."
         },
         {
           "type": "example",
-          "text": "show hardware summary in a short format",
+          "text": "показать характеристики процессора, памяти, дисков и сетевых карт",
+          "command": "lshw",
+          "explanation": "Получить полную опись оборудования компьютера."
+        },
+        {
+          "type": "example",
+          "text": "вывести краткую сводку аппаратных компонентов",
           "command": "lshw -short",
-          "explanation": "Provides a concise overview of all hardware components"
+          "explanation": "Вывести краткую сводку аппаратных компонентов."
         },
         {
           "type": "example",
-          "text": "display only memory and RAM information",
+          "text": "посмотреть оборудование системы в компактном списке",
+          "command": "lshw -short",
+          "explanation": "Вывести краткую сводку аппаратных компонентов."
+        },
+        {
+          "type": "example",
+          "text": "показать аппаратные сведения только об оперативной памяти",
           "command": "lshw -class memory",
-          "explanation": "Filters output to show memory modules, sizes, and speed"
+          "explanation": "Показать аппаратные сведения только об оперативной памяти."
         },
         {
           "type": "example",
-          "text": "show network hardware details",
+          "text": "узнать характеристики модулей RAM через lshw",
+          "command": "lshw -class memory",
+          "explanation": "Показать аппаратные сведения только об оперативной памяти."
+        },
+        {
+          "type": "example",
+          "text": "посмотреть характеристики сетевого оборудования",
           "command": "lshw -class network",
-          "explanation": "Lists network interface hardware including drivers and capabilities"
+          "explanation": "Посмотреть характеристики сетевого оборудования."
         },
         {
           "type": "example",
-          "text": "output hardware info as HTML for a report",
+          "text": "вывести сетевые адаптеры с драйверами и возможностями",
+          "command": "lshw -class network",
+          "explanation": "Посмотреть характеристики сетевого оборудования."
+        },
+        {
+          "type": "example",
+          "text": "сохранить отчёт об оборудовании в HTML",
           "command": "lshw -html > hardware-report.html",
-          "explanation": "Generates an HTML formatted hardware report"
+          "explanation": "Сохранить отчёт об оборудовании в HTML."
+        },
+        {
+          "type": "example",
+          "text": "создать файл hardware-report.html с характеристиками компьютера",
+          "command": "lshw -html > hardware-report.html",
+          "explanation": "Сохранить отчёт об оборудовании в HTML."
         }
       ]
     },
     {
       "name": "dmidecode",
       "synopsis": "dmidecode [options]",
-      "description": "Read hardware information from the system BIOS/DMI table",
+      "description": "Просмотр сведений об оборудовании из таблиц BIOS и DMI",
       "patterns": [
         {
           "type": "example",
-          "text": "show all BIOS and hardware information from DMI tables",
+          "text": "показать содержимое таблиц DMI и SMBIOS",
           "command": "dmidecode",
-          "explanation": "Dumps the full DMI/SMBIOS table with BIOS, system, and hardware data"
+          "explanation": "Показать содержимое таблиц DMI и SMBIOS."
         },
         {
           "type": "example",
-          "text": "show RAM module details like size, speed, and type",
+          "text": "получить сведения BIOS о системе и установленном оборудовании",
+          "command": "dmidecode",
+          "explanation": "Показать содержимое таблиц DMI и SMBIOS."
+        },
+        {
+          "type": "example",
+          "text": "узнать тип, объём и скорость модулей оперативной памяти",
           "command": "dmidecode -t memory",
-          "explanation": "Displays information about installed memory modules"
+          "explanation": "Узнать тип, объём и скорость модулей оперативной памяти."
         },
         {
           "type": "example",
-          "text": "find the system manufacturer and model",
+          "text": "показать информацию DMI об установленных планках RAM",
+          "command": "dmidecode -t memory",
+          "explanation": "Узнать тип, объём и скорость модулей оперативной памяти."
+        },
+        {
+          "type": "example",
+          "text": "определить производителя, модель и серийный номер системы",
           "command": "dmidecode -t system",
-          "explanation": "Shows the system manufacturer, product name, serial number, and UUID"
+          "explanation": "Определить производителя, модель и серийный номер системы."
         },
         {
           "type": "example",
-          "text": "check the BIOS version and release date",
+          "text": "получить идентификационные данные компьютера из DMI",
+          "command": "dmidecode -t system",
+          "explanation": "Определить производителя, модель и серийный номер системы."
+        },
+        {
+          "type": "example",
+          "text": "узнать версию BIOS и дату выпуска",
           "command": "dmidecode -t bios",
-          "explanation": "Displays BIOS vendor, version, and release date information"
+          "explanation": "Узнать версию BIOS и дату выпуска."
         },
         {
           "type": "example",
-          "text": "find the maximum supported RAM capacity",
+          "text": "показать производителя и сведения о прошивке BIOS",
+          "command": "dmidecode -t bios",
+          "explanation": "Узнать версию BIOS и дату выпуска."
+        },
+        {
+          "type": "example",
+          "text": "проверить максимальную ёмкость массива оперативной памяти по DMI",
           "command": "dmidecode -t 16",
-          "explanation": "Shows physical memory array info including maximum capacity"
+          "explanation": "Проверить максимальную ёмкость массива оперативной памяти по DMI."
+        },
+        {
+          "type": "example",
+          "text": "узнать поддерживаемый объём RAM из таблицы Physical Memory Array",
+          "command": "dmidecode -t 16",
+          "explanation": "Проверить максимальную ёмкость массива оперативной памяти по DMI."
         }
       ]
     },
     {
       "name": "free",
       "synopsis": "free [options]",
-      "description": "Display amount of free and used memory in the system",
+      "description": "Просмотр свободной и занятой оперативной памяти",
       "patterns": [
         {
           "type": "example",
-          "text": "check how much RAM is available on the system",
+          "text": "сколько оперативной памяти свободно и сколько занято",
           "command": "free -h",
-          "explanation": "Shows total, used, free, and available memory in human-readable units"
+          "explanation": "Сколько оперативной памяти свободно и сколько занято."
         },
         {
           "type": "example",
-          "text": "display memory usage in megabytes",
+          "text": "показать использование оперативки и подкачки",
+          "command": "free -h",
+          "explanation": "Сколько оперативной памяти свободно и сколько занято."
+        },
+        {
+          "type": "example",
+          "text": "вывести использование оперативной памяти в мебибайтах",
           "command": "free -m",
-          "explanation": "Shows memory and swap usage in megabytes"
+          "explanation": "Вывести использование оперативной памяти в мебибайтах."
         },
         {
           "type": "example",
-          "text": "show RAM and swap with a combined total row",
+          "text": "показать занятую память и swap в единицах MiB",
+          "command": "free -m",
+          "explanation": "Вывести использование оперативной памяти в мебибайтах."
+        },
+        {
+          "type": "example",
+          "text": "добавить общий итог оперативной памяти и подкачки",
           "command": "free -t -h",
-          "explanation": "Adds a total row combining RAM and swap"
+          "explanation": "Добавить общий итог оперативной памяти и подкачки."
         },
         {
           "type": "example",
-          "text": "continuously monitor memory usage every 2 seconds",
+          "text": "показать память в удобных единицах со строкой Total",
+          "command": "free -t -h",
+          "explanation": "Добавить общий итог оперативной памяти и подкачки."
+        },
+        {
+          "type": "example",
+          "text": "обновлять статистику оперативной памяти каждые две секунды",
           "command": "free -h -s 2",
-          "explanation": "Refreshes the memory display at 2-second intervals"
+          "explanation": "Обновлять статистику оперативной памяти каждые две секунды."
+        },
+        {
+          "type": "example",
+          "text": "следить за использованием RAM и swap с интервалом 2 секунды",
+          "command": "free -h -s 2",
+          "explanation": "Обновлять статистику оперативной памяти каждые две секунды."
         }
       ]
     },
     {
       "name": "vmstat",
       "synopsis": "vmstat [options] [delay [count]]",
-      "description": "Report virtual memory, CPU, and IO statistics",
+      "description": "Просмотр статистики памяти, процессора и ввода-вывода",
       "patterns": [
         {
           "type": "example",
-          "text": "show a snapshot of system performance statistics",
+          "text": "получить сводку о процессах, памяти, вводе-выводе и CPU",
           "command": "vmstat",
-          "explanation": "Displays process, memory, swap, IO, and CPU statistics"
+          "explanation": "Получить сводку о процессах, памяти, вводе-выводе и CPU."
         },
         {
           "type": "example",
-          "text": "monitor system performance every second for 10 iterations",
+          "text": "посмотреть текущую статистику производительности через vmstat",
+          "command": "vmstat",
+          "explanation": "Получить сводку о процессах, памяти, вводе-выводе и CPU."
+        },
+        {
+          "type": "example",
+          "text": "снять десять показаний vmstat с интервалом в секунду",
           "command": "vmstat 1 10",
-          "explanation": "Samples and displays stats every second for 10 rounds"
+          "explanation": "Снять десять показаний vmstat с интервалом в секунду."
         },
         {
           "type": "example",
-          "text": "show disk IO statistics",
+          "text": "наблюдать статистику системы каждую секунду, всего десять отчётов",
+          "command": "vmstat 1 10",
+          "explanation": "Снять десять показаний vmstat с интервалом в секунду."
+        },
+        {
+          "type": "example",
+          "text": "показать статистику чтения и записи по дискам через vmstat",
           "command": "vmstat -d",
-          "explanation": "Displays read and write statistics for each disk device"
+          "explanation": "Показать статистику чтения и записи по дискам через vmstat."
         },
         {
           "type": "example",
-          "text": "display vmstat memory statistics in mebibytes",
+          "text": "узнать число операций ввода-вывода блочных устройств",
+          "command": "vmstat -d",
+          "explanation": "Показать статистику чтения и записи по дискам через vmstat."
+        },
+        {
+          "type": "example",
+          "text": "вывести показатели памяти vmstat в мебибайтах",
           "command": "vmstat -S M",
-          "explanation": "Uses MiB (1024 × 1024 bytes) for memory amounts"
+          "explanation": "Показывает объёмы памяти в МиБ, то есть 1024 × 1024 байта."
         },
         {
           "type": "example",
-          "text": "show active and inactive memory",
+          "text": "переключить единицы статистики памяти на MiB",
+          "command": "vmstat -S M",
+          "explanation": "Показывает объёмы памяти в МиБ, то есть 1024 × 1024 байта."
+        },
+        {
+          "type": "example",
+          "text": "показать активную и неактивную память",
           "command": "vmstat -a",
-          "explanation": "Displays active and inactive memory instead of buffer and cache"
+          "explanation": "Показать активную и неактивную память."
+        },
+        {
+          "type": "example",
+          "text": "заменить столбцы буферов и кеша в vmstat на active и inactive",
+          "command": "vmstat -a",
+          "explanation": "Показать активную и неактивную память."
         }
       ]
     },
     {
       "name": "iostat",
       "synopsis": "iostat [options] [interval [count]]",
-      "description": "Report CPU and I/O statistics for devices and partitions",
+      "description": "Просмотр статистики CPU и устройств ввода-вывода",
       "patterns": [
         {
           "type": "example",
-          "text": "show CPU and disk IO statistics",
+          "text": "показать среднюю загрузку процессора и дисков с момента запуска",
           "command": "iostat",
-          "explanation": "Displays average CPU utilization and device IO statistics since boot"
+          "explanation": "Показать среднюю загрузку процессора и дисков с момента запуска."
         },
         {
           "type": "example",
-          "text": "monitor disk IO in real time every 2 seconds",
+          "text": "получить базовую статистику ввода-вывода через iostat",
+          "command": "iostat",
+          "explanation": "Показать среднюю загрузку процессора и дисков с момента запуска."
+        },
+        {
+          "type": "example",
+          "text": "наблюдать расширенную статистику дисков каждые две секунды",
           "command": "iostat -x 2",
-          "explanation": "Shows extended disk statistics updating every 2 seconds"
+          "explanation": "Наблюдать расширенную статистику дисков каждые две секунды."
         },
         {
           "type": "example",
-          "text": "show only disk statistics in megabytes",
+          "text": "следить за задержками и загрузкой устройств с обновлением раз в 2 секунды",
+          "command": "iostat -x 2",
+          "explanation": "Наблюдать расширенную статистику дисков каждые две секунды."
+        },
+        {
+          "type": "example",
+          "text": "вывести только дисковую статистику iostat в мегабайтах в секунду",
           "command": "iostat -d -m",
-          "explanation": "Displays disk throughput in megabytes per second"
+          "explanation": "Вывести только дисковую статистику iostat в мегабайтах в секунду."
         },
         {
           "type": "example",
-          "text": "monitor a specific disk device",
+          "text": "посмотреть скорость чтения и записи дисков с единицами MB/s",
+          "command": "iostat -d -m",
+          "explanation": "Вывести только дисковую статистику iostat в мегабайтах в секунду."
+        },
+        {
+          "type": "example",
+          "text": "снять пять расширенных отчётов по диску sda с секундным интервалом",
           "command": "iostat -x sda 1 5",
-          "explanation": "Shows extended stats for sda every second for 5 samples"
+          "explanation": "Снять пять расширенных отчётов по диску sda с секундным интервалом."
         },
         {
           "type": "example",
-          "text": "show IO stats in human-readable format with timestamps",
+          "text": "проверить активность устройства sda, обновляя статистику каждую секунду пять раз",
+          "command": "iostat -x sda 1 5",
+          "explanation": "Снять пять расширенных отчётов по диску sda с секундным интервалом."
+        },
+        {
+          "type": "example",
+          "text": "показывать статистику ввода-вывода с временем каждые две секунды",
           "command": "iostat -h -t 2",
-          "explanation": "Displays human-readable IO stats with timestamps every 2 seconds"
+          "explanation": "Показывать статистику ввода-вывода с временем каждые две секунды."
+        },
+        {
+          "type": "example",
+          "text": "вывести iostat в удобном формате с временными отметками и обновлением",
+          "command": "iostat -h -t 2",
+          "explanation": "Показывать статистику ввода-вывода с временем каждые две секунды."
         }
       ]
     },
     {
       "name": "sar",
       "synopsis": "sar [options] [interval [count]]",
-      "description": "Collect, report, and save system activity information",
+      "description": "Сбор, сохранение и просмотр статистики системы",
       "patterns": [
         {
           "type": "example",
-          "text": "show CPU usage statistics for the current day",
+          "text": "посмотреть собранную за сегодня статистику загрузки CPU",
           "command": "sar -u",
-          "explanation": "Displays CPU utilization data collected throughout the day"
+          "explanation": "Посмотреть собранную за сегодня статистику загрузки CPU."
         },
         {
           "type": "example",
-          "text": "monitor memory usage over time",
+          "text": "показать историю использования процессора через sar",
+          "command": "sar -u",
+          "explanation": "Посмотреть собранную за сегодня статистику загрузки CPU."
+        },
+        {
+          "type": "example",
+          "text": "снять десять показаний использования памяти с интервалом в секунду",
           "command": "sar -r 1 10",
-          "explanation": "Reports memory utilization every second for 10 intervals"
+          "explanation": "Снять десять показаний использования памяти с интервалом в секунду."
         },
         {
           "type": "example",
-          "text": "check disk IO activity history",
+          "text": "наблюдать RAM через sar каждую секунду в течение десяти отчётов",
+          "command": "sar -r 1 10",
+          "explanation": "Снять десять показаний использования памяти с интервалом в секунду."
+        },
+        {
+          "type": "example",
+          "text": "посмотреть историю дисковой активности из данных sar",
           "command": "sar -d",
-          "explanation": "Shows block device activity statistics from collected data"
+          "explanation": "Посмотреть историю дисковой активности из данных sar."
         },
         {
           "type": "example",
-          "text": "view network interface throughput statistics",
+          "text": "вывести ранее собранные показатели ввода-вывода блочных устройств",
+          "command": "sar -d",
+          "explanation": "Посмотреть историю дисковой активности из данных sar."
+        },
+        {
+          "type": "example",
+          "text": "получить пять секундных отчётов о сетевых интерфейсах",
           "command": "sar -n DEV 1 5",
-          "explanation": "Shows network device statistics every second for 5 samples"
+          "explanation": "Получить пять секундных отчётов о сетевых интерфейсах."
         },
         {
           "type": "example",
-          "text": "show load averages and run queue length",
+          "text": "измерить сетевой трафик через sar с интервалом 1 секунда, пять показаний",
+          "command": "sar -n DEV 1 5",
+          "explanation": "Получить пять секундных отчётов о сетевых интерфейсах."
+        },
+        {
+          "type": "example",
+          "text": "показать очередь выполнения и среднюю нагрузку десять раз через секунду",
           "command": "sar -q 1 10",
-          "explanation": "Displays run queue length and load averages at 1-second intervals"
+          "explanation": "Показать очередь выполнения и среднюю нагрузку десять раз через секунду."
+        },
+        {
+          "type": "example",
+          "text": "наблюдать load average и очередь процессов с секундным обновлением",
+          "command": "sar -q 1 10",
+          "explanation": "Показать очередь выполнения и среднюю нагрузку десять раз через секунду."
         }
       ]
     },
     {
       "name": "who",
       "synopsis": "who [options]",
-      "description": "Show who is currently logged into the system",
+      "description": "Просмотр пользователей, вошедших в систему",
       "patterns": [
         {
           "type": "example",
-          "text": "see who is currently logged in",
+          "text": "показать пользователей, вошедших в систему",
           "command": "who",
-          "explanation": "Lists all currently logged-in users with their terminals and login times"
+          "explanation": "Показать пользователей, вошедших в систему."
         },
         {
           "type": "example",
-          "text": "show logged-in users with idle time and PID",
+          "text": "узнать активные входы с терминалами и временем подключения",
+          "command": "who",
+          "explanation": "Показать пользователей, вошедших в систему."
+        },
+        {
+          "type": "example",
+          "text": "посмотреть вошедших пользователей, время простоя и PID сеансов",
           "command": "who -u",
-          "explanation": "Displays users with idle time, PID, and login information"
+          "explanation": "Посмотреть вошедших пользователей, время простоя и PID сеансов."
         },
         {
           "type": "example",
-          "text": "count the number of logged-in users",
+          "text": "вывести расширенные сведения о текущих пользовательских сессиях",
+          "command": "who -u",
+          "explanation": "Посмотреть вошедших пользователей, время простоя и PID сеансов."
+        },
+        {
+          "type": "example",
+          "text": "перечислить имена вошедших пользователей и их количество",
           "command": "who -q",
-          "explanation": "Shows usernames and a count of all logged-in users"
+          "explanation": "Перечислить имена вошедших пользователей и их количество."
         },
         {
           "type": "example",
-          "text": "show the current user and terminal info",
+          "text": "посчитать активные входы через who",
+          "command": "who -q",
+          "explanation": "Перечислить имена вошедших пользователей и их количество."
+        },
+        {
+          "type": "example",
+          "text": "показать сведения о текущем терминальном входе",
           "command": "who am i",
-          "explanation": "Displays information about the current session only"
+          "explanation": "Показать сведения о текущем терминальном входе."
+        },
+        {
+          "type": "example",
+          "text": "узнать пользователя, терминал и время начала этого сеанса",
+          "command": "who am i",
+          "explanation": "Показать сведения о текущем терминальном входе."
         }
       ]
     },
     {
       "name": "w",
       "synopsis": "w [options] [user]",
-      "description": "Show who is logged in and what they are doing",
+      "description": "Просмотр пользователей и их текущей активности",
       "patterns": [
         {
           "type": "example",
-          "text": "see who is logged in and what commands they are running",
+          "text": "посмотреть, кто вошёл в систему и какие команды выполняет",
           "command": "w",
-          "explanation": "Shows logged-in users, idle time, and their current processes"
+          "explanation": "Посмотреть, кто вошёл в систему и какие команды выполняет."
         },
         {
           "type": "example",
-          "text": "check what a specific user is doing on the system",
+          "text": "показать активность пользователей с текущими процессами и временем простоя",
+          "command": "w",
+          "explanation": "Посмотреть, кто вошёл в систему и какие команды выполняет."
+        },
+        {
+          "type": "example",
+          "text": "проверить, чем занят конкретный пользователь",
           "command": "w username",
-          "explanation": "Filters output to show only the specified user's sessions"
+          "explanation": "Проверить, чем занят конкретный пользователь."
         },
         {
           "type": "example",
-          "text": "show logged-in users without the header line",
+          "text": "вывести активные сеансы и процессы указанного пользователя",
+          "command": "w username",
+          "explanation": "Проверить, чем занят конкретный пользователь."
+        },
+        {
+          "type": "example",
+          "text": "показать активность пользователей без строки заголовка",
           "command": "w -h",
-          "explanation": "Displays user activity without the uptime header"
+          "explanation": "Показать активность пользователей без строки заголовка."
         },
         {
           "type": "example",
-          "text": "show short output with just user and their process",
+          "text": "убрать сводку uptime из вывода w",
+          "command": "w -h",
+          "explanation": "Показать активность пользователей без строки заголовка."
+        },
+        {
+          "type": "example",
+          "text": "вывести краткий список пользователей и текущих команд",
           "command": "w -s",
-          "explanation": "Shows a condensed view without login time and CPU times"
+          "explanation": "Вывести краткий список пользователей и текущих команд."
+        },
+        {
+          "type": "example",
+          "text": "показать сессии без времени входа и столбцов загрузки CPU",
+          "command": "w -s",
+          "explanation": "Вывести краткий список пользователей и текущих команд."
         }
       ]
     },
     {
       "name": "last",
       "synopsis": "last [options] [username]",
-      "description": "Show listing of last logged-in users",
+      "description": "Просмотр истории входов пользователей",
       "patterns": [
         {
           "type": "example",
-          "text": "show recent login history",
+          "text": "посмотреть историю входов пользователей и перезагрузок",
           "command": "last",
-          "explanation": "Lists the most recent user logins and system reboots"
+          "explanation": "Посмотреть историю входов пользователей и перезагрузок."
         },
         {
           "type": "example",
-          "text": "check when the system was last rebooted",
+          "text": "вывести последние записи журнала авторизации через last",
+          "command": "last",
+          "explanation": "Посмотреть историю входов пользователей и перезагрузок."
+        },
+        {
+          "type": "example",
+          "text": "узнать историю перезагрузок системы",
           "command": "last reboot",
-          "explanation": "Shows a history of system reboots with timestamps"
+          "explanation": "Узнать историю перезагрузок системы."
         },
         {
           "type": "example",
-          "text": "show login history for a specific user",
+          "text": "показать даты и время последних запусков компьютера",
+          "command": "last reboot",
+          "explanation": "Узнать историю перезагрузок системы."
+        },
+        {
+          "type": "example",
+          "text": "посмотреть историю входов определённого пользователя",
           "command": "last username",
-          "explanation": "Filters login records to show only the specified user"
+          "explanation": "Посмотреть историю входов определённого пользователя."
         },
         {
           "type": "example",
-          "text": "show logins from the past 7 days",
+          "text": "отфильтровать журнал last по имени учётной записи",
+          "command": "last username",
+          "explanation": "Посмотреть историю входов определённого пользователя."
+        },
+        {
+          "type": "example",
+          "text": "показать входы пользователей за последние семь дней",
           "command": "last -s \"$(date -d '7 days ago' '+%Y%m%d%H%M%S')\"",
-          "explanation": "Shows login records within the last week"
+          "explanation": "Показать входы пользователей за последние семь дней."
         },
         {
           "type": "example",
-          "text": "display IP addresses for remote logins",
+          "text": "вывести историю авторизаций начиная с даты неделю назад",
+          "command": "last -s \"$(date -d '7 days ago' '+%Y%m%d%H%M%S')\"",
+          "explanation": "Показать входы пользователей за последние семь дней."
+        },
+        {
+          "type": "example",
+          "text": "показать IP-адреса в истории удалённых входов",
           "command": "last -i",
-          "explanation": "Shows the IP address column for each login entry"
+          "explanation": "Показать IP-адреса в истории удалённых входов."
+        },
+        {
+          "type": "example",
+          "text": "вывести журнал last с числовыми адресами подключений",
+          "command": "last -i",
+          "explanation": "Показать IP-адреса в истории удалённых входов."
         }
       ]
     },
     {
       "name": "lastb",
       "synopsis": "lastb [options] [username]",
-      "description": "Show listing of failed login attempts",
+      "description": "Просмотр неудачных попыток входа",
       "patterns": [
         {
           "type": "example",
-          "text": "check for failed login attempts to detect intrusions",
+          "text": "посмотреть неудачные попытки входа в систему",
           "command": "lastb",
-          "explanation": "Lists all failed login attempts from the btmp log"
+          "explanation": "Посмотреть неудачные попытки входа в систему."
         },
         {
           "type": "example",
-          "text": "show failed login attempts for a specific user",
+          "text": "проверить журнал btmp на ошибки авторизации",
+          "command": "lastb",
+          "explanation": "Посмотреть неудачные попытки входа в систему."
+        },
+        {
+          "type": "example",
+          "text": "найти неудачные входы определённого пользователя",
           "command": "lastb username",
-          "explanation": "Filters failed attempts to show only the specified user"
+          "explanation": "Найти неудачные входы определённого пользователя."
         },
         {
           "type": "example",
-          "text": "show failed logins with IP addresses",
+          "text": "отфильтровать lastb по имени учётной записи",
+          "command": "lastb username",
+          "explanation": "Найти неудачные входы определённого пользователя."
+        },
+        {
+          "type": "example",
+          "text": "показать IP-адреса неудачных попыток входа",
           "command": "lastb -i",
-          "explanation": "Displays the source IP address for each failed login"
+          "explanation": "Показать IP-адреса неудачных попыток входа."
         },
         {
           "type": "example",
-          "text": "show the most recent failed logins limited to 20 entries",
+          "text": "узнать адреса источников ошибок авторизации из lastb",
+          "command": "lastb -i",
+          "explanation": "Показать IP-адреса неудачных попыток входа."
+        },
+        {
+          "type": "example",
+          "text": "вывести двадцать последних неудачных входов",
           "command": "lastb -n 20",
-          "explanation": "Shows only the 20 most recent failed login attempts"
+          "explanation": "Вывести двадцать последних неудачных входов."
+        },
+        {
+          "type": "example",
+          "text": "ограничить журнал lastb последними 20 записями",
+          "command": "lastb -n 20",
+          "explanation": "Вывести двадцать последних неудачных входов."
         }
       ]
     },
     {
       "name": "id",
       "synopsis": "id [options] [user]",
-      "description": "Display user and group identity information",
+      "description": "Просмотр идентификаторов пользователя и групп",
       "patterns": [
         {
           "type": "example",
-          "text": "show my user ID, group ID, and group memberships",
+          "text": "узнать свой UID, GID и группы",
           "command": "id",
-          "explanation": "Displays UID, GID, and all groups for the current user"
+          "explanation": "Узнать свой UID, GID и группы."
         },
         {
           "type": "example",
-          "text": "check the user and group info for another user",
+          "text": "показать идентификаторы текущего пользователя и его членство в группах",
+          "command": "id",
+          "explanation": "Узнать свой UID, GID и группы."
+        },
+        {
+          "type": "example",
+          "text": "посмотреть UID и группы другого пользователя",
           "command": "id username",
-          "explanation": "Shows UID, GID, and groups for the specified user"
+          "explanation": "Посмотреть UID и группы другого пользователя."
         },
         {
           "type": "example",
-          "text": "get just the numeric user ID",
+          "text": "получить идентификаторы указанной учётной записи",
+          "command": "id username",
+          "explanation": "Посмотреть UID и группы другого пользователя."
+        },
+        {
+          "type": "example",
+          "text": "вывести только числовой UID текущего пользователя",
           "command": "id -u",
-          "explanation": "Outputs only the effective user ID number"
+          "explanation": "Вывести только числовой UID текущего пользователя."
         },
         {
           "type": "example",
-          "text": "list all group IDs the current user belongs to",
+          "text": "узнать эффективный идентификатор пользователя без остальных полей",
+          "command": "id -u",
+          "explanation": "Вывести только числовой UID текущего пользователя."
+        },
+        {
+          "type": "example",
+          "text": "показать числовые идентификаторы всех своих групп",
           "command": "id -G",
-          "explanation": "Shows all supplementary group IDs for the current user"
+          "explanation": "Показать числовые идентификаторы всех своих групп."
+        },
+        {
+          "type": "example",
+          "text": "получить GID основной и дополнительных групп текущего пользователя",
+          "command": "id -G",
+          "explanation": "Показать числовые идентификаторы всех своих групп."
         }
       ]
     },
     {
       "name": "groups",
       "synopsis": "groups [user]",
-      "description": "Display group memberships for a user",
+      "description": "Просмотр групп пользователя",
       "patterns": [
         {
           "type": "example",
-          "text": "see what groups the current user belongs to",
+          "text": "перечислить группы текущего пользователя",
           "command": "groups",
-          "explanation": "Lists all groups the current user is a member of"
+          "explanation": "Перечислить группы текущего пользователя."
         },
         {
           "type": "example",
-          "text": "check group memberships for another user",
+          "text": "узнать, в какие группы входит моя учётная запись",
+          "command": "groups",
+          "explanation": "Перечислить группы текущего пользователя."
+        },
+        {
+          "type": "example",
+          "text": "посмотреть группы другого пользователя",
           "command": "groups username",
-          "explanation": "Shows all groups the specified user belongs to"
+          "explanation": "Посмотреть группы другого пользователя."
         },
         {
           "type": "example",
-          "text": "verify if a user is in the sudo group",
+          "text": "проверить членство указанной учётной записи в группах",
+          "command": "groups username",
+          "explanation": "Посмотреть группы другого пользователя."
+        },
+        {
+          "type": "example",
+          "text": "проверить наличие группы sudo у пользователя",
           "command": "groups username | grep sudo",
-          "explanation": "Checks whether the user has sudo group membership"
+          "explanation": "Проверить наличие группы sudo у пользователя."
         },
         {
           "type": "example",
-          "text": "list groups for multiple users at once",
+          "text": "найти sudo в списке групп указанной учётной записи",
+          "command": "groups username | grep sudo",
+          "explanation": "Проверить наличие группы sudo у пользователя."
+        },
+        {
+          "type": "example",
+          "text": "вывести группы сразу нескольких пользователей",
           "command": "groups user1 user2 user3",
-          "explanation": "Shows group memberships for each specified user"
+          "explanation": "Вывести группы сразу нескольких пользователей."
+        },
+        {
+          "type": "example",
+          "text": "показать членство user1, user2 и user3 в группах",
+          "command": "groups user1 user2 user3",
+          "explanation": "Вывести группы сразу нескольких пользователей."
         }
       ]
     },
     {
       "name": "env",
       "synopsis": "env [options] [name=value] [command]",
-      "description": "Display or set environment variables and run commands in modified environments",
+      "description": "Просмотр и изменение окружения запускаемой команды",
       "patterns": [
         {
           "type": "example",
-          "text": "list all environment variables",
+          "text": "показать все переменные окружения и их значения",
           "command": "env",
-          "explanation": "Prints all current environment variables and their values"
+          "explanation": "Показать все переменные окружения и их значения."
         },
         {
           "type": "example",
-          "text": "run a command with a temporary environment variable",
+          "text": "посмотреть окружение текущего процесса через env",
+          "command": "env",
+          "explanation": "Показать все переменные окружения и их значения."
+        },
+        {
+          "type": "example",
+          "text": "запустить Node-приложение с временной переменной DEBUG=true",
           "command": "env DEBUG=true node app.js",
-          "explanation": "Sets DEBUG=true only for the duration of the command"
+          "explanation": "Запустить Node-приложение с временной переменной DEBUG=true."
         },
         {
           "type": "example",
-          "text": "run a command with a clean environment",
+          "text": "передать переменную окружения только одной запускаемой команде",
+          "command": "env DEBUG=true node app.js",
+          "explanation": "Запустить Node-приложение с временной переменной DEBUG=true."
+        },
+        {
+          "type": "example",
+          "text": "открыть bash с очищенным окружением",
           "command": "env -i /bin/bash",
-          "explanation": "Starts a shell with all environment variables cleared"
+          "explanation": "Открыть bash с очищенным окружением."
         },
         {
           "type": "example",
-          "text": "run a program with a modified PATH",
+          "text": "запустить оболочку без унаследованных переменных среды",
+          "command": "env -i /bin/bash",
+          "explanation": "Открыть bash с очищенным окружением."
+        },
+        {
+          "type": "example",
+          "text": "запустить программу с каталогом в начале её PATH",
           "command": "env PATH=/custom/bin:$PATH my-program",
-          "explanation": "Prepends a directory to PATH for the executed command only"
+          "explanation": "Запустить программу с каталогом в начале её PATH."
+        },
+        {
+          "type": "example",
+          "text": "временно изменить путь поиска команд только для одного приложения",
+          "command": "env PATH=/custom/bin:$PATH my-program",
+          "explanation": "Запустить программу с каталогом в начале её PATH."
         }
       ]
     },
     {
       "name": "printenv",
       "synopsis": "printenv [variable]",
-      "description": "Print all or specific environment variables",
+      "description": "Просмотр переменных окружения",
       "patterns": [
         {
           "type": "example",
-          "text": "show the value of a specific environment variable",
+          "text": "показать значение переменной окружения HOME",
           "command": "printenv HOME",
-          "explanation": "Prints the value of the HOME variable"
+          "explanation": "Показать значение переменной окружения HOME."
         },
         {
           "type": "example",
-          "text": "display all environment variables sorted alphabetically",
+          "text": "узнать домашний каталог из переменной среды",
+          "command": "printenv HOME",
+          "explanation": "Показать значение переменной окружения HOME."
+        },
+        {
+          "type": "example",
+          "text": "вывести переменные окружения по алфавиту",
           "command": "printenv | sort",
-          "explanation": "Lists all environment variables in sorted order"
+          "explanation": "Вывести переменные окружения по алфавиту."
         },
         {
           "type": "example",
-          "text": "check the current PATH directories",
+          "text": "отсортировать список значений среды процесса",
+          "command": "printenv | sort",
+          "explanation": "Вывести переменные окружения по алфавиту."
+        },
+        {
+          "type": "example",
+          "text": "показать каталоги из переменной PATH",
           "command": "printenv PATH",
-          "explanation": "Shows the directories in the PATH variable"
+          "explanation": "Показать каталоги из переменной PATH."
         },
         {
           "type": "example",
-          "text": "check if a specific environment variable is set",
+          "text": "узнать порядок поиска исполняемых файлов в текущем окружении",
+          "command": "printenv PATH",
+          "explanation": "Показать каталоги из переменной PATH."
+        },
+        {
+          "type": "example",
+          "text": "проверить, существует ли переменная окружения MY_VAR",
           "command": "printenv MY_VAR && echo 'Set' || echo 'Not set'",
-          "explanation": "Prints the variable value and reports whether it is defined, including an empty string"
+          "explanation": "Выводит значение переменной и сообщает, определена ли она, включая пустую строку."
+        },
+        {
+          "type": "example",
+          "text": "вывести значение переменной среды и сообщение о её наличии",
+          "command": "printenv MY_VAR && echo 'Set' || echo 'Not set'",
+          "explanation": "Выводит значение переменной и сообщает, определена ли она, включая пустую строку."
         }
       ]
     },
     {
       "name": "set",
       "synopsis": "set [options] [args]",
-      "description": "Set or unset shell options and positional parameters",
+      "description": "Просмотр и изменение параметров оболочки",
       "patterns": [
         {
           "type": "example",
-          "text": "show all shell variables and functions",
+          "text": "показать переменные и функции текущей оболочки",
           "command": "set",
-          "explanation": "Displays all shell variables, functions, and their values"
+          "explanation": "Показать переменные и функции текущей оболочки."
         },
         {
           "type": "example",
-          "text": "enable strict error handling in a bash script",
+          "text": "вывести все значения переменных shell через set",
+          "command": "set",
+          "explanation": "Показать переменные и функции текущей оболочки."
+        },
+        {
+          "type": "example",
+          "text": "включить остановку скрипта при ошибках и необъявленных переменных",
           "command": "set -euo pipefail",
-          "explanation": "Exits on error (-e), undefined variables (-u), and pipe failures"
+          "explanation": "Включить остановку скрипта при ошибках и необъявленных переменных."
         },
         {
           "type": "example",
-          "text": "enable debug mode to trace script execution",
+          "text": "настроить строгий режим bash с учётом ошибок в конвейерах",
+          "command": "set -euo pipefail",
+          "explanation": "Включить остановку скрипта при ошибках и необъявленных переменных."
+        },
+        {
+          "type": "example",
+          "text": "включить трассировку выполняемых команд оболочки",
           "command": "set -x",
-          "explanation": "Prints each command and its arguments before executing"
+          "explanation": "Включить трассировку выполняемых команд оболочки."
         },
         {
           "type": "example",
-          "text": "disable filename globbing in the shell",
+          "text": "показывать команды скрипта и их аргументы перед исполнением",
+          "command": "set -x",
+          "explanation": "Включить трассировку выполняемых команд оболочки."
+        },
+        {
+          "type": "example",
+          "text": "запретить раскрытие масок имён файлов в оболочке",
           "command": "set -f",
-          "explanation": "Prevents wildcard characters from expanding to filenames"
+          "explanation": "Запретить раскрытие масок имён файлов в оболочке."
+        },
+        {
+          "type": "example",
+          "text": "отключить подстановку файлов по звёздочкам и другим шаблонам",
+          "command": "set -f",
+          "explanation": "Запретить раскрытие масок имён файлов в оболочке."
         }
       ]
     },
     {
       "name": "export",
       "synopsis": "export [name[=value]]",
-      "description": "Set environment variables available to child processes",
+      "description": "Экспорт переменных окружения в дочерние процессы",
       "patterns": [
         {
           "type": "example",
-          "text": "set a new environment variable that persists for child processes",
+          "text": "экспортировать переменную для дочерних процессов",
           "command": "export MY_VAR='hello world'",
-          "explanation": "Creates an environment variable accessible to spawned processes"
+          "explanation": "Экспортировать переменную для дочерних процессов."
         },
         {
           "type": "example",
-          "text": "append a directory to PATH in the current shell session",
+          "text": "задать MY_VAR и передать её запускаемым приложениям",
+          "command": "export MY_VAR='hello world'",
+          "explanation": "Экспортировать переменную для дочерних процессов."
+        },
+        {
+          "type": "example",
+          "text": "добавить каталог в конец PATH текущей оболочки",
           "command": "export PATH=$PATH:/opt/my-app/bin",
-          "explanation": "Extends the current shell PATH inherited by child processes without editing startup files"
+          "explanation": "Дополняет PATH текущей оболочки и дочерних процессов, не редактируя файлы запуска."
         },
         {
           "type": "example",
-          "text": "list all exported environment variables",
+          "text": "расширить путь поиска программ для этого сеанса и дочерних процессов",
+          "command": "export PATH=$PATH:/opt/my-app/bin",
+          "explanation": "Дополняет PATH текущей оболочки и дочерних процессов, не редактируя файлы запуска."
+        },
+        {
+          "type": "example",
+          "text": "показать все экспортируемые переменные окружения",
           "command": "export -p",
-          "explanation": "Displays all variables marked for export with their values"
+          "explanation": "Показать все экспортируемые переменные окружения."
         },
         {
           "type": "example",
-          "text": "set the default text editor",
+          "text": "вывести переменные, отмеченные для передачи дочерним процессам",
+          "command": "export -p",
+          "explanation": "Показать все экспортируемые переменные окружения."
+        },
+        {
+          "type": "example",
+          "text": "назначить vim редактором по умолчанию через EDITOR",
           "command": "export EDITOR=vim",
-          "explanation": "Sets vim as the default editor for programs that respect EDITOR"
+          "explanation": "Назначить vim редактором по умолчанию через EDITOR."
         },
         {
           "type": "example",
-          "text": "stop exporting a shell variable to child processes",
+          "text": "установить предпочитаемый текстовый редактор в переменной среды",
+          "command": "export EDITOR=vim",
+          "explanation": "Назначить vim редактором по умолчанию через EDITOR."
+        },
+        {
+          "type": "example",
+          "text": "отменить экспорт переменной, сохранив её в оболочке",
           "command": "export -n MY_VAR",
-          "explanation": "Removes the export attribute while retaining the variable and its value in the current shell"
+          "explanation": "Убирает признак экспорта, сохраняя саму переменную и её значение в текущей оболочке."
+        },
+        {
+          "type": "example",
+          "text": "перестать передавать MY_VAR дочерним процессам",
+          "command": "export -n MY_VAR",
+          "explanation": "Убирает признак экспорта, сохраняя саму переменную и её значение в текущей оболочке."
         }
       ]
     },
     {
       "name": "ulimit",
       "synopsis": "ulimit [options] [limit]",
-      "description": "Get and set user resource limits for the shell and its children",
+      "description": "Просмотр и настройка ограничений ресурсов оболочки",
       "patterns": [
         {
           "type": "example",
-          "text": "show all current resource limits",
+          "text": "показать текущие мягкие ограничения ресурсов оболочки",
           "command": "ulimit -a",
-          "explanation": "Displays all soft limits including open files, stack size, and CPU time"
+          "explanation": "Показать текущие мягкие ограничения ресурсов оболочки."
         },
         {
           "type": "example",
-          "text": "check the maximum number of open file descriptors",
+          "text": "посмотреть лимиты файлов, стека и процессорного времени",
+          "command": "ulimit -a",
+          "explanation": "Показать текущие мягкие ограничения ресурсов оболочки."
+        },
+        {
+          "type": "example",
+          "text": "проверить лимит открытых файловых дескрипторов",
           "command": "ulimit -n",
-          "explanation": "Shows the current limit on open files per process"
+          "explanation": "Проверить лимит открытых файловых дескрипторов."
         },
         {
           "type": "example",
-          "text": "increase the open file limit for the current session",
+          "text": "узнать максимальное число открытых файлов на процесс в текущей оболочке",
+          "command": "ulimit -n",
+          "explanation": "Проверить лимит открытых файловых дескрипторов."
+        },
+        {
+          "type": "example",
+          "text": "установить лимит открытых дескрипторов в 65536 для сеанса",
           "command": "ulimit -n 65536",
-          "explanation": "Sets the maximum open files to 65536 for this shell session"
+          "explanation": "Установить лимит открытых дескрипторов в 65536 для сеанса."
         },
         {
           "type": "example",
-          "text": "check the maximum stack size",
+          "text": "увеличить допустимое число открытых файлов в текущей оболочке",
+          "command": "ulimit -n 65536",
+          "explanation": "Установить лимит открытых дескрипторов в 65536 для сеанса."
+        },
+        {
+          "type": "example",
+          "text": "узнать ограничение размера стека",
           "command": "ulimit -s",
-          "explanation": "Shows the maximum stack size in kilobytes"
+          "explanation": "Узнать ограничение размера стека."
         },
         {
           "type": "example",
-          "text": "show hard limits that cannot be increased by regular users",
+          "text": "показать лимит стека процесса в килобайтах",
+          "command": "ulimit -s",
+          "explanation": "Узнать ограничение размера стека."
+        },
+        {
+          "type": "example",
+          "text": "показать жёсткие ограничения ресурсов",
           "command": "ulimit -Ha",
-          "explanation": "Displays all hard resource limits set by the system"
+          "explanation": "Показать жёсткие ограничения ресурсов."
+        },
+        {
+          "type": "example",
+          "text": "посмотреть верхние пределы ulimit, недоступные для повышения обычному пользователю",
+          "command": "ulimit -Ha",
+          "explanation": "Показать жёсткие ограничения ресурсов."
         }
       ]
     },
     {
       "name": "locale",
       "synopsis": "locale [options] [name]",
-      "description": "Get locale-specific information about language and regional settings",
+      "description": "Просмотр языковых и региональных настроек",
       "patterns": [
         {
           "type": "example",
-          "text": "show all current locale settings",
+          "text": "вывести текущие настройки локали",
           "command": "locale",
-          "explanation": "Displays the active locale settings for language, numbers, and dates"
+          "explanation": "Вывести текущие настройки локали."
         },
         {
           "type": "example",
-          "text": "list all available locales on the system",
+          "text": "проверить язык, форматы чисел и дат в окружении",
+          "command": "locale",
+          "explanation": "Вывести текущие настройки локали."
+        },
+        {
+          "type": "example",
+          "text": "перечислить установленные локали",
           "command": "locale -a",
-          "explanation": "Shows every locale that is installed and available"
+          "explanation": "Перечислить установленные локали."
         },
         {
           "type": "example",
-          "text": "check the current character encoding",
+          "text": "показать доступные языковые и региональные настройки системы",
+          "command": "locale -a",
+          "explanation": "Перечислить установленные локали."
+        },
+        {
+          "type": "example",
+          "text": "узнать текущую кодировку символов",
           "command": "locale charmap",
-          "explanation": "Displays the character map name like UTF-8"
+          "explanation": "Узнать текущую кодировку символов."
         },
         {
           "type": "example",
-          "text": "display the locale keywords and values for time formatting",
+          "text": "показать используемую таблицу кодировки, например UTF-8",
+          "command": "locale charmap",
+          "explanation": "Узнать текущую кодировку символов."
+        },
+        {
+          "type": "example",
+          "text": "вывести параметры категории локали LC_TIME",
           "command": "locale -k LC_TIME",
-          "explanation": "Shows all keywords and values for the time locale category"
+          "explanation": "Вывести параметры категории локали LC_TIME."
+        },
+        {
+          "type": "example",
+          "text": "показать названия и значения настроек форматирования времени",
+          "command": "locale -k LC_TIME",
+          "explanation": "Вывести параметры категории локали LC_TIME."
         }
       ]
     },
     {
       "name": "hostnamectl",
       "synopsis": "hostnamectl [command]",
-      "description": "Query and change the system hostname and related settings",
+      "description": "Просмотр и изменение имени узла и связанных настроек",
       "patterns": [
         {
           "type": "example",
-          "text": "show the current hostname and system info",
+          "text": "посмотреть имя компьютера и общие сведения о системе",
           "command": "hostnamectl",
-          "explanation": "Displays static/transient hostname, OS, kernel, and architecture"
+          "explanation": "Посмотреть имя компьютера и общие сведения о системе."
         },
         {
           "type": "example",
-          "text": "permanently change the system hostname",
+          "text": "показать hostname, ОС, ядро и архитектуру через hostnamectl",
+          "command": "hostnamectl",
+          "explanation": "Посмотреть имя компьютера и общие сведения о системе."
+        },
+        {
+          "type": "example",
+          "text": "постоянно изменить имя компьютера",
           "command": "hostnamectl set-hostname new-server-name",
-          "explanation": "Sets the static hostname that persists across reboots"
+          "explanation": "Постоянно изменить имя компьютера."
         },
         {
           "type": "example",
-          "text": "set a pretty descriptive hostname for display purposes",
+          "text": "установить hostname, сохраняющийся после перезагрузки",
+          "command": "hostnamectl set-hostname new-server-name",
+          "explanation": "Постоянно изменить имя компьютера."
+        },
+        {
+          "type": "example",
+          "text": "задать красивое отображаемое имя компьютера с пробелами",
           "command": "hostnamectl set-hostname 'Web Server 01' --pretty",
-          "explanation": "Sets a human-friendly hostname with spaces and special characters"
+          "explanation": "Задать красивое отображаемое имя компьютера с пробелами."
         },
         {
           "type": "example",
-          "text": "check the operating system and kernel version",
+          "text": "установить описательное имя хоста через pretty hostname",
+          "command": "hostnamectl set-hostname 'Web Server 01' --pretty",
+          "explanation": "Задать красивое отображаемое имя компьютера с пробелами."
+        },
+        {
+          "type": "example",
+          "text": "показать название ОС и версию ядра через hostnamectl",
           "command": "hostnamectl | grep -E 'Operating|Kernel'",
-          "explanation": "Filters output to show OS name and kernel version"
+          "explanation": "Показать название ОС и версию ядра через hostnamectl."
         },
         {
           "type": "example",
-          "text": "view the machine chassis type",
+          "text": "вывести только строки Operating System и Kernel из сведений системы",
+          "command": "hostnamectl | grep -E 'Operating|Kernel'",
+          "explanation": "Показать название ОС и версию ядра через hostnamectl."
+        },
+        {
+          "type": "example",
+          "text": "определить тип корпуса компьютера",
           "command": "hostnamectl | grep Chassis",
-          "explanation": "Shows whether the system is a desktop, laptop, server, or VM"
+          "explanation": "Определить тип корпуса компьютера."
+        },
+        {
+          "type": "example",
+          "text": "узнать, считает ли система устройство ноутбуком, сервером или другой категорией",
+          "command": "hostnamectl | grep Chassis",
+          "explanation": "Определить тип корпуса компьютера."
         }
       ]
     }

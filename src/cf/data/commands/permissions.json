@@ -4,497 +4,897 @@
     {
       "name": "chmod",
       "synopsis": "chmod [options] mode file [...]",
-      "description": "Change file access permissions",
+      "description": "Изменение прав доступа к файлам",
       "patterns": [
         {
           "type": "example",
-          "text": "make a script executable",
+          "text": "сделать скрипт исполняемым",
           "command": "chmod +x script.sh",
-          "explanation": "Adds execute permission for owner, group, and others"
+          "explanation": "Сделать скрипт исполняемым."
         },
         {
           "type": "example",
-          "text": "set read and write for owner only, no access for anyone else",
+          "text": "добавить файлу разрешение на запуск",
+          "command": "chmod +x script.sh",
+          "explanation": "Сделать скрипт исполняемым."
+        },
+        {
+          "type": "example",
+          "text": "разрешить чтение и запись секретного файла только владельцу",
           "command": "chmod 600 secret.key",
-          "explanation": "Sets permissions to rw------- protecting the file from other users"
+          "explanation": "Разрешить чтение и запись секретного файла только владельцу."
         },
         {
           "type": "example",
-          "text": "make a directory and its contents readable by everyone",
+          "text": "установить права 600, закрыв доступ группе и остальным",
+          "command": "chmod 600 secret.key",
+          "explanation": "Разрешить чтение и запись секретного файла только владельцу."
+        },
+        {
+          "type": "example",
+          "text": "рекурсивно добавить всем право чтения дерева сайта",
           "command": "chmod -R a+r /var/www/html",
-          "explanation": "Recursively adds read permission for all users on every file and directory"
+          "explanation": "Рекурсивно добавить всем право чтения дерева сайта."
         },
         {
           "type": "example",
-          "text": "remove write permission for group and others",
+          "text": "разрешить читать файлы и каталоги внутри /var/www/html всем категориям пользователей",
+          "command": "chmod -R a+r /var/www/html",
+          "explanation": "Рекурсивно добавить всем право чтения дерева сайта."
+        },
+        {
+          "type": "example",
+          "text": "запретить группе и остальным изменять файл",
           "command": "chmod go-w important-file.txt",
-          "explanation": "Strips write access from group and other users"
+          "explanation": "Запретить группе и остальным изменять файл."
         },
         {
           "type": "example",
-          "text": "set standard web directory permissions",
+          "text": "снять право записи у всех, кроме владельца",
+          "command": "chmod go-w important-file.txt",
+          "explanation": "Запретить группе и остальным изменять файл."
+        },
+        {
+          "type": "example",
+          "text": "задать каталогу права 755",
           "command": "chmod 755 /var/www/html",
-          "explanation": "Owner can read/write/execute, everyone else can read and execute"
+          "explanation": "Задать каталогу права 755."
         },
         {
           "type": "example",
-          "text": "set the setuid bit on a program",
+          "text": "разрешить всем читать и проходить папку, а записывать только владельцу",
+          "command": "chmod 755 /var/www/html",
+          "explanation": "Задать каталогу права 755."
+        },
+        {
+          "type": "example",
+          "text": "установить бит setuid у программы",
           "command": "chmod u+s /usr/local/bin/myapp",
-          "explanation": "Allows the program to run with the file owner's privileges"
+          "explanation": "Установить бит setuid у программы."
+        },
+        {
+          "type": "example",
+          "text": "добавить исполняемому файлу признак запуска с идентификатором владельца",
+          "command": "chmod u+s /usr/local/bin/myapp",
+          "explanation": "Установить бит setuid у программы."
         }
       ]
     },
     {
       "name": "chown",
       "synopsis": "chown [options] owner[:group] file [...]",
-      "description": "Change file owner and group",
+      "description": "Изменение владельца и группы файла",
       "patterns": [
         {
           "type": "example",
-          "text": "change the owner of a file",
+          "text": "назначить alice владельцем PDF-файла",
           "command": "sudo chown alice report.pdf",
-          "explanation": "Sets alice as the owner of report.pdf"
+          "explanation": "Назначить alice владельцем PDF-файла."
         },
         {
           "type": "example",
-          "text": "change owner and group of a file at once",
+          "text": "передать файл report.pdf указанному пользователю",
+          "command": "sudo chown alice report.pdf",
+          "explanation": "Назначить alice владельцем PDF-файла."
+        },
+        {
+          "type": "example",
+          "text": "сменить владельца и группу файла на www-data",
           "command": "sudo chown www-data:www-data /var/www/index.html",
-          "explanation": "Sets both owner and group to www-data"
+          "explanation": "Сменить владельца и группу файла на www-data."
         },
         {
           "type": "example",
-          "text": "recursively change ownership of a directory tree",
+          "text": "назначить файлу сайта пользователя и группу веб-сервера",
+          "command": "sudo chown www-data:www-data /var/www/index.html",
+          "explanation": "Сменить владельца и группу файла на www-data."
+        },
+        {
+          "type": "example",
+          "text": "рекурсивно передать каталог приложения пользователю и группе deploy",
           "command": "sudo chown -R deploy:deploy /opt/app",
-          "explanation": "Changes owner and group of /opt/app and everything inside it"
+          "explanation": "Рекурсивно передать каталог приложения пользователю и группе deploy."
         },
         {
           "type": "example",
-          "text": "change only the group of a file",
+          "text": "изменить владельца всего дерева /opt/app вместе с группой",
+          "command": "sudo chown -R deploy:deploy /opt/app",
+          "explanation": "Рекурсивно передать каталог приложения пользователю и группе deploy."
+        },
+        {
+          "type": "example",
+          "text": "сменить только группу файла на developers",
           "command": "sudo chown :developers project.conf",
-          "explanation": "Changes the group to developers without modifying the owner"
+          "explanation": "Сменить только группу файла на developers."
         },
         {
           "type": "example",
-          "text": "change ownership of a symbolic link itself",
+          "text": "оставить владельца прежним и назначить новую группу через chown",
+          "command": "sudo chown :developers project.conf",
+          "explanation": "Сменить только группу файла на developers."
+        },
+        {
+          "type": "example",
+          "text": "сменить владельца самой символической ссылки",
           "command": "sudo chown -h alice /usr/local/bin/mylink",
-          "explanation": "Changes the owner of the symlink rather than the file it points to"
+          "explanation": "Сменить владельца самой символической ссылки."
+        },
+        {
+          "type": "example",
+          "text": "передать ссылку пользователю alice, не меняя её целевой объект",
+          "command": "sudo chown -h alice /usr/local/bin/mylink",
+          "explanation": "Сменить владельца самой символической ссылки."
         }
       ]
     },
     {
       "name": "chgrp",
       "synopsis": "chgrp [options] group file [...]",
-      "description": "Change the group ownership of a file",
+      "description": "Изменение группы файла",
       "patterns": [
         {
           "type": "example",
-          "text": "change the group of a file",
+          "text": "назначить файлу группу developers",
           "command": "chgrp developers project.conf",
-          "explanation": "Sets the group of project.conf to developers"
+          "explanation": "Назначить файлу группу developers."
         },
         {
           "type": "example",
-          "text": "recursively change group for an entire directory",
+          "text": "изменить групповую принадлежность project.conf",
+          "command": "chgrp developers project.conf",
+          "explanation": "Назначить файлу группу developers."
+        },
+        {
+          "type": "example",
+          "text": "рекурсивно сменить группу каталога и содержимого на staff",
           "command": "chgrp -R staff /shared/docs",
-          "explanation": "Changes the group to staff for all files under /shared/docs"
+          "explanation": "Рекурсивно сменить группу каталога и содержимого на staff."
         },
         {
           "type": "example",
-          "text": "change group of a symlink without following it",
+          "text": "передать дерево /shared/docs указанной группе",
+          "command": "chgrp -R staff /shared/docs",
+          "explanation": "Рекурсивно сменить группу каталога и содержимого на staff."
+        },
+        {
+          "type": "example",
+          "text": "изменить группу символической ссылки без перехода по ней",
           "command": "chgrp -h webteam /var/www/current",
-          "explanation": "Changes the group of the symbolic link itself"
+          "explanation": "Изменить группу символической ссылки без перехода по ней."
         },
         {
           "type": "example",
-          "text": "change group and show what was modified",
+          "text": "назначить ссылке current группу webteam, не затрагивая цель",
+          "command": "chgrp -h webteam /var/www/current",
+          "explanation": "Изменить группу символической ссылки без перехода по ней."
+        },
+        {
+          "type": "example",
+          "text": "сменить группу презентаций на marketing с подробным выводом",
           "command": "chgrp -v marketing *.pptx",
-          "explanation": "Changes the group of all PowerPoint files and reports each change"
+          "explanation": "Сменить группу презентаций на marketing с подробным выводом."
+        },
+        {
+          "type": "example",
+          "text": "показать результат изменения группы у файлов pptx",
+          "command": "chgrp -v marketing *.pptx",
+          "explanation": "Сменить группу презентаций на marketing с подробным выводом."
         }
       ]
     },
     {
       "name": "umask",
       "synopsis": "umask [-S] [mask]",
-      "description": "Set the default permission mask for newly created files",
+      "description": "Настройка маски прав для новых файлов и каталогов",
       "patterns": [
         {
           "type": "example",
-          "text": "check the current umask value",
+          "text": "показать текущую маску создания файлов",
           "command": "umask",
-          "explanation": "Displays the current permission mask in octal notation"
+          "explanation": "Показать текущую маску создания файлов."
         },
         {
           "type": "example",
-          "text": "set a restrictive umask so new files are private",
+          "text": "узнать числовое значение umask в оболочке",
+          "command": "umask",
+          "explanation": "Показать текущую маску создания файлов."
+        },
+        {
+          "type": "example",
+          "text": "запретить группе и остальным доступ к вновь создаваемым файлам",
           "command": "umask 077",
-          "explanation": "New files will be accessible only by the owner (no group/other access)"
+          "explanation": "Запретить группе и остальным доступ к вновь создаваемым файлам."
         },
         {
           "type": "example",
-          "text": "show the current umask in symbolic format",
+          "text": "поставить umask 077 для приватных файлов и папок",
+          "command": "umask 077",
+          "explanation": "Запретить группе и остальным доступ к вновь создаваемым файлам."
+        },
+        {
+          "type": "example",
+          "text": "показать umask в символьной форме",
           "command": "umask -S",
-          "explanation": "Displays the effective permissions for new files in human-readable form"
+          "explanation": "Показать umask в символьной форме."
         },
         {
           "type": "example",
-          "text": "set umask so new files are readable by group members",
+          "text": "вывести разрешения маски словами категорий u, g и o",
+          "command": "umask -S",
+          "explanation": "Показать umask в символьной форме."
+        },
+        {
+          "type": "example",
+          "text": "настроить новые файлы для владельца и чтения группой без доступа остальных",
           "command": "umask 027",
-          "explanation": "Owner gets full access, group gets read/execute, others get nothing"
+          "explanation": "Настроить новые файлы для владельца и чтения группой без доступа остальных."
         },
         {
           "type": "example",
-          "text": "set a permissive umask for shared development work",
+          "text": "установить umask 027 для ограниченного совместного доступа",
+          "command": "umask 027",
+          "explanation": "Настроить новые файлы для владельца и чтения группой без доступа остальных."
+        },
+        {
+          "type": "example",
+          "text": "разрешить групповую запись при создании файлов через umask 002",
           "command": "umask 002",
-          "explanation": "New files will be writable by the group, read-only for others"
+          "explanation": "Разрешить групповую запись при создании файлов через umask 002."
+        },
+        {
+          "type": "example",
+          "text": "настроить маску для совместной работы с доступом группы",
+          "command": "umask 002",
+          "explanation": "Разрешить групповую запись при создании файлов через umask 002."
         }
       ]
     },
     {
       "name": "sudo",
       "synopsis": "sudo [options] command [args]",
-      "description": "Execute a command as another user, typically root",
+      "description": "Выполнение команды от имени другого пользователя",
       "patterns": [
         {
           "type": "example",
-          "text": "run a command as root",
+          "text": "обновить индекс пакетов apt с правами root",
           "command": "sudo apt update",
-          "explanation": "Executes apt update with superuser privileges"
+          "explanation": "Обновить индекс пакетов apt с правами root."
         },
         {
           "type": "example",
-          "text": "run a command as a different user",
+          "text": "выполнить apt update через повышение привилегий sudo",
+          "command": "sudo apt update",
+          "explanation": "Обновить индекс пакетов apt с правами root."
+        },
+        {
+          "type": "example",
+          "text": "запустить psql от имени postgres",
           "command": "sudo -u postgres psql",
-          "explanation": "Opens PostgreSQL shell as the postgres user"
+          "explanation": "Запустить psql от имени postgres."
         },
         {
           "type": "example",
-          "text": "open a root shell",
+          "text": "открыть клиент PostgreSQL с учётными данными другого пользователя",
+          "command": "sudo -u postgres psql",
+          "explanation": "Запустить psql от имени postgres."
+        },
+        {
+          "type": "example",
+          "text": "открыть оболочку входа root через sudo",
           "command": "sudo -i",
-          "explanation": "Starts an interactive login shell as root"
+          "explanation": "Открыть оболочку входа root через sudo."
         },
         {
           "type": "example",
-          "text": "edit a system file safely with sudo",
+          "text": "перейти в административную сессию с окружением суперпользователя",
+          "command": "sudo -i",
+          "explanation": "Открыть оболочку входа root через sudo."
+        },
+        {
+          "type": "example",
+          "text": "отредактировать системный файл hosts через sudoedit",
           "command": "sudo -e /etc/hosts",
-          "explanation": "Opens the file in your editor with root write access using sudoedit"
+          "explanation": "Отредактировать системный файл hosts через sudoedit."
         },
         {
           "type": "example",
-          "text": "check what sudo commands the current user is allowed to run",
+          "text": "открыть /etc/hosts в редакторе с последующей привилегированной записью",
+          "command": "sudo -e /etc/hosts",
+          "explanation": "Отредактировать системный файл hosts через sudoedit."
+        },
+        {
+          "type": "example",
+          "text": "показать разрешённые текущему пользователю команды sudo",
           "command": "sudo -l",
-          "explanation": "Lists the allowed and forbidden commands for the invoking user"
+          "explanation": "Показать разрешённые текущему пользователю команды sudo."
         },
         {
           "type": "example",
-          "text": "request preservation of permitted environment variables when running through sudo",
+          "text": "проверить свои права на выполнение команд с повышением привилегий",
+          "command": "sudo -l",
+          "explanation": "Показать разрешённые текущему пользователю команды sudo."
+        },
+        {
+          "type": "example",
+          "text": "запустить deploy.sh через sudo с сохранением разрешённого окружения",
           "command": "sudo -E ./deploy.sh",
-          "explanation": "Requests the current environment with sudo -E; sudo policy can still filter variables"
+          "explanation": "Запрашивает сохранение окружения через sudo -E; политика sudo всё равно может отфильтровать переменные."
+        },
+        {
+          "type": "example",
+          "text": "передать пользовательские переменные при привилегированном запуске скрипта",
+          "command": "sudo -E ./deploy.sh",
+          "explanation": "Запрашивает сохранение окружения через sudo -E; политика sudo всё равно может отфильтровать переменные."
         }
       ]
     },
     {
       "name": "su",
       "synopsis": "su [options] [user]",
-      "description": "Switch to another user account",
+      "description": "Переключение на другую учётную запись",
       "patterns": [
         {
           "type": "example",
-          "text": "switch to the root user",
+          "text": "переключиться в сессию входа root",
           "command": "su -",
-          "explanation": "Opens a login shell as root with root's environment"
+          "explanation": "Переключиться в сессию входа root."
         },
         {
           "type": "example",
-          "text": "switch to another user account",
+          "text": "открыть оболочку суперпользователя через su -",
+          "command": "su -",
+          "explanation": "Переключиться в сессию входа root."
+        },
+        {
+          "type": "example",
+          "text": "войти в оболочку пользователя alice с её окружением входа",
           "command": "su - alice",
-          "explanation": "Switches to alice's account with a full login shell"
+          "explanation": "Войти в оболочку пользователя alice с её окружением входа."
         },
         {
           "type": "example",
-          "text": "run a single command as another user",
+          "text": "переключиться на другую учётную запись в режиме login",
+          "command": "su - alice",
+          "explanation": "Войти в оболочку пользователя alice с её окружением входа."
+        },
+        {
+          "type": "example",
+          "text": "выполнить whoami от имени alice без постоянного переключения",
           "command": "su -c 'whoami' alice",
-          "explanation": "Executes whoami as alice without starting an interactive shell"
+          "explanation": "Выполнить whoami от имени alice без постоянного переключения."
         },
         {
           "type": "example",
-          "text": "switch user preserving the current environment",
+          "text": "запустить одну команду под другим пользователем через su",
+          "command": "su -c 'whoami' alice",
+          "explanation": "Выполнить whoami от имени alice без постоянного переключения."
+        },
+        {
+          "type": "example",
+          "text": "переключиться на alice с сохранением окружения",
           "command": "su -m alice",
-          "explanation": "Switches to alice while requesting environment preservation; PAM can still adjust variables"
+          "explanation": "Переключается на alice с запросом сохранения окружения; PAM может дополнительно изменить переменные."
+        },
+        {
+          "type": "example",
+          "text": "открыть оболочку другого пользователя, сохранив текущие переменные среды",
+          "command": "su -m alice",
+          "explanation": "Переключается на alice с запросом сохранения окружения; PAM может дополнительно изменить переменные."
         }
       ]
     },
     {
       "name": "visudo",
       "synopsis": "visudo [options]",
-      "description": "Safely edit the sudoers file with syntax checking",
+      "description": "Безопасное редактирование sudoers с проверкой синтаксиса",
       "patterns": [
         {
           "type": "example",
-          "text": "edit the sudoers file safely",
+          "text": "отредактировать sudoers с проверкой синтаксиса",
           "command": "sudo visudo",
-          "explanation": "Opens the sudoers file in an editor and validates syntax before saving"
+          "explanation": "Отредактировать sudoers с проверкой синтаксиса."
         },
         {
           "type": "example",
-          "text": "edit a specific sudoers drop-in file",
+          "text": "открыть настройки sudo через защищённый редактор visudo",
+          "command": "sudo visudo",
+          "explanation": "Отредактировать sudoers с проверкой синтаксиса."
+        },
+        {
+          "type": "example",
+          "text": "изменить отдельный файл правил sudo для deploy",
           "command": "sudo visudo -f /etc/sudoers.d/deploy",
-          "explanation": "Edits a separate sudoers file fragment with validation"
+          "explanation": "Изменить отдельный файл правил sudo для deploy."
         },
         {
           "type": "example",
-          "text": "check the sudoers file for syntax errors without editing",
+          "text": "открыть /etc/sudoers.d/deploy через visudo",
+          "command": "sudo visudo -f /etc/sudoers.d/deploy",
+          "explanation": "Изменить отдельный файл правил sudo для deploy."
+        },
+        {
+          "type": "example",
+          "text": "проверить синтаксис sudoers без редактирования",
           "command": "sudo visudo -c",
-          "explanation": "Validates the sudoers file and reports any parse errors"
+          "explanation": "Проверить синтаксис sudoers без редактирования."
         },
         {
           "type": "example",
-          "text": "check a specific sudoers file for syntax errors",
+          "text": "протестировать конфигурацию прав sudo на ошибки",
+          "command": "sudo visudo -c",
+          "explanation": "Проверить синтаксис sudoers без редактирования."
+        },
+        {
+          "type": "example",
+          "text": "проверить отдельный файл правил sudo на синтаксические ошибки",
           "command": "sudo visudo -c -f /etc/sudoers.d/custom",
-          "explanation": "Validates only the specified sudoers fragment file"
+          "explanation": "Проверить отдельный файл правил sudo на синтаксические ошибки."
+        },
+        {
+          "type": "example",
+          "text": "провалидировать /etc/sudoers.d/custom через visudo",
+          "command": "sudo visudo -c -f /etc/sudoers.d/custom",
+          "explanation": "Проверить отдельный файл правил sudo на синтаксические ошибки."
         }
       ]
     },
     {
       "name": "setfacl",
       "synopsis": "setfacl [options] [{-m|-x} acl_spec] file [...]",
-      "description": "Set file access control lists for fine-grained permissions",
+      "description": "Настройка списков управления доступом ACL",
       "patterns": [
         {
           "type": "example",
-          "text": "grant a specific user read access to a file",
+          "text": "дать bob право чтения CSV-файла через ACL",
           "command": "setfacl -m u:bob:r report.csv",
-          "explanation": "Adds an ACL entry giving user bob read permission on report.csv"
+          "explanation": "Дать bob право чтения CSV-файла через ACL."
         },
         {
           "type": "example",
-          "text": "give a group read write and traversal access to a directory",
+          "text": "добавить персональное разрешение читать report.csv",
+          "command": "setfacl -m u:bob:r report.csv",
+          "explanation": "Дать bob право чтения CSV-файла через ACL."
+        },
+        {
+          "type": "example",
+          "text": "дать группе devteam чтение, запись и проход в каталог",
           "command": "setfacl -m g:devteam:rwx /shared/project",
-          "explanation": "Grants devteam read/write/search permissions on the directory"
+          "explanation": "Даёт группе devteam права чтения, записи и прохода через каталог."
         },
         {
           "type": "example",
-          "text": "set default ACL so new files inherit permissions",
+          "text": "разрешить группе просматривать и изменять содержимое папки через ACL",
+          "command": "setfacl -m g:devteam:rwx /shared/project",
+          "explanation": "Даёт группе devteam права чтения, записи и прохода через каталог."
+        },
+        {
+          "type": "example",
+          "text": "настроить наследуемый ACL rwx для группы devteam",
           "command": "setfacl -d -m g:devteam:rwx /shared/project",
-          "explanation": "Sets a default rwx group ACL for new children; effective inherited permissions are limited by each creation mode"
+          "explanation": "Устанавливает ACL по умолчанию с rwx для новых дочерних объектов; эффективные права ограничены режимом создания каждого объекта."
         },
         {
           "type": "example",
-          "text": "remove extended ACL entries from a file",
+          "text": "задать групповые права новых файлов и папок через ACL по умолчанию",
+          "command": "setfacl -d -m g:devteam:rwx /shared/project",
+          "explanation": "Устанавливает ACL по умолчанию с rwx для новых дочерних объектов; эффективные права ограничены режимом создания каждого объекта."
+        },
+        {
+          "type": "example",
+          "text": "удалить расширенные ACL-записи PDF-файла",
           "command": "setfacl -b document.pdf",
-          "explanation": "Strips all extended ACL entries, leaving only standard permissions"
+          "explanation": "Удалить расширенные ACL-записи PDF-файла."
         },
         {
           "type": "example",
-          "text": "recursively apply ACL permissions to a directory tree",
+          "text": "вернуть document.pdf к базовым записям прав без дополнительных ACL",
+          "command": "setfacl -b document.pdf",
+          "explanation": "Удалить расширенные ACL-записи PDF-файла."
+        },
+        {
+          "type": "example",
+          "text": "рекурсивно добавить alice чтение и выполнение через ACL",
           "command": "setfacl -R -m u:alice:rx /opt/shared",
-          "explanation": "Grants alice read and execute access to all files in the directory tree"
+          "explanation": "Рекурсивно добавить alice чтение и выполнение через ACL."
+        },
+        {
+          "type": "example",
+          "text": "назначить пользователю alice права rx во всём дереве /opt/shared",
+          "command": "setfacl -R -m u:alice:rx /opt/shared",
+          "explanation": "Рекурсивно добавить alice чтение и выполнение через ACL."
         }
       ]
     },
     {
       "name": "getfacl",
       "synopsis": "getfacl [options] file [...]",
-      "description": "Display file access control lists",
+      "description": "Просмотр списков управления доступом ACL",
       "patterns": [
         {
           "type": "example",
-          "text": "view the ACL permissions on a file",
+          "text": "показать ACL-разрешения CSV-файла",
           "command": "getfacl report.csv",
-          "explanation": "Shows the full access control list including owner, group, and extended ACLs"
+          "explanation": "Показать ACL-разрешения CSV-файла."
         },
         {
           "type": "example",
-          "text": "check ACLs on multiple files at once",
+          "text": "посмотреть персональные и групповые права report.csv",
+          "command": "getfacl report.csv",
+          "explanation": "Показать ACL-разрешения CSV-файла."
+        },
+        {
+          "type": "example",
+          "text": "посмотреть ACL нескольких нескрытых объектов в папке project",
           "command": "getfacl /shared/project/*",
-          "explanation": "Displays ACLs for every file in the project directory"
+          "explanation": "Посмотреть ACL нескольких нескрытых объектов в папке project."
         },
         {
           "type": "example",
-          "text": "show ACL entries with explicit effective-permission comments",
+          "text": "вывести расширенные права элементов каталога /shared/project",
+          "command": "getfacl /shared/project/*",
+          "explanation": "Посмотреть ACL нескольких нескрытых объектов в папке project."
+        },
+        {
+          "type": "example",
+          "text": "показать ACL с явными комментариями эффективных прав",
           "command": "getfacl -e /shared/data",
-          "explanation": "Adds effective-rights comments for applicable ACL entries, even when they match the entry permissions"
+          "explanation": "Добавляет комментарии об эффективных правах к подходящим ACL, даже когда они совпадают с заданными правами."
         },
         {
           "type": "example",
-          "text": "recursively show ACLs for a directory tree",
+          "text": "добавить отображение реально действующих разрешений ко всем ACL-записям",
+          "command": "getfacl -e /shared/data",
+          "explanation": "Добавляет комментарии об эффективных правах к подходящим ACL, даже когда они совпадают с заданными правами."
+        },
+        {
+          "type": "example",
+          "text": "рекурсивно вывести ACL всего дерева project",
           "command": "getfacl -R /shared/project",
-          "explanation": "Lists ACLs for every file and subdirectory under the project folder"
+          "explanation": "Рекурсивно вывести ACL всего дерева project."
+        },
+        {
+          "type": "example",
+          "text": "посмотреть расширенные права папки и вложенных объектов",
+          "command": "getfacl -R /shared/project",
+          "explanation": "Рекурсивно вывести ACL всего дерева project."
         }
       ]
     },
     {
       "name": "chattr",
       "synopsis": "chattr [options] [+-=attribute] file [...]",
-      "description": "Change file attributes on a Linux file system",
+      "description": "Изменение специальных атрибутов файлов Linux",
       "patterns": [
         {
           "type": "example",
-          "text": "make a file immutable so it cannot be modified or deleted",
+          "text": "установить файлу атрибут неизменяемости",
           "command": "sudo chattr +i /etc/resolv.conf",
-          "explanation": "Sets the immutable flag preventing any changes including by root"
+          "explanation": "Установить файлу атрибут неизменяемости."
         },
         {
           "type": "example",
-          "text": "make a file append-only for logging",
+          "text": "запретить обычное изменение и удаление resolv.conf через immutable",
+          "command": "sudo chattr +i /etc/resolv.conf",
+          "explanation": "Установить файлу атрибут неизменяемости."
+        },
+        {
+          "type": "example",
+          "text": "разрешить для файла журнала только дописывание",
           "command": "sudo chattr +a /var/log/audit.log",
-          "explanation": "Only allows appending to the file, preventing modification of existing content"
+          "explanation": "Разрешить для файла журнала только дописывание."
         },
         {
           "type": "example",
-          "text": "remove the immutable attribute from a file",
+          "text": "установить audit.log атрибут append-only",
+          "command": "sudo chattr +a /var/log/audit.log",
+          "explanation": "Разрешить для файла журнала только дописывание."
+        },
+        {
+          "type": "example",
+          "text": "снять атрибут неизменяемости с файла конфигурации",
           "command": "sudo chattr -i /etc/resolv.conf",
-          "explanation": "Clears the immutable flag so the file can be modified again"
+          "explanation": "Снять атрибут неизменяемости с файла конфигурации."
         },
         {
           "type": "example",
-          "text": "recursively set the no-dump attribute on a directory",
+          "text": "убрать immutable у /etc/resolv.conf",
+          "command": "sudo chattr -i /etc/resolv.conf",
+          "explanation": "Снять атрибут неизменяемости с файла конфигурации."
+        },
+        {
+          "type": "example",
+          "text": "рекурсивно поставить атрибут исключения из dump-резервирования",
           "command": "sudo chattr -R +d /tmp/cache",
-          "explanation": "Marks all files in the cache directory to be excluded from dumps"
+          "explanation": "Рекурсивно поставить атрибут исключения из dump-резервирования."
+        },
+        {
+          "type": "example",
+          "text": "назначить дереву /tmp/cache признак nodump",
+          "command": "sudo chattr -R +d /tmp/cache",
+          "explanation": "Рекурсивно поставить атрибут исключения из dump-резервирования."
         }
       ]
     },
     {
       "name": "lsattr",
       "synopsis": "lsattr [options] [file ...]",
-      "description": "List file attributes on a Linux file system",
+      "description": "Просмотр специальных атрибутов файлов Linux",
       "patterns": [
         {
           "type": "example",
-          "text": "show the special attributes of a file",
+          "text": "показать специальные атрибуты файла resolv.conf",
           "command": "lsattr /etc/resolv.conf",
-          "explanation": "Displays ext2/ext3/ext4 attributes like immutable or append-only"
+          "explanation": "Показать специальные атрибуты файла resolv.conf."
         },
         {
           "type": "example",
-          "text": "list attributes for all files in a directory",
+          "text": "узнать, установлен ли immutable или другой флаг у конфигурации",
+          "command": "lsattr /etc/resolv.conf",
+          "explanation": "Показать специальные атрибуты файла resolv.conf."
+        },
+        {
+          "type": "example",
+          "text": "показать атрибуты элементов каталога /etc",
           "command": "lsattr /etc/",
-          "explanation": "Shows the attributes for every file in the /etc directory"
+          "explanation": "Показать атрибуты элементов каталога /etc."
         },
         {
           "type": "example",
-          "text": "recursively list attributes for a directory tree",
+          "text": "вывести специальные флаги файлов системной конфигурации",
+          "command": "lsattr /etc/",
+          "explanation": "Показать атрибуты элементов каталога /etc."
+        },
+        {
+          "type": "example",
+          "text": "рекурсивно посмотреть атрибуты дерева сайта",
           "command": "lsattr -R /var/www",
-          "explanation": "Shows attributes for all files and subdirectories recursively"
+          "explanation": "Рекурсивно посмотреть атрибуты дерева сайта."
         },
         {
           "type": "example",
-          "text": "show attributes of directories themselves rather than their contents",
+          "text": "вывести специальные флаги содержимого /var/www и вложенных папок",
+          "command": "lsattr -R /var/www",
+          "explanation": "Рекурсивно посмотреть атрибуты дерева сайта."
+        },
+        {
+          "type": "example",
+          "text": "показать атрибуты самой папки /var/log без её содержимого",
           "command": "lsattr -d /var/log",
-          "explanation": "Displays attributes of the directory entry itself"
+          "explanation": "Показать атрибуты самой папки /var/log без её содержимого."
+        },
+        {
+          "type": "example",
+          "text": "посмотреть специальные флаги объекта каталога журналов",
+          "command": "lsattr -d /var/log",
+          "explanation": "Показать атрибуты самой папки /var/log без её содержимого."
         }
       ]
     },
     {
       "name": "passwd",
       "synopsis": "passwd [options] [username]",
-      "description": "Change a user's password",
+      "description": "Изменение пароля пользователя",
       "patterns": [
         {
           "type": "example",
-          "text": "change your own password",
+          "text": "изменить свой пароль",
           "command": "passwd",
-          "explanation": "Prompts for the current password then asks for a new one"
+          "explanation": "Изменить свой пароль."
         },
         {
           "type": "example",
-          "text": "change another user's password as root",
+          "text": "задать новый пароль текущей учётной записи",
+          "command": "passwd",
+          "explanation": "Изменить свой пароль."
+        },
+        {
+          "type": "example",
+          "text": "поменять пароль пользователя alice с правами администратора",
           "command": "sudo passwd alice",
-          "explanation": "Sets a new password for alice without requiring the old one"
+          "explanation": "Поменять пароль пользователя alice с правами администратора."
         },
         {
           "type": "example",
-          "text": "lock password authentication for a user account",
+          "text": "назначить другой пароль указанной учётной записи через sudo",
+          "command": "sudo passwd alice",
+          "explanation": "Поменять пароль пользователя alice с правами администратора."
+        },
+        {
+          "type": "example",
+          "text": "заблокировать пароль пользователя bob",
           "command": "sudo passwd -l bob",
-          "explanation": "Locks bob's password; other authentication methods such as SSH keys are not disabled"
+          "explanation": "Блокирует пароль bob; другие способы входа, например SSH-ключи, не отключаются."
         },
         {
           "type": "example",
-          "text": "unlock password authentication for a user account",
+          "text": "запретить вход по паролю для выбранной учётной записи",
+          "command": "sudo passwd -l bob",
+          "explanation": "Блокирует пароль bob; другие способы входа, например SSH-ключи, не отключаются."
+        },
+        {
+          "type": "example",
+          "text": "снять блокировку пароля пользователя bob",
           "command": "sudo passwd -u bob",
-          "explanation": "Unlocks the password hash; expiration and other account restrictions remain unchanged"
+          "explanation": "Разблокирует хеш пароля; срок действия и другие ограничения учётной записи сохраняются."
         },
         {
           "type": "example",
-          "text": "force a user to change their password at next login",
+          "text": "восстановить возможность парольной аутентификации заблокированной записи",
+          "command": "sudo passwd -u bob",
+          "explanation": "Разблокирует хеш пароля; срок действия и другие ограничения учётной записи сохраняются."
+        },
+        {
+          "type": "example",
+          "text": "потребовать смену пароля alice при следующем входе",
           "command": "sudo passwd -e alice",
-          "explanation": "Expires alice's password so she must set a new one on next login"
+          "explanation": "Потребовать смену пароля alice при следующем входе."
         },
         {
           "type": "example",
-          "text": "check the password status of a user account",
+          "text": "пометить текущий пароль пользователя как истёкший",
+          "command": "sudo passwd -e alice",
+          "explanation": "Потребовать смену пароля alice при следующем входе."
+        },
+        {
+          "type": "example",
+          "text": "показать состояние пароля учётной записи alice",
           "command": "sudo passwd -S alice",
-          "explanation": "Shows whether the account is locked, the last change date, and expiry info"
+          "explanation": "Показать состояние пароля учётной записи alice."
+        },
+        {
+          "type": "example",
+          "text": "узнать статус и параметры срока действия пользовательского пароля",
+          "command": "sudo passwd -S alice",
+          "explanation": "Показать состояние пароля учётной записи alice."
         }
       ]
     },
     {
       "name": "useradd",
       "synopsis": "useradd [options] username",
-      "description": "Create a new user account",
+      "description": "Создание учётной записи пользователя",
       "patterns": [
         {
           "type": "example",
-          "text": "create a new user with a home directory",
+          "text": "создать alice с домашним каталогом и оболочкой bash",
           "command": "sudo useradd -m -s /bin/bash alice",
-          "explanation": "Creates user alice with a home directory and bash as the default shell"
+          "explanation": "Создать alice с домашним каталогом и оболочкой bash."
         },
         {
           "type": "example",
-          "text": "create a system user for running a service",
+          "text": "добавить нового пользователя с папкой дома и /bin/bash",
+          "command": "sudo useradd -m -s /bin/bash alice",
+          "explanation": "Создать alice с домашним каталогом и оболочкой bash."
+        },
+        {
+          "type": "example",
+          "text": "создать системную учётную запись службы без интерактивного входа",
           "command": "sudo useradd -r -s /usr/sbin/nologin appservice",
-          "explanation": "Creates a system account that cannot log in interactively"
+          "explanation": "Создать системную учётную запись службы без интерактивного входа."
         },
         {
           "type": "example",
-          "text": "create a user and add them to supplementary groups",
+          "text": "добавить appservice с системным UID и оболочкой nologin",
+          "command": "sudo useradd -r -s /usr/sbin/nologin appservice",
+          "explanation": "Создать системную учётную запись службы без интерактивного входа."
+        },
+        {
+          "type": "example",
+          "text": "создать alice с домашней папкой и дополнительными группами sudo и docker",
           "command": "sudo useradd -m -G sudo,docker alice",
-          "explanation": "Creates alice with membership in the sudo and docker groups"
+          "explanation": "Создать alice с домашней папкой и дополнительными группами sudo и docker."
         },
         {
           "type": "example",
-          "text": "create a user with a specific home directory and UID",
+          "text": "завести пользователя и сразу включить его в административную и Docker-группы",
+          "command": "sudo useradd -m -G sudo,docker alice",
+          "explanation": "Создать alice с домашней папкой и дополнительными группами sudo и docker."
+        },
+        {
+          "type": "example",
+          "text": "создать deploy с UID 1500 и домашним каталогом /opt/deploy",
           "command": "sudo useradd -m -d /opt/deploy -u 1500 deploy",
-          "explanation": "Creates the deploy user with a custom home directory and user ID"
+          "explanation": "Создать deploy с UID 1500 и домашним каталогом /opt/deploy."
         },
         {
           "type": "example",
-          "text": "create a user with an expiration date",
+          "text": "добавить пользователя с заданным идентификатором и нестандартной папкой дома",
+          "command": "sudo useradd -m -d /opt/deploy -u 1500 deploy",
+          "explanation": "Создать deploy с UID 1500 и домашним каталогом /opt/deploy."
+        },
+        {
+          "type": "example",
+          "text": "создать пользователя contractor со сроком учётной записи до 31 декабря 2026 года",
           "command": "sudo useradd -m -e 2026-12-31 contractor",
-          "explanation": "Creates a user account that automatically expires at year end"
+          "explanation": "Создать пользователя contractor со сроком учётной записи до 31 декабря 2026 года."
+        },
+        {
+          "type": "example",
+          "text": "добавить временную учётную запись с домашней папкой и датой истечения 2026-12-31",
+          "command": "sudo useradd -m -e 2026-12-31 contractor",
+          "explanation": "Создать пользователя contractor со сроком учётной записи до 31 декабря 2026 года."
         }
       ]
     },
     {
       "name": "userdel",
       "synopsis": "userdel [options] username",
-      "description": "Delete a user account",
+      "description": "Удаление учётной записи пользователя",
       "patterns": [
         {
           "type": "example",
-          "text": "delete a user account",
+          "text": "удалить учётную запись bob без удаления домашней папки",
           "command": "sudo userdel bob",
-          "explanation": "Removes the user bob but leaves their home directory intact",
+          "explanation": "Удалить учётную запись bob без удаления домашней папки.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "delete a user and remove their home directory",
+          "text": "убрать пользователя из системы, оставив его файлы на месте",
+          "command": "sudo userdel bob",
+          "explanation": "Удалить учётную запись bob без удаления домашней папки.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "удалить пользователя вместе с домашним каталогом и почтой",
           "command": "sudo userdel -r bob",
-          "explanation": "Removes bob's account along with their home directory and mail spool",
+          "explanation": "Удалить пользователя вместе с домашним каталогом и почтой.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "force delete a user even if they are currently logged in",
+          "text": "убрать bob из системы с удалением его домашней папки",
+          "command": "sudo userdel -r bob",
+          "explanation": "Удалить пользователя вместе с домашним каталогом и почтой.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "принудительно удалить пользователя даже при активной сессии",
           "command": "sudo userdel -f bob",
-          "explanation": "Forces removal of the account even if the user has active processes",
+          "explanation": "Принудительно удалить пользователя даже при активной сессии.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "force delete a user with their home directory and mail spool",
+          "text": "убрать учётную запись bob с обходом обычных проверок userdel",
+          "command": "sudo userdel -f bob",
+          "explanation": "Принудительно удалить пользователя даже при активной сессии.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "принудительно удалить пользователя, его домашнюю папку и почту",
           "command": "sudo userdel -rf bob",
-          "explanation": "Forcibly removes the user, their home directory, and their mail spool",
+          "explanation": "Принудительно удалить пользователя, его домашнюю папку и почту.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "выполнить userdel для bob с удалением домашнего каталога и флагом force",
+          "command": "sudo userdel -rf bob",
+          "explanation": "Принудительно удалить пользователя, его домашнюю папку и почту.",
           "destructive": true
         }
       ]
@@ -502,102 +902,184 @@
     {
       "name": "usermod",
       "synopsis": "usermod [options] username",
-      "description": "Modify an existing user account",
+      "description": "Изменение свойств учётной записи пользователя",
       "patterns": [
         {
           "type": "example",
-          "text": "add a user to an additional group",
+          "text": "добавить alice в дополнительную группу docker, сохранив остальные группы",
           "command": "sudo usermod -aG docker alice",
-          "explanation": "Appends alice to the docker group without removing other group memberships"
+          "explanation": "Добавить alice в дополнительную группу docker, сохранив остальные группы."
         },
         {
           "type": "example",
-          "text": "change a user's login shell",
+          "text": "дать существующему пользователю членство в Docker-группе через usermod",
+          "command": "sudo usermod -aG docker alice",
+          "explanation": "Добавить alice в дополнительную группу docker, сохранив остальные группы."
+        },
+        {
+          "type": "example",
+          "text": "назначить пользователю alice оболочку zsh",
           "command": "sudo usermod -s /bin/zsh alice",
-          "explanation": "Sets zsh as alice's default login shell"
+          "explanation": "Назначить пользователю alice оболочку zsh."
         },
         {
           "type": "example",
-          "text": "lock a user password with usermod",
+          "text": "сменить командный интерпретатор входа на /bin/zsh",
+          "command": "sudo usermod -s /bin/zsh alice",
+          "explanation": "Назначить пользователю alice оболочку zsh."
+        },
+        {
+          "type": "example",
+          "text": "заблокировать пароль пользователя bob через usermod",
           "command": "sudo usermod -L bob",
-          "explanation": "Locks bob's password hash; SSH-key authentication and other access methods are not necessarily disabled"
+          "explanation": "Блокирует хеш пароля bob; SSH-ключи и другие способы доступа могут продолжить работать."
         },
         {
           "type": "example",
-          "text": "change a user's home directory and move their files",
+          "text": "отключить парольную аутентификацию выбранной учётной записи",
+          "command": "sudo usermod -L bob",
+          "explanation": "Блокирует хеш пароля bob; SSH-ключи и другие способы доступа могут продолжить работать."
+        },
+        {
+          "type": "example",
+          "text": "сменить домашний каталог alice и перенести туда существующие файлы",
           "command": "sudo usermod -d /new/home/alice -m alice",
-          "explanation": "Moves alice's home directory and its contents to the new location"
+          "explanation": "Сменить домашний каталог alice и перенести туда существующие файлы."
         },
         {
           "type": "example",
-          "text": "rename a user account",
+          "text": "переместить пользовательскую папку в /new/home/alice через usermod",
+          "command": "sudo usermod -d /new/home/alice -m alice",
+          "explanation": "Сменить домашний каталог alice и перенести туда существующие файлы."
+        },
+        {
+          "type": "example",
+          "text": "переименовать учётную запись oldname в newname",
           "command": "sudo usermod -l newname oldname",
-          "explanation": "Changes the login name from oldname to newname"
+          "explanation": "Переименовать учётную запись oldname в newname."
+        },
+        {
+          "type": "example",
+          "text": "изменить логин существующего пользователя без смены домашнего пути",
+          "command": "sudo usermod -l newname oldname",
+          "explanation": "Переименовать учётную запись oldname в newname."
         }
       ]
     },
     {
       "name": "groupadd",
       "synopsis": "groupadd [options] group",
-      "description": "Create a new group",
+      "description": "Создание группы",
       "patterns": [
         {
           "type": "example",
-          "text": "create a new group",
+          "text": "создать группу developers",
           "command": "sudo groupadd developers",
-          "explanation": "Creates a new group named developers with an auto-assigned GID"
+          "explanation": "Создать группу developers."
         },
         {
           "type": "example",
-          "text": "create a group with a specific GID",
+          "text": "добавить новую группу пользователей",
+          "command": "sudo groupadd developers",
+          "explanation": "Создать группу developers."
+        },
+        {
+          "type": "example",
+          "text": "создать группу webteam с GID 1500",
           "command": "sudo groupadd -g 1500 webteam",
-          "explanation": "Creates the webteam group with GID 1500"
+          "explanation": "Создать группу webteam с GID 1500."
         },
         {
           "type": "example",
-          "text": "create a system group for a service",
+          "text": "назначить новой группе конкретный числовой идентификатор",
+          "command": "sudo groupadd -g 1500 webteam",
+          "explanation": "Создать группу webteam с GID 1500."
+        },
+        {
+          "type": "example",
+          "text": "создать системную группу appservice",
           "command": "sudo groupadd -r appservice",
-          "explanation": "Creates a system group with a GID in the system range"
+          "explanation": "Создать системную группу appservice."
         },
         {
           "type": "example",
-          "text": "create a group or succeed if that group already exists",
+          "text": "добавить группу службы с системным GID",
+          "command": "sudo groupadd -r appservice",
+          "explanation": "Создать системную группу appservice."
+        },
+        {
+          "type": "example",
+          "text": "создать группу shared, не считая ошибкой её существование",
           "command": "sudo groupadd -f shared",
-          "explanation": "Creates the group or exits successfully if it already exists"
+          "explanation": "Создать группу shared, не считая ошибкой её существование."
+        },
+        {
+          "type": "example",
+          "text": "обеспечить наличие указанной группы через groupadd -f",
+          "command": "sudo groupadd -f shared",
+          "explanation": "Создать группу shared, не считая ошибкой её существование."
         }
       ]
     },
     {
       "name": "groupdel",
       "synopsis": "groupdel [options] group",
-      "description": "Delete a group",
+      "description": "Удаление группы",
       "patterns": [
         {
           "type": "example",
-          "text": "delete a group",
+          "text": "удалить группу oldteam",
           "command": "sudo groupdel oldteam",
-          "explanation": "Removes the group oldteam from the system",
+          "explanation": "Удалить группу oldteam.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "force delete a group even when it is a user primary group",
+          "text": "убрать существующую группу из системы",
+          "command": "sudo groupdel oldteam",
+          "explanation": "Удалить группу oldteam.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "принудительно удалить группу oldteam",
           "command": "sudo groupdel -f oldteam",
-          "explanation": "Requests forced group removal, including a primary group; availability depends on the shadow-utils version",
+          "explanation": "Запрашивает принудительное удаление группы, включая основную; поддержка зависит от версии shadow-utils.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "check if a group exists before deleting it",
+          "text": "запросить удаление группы даже при использовании её как основной",
+          "command": "sudo groupdel -f oldteam",
+          "explanation": "Запрашивает принудительное удаление группы, включая основную; поддержка зависит от версии shadow-utils.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "проверить наличие группы и удалить её при успешном поиске",
           "command": "getent group oldteam && sudo groupdel oldteam",
-          "explanation": "Only attempts deletion if the group exists, avoiding errors",
+          "explanation": "Проверить наличие группы и удалить её при успешном поиске.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "remove a group and verify it was deleted",
+          "text": "убрать oldteam только после нахождения записи через getent",
+          "command": "getent group oldteam && sudo groupdel oldteam",
+          "explanation": "Проверить наличие группы и удалить её при успешном поиске.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "удалить testgroup и затем поискать её имя в /etc/group",
           "command": "sudo groupdel testgroup && ! getent group testgroup",
-          "explanation": "Deletes the group, then succeeds only when NSS no longer returns that exact group",
+          "explanation": "Удаляет группу и завершается успешно, только если NSS больше не возвращает эту группу.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "после удаления группы вывести оставшиеся строки с её названием",
+          "command": "sudo groupdel testgroup && ! getent group testgroup",
+          "explanation": "Удаляет группу и завершается успешно, только если NSS больше не возвращает эту группу.",
           "destructive": true
         }
       ]
@@ -605,130 +1087,232 @@
     {
       "name": "groupmod",
       "synopsis": "groupmod [options] group",
-      "description": "Modify a group definition",
+      "description": "Изменение свойств группы",
       "patterns": [
         {
           "type": "example",
-          "text": "rename a group",
+          "text": "переименовать группу oldname в newname",
           "command": "sudo groupmod -n newname oldname",
-          "explanation": "Changes the group name from oldname to newname"
+          "explanation": "Переименовать группу oldname в newname."
         },
         {
           "type": "example",
-          "text": "change a group's GID",
+          "text": "сменить название существующей группы",
+          "command": "sudo groupmod -n newname oldname",
+          "explanation": "Переименовать группу oldname в newname."
+        },
+        {
+          "type": "example",
+          "text": "изменить числовой идентификатор группы developers на 2000",
           "command": "sudo groupmod -g 2000 developers",
-          "explanation": "Changes the GID of the developers group to 2000"
+          "explanation": "Изменить числовой идентификатор группы developers на 2000."
         },
         {
           "type": "example",
-          "text": "set a password on a group",
+          "text": "назначить группе другой GID",
+          "command": "sudo groupmod -g 2000 developers",
+          "explanation": "Изменить числовой идентификатор группы developers на 2000."
+        },
+        {
+          "type": "example",
+          "text": "задать пароль группы restricted в виде SHA-512-хеша",
           "command": "sudo groupmod -p $(openssl passwd -6 secretpass) restricted",
-          "explanation": "Sets an encrypted password that non-members must enter to use newgrp"
+          "explanation": "Задать пароль группы restricted в виде SHA-512-хеша."
         },
         {
           "type": "example",
-          "text": "rename a group and change its GID at the same time",
+          "text": "сформировать хеш пароля через openssl и передать groupmod",
+          "command": "sudo groupmod -p $(openssl passwd -6 secretpass) restricted",
+          "explanation": "Задать пароль группы restricted в виде SHA-512-хеша."
+        },
+        {
+          "type": "example",
+          "text": "переименовать devops в engineering и установить GID 3000",
           "command": "sudo groupmod -n engineering -g 3000 devops",
-          "explanation": "Renames devops to engineering and changes its GID to 3000"
+          "explanation": "Переименовать devops в engineering и установить GID 3000."
+        },
+        {
+          "type": "example",
+          "text": "одновременно сменить имя группы и её числовой идентификатор",
+          "command": "sudo groupmod -n engineering -g 3000 devops",
+          "explanation": "Переименовать devops в engineering и установить GID 3000."
         }
       ]
     },
     {
       "name": "newgrp",
       "synopsis": "newgrp [-] [group]",
-      "description": "Log in to a new group, changing the current group ID",
+      "description": "Переключение текущего идентификатора группы",
       "patterns": [
         {
           "type": "example",
-          "text": "switch your active group for the current session",
+          "text": "переключить активную группу оболочки на developers",
           "command": "newgrp developers",
-          "explanation": "Changes the effective group to developers so new files belong to that group"
+          "explanation": "Переключить активную группу оболочки на developers."
         },
         {
           "type": "example",
-          "text": "switch to a group with a fresh login environment",
+          "text": "начать новую shell-сессию с основной группой developers",
+          "command": "newgrp developers",
+          "explanation": "Переключить активную группу оболочки на developers."
+        },
+        {
+          "type": "example",
+          "text": "переключиться на группу docker с обновлением окружения входа",
           "command": "newgrp - docker",
-          "explanation": "Changes to the docker group and reinitializes the shell environment"
+          "explanation": "Переключиться на группу docker с обновлением окружения входа."
         },
         {
           "type": "example",
-          "text": "temporarily work with docker group permissions after being added",
+          "text": "открыть оболочку под другой группой в режиме login",
+          "command": "newgrp - docker",
+          "explanation": "Переключиться на группу docker с обновлением окружения входа."
+        },
+        {
+          "type": "example",
+          "text": "начать оболочку с группой docker после добавления в неё",
           "command": "newgrp docker",
-          "explanation": "Activates docker group membership without needing to log out and back in"
+          "explanation": "Начать оболочку с группой docker после добавления в неё."
         },
         {
           "type": "example",
-          "text": "reset to your default primary group",
+          "text": "применить членство в Docker-группе без полного выхода из системы",
+          "command": "newgrp docker",
+          "explanation": "Начать оболочку с группой docker после добавления в неё."
+        },
+        {
+          "type": "example",
+          "text": "вернуться к группе по умолчанию для своей учётной записи",
           "command": "newgrp",
-          "explanation": "Returns your effective group back to your primary login group"
+          "explanation": "Вернуться к группе по умолчанию для своей учётной записи."
+        },
+        {
+          "type": "example",
+          "text": "открыть новую оболочку с основной группой пользователя",
+          "command": "newgrp",
+          "explanation": "Вернуться к группе по умолчанию для своей учётной записи."
         }
       ]
     },
     {
       "name": "chpasswd",
       "synopsis": "chpasswd [options]",
-      "description": "Update passwords in batch from standard input",
+      "description": "Пакетное изменение паролей из стандартного ввода",
       "patterns": [
         {
           "type": "example",
-          "text": "set passwords for multiple users at once",
+          "text": "задать новые пароли сразу двум пользователям",
           "command": "echo -e 'alice:newpass1\\nbob:newpass2' | sudo chpasswd",
-          "explanation": "Updates passwords for alice and bob in one batch operation"
+          "explanation": "Задать новые пароли сразу двум пользователям."
         },
         {
           "type": "example",
-          "text": "set a password from a file containing user:password pairs",
+          "text": "передать chpasswd пары alice и bob с новыми паролями через стандартный ввод",
+          "command": "echo -e 'alice:newpass1\\nbob:newpass2' | sudo chpasswd",
+          "explanation": "Задать новые пароли сразу двум пользователям."
+        },
+        {
+          "type": "example",
+          "text": "обновить пароли по списку пользователь:пароль из файла",
           "command": "sudo chpasswd < /root/passwords.txt",
-          "explanation": "Reads username:password pairs from the file and applies them"
+          "explanation": "Обновить пароли по списку пользователь:пароль из файла."
         },
         {
           "type": "example",
-          "text": "set a password using an encrypted hash",
+          "text": "загрузить данные для chpasswd из /root/passwords.txt",
+          "command": "sudo chpasswd < /root/passwords.txt",
+          "explanation": "Обновить пароли по списку пользователь:пароль из файла."
+        },
+        {
+          "type": "example",
+          "text": "назначить alice уже подготовленный хеш пароля",
           "command": "echo 'alice:$6$rounds=5000$...' | sudo chpasswd -e",
-          "explanation": "Sets the password from a pre-encrypted hash rather than plaintext"
+          "explanation": "Назначить alice уже подготовленный хеш пароля."
         },
         {
           "type": "example",
-          "text": "bulk reset passwords using SHA-512 encryption",
+          "text": "передать зашифрованное значение пароля в chpasswd с флагом -e",
+          "command": "echo 'alice:$6$rounds=5000$...' | sudo chpasswd -e",
+          "explanation": "Назначить alice уже подготовленный хеш пароля."
+        },
+        {
+          "type": "example",
+          "text": "сменить пароль bob с хешированием SHA-512",
           "command": "echo 'bob:temppass123' | sudo chpasswd -c SHA512",
-          "explanation": "Sets bob's password and encrypts it with SHA-512"
+          "explanation": "Сменить пароль bob с хешированием SHA-512."
+        },
+        {
+          "type": "example",
+          "text": "передать временный пароль в chpasswd с явно выбранным алгоритмом хеша",
+          "command": "echo 'bob:temppass123' | sudo chpasswd -c SHA512",
+          "explanation": "Сменить пароль bob с хешированием SHA-512."
         }
       ]
     },
     {
       "name": "adduser",
       "synopsis": "adduser [options] user",
-      "description": "Add a user to the system interactively with sensible defaults",
+      "description": "Интерактивное добавление пользователя",
       "patterns": [
         {
           "type": "example",
-          "text": "create a new user interactively with all prompts",
+          "text": "интерактивно создать пользователя alice",
           "command": "sudo adduser alice",
-          "explanation": "Walks through creating a user with home directory, password, and user info"
+          "explanation": "Интерактивно создать пользователя alice."
         },
         {
           "type": "example",
-          "text": "add an existing user to a group",
+          "text": "добавить учётную запись с обычными вопросами adduser",
+          "command": "sudo adduser alice",
+          "explanation": "Интерактивно создать пользователя alice."
+        },
+        {
+          "type": "example",
+          "text": "добавить существующего пользователя alice в группу docker",
           "command": "sudo adduser alice docker",
-          "explanation": "Adds alice to the docker group"
+          "explanation": "Добавить существующего пользователя alice в группу docker."
         },
         {
           "type": "example",
-          "text": "create a system user for running a service",
+          "text": "включить пользователя в дополнительную группу через adduser",
+          "command": "sudo adduser alice docker",
+          "explanation": "Добавить существующего пользователя alice в группу docker."
+        },
+        {
+          "type": "example",
+          "text": "создать системного пользователя appservice без домашней папки",
           "command": "sudo adduser --system --no-create-home appservice",
-          "explanation": "Creates a system user without a home directory or login shell"
+          "explanation": "Создать системного пользователя appservice без домашней папки."
         },
         {
           "type": "example",
-          "text": "create a user with a specific home directory",
+          "text": "добавить служебную учётную запись с флагом no-create-home",
+          "command": "sudo adduser --system --no-create-home appservice",
+          "explanation": "Создать системного пользователя appservice без домашней папки."
+        },
+        {
+          "type": "example",
+          "text": "создать deploy с домашним каталогом /opt/deploy",
           "command": "sudo adduser --home /opt/deploy deploy",
-          "explanation": "Creates the deploy user with /opt/deploy as the home directory"
+          "explanation": "Создать deploy с домашним каталогом /opt/deploy."
         },
         {
           "type": "example",
-          "text": "create a user non-interactively for scripting",
+          "text": "добавить пользователя с нестандартным расположением папки дома",
+          "command": "sudo adduser --home /opt/deploy deploy",
+          "explanation": "Создать deploy с домашним каталогом /opt/deploy."
+        },
+        {
+          "type": "example",
+          "text": "создать ci-runner без задания пароля и вопросов об имени",
           "command": "sudo adduser --disabled-password --gecos '' ci-runner",
-          "explanation": "Creates user ci-runner with no password and no interactive prompts"
+          "explanation": "Создать ci-runner без задания пароля и вопросов об имени."
+        },
+        {
+          "type": "example",
+          "text": "добавить пользователя неинтерактивно с пустыми данными GECOS и отключённым паролем",
+          "command": "sudo adduser --disabled-password --gecos '' ci-runner",
+          "explanation": "Создать ci-runner без задания пароля и вопросов об имени."
         }
       ]
     }

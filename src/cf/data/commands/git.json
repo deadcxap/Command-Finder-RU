@@ -4,231 +4,428 @@
     {
       "name": "git init",
       "synopsis": "git init [directory]",
-      "description": "Create an empty Git repository or reinitialize an existing one",
+      "description": "Создание или повторная инициализация репозитория Git",
       "patterns": [
         {
           "type": "example",
-          "text": "start a new git repository in the current directory",
+          "text": "Создать Git-репозиторий в текущей папке",
           "command": "git init",
-          "explanation": "Initializes a new .git directory in the current working directory"
+          "explanation": "Создать Git-репозиторий в текущей папке."
         },
         {
           "type": "example",
-          "text": "create a new git repo in a specific folder",
+          "text": "Начать вести историю текущего проекта в Git",
+          "command": "git init",
+          "explanation": "Создать Git-репозиторий в текущей папке."
+        },
+        {
+          "type": "example",
+          "text": "Создать новый репозиторий в папке my-project",
           "command": "git init my-project",
-          "explanation": "Creates the directory my-project and initializes a git repo inside it"
+          "explanation": "Создать новый репозиторий в папке my-project."
         },
         {
           "type": "example",
-          "text": "initialize a bare repository for a server",
+          "text": "Инициализировать Git в указанном каталоге проекта",
+          "command": "git init my-project",
+          "explanation": "Создать новый репозиторий в папке my-project."
+        },
+        {
+          "type": "example",
+          "text": "Создать голый репозиторий Git для сервера",
           "command": "git init --bare my-repo.git",
-          "explanation": "Creates a bare repository without a working directory, typically used on servers"
+          "explanation": "Создать голый репозиторий Git для сервера."
         },
         {
           "type": "example",
-          "text": "start a repo with main as the default branch",
+          "text": "Инициализировать bare-репозиторий без рабочего дерева",
+          "command": "git init --bare my-repo.git",
+          "explanation": "Создать голый репозиторий Git для сервера."
+        },
+        {
+          "type": "example",
+          "text": "Создать репозиторий с начальной веткой main",
           "command": "git init -b main",
-          "explanation": "Initializes a repo and sets the initial branch name to main instead of master"
+          "explanation": "Создать репозиторий с начальной веткой main."
         },
         {
           "type": "example",
-          "text": "reinitialize an existing repository to pick up new templates",
+          "text": "Назвать первую ветку нового Git-проекта main",
+          "command": "git init -b main",
+          "explanation": "Создать репозиторий с начальной веткой main."
+        },
+        {
+          "type": "example",
+          "text": "Повторно инициализировать существующий репозиторий",
           "command": "git init",
-          "explanation": "Running git init in an existing repo is safe and can add new templates"
+          "explanation": "Повторно инициализировать существующий репозиторий."
+        },
+        {
+          "type": "example",
+          "text": "Обновить служебные файлы Git повторным запуском init",
+          "command": "git init",
+          "explanation": "Повторно инициализировать существующий репозиторий."
         }
       ]
     },
     {
       "name": "git clone",
       "synopsis": "git clone [options] <repository> [directory]",
-      "description": "Clone a repository into a new directory",
+      "description": "Клонирование репозитория в новый каталог",
       "patterns": [
         {
           "type": "example",
-          "text": "download a repository from GitHub",
+          "text": "Склонировать репозиторий с GitHub",
           "command": "git clone https://github.com/user/repo.git",
-          "explanation": "Clones the remote repository into a local directory named repo"
+          "explanation": "Склонировать репозиторий с GitHub."
         },
         {
           "type": "example",
-          "text": "clone a repo into a specific folder name",
+          "text": "Скачать проект вместе с его Git-историей",
+          "command": "git clone https://github.com/user/repo.git",
+          "explanation": "Склонировать репозиторий с GitHub."
+        },
+        {
+          "type": "example",
+          "text": "Склонировать репозиторий в папку my-folder",
           "command": "git clone https://github.com/user/repo.git my-folder",
-          "explanation": "Clones the repo but names the local directory my-folder"
+          "explanation": "Склонировать репозиторий в папку my-folder."
         },
         {
           "type": "example",
-          "text": "shallow clone only the latest commit to save time",
+          "text": "Указать своё имя каталога для локальной копии проекта",
+          "command": "git clone https://github.com/user/repo.git my-folder",
+          "explanation": "Склонировать репозиторий в папку my-folder."
+        },
+        {
+          "type": "example",
+          "text": "Скачать только последний коммит репозитория",
           "command": "git clone --depth 1 https://github.com/user/repo.git",
-          "explanation": "Creates a shallow clone with only the most recent commit history"
+          "explanation": "Скачать только последний коммит репозитория."
         },
         {
           "type": "example",
-          "text": "clone a specific branch from a repository",
+          "text": "Сделать неглубокий клон Git с глубиной один",
+          "command": "git clone --depth 1 https://github.com/user/repo.git",
+          "explanation": "Скачать только последний коммит репозитория."
+        },
+        {
+          "type": "example",
+          "text": "Склонировать репозиторий с переключением на develop",
           "command": "git clone -b develop https://github.com/user/repo.git",
-          "explanation": "Clones the repo and checks out the develop branch"
+          "explanation": "Склонировать репозиторий с переключением на develop."
         },
         {
           "type": "example",
-          "text": "clone a repo using SSH",
+          "text": "Сразу открыть ветку develop после клонирования",
+          "command": "git clone -b develop https://github.com/user/repo.git",
+          "explanation": "Склонировать репозиторий с переключением на develop."
+        },
+        {
+          "type": "example",
+          "text": "Клонировать репозиторий через SSH",
           "command": "git clone git@github.com:user/repo.git",
-          "explanation": "Clones using SSH protocol for authentication"
+          "explanation": "Клонировать репозиторий через SSH."
         },
         {
           "type": "example",
-          "text": "clone a repo including all submodules",
+          "text": "Скачать Git-проект по SSH-адресу",
+          "command": "git clone git@github.com:user/repo.git",
+          "explanation": "Клонировать репозиторий через SSH."
+        },
+        {
+          "type": "example",
+          "text": "Склонировать проект вместе с подмодулями",
           "command": "git clone --recurse-submodules https://github.com/user/repo.git",
-          "explanation": "Clones the repo and initializes all submodules recursively"
+          "explanation": "Склонировать проект вместе с подмодулями."
         },
         {
           "type": "example",
-          "text": "clone only a single branch to save bandwidth",
+          "text": "Получить репозиторий и сразу загрузить все его submodule",
+          "command": "git clone --recurse-submodules https://github.com/user/repo.git",
+          "explanation": "Склонировать проект вместе с подмодулями."
+        },
+        {
+          "type": "example",
+          "text": "Скачать только ветку main из репозитория",
           "command": "git clone --single-branch --branch main https://github.com/user/repo.git",
-          "explanation": "Clones only the main branch without fetching other branches"
+          "explanation": "Скачать только ветку main из репозитория."
+        },
+        {
+          "type": "example",
+          "text": "Клонировать единственную ветку, не загружая остальные",
+          "command": "git clone --single-branch --branch main https://github.com/user/repo.git",
+          "explanation": "Скачать только ветку main из репозитория."
         }
       ]
     },
     {
       "name": "git add",
       "synopsis": "git add [options] [pathspec...]",
-      "description": "Add file contents to the staging area (index)",
+      "description": "Добавление изменений в индекс Git",
       "patterns": [
         {
           "type": "example",
-          "text": "stage a specific file for commit",
+          "text": "Добавить файл filename.txt в индекс Git",
           "command": "git add filename.txt",
-          "explanation": "Adds filename.txt to the staging area"
+          "explanation": "Добавить файл filename.txt в индекс Git."
         },
         {
           "type": "example",
-          "text": "stage all changed and new files",
+          "text": "Подготовить один выбранный файл к коммиту",
+          "command": "git add filename.txt",
+          "explanation": "Добавить файл filename.txt в индекс Git."
+        },
+        {
+          "type": "example",
+          "text": "Добавь в индекс все изменения во всём репозитории, включая новые и удалённые файлы.",
           "command": "git add -A",
-          "explanation": "Stages all changes including new, modified, and deleted files"
+          "explanation": "Добавь в индекс все изменения во всём репозитории, включая новые и удалённые файлы."
         },
         {
           "type": "example",
-          "text": "stage all changes in the current directory",
+          "text": "Подготовь к коммиту все новые, изменённые и удалённые файлы.",
+          "command": "git add -A",
+          "explanation": "Добавь в индекс все изменения во всём репозитории, включая новые и удалённые файлы."
+        },
+        {
+          "type": "example",
+          "text": "Добавить изменения текущего каталога в индекс",
           "command": "git add .",
-          "explanation": "Adds all changes in the current directory and subdirectories"
+          "explanation": "Добавить изменения текущего каталога в индекс."
         },
         {
           "type": "example",
-          "text": "interactively choose which hunks to stage",
+          "text": "Проиндексировать все правки внутри текущей папки",
+          "command": "git add .",
+          "explanation": "Добавить изменения текущего каталога в индекс."
+        },
+        {
+          "type": "example",
+          "text": "Интерактивно выбрать участки для индекса Git",
           "command": "git add -p",
-          "explanation": "Lets you review and selectively stage parts of files"
+          "explanation": "Интерактивно выбрать участки для индекса Git."
         },
         {
           "type": "example",
-          "text": "stage only modified and deleted files, not new ones",
+          "text": "Добавить к коммиту только выбранные фрагменты изменений",
+          "command": "git add -p",
+          "explanation": "Интерактивно выбрать участки для индекса Git."
+        },
+        {
+          "type": "example",
+          "text": "Добавить изменённые и удалённые отслеживаемые файлы",
           "command": "git add -u",
-          "explanation": "Stages modifications and deletions but ignores untracked files"
+          "explanation": "Добавить изменённые и удалённые отслеживаемые файлы."
         },
         {
           "type": "example",
-          "text": "stage all Python files",
+          "text": "Обновить индекс Git, не добавляя новые файлы",
+          "command": "git add -u",
+          "explanation": "Добавить изменённые и удалённые отслеживаемые файлы."
+        },
+        {
+          "type": "example",
+          "text": "Добавить в индекс все Python-файлы",
           "command": "git add '*.py'",
-          "explanation": "Uses a glob pattern to stage all Python files"
+          "explanation": "Добавить в индекс все Python-файлы."
+        },
+        {
+          "type": "example",
+          "text": "Подготовить к коммиту файлы с расширением py",
+          "command": "git add '*.py'",
+          "explanation": "Добавить в индекс все Python-файлы."
         }
       ]
     },
     {
       "name": "git commit",
       "synopsis": "git commit [options]",
-      "description": "Record changes to the repository",
+      "description": "Сохранение изменений в коммите",
       "patterns": [
         {
           "type": "example",
-          "text": "save staged changes with a message",
+          "text": "Создай коммит из уже подготовленных изменений с сообщением.",
           "command": "git commit -m \"Add new feature\"",
-          "explanation": "Creates a commit with the given message"
+          "explanation": "Создай коммит из уже подготовленных изменений с сообщением."
         },
         {
           "type": "example",
-          "text": "stage all tracked changes and commit in one step",
+          "text": "Как закоммитить содержимое индекса и сразу указать сообщение?",
+          "command": "git commit -m \"Add new feature\"",
+          "explanation": "Создай коммит из уже подготовленных изменений с сообщением."
+        },
+        {
+          "type": "example",
+          "text": "Закоммитить все правки отслеживаемых файлов с сообщением",
           "command": "git commit -am \"Fix bug in parser\"",
-          "explanation": "Automatically stages modified tracked files and commits"
+          "explanation": "Закоммитить все правки отслеживаемых файлов с сообщением."
         },
         {
           "type": "example",
-          "text": "change the last commit message",
+          "text": "Добавить изменённые отслеживаемые файлы и сразу создать коммит",
+          "command": "git commit -am \"Fix bug in parser\"",
+          "explanation": "Закоммитить все правки отслеживаемых файлов с сообщением."
+        },
+        {
+          "type": "example",
+          "text": "изменить только сообщение последнего коммита, не включая подготовленные изменения",
           "command": "git commit --amend --only -m \"Updated message\"",
-          "explanation": "Replaces the last commit message without including staged changes; rewrites the commit hash",
+          "explanation": "Заменяет сообщение последнего коммита без включения изменений из индекса; хеш коммита меняется.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "add forgotten files to the last commit",
+          "text": "переименовать последний коммит и сохранить изменения в индексе для следующего коммита",
+          "command": "git commit --amend --only -m \"Updated message\"",
+          "explanation": "Заменяет сообщение последнего коммита без включения изменений из индекса; хеш коммита меняется.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "Добавить подготовленные изменения к последнему коммиту без смены сообщения",
           "command": "git commit --amend --no-edit",
-          "explanation": "Adds currently staged files to the previous commit without changing its message",
+          "explanation": "Добавить подготовленные изменения к последнему коммиту без смены сообщения.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "create an empty commit for triggering CI",
+          "text": "Дополнить предыдущий коммит забытыми файлами из индекса",
+          "command": "git commit --amend --no-edit",
+          "explanation": "Добавить подготовленные изменения к последнему коммиту без смены сообщения.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "Создать пустой коммит для запуска CI",
           "command": "git commit --allow-empty -m \"Trigger build\"",
-          "explanation": "Creates a commit with no changes, useful for triggering pipelines"
+          "explanation": "Создать пустой коммит для запуска CI."
         },
         {
           "type": "example",
-          "text": "commit with a specific author",
+          "text": "Добавить коммит без изменений файлов",
+          "command": "git commit --allow-empty -m \"Trigger build\"",
+          "explanation": "Создать пустой коммит для запуска CI."
+        },
+        {
+          "type": "example",
+          "text": "Создать коммит с заданным автором",
           "command": "git commit --author=\"Name <email@example.com>\" -m \"msg\"",
-          "explanation": "Overrides the default author for this commit"
+          "explanation": "Создать коммит с заданным автором."
         },
         {
           "type": "example",
-          "text": "commit and sign with GPG key",
+          "text": "Указать другое имя и почту автора коммита",
+          "command": "git commit --author=\"Name <email@example.com>\" -m \"msg\"",
+          "explanation": "Создать коммит с заданным автором."
+        },
+        {
+          "type": "example",
+          "text": "Подписать новый коммит ключом GPG",
           "command": "git commit -S -m \"Signed commit\"",
-          "explanation": "Creates a GPG-signed commit for verification"
+          "explanation": "Подписать новый коммит ключом GPG."
+        },
+        {
+          "type": "example",
+          "text": "Создать подписанный Git-коммит с сообщением",
+          "command": "git commit -S -m \"Signed commit\"",
+          "explanation": "Подписать новый коммит ключом GPG."
         }
       ]
     },
     {
       "name": "git push",
       "synopsis": "git push [options] [remote] [branch]",
-      "description": "Update remote refs along with associated objects",
+      "description": "Отправка объектов и ссылок в удалённый репозиторий",
       "patterns": [
         {
           "type": "example",
-          "text": "upload local commits to the remote repository",
+          "text": "Отправить локальные коммиты на удалённый сервер",
           "command": "git push",
-          "explanation": "Pushes the current branch to the configured upstream remote"
+          "explanation": "Отправить локальные коммиты на удалённый сервер."
         },
         {
           "type": "example",
-          "text": "push a branch to origin for the first time",
+          "text": "Загрузить изменения текущей ветки через git push",
+          "command": "git push",
+          "explanation": "Отправить локальные коммиты на удалённый сервер."
+        },
+        {
+          "type": "example",
+          "text": "Впервые отправить ветку и настроить отслеживание origin",
           "command": "git push -u origin my-branch",
-          "explanation": "Pushes the branch and sets up tracking for future pushes"
+          "explanation": "Впервые отправить ветку и настроить отслеживание origin."
         },
         {
           "type": "example",
-          "text": "force push to overwrite remote history",
+          "text": "Опубликовать локальную ветку с привязкой к удалённой",
+          "command": "git push -u origin my-branch",
+          "explanation": "Впервые отправить ветку и настроить отслеживание origin."
+        },
+        {
+          "type": "example",
+          "text": "Принудительно перезаписать историю удалённой ветки",
           "command": "git push --force",
-          "explanation": "Overwrites the remote branch with local history, use with caution",
+          "explanation": "Принудительно перезаписать историю удалённой ветки.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "safely force push only if no one else has pushed",
+          "text": "Сделать force push без проверки чужих изменений",
+          "command": "git push --force",
+          "explanation": "Принудительно перезаписать историю удалённой ветки.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "Выполнить force push с защитой от новых чужих коммитов",
           "command": "git push --force-with-lease",
-          "explanation": "Force pushes but fails if the remote has commits you haven't seen",
+          "explanation": "Выполнить force push с защитой от новых чужих коммитов.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "push all local branches to the remote",
+          "text": "Перезаписать удалённую ветку только при ожидаемом состоянии сервера",
+          "command": "git push --force-with-lease",
+          "explanation": "Выполнить force push с защитой от новых чужих коммитов.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "Отправить все локальные ветки в origin",
           "command": "git push --all origin",
-          "explanation": "Pushes every local branch to the origin remote"
+          "explanation": "Отправить все локальные ветки в origin."
         },
         {
           "type": "example",
-          "text": "push tags to the remote repository",
+          "text": "Опубликовать каждую локальную ветку на удалённом сервере",
+          "command": "git push --all origin",
+          "explanation": "Отправить все локальные ветки в origin."
+        },
+        {
+          "type": "example",
+          "text": "Загрузить все локальные теги в удалённый репозиторий",
           "command": "git push --tags",
-          "explanation": "Pushes all local tags to the remote"
+          "explanation": "Загрузить все локальные теги в удалённый репозиторий."
         },
         {
           "type": "example",
-          "text": "delete a remote branch",
+          "text": "Отправить метки Git через push",
+          "command": "git push --tags",
+          "explanation": "Загрузить все локальные теги в удалённый репозиторий."
+        },
+        {
+          "type": "example",
+          "text": "Удалить ветку old-branch на сервере origin",
           "command": "git push origin --delete old-branch",
-          "explanation": "Removes the specified branch from the remote repository",
+          "explanation": "Удалить ветку old-branch на сервере origin.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "Убрать указанную ветку из удалённого репозитория",
+          "command": "git push origin --delete old-branch",
+          "explanation": "Удалить ветку old-branch на сервере origin.",
           "destructive": true
         }
       ]
@@ -236,596 +433,1109 @@
     {
       "name": "git pull",
       "synopsis": "git pull [options] [remote] [branch]",
-      "description": "Fetch from and integrate with another repository or local branch",
+      "description": "Получение и интеграция изменений из другого репозитория",
       "patterns": [
         {
           "type": "example",
-          "text": "download and merge remote changes",
+          "text": "Скачать и объединить изменения удалённой ветки",
           "command": "git pull",
-          "explanation": "Fetches and merges changes from the upstream branch"
+          "explanation": "Скачать и объединить изменения удалённой ветки."
         },
         {
           "type": "example",
-          "text": "pull changes and rebase instead of merge",
+          "text": "Обновить текущую ветку через обычный git pull",
+          "command": "git pull",
+          "explanation": "Скачать и объединить изменения удалённой ветки."
+        },
+        {
+          "type": "example",
+          "text": "Получить изменения с перебазированием локальных коммитов",
           "command": "git pull --rebase",
-          "explanation": "Fetches changes and replays your commits on top"
+          "explanation": "Получить изменения с перебазированием локальных коммитов."
         },
         {
           "type": "example",
-          "text": "pull from a specific remote branch",
+          "text": "Обновить ветку через pull с rebase вместо merge",
+          "command": "git pull --rebase",
+          "explanation": "Получить изменения с перебазированием локальных коммитов."
+        },
+        {
+          "type": "example",
+          "text": "Получить и слить ветку main из origin",
           "command": "git pull origin main",
-          "explanation": "Fetches and merges changes from origin/main"
+          "explanation": "Получить и слить ветку main из origin."
         },
         {
           "type": "example",
-          "text": "pull and automatically stash local changes",
+          "text": "Подтянуть изменения конкретной удалённой ветки",
+          "command": "git pull origin main",
+          "explanation": "Получить и слить ветку main из origin."
+        },
+        {
+          "type": "example",
+          "text": "Временно спрятать местные правки при выполнении pull",
           "command": "git pull --autostash",
-          "explanation": "Stashes local changes before pulling and reapplies them after"
+          "explanation": "Временно спрятать местные правки при выполнении pull."
         },
         {
           "type": "example",
-          "text": "pull only if it can fast-forward",
+          "text": "Получить удалённые изменения с автоматическим stash",
+          "command": "git pull --autostash",
+          "explanation": "Временно спрятать местные правки при выполнении pull."
+        },
+        {
+          "type": "example",
+          "text": "Выполнить pull только при возможности fast-forward",
           "command": "git pull --ff-only",
-          "explanation": "Only updates if the merge can be fast-forwarded, fails otherwise"
+          "explanation": "Выполнить pull только при возможности fast-forward."
+        },
+        {
+          "type": "example",
+          "text": "Обновить ветку без merge-коммита и без расхождения истории",
+          "command": "git pull --ff-only",
+          "explanation": "Выполнить pull только при возможности fast-forward."
         }
       ]
     },
     {
       "name": "git fetch",
       "synopsis": "git fetch [options] [remote] [refspec...]",
-      "description": "Download objects and refs from another repository",
+      "description": "Получение объектов и ссылок из другого репозитория",
       "patterns": [
         {
           "type": "example",
-          "text": "download remote changes without merging",
+          "text": "Скачать удалённые изменения без слияния",
           "command": "git fetch",
-          "explanation": "Fetches all branches from the default remote without modifying working directory"
+          "explanation": "Скачать удалённые изменения без слияния."
         },
         {
           "type": "example",
-          "text": "fetch from all remotes",
+          "text": "Обновить данные удалённых веток, не меняя рабочую ветку",
+          "command": "git fetch",
+          "explanation": "Скачать удалённые изменения без слияния."
+        },
+        {
+          "type": "example",
+          "text": "Получить изменения со всех удалённых серверов",
           "command": "git fetch --all",
-          "explanation": "Downloads updates from every configured remote"
+          "explanation": "Получить изменения со всех удалённых серверов."
         },
         {
           "type": "example",
-          "text": "fetch and prune deleted remote branches",
+          "text": "Выполнить fetch для каждого настроенного remote",
+          "command": "git fetch --all",
+          "explanation": "Получить изменения со всех удалённых серверов."
+        },
+        {
+          "type": "example",
+          "text": "Скачать изменения и убрать ссылки на удалённые ветки",
           "command": "git fetch --prune",
-          "explanation": "Removes local references to branches that no longer exist on the remote"
+          "explanation": "Скачать изменения и убрать ссылки на удалённые ветки."
         },
         {
           "type": "example",
-          "text": "fetch a specific branch from origin",
+          "text": "Обновить remote-tracking ветки с очисткой устаревших",
+          "command": "git fetch --prune",
+          "explanation": "Скачать изменения и убрать ссылки на удалённые ветки."
+        },
+        {
+          "type": "example",
+          "text": "Получить ветку main с сервера origin без слияния",
           "command": "git fetch origin main",
-          "explanation": "Downloads only the main branch from origin"
+          "explanation": "Получить ветку main с сервера origin без слияния."
         },
         {
           "type": "example",
-          "text": "fetch tags from the remote",
+          "text": "Скачать состояние конкретной удалённой ветки через fetch",
+          "command": "git fetch origin main",
+          "explanation": "Получить ветку main с сервера origin без слияния."
+        },
+        {
+          "type": "example",
+          "text": "Скачать теги из удалённого репозитория",
           "command": "git fetch --tags",
-          "explanation": "Downloads all tags from the remote repository"
+          "explanation": "Скачать теги из удалённого репозитория."
+        },
+        {
+          "type": "example",
+          "text": "Обновить локальный набор удалённых Git-меток",
+          "command": "git fetch --tags",
+          "explanation": "Скачать теги из удалённого репозитория."
         }
       ]
     },
     {
       "name": "git merge",
       "synopsis": "git merge [options] [branch]",
-      "description": "Join two or more development histories together",
+      "description": "Объединение историй разработки",
       "patterns": [
         {
           "type": "example",
-          "text": "merge another branch into the current one",
+          "text": "Влить feature-branch в текущую ветку",
           "command": "git merge feature-branch",
-          "explanation": "Integrates changes from feature-branch into the current branch"
+          "explanation": "Влить feature-branch в текущую ветку."
         },
         {
           "type": "example",
-          "text": "merge without creating a merge commit",
+          "text": "Объединить изменения другой ветки с текущей",
+          "command": "git merge feature-branch",
+          "explanation": "Влить feature-branch в текущую ветку."
+        },
+        {
+          "type": "example",
+          "text": "Слить ветку только быстрым перемещением указателя",
           "command": "git merge --ff-only feature-branch",
-          "explanation": "Only merges if a fast-forward is possible, keeping linear history"
+          "explanation": "Слить ветку только быстрым перемещением указателя."
         },
         {
           "type": "example",
-          "text": "always create a merge commit even for fast-forwards",
+          "text": "Выполнить merge без коммита слияния, если возможен fast-forward",
+          "command": "git merge --ff-only feature-branch",
+          "explanation": "Слить ветку только быстрым перемещением указателя."
+        },
+        {
+          "type": "example",
+          "text": "Обязательно создать merge-коммит при слиянии",
           "command": "git merge --no-ff feature-branch",
-          "explanation": "Creates a merge commit even when fast-forward is possible"
+          "explanation": "Обязательно создать merge-коммит при слиянии."
         },
         {
           "type": "example",
-          "text": "merge but squash all commits into one",
+          "text": "Влить ветку с отдельным коммитом даже при fast-forward",
+          "command": "git merge --no-ff feature-branch",
+          "explanation": "Обязательно создать merge-коммит при слиянии."
+        },
+        {
+          "type": "example",
+          "text": "Подготовить все изменения ветки одним squash",
           "command": "git merge --squash feature-branch",
-          "explanation": "Combines all feature branch commits into a single staged change"
+          "explanation": "Подготовить все изменения ветки одним squash."
         },
         {
           "type": "example",
-          "text": "abort a merge that has conflicts",
+          "text": "Объединить содержимое ветки без сохранения отдельных коммитов",
+          "command": "git merge --squash feature-branch",
+          "explanation": "Подготовить все изменения ветки одним squash."
+        },
+        {
+          "type": "example",
+          "text": "Отменить незавершённое слияние с конфликтами",
           "command": "git merge --abort",
-          "explanation": "Cancels the merge and restores the pre-merge state"
+          "explanation": "Отменить незавершённое слияние с конфликтами."
         },
         {
           "type": "example",
-          "text": "continue a merge after resolving conflicts",
+          "text": "Вернуться к состоянию до текущего git merge",
+          "command": "git merge --abort",
+          "explanation": "Отменить незавершённое слияние с конфликтами."
+        },
+        {
+          "type": "example",
+          "text": "Продолжить слияние после исправления конфликтов",
           "command": "git merge --continue",
-          "explanation": "Proceeds with the merge after you have resolved all conflicts"
+          "explanation": "Продолжить слияние после исправления конфликтов."
+        },
+        {
+          "type": "example",
+          "text": "Завершить merge, когда конфликтующие файлы уже подготовлены",
+          "command": "git merge --continue",
+          "explanation": "Продолжить слияние после исправления конфликтов."
         }
       ]
     },
     {
       "name": "git rebase",
       "synopsis": "git rebase [options] [upstream [branch]]",
-      "description": "Reapply commits on top of another base tip",
+      "description": "Перенос коммитов на другую базовую версию",
       "patterns": [
         {
           "type": "example",
-          "text": "rebase current branch onto main",
+          "text": "Перебазировать текущую ветку поверх main",
           "command": "git rebase main",
-          "explanation": "Replays current branch commits on top of main"
+          "explanation": "Перебазировать текущую ветку поверх main."
         },
         {
           "type": "example",
-          "text": "interactively reorder, squash, or edit commits",
+          "text": "Перенести свои коммиты на актуальную базу main",
+          "command": "git rebase main",
+          "explanation": "Перебазировать текущую ветку поверх main."
+        },
+        {
+          "type": "example",
+          "text": "Интерактивно отредактировать последние пять коммитов",
           "command": "git rebase -i HEAD~5",
-          "explanation": "Opens an editor to manipulate the last 5 commits"
+          "explanation": "Интерактивно отредактировать последние пять коммитов."
         },
         {
           "type": "example",
-          "text": "abort a rebase that has conflicts",
+          "text": "Поменять порядок или объединить коммиты через rebase",
+          "command": "git rebase -i HEAD~5",
+          "explanation": "Интерактивно отредактировать последние пять коммитов."
+        },
+        {
+          "type": "example",
+          "text": "Прервать текущий rebase и вернуть исходное состояние",
           "command": "git rebase --abort",
-          "explanation": "Cancels the rebase and returns to the original state"
+          "explanation": "Прервать текущий rebase и вернуть исходное состояние."
         },
         {
           "type": "example",
-          "text": "continue rebase after resolving a conflict",
+          "text": "Отменить перебазирование после возникновения конфликтов",
+          "command": "git rebase --abort",
+          "explanation": "Прервать текущий rebase и вернуть исходное состояние."
+        },
+        {
+          "type": "example",
+          "text": "Продолжить rebase после разрешения конфликта",
           "command": "git rebase --continue",
-          "explanation": "Proceeds with the rebase after conflict resolution"
+          "explanation": "Продолжить rebase после разрешения конфликта."
         },
         {
           "type": "example",
-          "text": "skip a conflicting commit during rebase",
+          "text": "Применить следующий коммит при перебазировании",
+          "command": "git rebase --continue",
+          "explanation": "Продолжить rebase после разрешения конфликта."
+        },
+        {
+          "type": "example",
+          "text": "Пропустить проблемный коммит во время rebase",
           "command": "git rebase --skip",
-          "explanation": "Skips the current commit and continues rebasing"
+          "explanation": "Пропустить проблемный коммит во время rebase."
         },
         {
           "type": "example",
-          "text": "rebase onto a specific commit",
+          "text": "Продолжить перебазирование без текущего конфликтующего коммита",
+          "command": "git rebase --skip",
+          "explanation": "Пропустить проблемный коммит во время rebase."
+        },
+        {
+          "type": "example",
+          "text": "Перенести диапазон коммитов на другую базовую ветку",
           "command": "git rebase --onto target-branch start-commit end-branch",
-          "explanation": "Replays commits from start-commit to end-branch onto target-branch"
+          "explanation": "Перенести диапазон коммитов на другую базовую ветку."
+        },
+        {
+          "type": "example",
+          "text": "Перебазировать выбранную часть истории через rebase --onto",
+          "command": "git rebase --onto target-branch start-commit end-branch",
+          "explanation": "Перенести диапазон коммитов на другую базовую ветку."
         }
       ]
     },
     {
       "name": "git branch",
       "synopsis": "git branch [options] [branch-name]",
-      "description": "List, create, or delete branches",
+      "description": "Просмотр, создание и удаление веток",
       "patterns": [
         {
           "type": "example",
-          "text": "list all local branches",
+          "text": "Перечислить локальные ветки Git",
           "command": "git branch",
-          "explanation": "Shows all local branches with the current one highlighted"
+          "explanation": "Перечислить локальные ветки Git."
         },
         {
           "type": "example",
-          "text": "list all branches including remote ones",
+          "text": "Показать список веток в этом репозитории",
+          "command": "git branch",
+          "explanation": "Перечислить локальные ветки Git."
+        },
+        {
+          "type": "example",
+          "text": "Показать локальные и удалённые ветки",
           "command": "git branch -a",
-          "explanation": "Shows both local and remote tracking branches"
+          "explanation": "Показать локальные и удалённые ветки."
         },
         {
           "type": "example",
-          "text": "create a new branch",
+          "text": "Перечислить все ветки вместе с remote-tracking",
+          "command": "git branch -a",
+          "explanation": "Показать локальные и удалённые ветки."
+        },
+        {
+          "type": "example",
+          "text": "Создать ветку new-feature без переключения",
           "command": "git branch new-feature",
-          "explanation": "Creates a new branch at the current commit without switching to it"
+          "explanation": "Создать ветку new-feature без переключения."
         },
         {
           "type": "example",
-          "text": "delete a branch that has been merged",
+          "text": "Добавить новую локальную ветку от текущего коммита",
+          "command": "git branch new-feature",
+          "explanation": "Создать ветку new-feature без переключения."
+        },
+        {
+          "type": "example",
+          "text": "Удалить уже слитую локальную ветку",
           "command": "git branch -d old-branch",
-          "explanation": "Deletes the branch only if it has been fully merged",
+          "explanation": "Удалить уже слитую локальную ветку.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "force delete a branch even if not merged",
+          "text": "Убрать завершённую ветку с проверкой слияния",
+          "command": "git branch -d old-branch",
+          "explanation": "Удалить уже слитую локальную ветку.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "Принудительно удалить неслитую ветку",
           "command": "git branch -D unmerged-branch",
-          "explanation": "Forcefully deletes the branch regardless of merge status",
+          "explanation": "Принудительно удалить неслитую ветку.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "rename the current branch",
-          "command": "git branch -m new-name",
-          "explanation": "Renames the current branch to new-name"
+          "text": "Удалить локальную ветку даже с несохранёнными в других ветках коммитами",
+          "command": "git branch -D unmerged-branch",
+          "explanation": "Принудительно удалить неслитую ветку.",
+          "destructive": true
         },
         {
           "type": "example",
-          "text": "see which branches contain a specific commit",
+          "text": "Переименовать текущую ветку Git",
+          "command": "git branch -m new-name",
+          "explanation": "Переименовать текущую ветку Git."
+        },
+        {
+          "type": "example",
+          "text": "Задать активной ветке новое имя",
+          "command": "git branch -m new-name",
+          "explanation": "Переименовать текущую ветку Git."
+        },
+        {
+          "type": "example",
+          "text": "Найти ветки, содержащие указанный коммит",
           "command": "git branch --contains abc1234",
-          "explanation": "Lists branches that include the specified commit"
+          "explanation": "Найти ветки, содержащие указанный коммит."
+        },
+        {
+          "type": "example",
+          "text": "Показать, в каких ветках есть коммит abc1234",
+          "command": "git branch --contains abc1234",
+          "explanation": "Найти ветки, содержащие указанный коммит."
         }
       ]
     },
     {
       "name": "git checkout",
       "synopsis": "git checkout [options] [branch|commit|file]",
-      "description": "Switch branches or restore working tree files",
+      "description": "Переключение веток и восстановление файлов рабочей копии",
       "patterns": [
         {
           "type": "example",
-          "text": "switch to an existing branch",
+          "text": "Переключиться на существующую ветку main",
           "command": "git checkout main",
-          "explanation": "Switches the working directory to the main branch"
+          "explanation": "Переключиться на существующую ветку main."
         },
         {
           "type": "example",
-          "text": "create and switch to a new branch",
+          "text": "Открыть рабочее дерево другой ветки через checkout",
+          "command": "git checkout main",
+          "explanation": "Переключиться на существующую ветку main."
+        },
+        {
+          "type": "example",
+          "text": "Создать новую ветку и сразу переключиться",
           "command": "git checkout -b new-feature",
-          "explanation": "Creates a new branch and switches to it immediately"
+          "explanation": "Создать новую ветку и сразу переключиться."
         },
         {
           "type": "example",
-          "text": "discard changes to a specific file",
+          "text": "Начать работу в new-feature одной командой",
+          "command": "git checkout -b new-feature",
+          "explanation": "Создать новую ветку и сразу переключиться."
+        },
+        {
+          "type": "example",
+          "text": "Отбросить незаписанные в индекс правки filename.txt",
           "command": "git checkout -- filename.txt",
-          "explanation": "Restores the file to the last committed version"
+          "explanation": "Отбросить незаписанные в индекс правки filename.txt."
         },
         {
           "type": "example",
-          "text": "check out a file from another branch",
+          "text": "Восстановить рабочую копию файла из индекса Git",
+          "command": "git checkout -- filename.txt",
+          "explanation": "Отбросить незаписанные в индекс правки filename.txt."
+        },
+        {
+          "type": "example",
+          "text": "Взять файл из другой ветки",
           "command": "git checkout other-branch -- path/to/file",
-          "explanation": "Copies the file from another branch into the current working directory"
+          "explanation": "Взять файл из другой ветки."
         },
         {
           "type": "example",
-          "text": "go to a specific commit in detached HEAD state",
+          "text": "Заменить выбранный файл версией из other-branch",
+          "command": "git checkout other-branch -- path/to/file",
+          "explanation": "Взять файл из другой ветки."
+        },
+        {
+          "type": "example",
+          "text": "Открыть конкретный коммит без привязки к ветке",
           "command": "git checkout abc1234",
-          "explanation": "Moves HEAD to the specified commit without being on a branch"
+          "explanation": "Открыть конкретный коммит без привязки к ветке."
         },
         {
           "type": "example",
-          "text": "create a branch from a remote branch and track it",
+          "text": "Перейти на abc1234 в режиме detached HEAD",
+          "command": "git checkout abc1234",
+          "explanation": "Открыть конкретный коммит без привязки к ветке."
+        },
+        {
+          "type": "example",
+          "text": "Создать локальную ветку с отслеживанием удалённой",
           "command": "git checkout -b local-branch origin/remote-branch",
-          "explanation": "Creates a local branch based on a remote branch"
+          "explanation": "Создать локальную ветку с отслеживанием удалённой."
+        },
+        {
+          "type": "example",
+          "text": "Переключиться на новую ветку от origin/remote-branch",
+          "command": "git checkout -b local-branch origin/remote-branch",
+          "explanation": "Создать локальную ветку с отслеживанием удалённой."
         }
       ]
     },
     {
       "name": "git switch",
       "synopsis": "git switch [options] <branch>",
-      "description": "Switch branches (modern replacement for git checkout for branch switching)",
+      "description": "Переключение веток современным интерфейсом Git",
       "patterns": [
         {
           "type": "example",
-          "text": "switch to another branch",
+          "text": "Перейти на ветку main через switch",
           "command": "git switch main",
-          "explanation": "Switches to the main branch"
+          "explanation": "Перейти на ветку main через switch."
         },
         {
           "type": "example",
-          "text": "create and switch to a new branch",
+          "text": "Переключить текущую рабочую ветку Git",
+          "command": "git switch main",
+          "explanation": "Перейти на ветку main через switch."
+        },
+        {
+          "type": "example",
+          "text": "Создать ветку new-feature и перейти в неё",
           "command": "git switch -c new-feature",
-          "explanation": "Creates and switches to a new branch"
+          "explanation": "Создать ветку new-feature и перейти в неё."
         },
         {
           "type": "example",
-          "text": "switch back to the previous branch",
+          "text": "Начать новую ветку одной командой switch",
+          "command": "git switch -c new-feature",
+          "explanation": "Создать ветку new-feature и перейти в неё."
+        },
+        {
+          "type": "example",
+          "text": "Вернуться на предыдущую ветку",
           "command": "git switch -",
-          "explanation": "Toggles back to the previously checked-out branch"
+          "explanation": "Вернуться на предыдущую ветку."
         },
         {
           "type": "example",
-          "text": "switch to a remote branch and track it",
+          "text": "Переключиться обратно туда, где работал до этого",
+          "command": "git switch -",
+          "explanation": "Вернуться на предыдущую ветку."
+        },
+        {
+          "type": "example",
+          "text": "Создать отслеживающую ветку от origin/feature",
           "command": "git switch --track origin/feature",
-          "explanation": "Creates a local branch that tracks the remote branch and switches to it"
+          "explanation": "Создать отслеживающую ветку от origin/feature."
         },
         {
           "type": "example",
-          "text": "switch to a detached HEAD at a tag",
+          "text": "Перейти к работе с удалённой веткой через switch",
+          "command": "git switch --track origin/feature",
+          "explanation": "Создать отслеживающую ветку от origin/feature."
+        },
+        {
+          "type": "example",
+          "text": "Открыть тег v1.0 без активной ветки",
           "command": "git switch --detach v1.0",
-          "explanation": "Moves to the tagged commit in detached HEAD state"
+          "explanation": "Открыть тег v1.0 без активной ветки."
+        },
+        {
+          "type": "example",
+          "text": "Перейти в detached HEAD на выбранной метке",
+          "command": "git switch --detach v1.0",
+          "explanation": "Открыть тег v1.0 без активной ветки."
         }
       ]
     },
     {
       "name": "git log",
       "synopsis": "git log [options] [revision range] [-- path]",
-      "description": "Show commit logs",
+      "description": "Просмотр истории коммитов",
       "patterns": [
         {
           "type": "example",
-          "text": "show the commit history",
+          "text": "Показать историю коммитов Git",
           "command": "git log",
-          "explanation": "Displays the full commit log for the current branch"
+          "explanation": "Показать историю коммитов Git."
         },
         {
           "type": "example",
-          "text": "show a compact one-line-per-commit history",
+          "text": "Посмотреть журнал изменений репозитория",
+          "command": "git log",
+          "explanation": "Показать историю коммитов Git."
+        },
+        {
+          "type": "example",
+          "text": "Покажи краткую историю коммитов, по одной строке на каждый.",
           "command": "git log --oneline",
-          "explanation": "Displays abbreviated commit hashes and messages one per line"
+          "explanation": "Покажи краткую историю коммитов, по одной строке на каждый."
         },
         {
           "type": "example",
-          "text": "show a visual graph of branches and merges",
+          "text": "Хочу увидеть хеши и сообщения коммитов компактным списком.",
+          "command": "git log --oneline",
+          "explanation": "Покажи краткую историю коммитов, по одной строке на каждый."
+        },
+        {
+          "type": "example",
+          "text": "Показать граф ветвлений и слияний",
           "command": "git log --oneline --graph --all --decorate",
-          "explanation": "Draws an ASCII graph showing branch topology"
+          "explanation": "Показать граф ветвлений и слияний."
         },
         {
           "type": "example",
-          "text": "show commits by a specific author",
+          "text": "Нарисовать компактную историю всех веток с метками",
+          "command": "git log --oneline --graph --all --decorate",
+          "explanation": "Показать граф ветвлений и слияний."
+        },
+        {
+          "type": "example",
+          "text": "Посмотреть коммиты определённого автора",
           "command": "git log --author=\"John\"",
-          "explanation": "Filters the log to only show commits by John"
+          "explanation": "Посмотреть коммиты определённого автора."
         },
         {
           "type": "example",
-          "text": "show commits from the last week",
+          "text": "Отфильтровать историю Git по имени John",
+          "command": "git log --author=\"John\"",
+          "explanation": "Посмотреть коммиты определённого автора."
+        },
+        {
+          "type": "example",
+          "text": "Показать коммиты за последнюю неделю",
           "command": "git log --since=\"1 week ago\"",
-          "explanation": "Displays only commits made within the last week"
+          "explanation": "Показать коммиты за последнюю неделю."
         },
         {
           "type": "example",
-          "text": "show the history of a specific file",
+          "text": "Посмотреть изменения истории за прошедшие семь дней",
+          "command": "git log --since=\"1 week ago\"",
+          "explanation": "Показать коммиты за последнюю неделю."
+        },
+        {
+          "type": "example",
+          "text": "Проследить историю файла с учётом переименований",
           "command": "git log --follow -- path/to/file",
-          "explanation": "Shows all commits that modified the file, even across renames"
+          "explanation": "Проследить историю файла с учётом переименований."
         },
         {
           "type": "example",
-          "text": "search commit messages for a keyword",
+          "text": "Показать прошлые изменения конкретного пути через log --follow",
+          "command": "git log --follow -- path/to/file",
+          "explanation": "Проследить историю файла с учётом переименований."
+        },
+        {
+          "type": "example",
+          "text": "Найти коммиты по слову в сообщении",
           "command": "git log --grep=\"bugfix\"",
-          "explanation": "Shows only commits whose messages contain bugfix"
+          "explanation": "Найти коммиты по слову в сообщении."
         },
         {
           "type": "example",
-          "text": "show the first descendant of a commit selected by reverse topological order",
+          "text": "Поискать bugfix в описаниях коммитов",
+          "command": "git log --grep=\"bugfix\"",
+          "explanation": "Найти коммиты по слову в сообщении."
+        },
+        {
+          "type": "example",
+          "text": "получить первый хеш потомка заданного коммита по обратному топологическому порядку",
           "command": "git log --topo-order --reverse --ancestry-path <hash>..HEAD --format=%H | head -n 1",
-          "explanation": "Selects the first commit in reverse topological order on ancestry paths from <hash> to HEAD; multiple descendant paths may exist"
+          "explanation": "Выбирает первый коммит в обратном топологическом порядке на путях от <hash> к HEAD; путей потомков может быть несколько."
         },
         {
           "type": "example",
-          "text": "show details of the first descendant selected after a given commit",
+          "text": "найти один из ближайших потомков указанного коммита на путях к HEAD",
+          "command": "git log --topo-order --reverse --ancestry-path <hash>..HEAD --format=%H | head -n 1",
+          "explanation": "Выбирает первый коммит в обратном топологическом порядке на путях от <hash> к HEAD; путей потомков может быть несколько."
+        },
+        {
+          "type": "example",
+          "text": "показать выбранный ближайший коммит-потомок указанного хеша",
           "command": "next=$(git log --topo-order --reverse --ancestry-path <hash>..HEAD --format=%H | head -n 1); if [ -n \"$next\" ]; then git show \"$next\"; fi",
-          "explanation": "Shows the selected descendant commit and prints nothing when the ancestry range is empty"
+          "explanation": "Показывает выбранный коммит-потомок; если диапазон истории пуст, ничего не выводит."
         },
         {
           "type": "example",
-          "text": "list all commits after a hash in chronological order",
+          "text": "посмотреть первый коммит из обратного топологического списка потомков, если он существует",
+          "command": "next=$(git log --topo-order --reverse --ancestry-path <hash>..HEAD --format=%H | head -n 1); if [ -n \"$next\" ]; then git show \"$next\"; fi",
+          "explanation": "Показывает выбранный коммит-потомок; если диапазон истории пуст, ничего не выводит."
+        },
+        {
+          "type": "example",
+          "text": "Перечислить потомков заданного коммита в ветке main",
           "command": "git log --reverse --ancestry-path <hash>..main --oneline",
-          "explanation": "Shows commits on main that come after <hash>, oldest first"
+          "explanation": "Перечислить потомков заданного коммита в ветке main."
         },
         {
           "type": "example",
-          "text": "visualize commits that come after a hash",
+          "text": "Вывести коммиты после указанного хеша в хронологическом порядке",
+          "command": "git log --reverse --ancestry-path <hash>..main --oneline",
+          "explanation": "Перечислить потомков заданного коммита в ветке main."
+        },
+        {
+          "type": "example",
+          "text": "Показать граф потомков коммита до HEAD",
           "command": "git log --graph --oneline --ancestry-path <hash>..HEAD",
-          "explanation": "Draws an ASCII graph of commits on the path from <hash> to HEAD"
+          "explanation": "Показать граф потомков коммита до HEAD."
         },
         {
           "type": "example",
-          "text": "show commits in a range between two hashes",
+          "text": "Визуализировать историю после заданного хеша на путях к текущей версии",
+          "command": "git log --graph --oneline --ancestry-path <hash>..HEAD",
+          "explanation": "Показать граф потомков коммита до HEAD."
+        },
+        {
+          "type": "example",
+          "text": "Показать коммиты между двумя хешами по пути происхождения",
           "command": "git log --ancestry-path <old-hash>..<new-hash> --oneline",
-          "explanation": "Lists commits on the path between two specific hashes, excluding <old-hash>"
+          "explanation": "Показать коммиты между двумя хешами по пути происхождения."
+        },
+        {
+          "type": "example",
+          "text": "Вывести компактную историю заданного диапазона Git",
+          "command": "git log --ancestry-path <old-hash>..<new-hash> --oneline",
+          "explanation": "Показать коммиты между двумя хешами по пути происхождения."
         }
       ]
     },
     {
       "name": "git rev-list",
       "synopsis": "git rev-list [options] <commit>...",
-      "description": "List commit objects in reverse chronological order, useful for scripting and traversing history",
+      "description": "Перечисление коммитов для анализа истории и сценариев автоматизации",
       "patterns": [
         {
           "type": "example",
-          "text": "find the direct children of a commit",
+          "text": "Найти непосредственных потомков коммита среди всех веток",
           "command": "git rev-list --all --children | grep ^<hash>",
-          "explanation": "Prints <hash> followed by the hashes of all commits that have it as a parent"
+          "explanation": "Найти непосредственных потомков коммита среди всех веток."
         },
         {
           "type": "example",
-          "text": "count the number of commits on the current branch",
+          "text": "Показать дочерние хеши для заданного коммита",
+          "command": "git rev-list --all --children | grep ^<hash>",
+          "explanation": "Найти непосредственных потомков коммита среди всех веток."
+        },
+        {
+          "type": "example",
+          "text": "Посчитать коммиты текущей ветки",
           "command": "git rev-list --count HEAD",
-          "explanation": "Returns the total number of commits reachable from HEAD"
+          "explanation": "Посчитать коммиты текущей ветки."
         },
         {
           "type": "example",
-          "text": "count commits between two references",
+          "text": "Узнать число коммитов, достижимых из HEAD",
+          "command": "git rev-list --count HEAD",
+          "explanation": "Посчитать коммиты текущей ветки."
+        },
+        {
+          "type": "example",
+          "text": "Посчитать коммиты своей ветки, отсутствующие в main",
           "command": "git rev-list --count main..HEAD",
-          "explanation": "Shows how many commits the current branch is ahead of main"
+          "explanation": "Посчитать коммиты своей ветки, отсутствующие в main."
         },
         {
           "type": "example",
-          "text": "list all commit hashes in a repository",
+          "text": "Узнать размер диапазона main..HEAD в коммитах",
+          "command": "git rev-list --count main..HEAD",
+          "explanation": "Посчитать коммиты своей ветки, отсутствующие в main."
+        },
+        {
+          "type": "example",
+          "text": "Перечислить хеши всех доступных коммитов",
           "command": "git rev-list --all",
-          "explanation": "Prints every commit hash reachable from any ref in the repo"
+          "explanation": "Перечислить хеши всех доступных коммитов."
         },
         {
           "type": "example",
-          "text": "find the root commits reachable from HEAD",
+          "text": "Вывести идентификаторы коммитов из всех ссылок репозитория",
+          "command": "git rev-list --all",
+          "explanation": "Перечислить хеши всех доступных коммитов."
+        },
+        {
+          "type": "example",
+          "text": "Найти корневые коммиты, достижимые из HEAD",
           "command": "git rev-list --max-parents=0 HEAD",
-          "explanation": "Lists every reachable commit with no parents; unrelated histories may have multiple roots"
+          "explanation": "Перечисляет все достижимые коммиты без родителей; у несвязанных историй может быть несколько корней."
         },
         {
           "type": "example",
-          "text": "list commits that touched a specific file",
+          "text": "Показать хеши начальных коммитов без родителей в истории текущей ветки",
+          "command": "git rev-list --max-parents=0 HEAD",
+          "explanation": "Перечисляет все достижимые коммиты без родителей; у несвязанных историй может быть несколько корней."
+        },
+        {
+          "type": "example",
+          "text": "Вывести хеши коммитов, менявших конкретный файл",
           "command": "git rev-list HEAD -- path/to/file",
-          "explanation": "Shows hashes of every commit that modified the given file"
+          "explanation": "Вывести хеши коммитов, менявших конкретный файл."
+        },
+        {
+          "type": "example",
+          "text": "Найти изменения выбранного пути в истории HEAD",
+          "command": "git rev-list HEAD -- path/to/file",
+          "explanation": "Вывести хеши коммитов, менявших конкретный файл."
         }
       ]
     },
     {
       "name": "git diff",
       "synopsis": "git diff [options] [commit] [-- path]",
-      "description": "Show changes between commits, working tree, and staging area",
+      "description": "Просмотр различий между коммитами, рабочей копией и индексом",
       "patterns": [
         {
           "type": "example",
-          "text": "see what has changed but is not yet staged",
+          "text": "Покажи изменения в отслеживаемых файлах, которые ещё не добавлены в индекс.",
           "command": "git diff",
-          "explanation": "Shows unstaged modifications in the working directory"
+          "explanation": "Покажи изменения в отслеживаемых файлах, которые ещё не добавлены в индекс."
         },
         {
           "type": "example",
-          "text": "see what is staged and ready to commit",
+          "text": "Что поменялось в рабочем дереве относительно индекса Git?",
+          "command": "git diff",
+          "explanation": "Покажи изменения в отслеживаемых файлах, которые ещё не добавлены в индекс."
+        },
+        {
+          "type": "example",
+          "text": "Показать изменения, подготовленные к коммиту",
           "command": "git diff --staged",
-          "explanation": "Shows changes that have been added to the staging area"
+          "explanation": "Показать изменения, подготовленные к коммиту."
         },
         {
           "type": "example",
-          "text": "compare two branches",
+          "text": "Сравнить индекс Git с последним коммитом",
+          "command": "git diff --staged",
+          "explanation": "Показать изменения, подготовленные к коммиту."
+        },
+        {
+          "type": "example",
+          "text": "Сравнить содержимое веток main и feature-branch",
           "command": "git diff main..feature-branch",
-          "explanation": "Shows the differences between the two branches"
+          "explanation": "Сравнить содержимое веток main и feature-branch."
         },
         {
           "type": "example",
-          "text": "see a summary of changed files only",
+          "text": "Посмотреть различия между вершинами двух веток",
+          "command": "git diff main..feature-branch",
+          "explanation": "Сравнить содержимое веток main и feature-branch."
+        },
+        {
+          "type": "example",
+          "text": "Показать статистику незаписанных в индекс изменений по файлам",
           "command": "git diff --stat",
-          "explanation": "Shows a compact summary of files changed and lines added/removed"
+          "explanation": "Показать статистику незаписанных в индекс изменений по файлам."
         },
         {
           "type": "example",
-          "text": "compare a specific file between two commits",
+          "text": "Вывести сводку git diff без полного текста правок",
+          "command": "git diff --stat",
+          "explanation": "Показать статистику незаписанных в индекс изменений по файлам."
+        },
+        {
+          "type": "example",
+          "text": "Сравнить один файл между двумя коммитами",
           "command": "git diff abc123..def456 -- path/to/file",
-          "explanation": "Shows changes to a specific file between two commits"
+          "explanation": "Сравнить один файл между двумя коммитами."
         },
         {
           "type": "example",
-          "text": "show word-level differences instead of line-level",
+          "text": "Посмотреть изменения выбранного пути от abc123 до def456",
+          "command": "git diff abc123..def456 -- path/to/file",
+          "explanation": "Сравнить один файл между двумя коммитами."
+        },
+        {
+          "type": "example",
+          "text": "Показать различия по отдельным словам",
           "command": "git diff --word-diff",
-          "explanation": "Highlights individual changed words rather than whole lines"
+          "explanation": "Показать различия по отдельным словам."
         },
         {
           "type": "example",
-          "text": "get a one-line summary of changes from main to HEAD",
+          "text": "Посмотреть изменения текста мельче, чем целыми строками",
+          "command": "git diff --word-diff",
+          "explanation": "Показать различия по отдельным словам."
+        },
+        {
+          "type": "example",
+          "text": "Вывести общую статистику изменений от main к HEAD",
           "command": "git diff --shortstat main..HEAD",
-          "explanation": "Compares the tree at main with HEAD and summarizes changed files, insertions, and deletions"
+          "explanation": "Сравнивает дерево main с HEAD и показывает сводку изменённых файлов, добавленных и удалённых строк."
         },
         {
           "type": "example",
-          "text": "get machine-readable numeric stats for each changed file",
+          "text": "Получить одной строкой число файлов, добавлений и удалений",
+          "command": "git diff --shortstat main..HEAD",
+          "explanation": "Сравнивает дерево main с HEAD и показывает сводку изменённых файлов, добавленных и удалённых строк."
+        },
+        {
+          "type": "example",
+          "text": "Показать числовую статистику каждого файла от main к HEAD",
           "command": "git diff --numstat main..HEAD",
-          "explanation": "Outputs tab-separated added<TAB>deleted<TAB>filename, ideal for scripting"
+          "explanation": "Показать числовую статистику каждого файла от main к HEAD."
         },
         {
           "type": "example",
-          "text": "see percentage of changes per directory",
+          "text": "Вывести машиночитаемые количества добавленных и удалённых строк",
+          "command": "git diff --numstat main..HEAD",
+          "explanation": "Показать числовую статистику каждого файла от main к HEAD."
+        },
+        {
+          "type": "example",
+          "text": "Показать доли изменений по каталогам между main и HEAD",
           "command": "git diff --dirstat main..HEAD",
-          "explanation": "Shows the percentage of changes grouped by directory"
+          "explanation": "Показать доли изменений по каталогам между main и HEAD."
         },
         {
           "type": "example",
-          "text": "see dirstat with cumulative percentages and file counts",
+          "text": "Узнать распределение правок по папкам в процентах",
+          "command": "git diff --dirstat main..HEAD",
+          "explanation": "Показать доли изменений по каталогам между main и HEAD."
+        },
+        {
+          "type": "example",
+          "text": "Посчитать доли изменённых файлов по каталогам с накоплением",
           "command": "git diff --dirstat=files,10,cumulative main..HEAD",
-          "explanation": "Groups by directory using file counts, hides dirs under 10%, and includes parent dirs cumulatively"
+          "explanation": "Посчитать доли изменённых файлов по каталогам с накоплением."
         },
         {
           "type": "example",
-          "text": "list changed files with their status letter",
+          "text": "Показать dirstat между main и HEAD с учётом вложенных папок",
+          "command": "git diff --dirstat=files,10,cumulative main..HEAD",
+          "explanation": "Посчитать доли изменённых файлов по каталогам с накоплением."
+        },
+        {
+          "type": "example",
+          "text": "Перечислить изменённые файлы и буквы их статуса",
           "command": "git diff --name-status main..HEAD",
-          "explanation": "Outputs each file prefixed with A (added), M (modified), D (deleted), or R (renamed)"
+          "explanation": "Перечислить изменённые файлы и буквы их статуса."
         },
         {
           "type": "example",
-          "text": "count changed paths per top-level directory, including a group for root files",
+          "text": "Посмотреть добавления, удаления и изменения путей относительно main",
+          "command": "git diff --name-status main..HEAD",
+          "explanation": "Перечислить изменённые файлы и буквы их статуса."
+        },
+        {
+          "type": "example",
+          "text": "посчитать изменённые пути по папкам первого уровня и отдельной группе файлов в корне",
           "command": "git diff --no-renames --name-only -z main..HEAD | perl -0ne 'chomp; $d=m{/} ? (split m{/})[0] : \".\"; $c{$d}++; END {printf \"%5d %s\\n\", $c{$_}, $_ for sort {$c{$b}<=>$c{$a} || $a cmp $b} keys %c}'",
-          "explanation": "Counts changed paths by top-level directory using NUL-separated names; root files are grouped under . and renames count as delete/add paths"
+          "explanation": "Считает изменённые пути по каталогам верхнего уровня через NUL-разделители; файлы корня попадают в группу ., переименование учитывается как удаление и добавление путей."
         },
         {
           "type": "example",
-          "text": "aggregate files changed and lines added/removed per top-level folder",
+          "text": "сгруппировать отличия main и HEAD по верхним каталогам, не теряя пробелы в именах",
+          "command": "git diff --no-renames --name-only -z main..HEAD | perl -0ne 'chomp; $d=m{/} ? (split m{/})[0] : \".\"; $c{$d}++; END {printf \"%5d %s\\n\", $c{$_}, $_ for sort {$c{$b}<=>$c{$a} || $a cmp $b} keys %c}'",
+          "explanation": "Считает изменённые пути по каталогам верхнего уровня через NUL-разделители; файлы корня попадают в группу ., переименование учитывается как удаление и добавление путей."
+        },
+        {
+          "type": "example",
+          "text": "суммировать изменённые файлы и строки по папкам первого уровня, отдельно учитывая корень",
           "command": "git diff --no-renames --numstat -z main..HEAD | perl -0ne 'chomp; ($add,$del,$path)=split /\\t/,$_,3; $d=$path=~m{/} ? (split m{/},$path)[0] : \".\"; $s{$d}[0]++; $s{$d}[1]+=$add eq \"-\" ? 0 : $add; $s{$d}[2]+=$del eq \"-\" ? 0 : $del; END {printf \"%-30s %5d files +%d -%d\\n\", $_, @{$s{$_}} for sort {$s{$b}[0]<=>$s{$a}[0] || $a cmp $b} keys %s}'",
-          "explanation": "Groups changed paths and line counts by top-level directory; . contains root files, binary files add zero line counts, and renames count as delete/add paths"
+          "explanation": "Группирует изменённые пути и строки по каталогам верхнего уровня; . означает корень, двоичные файлы не добавляют строки, переименование считается удалением и добавлением."
         },
         {
           "type": "example",
-          "text": "aggregate stats per folder at any depth (configurable)",
+          "text": "получить число файлов, добавлений и удалений для верхних каталогов без потери имён с пробелами",
+          "command": "git diff --no-renames --numstat -z main..HEAD | perl -0ne 'chomp; ($add,$del,$path)=split /\\t/,$_,3; $d=$path=~m{/} ? (split m{/},$path)[0] : \".\"; $s{$d}[0]++; $s{$d}[1]+=$add eq \"-\" ? 0 : $add; $s{$d}[2]+=$del eq \"-\" ? 0 : $del; END {printf \"%-30s %5d files +%d -%d\\n\", $_, @{$s{$_}} for sort {$s{$b}[0]<=>$s{$a}[0] || $a cmp $b} keys %s}'",
+          "explanation": "Группирует изменённые пути и строки по каталогам верхнего уровня; . означает корень, двоичные файлы не добавляют строки, переименование считается удалением и добавлением."
+        },
+        {
+          "type": "example",
+          "text": "сгруппировать статистику изменений по каталогам до третьего уровня, исключая имена файлов",
           "command": "git diff --no-renames --numstat -z main..HEAD | perl -0ne 'BEGIN {$depth=3} chomp; ($add,$del,$path)=split /\\t/,$_,3; @parts=split m{/},$path; pop @parts; $d=@parts ? join(\"/\",@parts[0..($#parts<$depth-1 ? $#parts : $depth-1)]) : \".\"; $s{$d}[0]++; $s{$d}[1]+=$add eq \"-\" ? 0 : $add; $s{$d}[2]+=$del eq \"-\" ? 0 : $del; END {printf \"%-30s %5d files +%d -%d\\n\", $_, @{$s{$_}} for sort {$s{$b}[0]<=>$s{$a}[0] || $a cmp $b} keys %s}'",
-          "explanation": "Groups line statistics by up to three directory levels, excluding the filename; edit $depth in BEGIN to change depth; binary files add zero line counts"
+          "explanation": "Группирует изменения строк по трём уровням каталогов без имени файла; глубина задаётся переменной $depth в BEGIN, двоичные файлы не добавляют строки."
         },
         {
           "type": "example",
-          "text": "show lines added and removed per author across a range",
+          "text": "посчитать изменённые пути и строки по папкам с настраиваемой глубиной группировки",
+          "command": "git diff --no-renames --numstat -z main..HEAD | perl -0ne 'BEGIN {$depth=3} chomp; ($add,$del,$path)=split /\\t/,$_,3; @parts=split m{/},$path; pop @parts; $d=@parts ? join(\"/\",@parts[0..($#parts<$depth-1 ? $#parts : $depth-1)]) : \".\"; $s{$d}[0]++; $s{$d}[1]+=$add eq \"-\" ? 0 : $add; $s{$d}[2]+=$del eq \"-\" ? 0 : $del; END {printf \"%-30s %5d files +%d -%d\\n\", $_, @{$s{$_}} for sort {$s{$b}[0]<=>$s{$a}[0] || $a cmp $b} keys %s}'",
+          "explanation": "Группирует изменения строк по трём уровням каталогов без имени файла; глубина задаётся переменной $depth в BEGIN, двоичные файлы не добавляют строки."
+        },
+        {
+          "type": "example",
+          "text": "Подсчитать добавленные и удалённые строки по авторам коммитов",
           "command": "git log --no-renames --numstat -z --format='AUTHOR:%an%x00' main..HEAD | perl -0ne 'chomp; s/\\A\\n+//; if(/\\AAUTHOR:(.*)\\z/s){$author=$1; next} ($add,$del,$path)=split /\\t/,$_,3; next unless defined $path; $a{$author}+=$add eq \"-\" ? 0 : $add; $d{$author}+=$del eq \"-\" ? 0 : $del; END {printf \"%-25s +%-8d -%d\\n\", $_, $a{$_}, $d{$_} for sort keys %a}'",
-          "explanation": "Aggregates line changes by author using explicit author markers and NUL-separated numstat; binary line counts are omitted"
+          "explanation": "Суммирует изменения строк по авторам с явными маркерами авторов и NUL-разделённым numstat; двоичные файлы исключены из подсчёта строк."
+        },
+        {
+          "type": "example",
+          "text": "Свести статистику истории main..HEAD по именам авторов",
+          "command": "git log --no-renames --numstat -z --format='AUTHOR:%an%x00' main..HEAD | perl -0ne 'chomp; s/\\A\\n+//; if(/\\AAUTHOR:(.*)\\z/s){$author=$1; next} ($add,$del,$path)=split /\\t/,$_,3; next unless defined $path; $a{$author}+=$add eq \"-\" ? 0 : $add; $d{$author}+=$del eq \"-\" ? 0 : $del; END {printf \"%-25s +%-8d -%d\\n\", $_, $a{$_}, $d{$_} for sort keys %a}'",
+          "explanation": "Суммирует изменения строк по авторам с явными маркерами авторов и NUL-разделённым numstat; двоичные файлы исключены из подсчёта строк."
         }
       ]
     },
     {
       "name": "git status",
       "synopsis": "git status [options]",
-      "description": "Show the working tree status",
+      "description": "Просмотр состояния рабочей копии",
       "patterns": [
         {
           "type": "example",
-          "text": "check which files have been modified or staged",
+          "text": "Какие файлы изменены, добавлены в индекс или пока не отслеживаются?",
           "command": "git status",
-          "explanation": "Displays the state of the working directory and staging area"
+          "explanation": "Какие файлы изменены, добавлены в индекс или пока не отслеживаются?"
         },
         {
           "type": "example",
-          "text": "show a short compact status",
+          "text": "Покажи состояние рабочего дерева и индекса в Git.",
+          "command": "git status",
+          "explanation": "Какие файлы изменены, добавлены в индекс или пока не отслеживаются?"
+        },
+        {
+          "type": "example",
+          "text": "Показать сокращённый статус репозитория",
           "command": "git status -s",
-          "explanation": "Displays status in a short format with status codes"
+          "explanation": "Показать сокращённый статус репозитория."
         },
         {
           "type": "example",
-          "text": "show status including the branch tracking info",
+          "text": "Вывести состояние файлов компактными двухбуквенными кодами",
+          "command": "git status -s",
+          "explanation": "Показать сокращённый статус репозитория."
+        },
+        {
+          "type": "example",
+          "text": "Показать краткий статус и сведения об отслеживаемой ветке",
           "command": "git status -sb",
-          "explanation": "Short format status with branch and tracking information"
+          "explanation": "Показать краткий статус и сведения об отслеживаемой ветке."
         },
         {
           "type": "example",
-          "text": "check status but ignore untracked files",
+          "text": "Узнать состояние файлов вместе с отношением к upstream",
+          "command": "git status -sb",
+          "explanation": "Показать краткий статус и сведения об отслеживаемой ветке."
+        },
+        {
+          "type": "example",
+          "text": "Проверить состояние без неотслеживаемых файлов",
           "command": "git status -uno",
-          "explanation": "Shows status but omits untracked files from the output"
+          "explanation": "Проверить состояние без неотслеживаемых файлов."
         },
         {
           "type": "example",
-          "text": "show status with paths relative to the repo root",
+          "text": "Скрыть новые файлы из вывода git status",
+          "command": "git status -uno",
+          "explanation": "Проверить состояние без неотслеживаемых файлов."
+        },
+        {
+          "type": "example",
+          "text": "Получить стабильный машиночитаемый статус относительно корня репозитория",
           "command": "git status --porcelain",
-          "explanation": "Machine-readable output format, useful for scripting"
+          "explanation": "Получить стабильный машиночитаемый статус относительно корня репозитория."
+        },
+        {
+          "type": "example",
+          "text": "Вывести состояния файлов в формате porcelain",
+          "command": "git status --porcelain",
+          "explanation": "Получить стабильный машиночитаемый статус относительно корня репозитория."
         }
       ]
     },
     {
       "name": "git stash",
       "synopsis": "git stash [command] [options]",
-      "description": "Stash the changes in a dirty working directory away",
+      "description": "Временное сохранение незакоммиченных изменений",
       "patterns": [
         {
           "type": "example",
-          "text": "temporarily save my uncommitted changes",
+          "text": "Временно убери незакоммиченные изменения отслеживаемых файлов в stash.",
           "command": "git stash",
-          "explanation": "Saves all modified tracked files and staged changes to a stack"
+          "explanation": "Временно убери незакоммиченные изменения отслеживаемых файлов в stash."
         },
         {
           "type": "example",
-          "text": "stash changes with a descriptive message",
+          "text": "Как отложить текущие правки в отслеживаемых файлах, не создавая коммит?",
+          "command": "git stash",
+          "explanation": "Временно убери незакоммиченные изменения отслеживаемых файлов в stash."
+        },
+        {
+          "type": "example",
+          "text": "Сохранить правки в stash с поясняющим сообщением",
           "command": "git stash push -m \"work in progress on login\"",
-          "explanation": "Saves changes with a label for easy identification"
+          "explanation": "Сохранить правки в stash с поясняющим сообщением."
         },
         {
           "type": "example",
-          "text": "restore the most recent stashed changes",
+          "text": "Назвать временно отложенные изменения понятным описанием",
+          "command": "git stash push -m \"work in progress on login\"",
+          "explanation": "Сохранить правки в stash с поясняющим сообщением."
+        },
+        {
+          "type": "example",
+          "text": "Вернуть последние отложенные изменения и убрать запись stash",
           "command": "git stash pop",
-          "explanation": "Applies the latest stash and removes it from the stash list"
+          "explanation": "Вернуть последние отложенные изменения и убрать запись stash."
         },
         {
           "type": "example",
-          "text": "list all stashed changes",
+          "text": "Достать верхний stash с удалением после успешного применения",
+          "command": "git stash pop",
+          "explanation": "Вернуть последние отложенные изменения и убрать запись stash."
+        },
+        {
+          "type": "example",
+          "text": "Перечислить сохранённые наборы stash",
           "command": "git stash list",
-          "explanation": "Shows all entries in the stash stack"
+          "explanation": "Перечислить сохранённые наборы stash."
         },
         {
           "type": "example",
-          "text": "apply a stash without removing it from the list",
+          "text": "Посмотреть список временно отложенных изменений",
+          "command": "git stash list",
+          "explanation": "Перечислить сохранённые наборы stash."
+        },
+        {
+          "type": "example",
+          "text": "Применить выбранный stash без удаления записи",
           "command": "git stash apply stash@{0}",
-          "explanation": "Applies the specified stash but keeps it in the stack"
+          "explanation": "Применить выбранный stash без удаления записи."
         },
         {
           "type": "example",
-          "text": "stash including untracked files",
+          "text": "Восстановить правки из stash@{0}, оставив их в списке",
+          "command": "git stash apply stash@{0}",
+          "explanation": "Применить выбранный stash без удаления записи."
+        },
+        {
+          "type": "example",
+          "text": "Отложить изменения вместе с неотслеживаемыми файлами",
           "command": "git stash -u",
-          "explanation": "Stashes both tracked and untracked files"
+          "explanation": "Отложить изменения вместе с неотслеживаемыми файлами."
         },
         {
           "type": "example",
-          "text": "drop a specific stash entry",
+          "text": "Спрятать в stash и правки, и новые файлы",
+          "command": "git stash -u",
+          "explanation": "Отложить изменения вместе с неотслеживаемыми файлами."
+        },
+        {
+          "type": "example",
+          "text": "Удалить конкретную запись stash",
           "command": "git stash drop stash@{2}",
-          "explanation": "Removes a specific stash entry from the stack",
+          "explanation": "Удалить конкретную запись stash.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "Выбросить сохранённый набор stash@{2}",
+          "command": "git stash drop stash@{2}",
+          "explanation": "Удалить конкретную запись stash.",
           "destructive": true
         }
       ]
@@ -833,542 +1543,993 @@
     {
       "name": "git reset",
       "synopsis": "git reset [options] [commit]",
-      "description": "Reset current HEAD to the specified state",
+      "description": "Сброс HEAD, индекса или рабочей копии к указанному состоянию",
       "patterns": [
         {
           "type": "example",
-          "text": "unstage a file but keep the changes",
+          "text": "Убрать filename.txt из индекса без потери правок",
           "command": "git reset HEAD filename.txt",
-          "explanation": "Removes the file from the staging area but preserves modifications"
+          "explanation": "Убрать filename.txt из индекса без потери правок."
         },
         {
           "type": "example",
-          "text": "undo the last commit but keep changes staged",
+          "text": "Отменить подготовку выбранного файла к коммиту",
+          "command": "git reset HEAD filename.txt",
+          "explanation": "Убрать filename.txt из индекса без потери правок."
+        },
+        {
+          "type": "example",
+          "text": "Отменить последний коммит, сохранив правки в индексе",
           "command": "git reset --soft HEAD~1",
-          "explanation": "Moves HEAD back one commit, changes remain in staging area"
+          "explanation": "Отменить последний коммит, сохранив правки в индексе."
         },
         {
           "type": "example",
-          "text": "undo the last commit and unstage the changes",
+          "text": "Сдвинуть HEAD назад с сохранением подготовленных изменений",
+          "command": "git reset --soft HEAD~1",
+          "explanation": "Отменить последний коммит, сохранив правки в индексе."
+        },
+        {
+          "type": "example",
+          "text": "Отменить последний коммит и снять правки с индекса",
           "command": "git reset HEAD~1",
-          "explanation": "Moves HEAD back one commit, changes go to the working directory"
+          "explanation": "Отменить последний коммит и снять правки с индекса."
         },
         {
           "type": "example",
-          "text": "completely discard the last commit and all changes",
+          "text": "Вернуть предыдущую версию истории, оставив изменения в рабочем дереве",
+          "command": "git reset HEAD~1",
+          "explanation": "Отменить последний коммит и снять правки с индекса."
+        },
+        {
+          "type": "example",
+          "text": "Полностью отбросить последний коммит и локальные изменения",
           "command": "git reset --hard HEAD~1",
-          "explanation": "Permanently removes the last commit and all associated changes",
+          "explanation": "Полностью отбросить последний коммит и локальные изменения.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "reset to match the remote branch exactly",
+          "text": "Жёстко сбросить ветку на родителя HEAD",
+          "command": "git reset --hard HEAD~1",
+          "explanation": "Полностью отбросить последний коммит и локальные изменения.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "Привести ветку и отслеживаемые файлы к origin/main",
           "command": "git reset --hard origin/main",
-          "explanation": "Discards all local commits and changes, matching the remote",
+          "explanation": "Привести ветку и отслеживаемые файлы к origin/main.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "unstage all files",
+          "text": "Жёстко сбросить локальное состояние до удалённой main",
+          "command": "git reset --hard origin/main",
+          "explanation": "Привести ветку и отслеживаемые файлы к origin/main.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "Снять все изменения с индекса Git",
           "command": "git reset",
-          "explanation": "Removes all files from the staging area without changing the working directory"
+          "explanation": "Снять все изменения с индекса Git."
+        },
+        {
+          "type": "example",
+          "text": "Отменить подготовку файлов, сохранив рабочие правки",
+          "command": "git reset",
+          "explanation": "Снять все изменения с индекса Git."
         }
       ]
     },
     {
       "name": "git revert",
       "synopsis": "git revert [options] <commit>",
-      "description": "Create a new commit that undoes a previous commit",
+      "description": "Создание коммита, отменяющего предыдущие изменения",
       "patterns": [
         {
           "type": "example",
-          "text": "undo a commit without rewriting history",
+          "text": "Отменить изменения конкретного коммита новым коммитом",
           "command": "git revert abc1234",
-          "explanation": "Creates a new commit that reverses the changes from the specified commit"
+          "explanation": "Отменить изменения конкретного коммита новым коммитом."
         },
         {
           "type": "example",
-          "text": "revert the most recent commit",
+          "text": "Создать обратный коммит без переписывания истории",
+          "command": "git revert abc1234",
+          "explanation": "Отменить изменения конкретного коммита новым коммитом."
+        },
+        {
+          "type": "example",
+          "text": "Создать коммит, отменяющий последний коммит",
           "command": "git revert HEAD",
-          "explanation": "Undoes the latest commit by creating a new reverting commit"
+          "explanation": "Создать коммит, отменяющий последний коммит."
         },
         {
           "type": "example",
-          "text": "revert a merge commit",
+          "text": "Откатить содержимое HEAD через revert",
+          "command": "git revert HEAD",
+          "explanation": "Создать коммит, отменяющий последний коммит."
+        },
+        {
+          "type": "example",
+          "text": "Отменить merge-коммит относительно первого родителя",
           "command": "git revert -m 1 abc1234",
-          "explanation": "Reverts a merge commit, keeping the first parent's side"
+          "explanation": "Отменить merge-коммит относительно первого родителя."
         },
         {
           "type": "example",
-          "text": "revert without committing immediately",
+          "text": "Создать обратное изменение для указанного слияния",
+          "command": "git revert -m 1 abc1234",
+          "explanation": "Отменить merge-коммит относительно первого родителя."
+        },
+        {
+          "type": "example",
+          "text": "Применить отмену коммита без автоматического нового коммита",
           "command": "git revert --no-commit abc1234",
-          "explanation": "Stages the revert changes but does not create a commit"
+          "explanation": "Применить отмену коммита без автоматического нового коммита."
         },
         {
           "type": "example",
-          "text": "revert a range of commits",
+          "text": "Подготовить обратные правки через revert --no-commit",
+          "command": "git revert --no-commit abc1234",
+          "explanation": "Применить отмену коммита без автоматического нового коммита."
+        },
+        {
+          "type": "example",
+          "text": "Отменить последние три коммита обратными коммитами",
           "command": "git revert HEAD~3..HEAD",
-          "explanation": "Reverts the last three commits one by one"
+          "explanation": "Отменить последние три коммита обратными коммитами."
+        },
+        {
+          "type": "example",
+          "text": "Выполнить revert для диапазона HEAD~3..HEAD",
+          "command": "git revert HEAD~3..HEAD",
+          "explanation": "Отменить последние три коммита обратными коммитами."
         }
       ]
     },
     {
       "name": "git cherry-pick",
       "synopsis": "git cherry-pick [options] <commit>...",
-      "description": "Apply the changes introduced by some existing commits",
+      "description": "Применение изменений из выбранных коммитов",
       "patterns": [
         {
           "type": "example",
-          "text": "apply a specific commit from another branch",
+          "text": "Перенести один коммит из другой ветки",
           "command": "git cherry-pick abc1234",
-          "explanation": "Copies the specified commit to the current branch"
+          "explanation": "Перенести один коммит из другой ветки."
         },
         {
           "type": "example",
-          "text": "cherry-pick without committing",
+          "text": "Применить изменения abc1234 через cherry-pick",
+          "command": "git cherry-pick abc1234",
+          "explanation": "Перенести один коммит из другой ветки."
+        },
+        {
+          "type": "example",
+          "text": "Применить коммит без немедленного создания нового",
           "command": "git cherry-pick --no-commit abc1234",
-          "explanation": "Applies the changes but does not create a commit"
+          "explanation": "Применить коммит без немедленного создания нового."
         },
         {
           "type": "example",
-          "text": "cherry-pick a range of commits",
+          "text": "Перенести правки из коммита в индекс через cherry-pick -n",
+          "command": "git cherry-pick --no-commit abc1234",
+          "explanation": "Применить коммит без немедленного создания нового."
+        },
+        {
+          "type": "example",
+          "text": "Перенести диапазон коммитов, исключая начальный хеш",
           "command": "git cherry-pick abc1234..def5678",
-          "explanation": "Applies a range of commits to the current branch"
+          "explanation": "Перенести диапазон коммитов, исключая начальный хеш."
         },
         {
           "type": "example",
-          "text": "abort a cherry-pick that has conflicts",
+          "text": "Применить изменения после abc1234 до def5678 включительно",
+          "command": "git cherry-pick abc1234..def5678",
+          "explanation": "Перенести диапазон коммитов, исключая начальный хеш."
+        },
+        {
+          "type": "example",
+          "text": "Отменить незавершённый cherry-pick",
           "command": "git cherry-pick --abort",
-          "explanation": "Cancels the cherry-pick and restores the original state"
+          "explanation": "Отменить незавершённый cherry-pick."
         },
         {
           "type": "example",
-          "text": "continue cherry-pick after resolving conflicts",
+          "text": "Вернуть состояние до переноса конфликтующего коммита",
+          "command": "git cherry-pick --abort",
+          "explanation": "Отменить незавершённый cherry-pick."
+        },
+        {
+          "type": "example",
+          "text": "Продолжить cherry-pick после исправления конфликтов",
           "command": "git cherry-pick --continue",
-          "explanation": "Proceeds with the cherry-pick after resolving conflicts"
+          "explanation": "Продолжить cherry-pick после исправления конфликтов."
+        },
+        {
+          "type": "example",
+          "text": "Завершить перенос подготовленных изменений",
+          "command": "git cherry-pick --continue",
+          "explanation": "Продолжить cherry-pick после исправления конфликтов."
         }
       ]
     },
     {
       "name": "git tag",
       "synopsis": "git tag [options] [tagname] [commit]",
-      "description": "Create, list, delete, or verify tags",
+      "description": "Создание, просмотр, удаление и проверка тегов",
       "patterns": [
         {
           "type": "example",
-          "text": "list all tags",
+          "text": "Перечислить теги репозитория",
           "command": "git tag",
-          "explanation": "Shows all tags in the repository"
+          "explanation": "Перечислить теги репозитория."
         },
         {
           "type": "example",
-          "text": "create a lightweight tag",
+          "text": "Посмотреть список Git-меток",
+          "command": "git tag",
+          "explanation": "Перечислить теги репозитория."
+        },
+        {
+          "type": "example",
+          "text": "Создать лёгкий тег v1.0.0",
           "command": "git tag v1.0.0",
-          "explanation": "Creates a simple tag pointing to the current commit"
+          "explanation": "Создать лёгкий тег v1.0.0."
         },
         {
           "type": "example",
-          "text": "create an annotated tag with a message",
+          "text": "Поставить простую метку на текущий коммит",
+          "command": "git tag v1.0.0",
+          "explanation": "Создать лёгкий тег v1.0.0."
+        },
+        {
+          "type": "example",
+          "text": "Создать аннотированный тег с сообщением",
           "command": "git tag -a v1.0.0 -m \"Release version 1.0.0\"",
-          "explanation": "Creates a tag with metadata including tagger and message"
+          "explanation": "Создать аннотированный тег с сообщением."
         },
         {
           "type": "example",
-          "text": "tag a specific older commit",
+          "text": "Добавить метку релиза с пояснением",
+          "command": "git tag -a v1.0.0 -m \"Release version 1.0.0\"",
+          "explanation": "Создать аннотированный тег с сообщением."
+        },
+        {
+          "type": "example",
+          "text": "Поставить аннотированный тег на старый коммит",
           "command": "git tag -a v0.9.0 abc1234 -m \"Retroactive tag\"",
-          "explanation": "Creates an annotated tag on a specific past commit"
+          "explanation": "Поставить аннотированный тег на старый коммит."
         },
         {
           "type": "example",
-          "text": "delete a local tag",
+          "text": "Отметить выбранный хеш как прошлый релиз",
+          "command": "git tag -a v0.9.0 abc1234 -m \"Retroactive tag\"",
+          "explanation": "Поставить аннотированный тег на старый коммит."
+        },
+        {
+          "type": "example",
+          "text": "Удалить локальный тег v1.0.0",
           "command": "git tag -d v1.0.0",
-          "explanation": "Removes the tag from the local repository",
+          "explanation": "Удалить локальный тег v1.0.0.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "list tags matching a pattern",
+          "text": "Убрать метку из своего репозитория",
+          "command": "git tag -d v1.0.0",
+          "explanation": "Удалить локальный тег v1.0.0.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "Показать теги, начинающиеся с v2.",
           "command": "git tag -l 'v2.*'",
-          "explanation": "Shows only tags that match the wildcard pattern"
+          "explanation": "Показать теги, начинающиеся с v2."
+        },
+        {
+          "type": "example",
+          "text": "Отфильтровать Git-метки по шаблону версии",
+          "command": "git tag -l 'v2.*'",
+          "explanation": "Показать теги, начинающиеся с v2."
         }
       ]
     },
     {
       "name": "git remote",
       "synopsis": "git remote [options] [command]",
-      "description": "Manage set of tracked repositories",
+      "description": "Управление удалёнными репозиториями",
       "patterns": [
         {
           "type": "example",
-          "text": "list all configured remotes",
+          "text": "Показать адреса настроенных удалённых репозиториев",
           "command": "git remote -v",
-          "explanation": "Shows all remotes with their fetch and push URLs"
+          "explanation": "Показать адреса настроенных удалённых репозиториев."
         },
         {
           "type": "example",
-          "text": "add a new remote repository",
+          "text": "Посмотреть URL для получения и отправки изменений",
+          "command": "git remote -v",
+          "explanation": "Показать адреса настроенных удалённых репозиториев."
+        },
+        {
+          "type": "example",
+          "text": "Добавить удалённый репозиторий upstream",
           "command": "git remote add upstream https://github.com/original/repo.git",
-          "explanation": "Registers a new remote named upstream"
+          "explanation": "Добавить удалённый репозиторий upstream."
         },
         {
           "type": "example",
-          "text": "remove a remote",
+          "text": "Настроить дополнительный сервер Git для проекта",
+          "command": "git remote add upstream https://github.com/original/repo.git",
+          "explanation": "Добавить удалённый репозиторий upstream."
+        },
+        {
+          "type": "example",
+          "text": "Удалить настройку удалённого репозитория origin",
           "command": "git remote remove origin",
-          "explanation": "Deletes the specified remote and its tracking branches"
+          "explanation": "Удалить настройку удалённого репозитория origin."
         },
         {
           "type": "example",
-          "text": "rename a remote",
+          "text": "Убрать remote из локальной конфигурации",
+          "command": "git remote remove origin",
+          "explanation": "Удалить настройку удалённого репозитория origin."
+        },
+        {
+          "type": "example",
+          "text": "Переименовать remote origin в upstream",
           "command": "git remote rename origin upstream",
-          "explanation": "Changes the name of a remote from origin to upstream"
+          "explanation": "Переименовать remote origin в upstream."
         },
         {
           "type": "example",
-          "text": "change the URL of an existing remote",
+          "text": "Изменить локальное имя удалённого репозитория",
+          "command": "git remote rename origin upstream",
+          "explanation": "Переименовать remote origin в upstream."
+        },
+        {
+          "type": "example",
+          "text": "Изменить адрес удалённого репозитория origin",
           "command": "git remote set-url origin https://github.com/user/new-repo.git",
-          "explanation": "Updates the URL for the specified remote"
+          "explanation": "Изменить адрес удалённого репозитория origin."
         },
         {
           "type": "example",
-          "text": "show detailed info about a remote",
+          "text": "Перенастроить URL сервера для Git",
+          "command": "git remote set-url origin https://github.com/user/new-repo.git",
+          "explanation": "Изменить адрес удалённого репозитория origin."
+        },
+        {
+          "type": "example",
+          "text": "Показать подробные сведения об origin",
           "command": "git remote show origin",
-          "explanation": "Displays branches, tracking info, and push/pull configuration"
+          "explanation": "Показать подробные сведения об origin."
+        },
+        {
+          "type": "example",
+          "text": "Узнать состояние веток и настроек удалённого репозитория",
+          "command": "git remote show origin",
+          "explanation": "Показать подробные сведения об origin."
         }
       ]
     },
     {
       "name": "git bisect",
       "synopsis": "git bisect <subcommand> [options]",
-      "description": "Use binary search to find the commit that introduced a bug",
+      "description": "Поиск коммита с ошибкой методом деления пополам",
       "patterns": [
         {
           "type": "example",
-          "text": "start binary search for a bug",
+          "text": "Начать двоичный поиск коммита с ошибкой",
           "command": "git bisect start",
-          "explanation": "Begins the bisect process to find a bad commit"
+          "explanation": "Начать двоичный поиск коммита с ошибкой."
         },
         {
           "type": "example",
-          "text": "mark the current commit as having the bug",
+          "text": "Запустить git bisect для поиска регрессии",
+          "command": "git bisect start",
+          "explanation": "Начать двоичный поиск коммита с ошибкой."
+        },
+        {
+          "type": "example",
+          "text": "Пометить текущий коммит как содержащий ошибку",
           "command": "git bisect bad",
-          "explanation": "Tells bisect the current commit exhibits the bug"
+          "explanation": "Пометить текущий коммит как содержащий ошибку."
         },
         {
           "type": "example",
-          "text": "mark a known good commit where the bug did not exist",
+          "text": "Сообщить bisect, что на этой версии баг воспроизводится",
+          "command": "git bisect bad",
+          "explanation": "Пометить текущий коммит как содержащий ошибку."
+        },
+        {
+          "type": "example",
+          "text": "Указать известный исправный коммит для bisect",
           "command": "git bisect good abc1234",
-          "explanation": "Tells bisect this commit is known to be bug-free"
+          "explanation": "Указать известный исправный коммит для bisect."
         },
         {
           "type": "example",
-          "text": "end the bisect session and go back to the original branch",
+          "text": "Отметить abc1234 как версию без ошибки",
+          "command": "git bisect good abc1234",
+          "explanation": "Указать известный исправный коммит для bisect."
+        },
+        {
+          "type": "example",
+          "text": "Завершить bisect и вернуться к исходной позиции",
           "command": "git bisect reset",
-          "explanation": "Finishes bisecting and returns HEAD to the original position"
+          "explanation": "Завершить bisect и вернуться к исходной позиции."
         },
         {
           "type": "example",
-          "text": "automate bisect with a test script",
+          "text": "Выйти из поиска регрессии с восстановлением прежней ветки",
+          "command": "git bisect reset",
+          "explanation": "Завершить bisect и вернуться к исходной позиции."
+        },
+        {
+          "type": "example",
+          "text": "Автоматизировать bisect тестовым скриптом",
           "command": "git bisect run ./test-script.sh",
-          "explanation": "Runs the script on each step; exit 0 means good, non-zero means bad"
+          "explanation": "Автоматизировать bisect тестовым скриптом."
+        },
+        {
+          "type": "example",
+          "text": "Проверять коммиты при поиске ошибки через test-script.sh",
+          "command": "git bisect run ./test-script.sh",
+          "explanation": "Автоматизировать bisect тестовым скриптом."
         }
       ]
     },
     {
       "name": "git blame",
       "synopsis": "git blame [options] <file>",
-      "description": "Show what revision and author last modified each line of a file",
+      "description": "Просмотр авторов и версий последних изменений строк файла",
       "patterns": [
         {
           "type": "example",
-          "text": "see who last changed each line of a file",
+          "text": "Узнать, кто последним менял каждую строку файла",
           "command": "git blame filename.txt",
-          "explanation": "Annotates each line with the commit hash, author, and date"
+          "explanation": "Узнать, кто последним менял каждую строку файла."
         },
         {
           "type": "example",
-          "text": "blame a specific range of lines",
+          "text": "Показать авторство строк filename.txt",
+          "command": "git blame filename.txt",
+          "explanation": "Узнать, кто последним менял каждую строку файла."
+        },
+        {
+          "type": "example",
+          "text": "Показать авторов строк с десятой по двадцатую",
           "command": "git blame -L 10,20 filename.txt",
-          "explanation": "Shows blame information only for lines 10 through 20"
+          "explanation": "Показать авторов строк с десятой по двадцатую."
         },
         {
           "type": "example",
-          "text": "ignore whitespace changes in blame",
+          "text": "Ограничить git blame выбранным диапазоном",
+          "command": "git blame -L 10,20 filename.txt",
+          "explanation": "Показать авторов строк с десятой по двадцатую."
+        },
+        {
+          "type": "example",
+          "text": "Не учитывать изменения пробелов при поиске авторов строк",
           "command": "git blame -w filename.txt",
-          "explanation": "Ignores whitespace when determining the last change"
+          "explanation": "Не учитывать изменения пробелов при поиске авторов строк."
         },
         {
           "type": "example",
-          "text": "detect lines that were moved or copied from other files",
+          "text": "Показать blame без влияния форматирования",
+          "command": "git blame -w filename.txt",
+          "explanation": "Не учитывать изменения пробелов при поиске авторов строк."
+        },
+        {
+          "type": "example",
+          "text": "Найти происхождение строк, скопированных или перемещённых между файлами",
           "command": "git blame -C filename.txt",
-          "explanation": "Traces lines to their original source across file copies"
+          "explanation": "Найти происхождение строк, скопированных или перемещённых между файлами."
         },
         {
           "type": "example",
-          "text": "show blame with email addresses instead of names",
+          "text": "Учитывать межфайловое копирование при выводе blame",
+          "command": "git blame -C filename.txt",
+          "explanation": "Найти происхождение строк, скопированных или перемещённых между файлами."
+        },
+        {
+          "type": "example",
+          "text": "Показать почту авторов вместо имён в blame",
           "command": "git blame -e filename.txt",
-          "explanation": "Displays author email addresses in the blame output"
+          "explanation": "Показать почту авторов вместо имён в blame."
+        },
+        {
+          "type": "example",
+          "text": "Определить авторство строк по email",
+          "command": "git blame -e filename.txt",
+          "explanation": "Показать почту авторов вместо имён в blame."
         }
       ]
     },
     {
       "name": "git show",
       "synopsis": "git show [options] <object>",
-      "description": "Show various types of objects (commits, tags, trees, blobs)",
+      "description": "Просмотр коммитов и других объектов Git",
       "patterns": [
         {
           "type": "example",
-          "text": "see the details and diff of a specific commit",
+          "text": "Показать описание и изменения конкретного коммита",
           "command": "git show abc1234",
-          "explanation": "Displays commit info, author, date, message, and the diff"
+          "explanation": "Показать описание и изменения конкретного коммита."
         },
         {
           "type": "example",
-          "text": "show only the commit message without the diff",
+          "text": "Посмотреть подробный diff коммита abc1234",
+          "command": "git show abc1234",
+          "explanation": "Показать описание и изменения конкретного коммита."
+        },
+        {
+          "type": "example",
+          "text": "показать только полное сообщение указанного коммита",
           "command": "git show -s --format=%B abc1234",
-          "explanation": "Prints only the full commit message, without a patch, file statistics, or commit headers"
+          "explanation": "Выводит только полное сообщение коммита, без патча, статистики файлов и служебного заголовка."
         },
         {
           "type": "example",
-          "text": "view a file at a specific commit",
+          "text": "вывести текст описания коммита без патча и статистики файлов",
+          "command": "git show -s --format=%B abc1234",
+          "explanation": "Выводит только полное сообщение коммита, без патча, статистики файлов и служебного заголовка."
+        },
+        {
+          "type": "example",
+          "text": "Вывести содержимое файла из старого коммита",
           "command": "git show abc1234:path/to/file",
-          "explanation": "Displays the contents of the file as it existed at that commit"
+          "explanation": "Вывести содержимое файла из старого коммита."
         },
         {
           "type": "example",
-          "text": "show the details of a tag",
+          "text": "Посмотреть выбранный путь в версии abc1234",
+          "command": "git show abc1234:path/to/file",
+          "explanation": "Вывести содержимое файла из старого коммита."
+        },
+        {
+          "type": "example",
+          "text": "Показать подробности тега v1.0.0",
           "command": "git show v1.0.0",
-          "explanation": "Displays the tag message and the commit it points to"
+          "explanation": "Показать подробности тега v1.0.0."
         },
         {
           "type": "example",
-          "text": "show the last commit on the current branch",
+          "text": "Посмотреть сведения и объект, на который указывает метка",
+          "command": "git show v1.0.0",
+          "explanation": "Показать подробности тега v1.0.0."
+        },
+        {
+          "type": "example",
+          "text": "Показать последний коммит текущей ветки",
           "command": "git show HEAD",
-          "explanation": "Displays the most recent commit details and diff"
+          "explanation": "Показать последний коммит текущей ветки."
+        },
+        {
+          "type": "example",
+          "text": "Посмотреть сообщение и diff версии HEAD",
+          "command": "git show HEAD",
+          "explanation": "Показать последний коммит текущей ветки."
         }
       ]
     },
     {
       "name": "git clean",
       "synopsis": "git clean [options]",
-      "description": "Remove untracked files from the working tree",
+      "description": "Удаление неотслеживаемых файлов рабочей копии",
       "patterns": [
         {
           "type": "example",
-          "text": "preview which untracked files would be deleted",
+          "text": "Предварительно показать удаляемые неотслеживаемые файлы",
           "command": "git clean -n",
-          "explanation": "Dry run showing which files would be removed"
+          "explanation": "Предварительно показать удаляемые неотслеживаемые файлы."
         },
         {
           "type": "example",
-          "text": "delete all untracked files",
+          "text": "Проверить действие git clean без удаления",
+          "command": "git clean -n",
+          "explanation": "Предварительно показать удаляемые неотслеживаемые файлы."
+        },
+        {
+          "type": "example",
+          "text": "Удалить неотслеживаемые файлы",
           "command": "git clean -f",
-          "explanation": "Forcefully removes all untracked files",
+          "explanation": "Удалить неотслеживаемые файлы.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "remove untracked files and directories",
+          "text": "Очистить новые файлы вне индекса Git",
+          "command": "git clean -f",
+          "explanation": "Удалить неотслеживаемые файлы.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "Удалить неотслеживаемые файлы и каталоги",
           "command": "git clean -fd",
-          "explanation": "Removes untracked files and empty untracked directories",
+          "explanation": "Удалить неотслеживаемые файлы и каталоги.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "remove untracked files including those in .gitignore",
+          "text": "Очистить рабочее дерево от лишних незарегистрированных папок",
+          "command": "git clean -fd",
+          "explanation": "Удалить неотслеживаемые файлы и каталоги.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "Удалить все неотслеживаемые файлы, включая игнорируемые",
           "command": "git clean -fdx",
-          "explanation": "Removes all untracked files including ignored ones like build artifacts",
+          "explanation": "Удалить все неотслеживаемые файлы, включая игнорируемые.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "interactively select which untracked files to remove",
+          "text": "Очистить репозиторий даже от файлов из gitignore",
+          "command": "git clean -fdx",
+          "explanation": "Удалить все неотслеживаемые файлы, включая игнорируемые.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "Интерактивно выбрать неотслеживаемые файлы для удаления",
           "command": "git clean -i",
-          "explanation": "Walks through each untracked file and asks whether to delete it"
+          "explanation": "Интерактивно выбрать неотслеживаемые файлы для удаления."
+        },
+        {
+          "type": "example",
+          "text": "Почистить лишние файлы через меню git clean",
+          "command": "git clean -i",
+          "explanation": "Интерактивно выбрать неотслеживаемые файлы для удаления."
         }
       ]
     },
     {
       "name": "git worktree",
       "synopsis": "git worktree <command> [options]",
-      "description": "Manage multiple working trees attached to the same repository",
+      "description": "Управление несколькими рабочими копиями репозитория",
       "patterns": [
         {
           "type": "example",
-          "text": "create a new working directory for a branch",
+          "text": "Создать дополнительное рабочее дерево для hotfix-branch",
           "command": "git worktree add ../hotfix hotfix-branch",
-          "explanation": "Creates a separate working directory checked out to hotfix-branch"
+          "explanation": "Создать дополнительное рабочее дерево для hotfix-branch."
         },
         {
           "type": "example",
-          "text": "list all active worktrees",
+          "text": "Открыть существующую ветку в соседнем каталоге",
+          "command": "git worktree add ../hotfix hotfix-branch",
+          "explanation": "Создать дополнительное рабочее дерево для hotfix-branch."
+        },
+        {
+          "type": "example",
+          "text": "Перечислить рабочие деревья репозитория",
           "command": "git worktree list",
-          "explanation": "Shows all working trees and which branches they have checked out"
+          "explanation": "Перечислить рабочие деревья репозитория."
         },
         {
           "type": "example",
-          "text": "remove a worktree that is no longer needed",
+          "text": "Посмотреть все подключённые worktree",
+          "command": "git worktree list",
+          "explanation": "Перечислить рабочие деревья репозитория."
+        },
+        {
+          "type": "example",
+          "text": "Удалить ненужное рабочее дерево hotfix",
           "command": "git worktree remove ../hotfix",
-          "explanation": "Deletes the worktree directory and its administrative files"
+          "explanation": "Удалить ненужное рабочее дерево hotfix."
         },
         {
           "type": "example",
-          "text": "create a worktree with a new branch",
+          "text": "Отключить и убрать дополнительный каталог Git",
+          "command": "git worktree remove ../hotfix",
+          "explanation": "Удалить ненужное рабочее дерево hotfix."
+        },
+        {
+          "type": "example",
+          "text": "Создать новую ветку в отдельном рабочем дереве",
           "command": "git worktree add -b new-feature ../feature",
-          "explanation": "Creates a new branch and a worktree for it simultaneously"
+          "explanation": "Создать новую ветку в отдельном рабочем дереве."
         },
         {
           "type": "example",
-          "text": "clean up stale worktree references",
+          "text": "Добавить worktree для new-feature в соседней папке",
+          "command": "git worktree add -b new-feature ../feature",
+          "explanation": "Создать новую ветку в отдельном рабочем дереве."
+        },
+        {
+          "type": "example",
+          "text": "Очистить устаревшие записи рабочих деревьев",
           "command": "git worktree prune",
-          "explanation": "Removes worktree entries for directories that no longer exist"
+          "explanation": "Очистить устаревшие записи рабочих деревьев."
+        },
+        {
+          "type": "example",
+          "text": "Убрать служебные ссылки на исчезнувшие worktree",
+          "command": "git worktree prune",
+          "explanation": "Очистить устаревшие записи рабочих деревьев."
         }
       ]
     },
     {
       "name": "git submodule",
       "synopsis": "git submodule [command] [options]",
-      "description": "Initialize, update, or inspect submodules",
+      "description": "Инициализация, обновление и просмотр подмодулей",
       "patterns": [
         {
           "type": "example",
-          "text": "add a submodule to the project",
+          "text": "Добавить внешний репозиторий как подмодуль",
           "command": "git submodule add https://github.com/user/lib.git libs/lib",
-          "explanation": "Adds a repository as a submodule in the libs/lib directory"
+          "explanation": "Добавить внешний репозиторий как подмодуль."
         },
         {
           "type": "example",
-          "text": "initialize submodules after cloning",
+          "text": "Подключить Git-библиотеку в каталог libs/lib",
+          "command": "git submodule add https://github.com/user/lib.git libs/lib",
+          "explanation": "Добавить внешний репозиторий как подмодуль."
+        },
+        {
+          "type": "example",
+          "text": "Инициализировать настройки подмодулей после клонирования",
           "command": "git submodule init",
-          "explanation": "Registers submodule paths from .gitmodules in the local config"
+          "explanation": "Инициализировать настройки подмодулей после клонирования."
         },
         {
           "type": "example",
-          "text": "download and update all submodules",
+          "text": "Зарегистрировать submodule из конфигурации проекта",
+          "command": "git submodule init",
+          "explanation": "Инициализировать настройки подмодулей после клонирования."
+        },
+        {
+          "type": "example",
+          "text": "Скачать и инициализировать все подмодули рекурсивно",
           "command": "git submodule update --init --recursive",
-          "explanation": "Initializes and clones all submodules including nested ones"
+          "explanation": "Скачать и инициализировать все подмодули рекурсивно."
         },
         {
           "type": "example",
-          "text": "pull latest changes for all submodules",
+          "text": "Получить содержимое вложенных Git-проектов",
+          "command": "git submodule update --init --recursive",
+          "explanation": "Скачать и инициализировать все подмодули рекурсивно."
+        },
+        {
+          "type": "example",
+          "text": "Обновить подмодули до версий удалённых веток",
           "command": "git submodule update --remote",
-          "explanation": "Updates each submodule to the latest commit on its tracked branch"
+          "explanation": "Обновить подмодули до версий удалённых веток."
         },
         {
           "type": "example",
-          "text": "show the status of all submodules",
+          "text": "Подтянуть свежие коммиты внутри submodule",
+          "command": "git submodule update --remote",
+          "explanation": "Обновить подмодули до версий удалённых веток."
+        },
+        {
+          "type": "example",
+          "text": "Показать состояние всех подмодулей",
           "command": "git submodule status",
-          "explanation": "Shows the current commit and state of each submodule"
+          "explanation": "Показать состояние всех подмодулей."
         },
         {
           "type": "example",
-          "text": "run a command in every submodule",
+          "text": "Посмотреть текущие хеши вложенных репозиториев",
+          "command": "git submodule status",
+          "explanation": "Показать состояние всех подмодулей."
+        },
+        {
+          "type": "example",
+          "text": "Выполнить git pull в каждом подмодуле",
           "command": "git submodule foreach 'git pull origin main'",
-          "explanation": "Executes the given command inside each submodule directory"
+          "explanation": "Выполнить git pull в каждом подмодуле."
+        },
+        {
+          "type": "example",
+          "text": "Обновить содержимое всех зарегистрированных submodule",
+          "command": "git submodule foreach 'git pull origin main'",
+          "explanation": "Выполнить git pull в каждом подмодуле."
         }
       ]
     },
     {
       "name": "git reflog",
       "synopsis": "git reflog [options] [ref]",
-      "description": "Record and view reference update history",
+      "description": "Просмотр истории перемещений ссылок Git",
       "patterns": [
         {
           "type": "example",
-          "text": "see the history of where HEAD has been",
+          "text": "Показать историю перемещений HEAD",
           "command": "git reflog",
-          "explanation": "Shows a log of all HEAD movements including resets and rebases"
+          "explanation": "Показать историю перемещений HEAD."
         },
         {
           "type": "example",
-          "text": "find a commit lost after a reset in the HEAD reflog",
+          "text": "Посмотреть локальный журнал переключений и сбросов",
+          "command": "git reflog",
+          "explanation": "Показать историю перемещений HEAD."
+        },
+        {
+          "type": "example",
+          "text": "Найти потерянный после reset коммит в reflog HEAD",
           "command": "git reflog show HEAD",
-          "explanation": "Lists recent positions of HEAD so a lost commit hash can be located; does not reset or restore anything"
+          "explanation": "Показывает недавние положения HEAD для поиска хеша потерянного коммита; ничего не сбрасывает и не восстанавливает."
         },
         {
           "type": "example",
-          "text": "show reflog for a specific branch",
+          "text": "Посмотреть прежние положения HEAD для последующего восстановления",
+          "command": "git reflog show HEAD",
+          "explanation": "Показывает недавние положения HEAD для поиска хеша потерянного коммита; ничего не сбрасывает и не восстанавливает."
+        },
+        {
+          "type": "example",
+          "text": "Показать reflog ветки main",
           "command": "git reflog show main",
-          "explanation": "Displays the movement history of the main branch ref"
+          "explanation": "Показать reflog ветки main."
         },
         {
           "type": "example",
-          "text": "restore to a reflog entry",
+          "text": "Посмотреть локальную историю перемещений выбранной ветки",
+          "command": "git reflog show main",
+          "explanation": "Показать reflog ветки main."
+        },
+        {
+          "type": "example",
+          "text": "Жёстко вернуться к третьей предыдущей записи reflog",
           "command": "git reset --hard HEAD@{3}",
-          "explanation": "Resets HEAD to where it was 3 moves ago according to the reflog",
+          "explanation": "Жёстко вернуться к третьей предыдущей записи reflog.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "expire old reflog entries",
+          "text": "Восстановить состояние HEAD@{3} с отбрасыванием текущих правок",
+          "command": "git reset --hard HEAD@{3}",
+          "explanation": "Жёстко вернуться к третьей предыдущей записи reflog.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "Удалить записи reflog старше девяноста дней",
           "command": "git reflog expire --expire=90.days.ago --all",
-          "explanation": "Removes reflog entries older than 90 days"
+          "explanation": "Удалить записи reflog старше девяноста дней."
+        },
+        {
+          "type": "example",
+          "text": "Сократить локальные журналы ссылок по сроку хранения",
+          "command": "git reflog expire --expire=90.days.ago --all",
+          "explanation": "Удалить записи reflog старше девяноста дней."
         }
       ]
     },
     {
       "name": "git merge-base",
       "synopsis": "git merge-base [options] <commit> <commit>...",
-      "description": "Find the best common ancestor between commits or branches, useful for identifying where a branch was created",
+      "description": "Поиск общего предка коммитов и веток",
       "patterns": [
         {
           "type": "example",
-          "text": "find a merge base shared by main and feature-branch",
+          "text": "Найти общего предка main и feature-branch",
           "command": "git merge-base main feature-branch",
-          "explanation": "Prints a best common ancestor shared with feature-branch; rewritten history may differ from the original branch creation point"
+          "explanation": "Выводит общего предка с feature-branch; после переписывания истории он может отличаться от исходной точки создания ветки."
         },
         {
           "type": "example",
-          "text": "find a merge base shared by main and the current branch",
+          "text": "Получить базовый коммит двух веток",
+          "command": "git merge-base main feature-branch",
+          "explanation": "Выводит общего предка с feature-branch; после переписывания истории он может отличаться от исходной точки создания ветки."
+        },
+        {
+          "type": "example",
+          "text": "Определить общую базу текущей ветки и main",
           "command": "git merge-base main HEAD",
-          "explanation": "Prints a best common ancestor shared with HEAD; rewritten history may differ from the original branch creation point"
+          "explanation": "Выводит общего предка с HEAD; после переписывания истории он может отличаться от исходной точки создания ветки."
         },
         {
           "type": "example",
-          "text": "find the fork point of a branch after rebases",
+          "text": "Узнать общий предок main и HEAD",
+          "command": "git merge-base main HEAD",
+          "explanation": "Выводит общего предка с HEAD; после переписывания истории он может отличаться от исходной точки создания ветки."
+        },
+        {
+          "type": "example",
+          "text": "Найти точку ответвления с учётом reflog основной ветки",
           "command": "git merge-base --fork-point main feature-branch",
-          "explanation": "Uses the reflog to find the original branch point, even if the base branch has moved"
+          "explanation": "Найти точку ответвления с учётом reflog основной ветки."
         },
         {
           "type": "example",
-          "text": "show the commit details of the branch creation point",
+          "text": "Определить fork-point feature-branch относительно main",
+          "command": "git merge-base --fork-point main feature-branch",
+          "explanation": "Найти точку ответвления с учётом reflog основной ветки."
+        },
+        {
+          "type": "example",
+          "text": "Показать подробности общего предка двух веток",
           "command": "git show $(git merge-base main feature-branch)",
-          "explanation": "Displays the full commit info for the point where the branch was created"
+          "explanation": "Показать подробности общего предка двух веток."
         },
         {
           "type": "example",
-          "text": "list all commits on a branch since it was created",
+          "text": "Открыть коммит, найденный через merge-base",
+          "command": "git show $(git merge-base main feature-branch)",
+          "explanation": "Показать подробности общего предка двух веток."
+        },
+        {
+          "type": "example",
+          "text": "Показать коммиты feature-branch после общей базы с main",
           "command": "git log $(git merge-base main feature-branch)..feature-branch",
-          "explanation": "Shows every commit added on feature-branch after it diverged from main"
+          "explanation": "Показать коммиты feature-branch после общей базы с main."
         },
         {
           "type": "example",
-          "text": "check if one commit is an ancestor of another",
+          "text": "Посмотреть собственную историю ветки от точки расхождения",
+          "command": "git log $(git merge-base main feature-branch)..feature-branch",
+          "explanation": "Показать коммиты feature-branch после общей базы с main."
+        },
+        {
+          "type": "example",
+          "text": "Проверить, является ли один коммит предком другого",
           "command": "git merge-base --is-ancestor commit1 commit2",
-          "explanation": "Exits 0 if commit1 is an ancestor of commit2, 1 otherwise — useful in scripts"
+          "explanation": "Проверить, является ли один коммит предком другого."
         },
         {
           "type": "example",
-          "text": "find the common ancestor of multiple branches",
+          "text": "Узнать через код завершения связь происхождения двух хешей",
+          "command": "git merge-base --is-ancestor commit1 commit2",
+          "explanation": "Проверить, является ли один коммит предком другого."
+        },
+        {
+          "type": "example",
+          "text": "Найти общую базу трёх веток",
           "command": "git merge-base --octopus branch1 branch2 branch3",
-          "explanation": "Returns the best common ancestor across three or more branches for octopus merges"
+          "explanation": "Найти общую базу трёх веток."
         },
         {
           "type": "example",
-          "text": "list all merge bases when history has multiple ancestors",
+          "text": "Вычислить merge-base для объединения нескольких веток",
+          "command": "git merge-base --octopus branch1 branch2 branch3",
+          "explanation": "Найти общую базу трёх веток."
+        },
+        {
+          "type": "example",
+          "text": "Перечислить все лучшие общие предки двух веток",
           "command": "git merge-base --all main feature-branch",
-          "explanation": "Shows every possible common ancestor instead of just the best one"
+          "explanation": "Перечислить все лучшие общие предки двух веток."
         },
         {
           "type": "example",
-          "text": "find a merge base shared by HEAD and its upstream",
+          "text": "Показать все merge-base при неоднозначной истории слияний",
+          "command": "git merge-base --all main feature-branch",
+          "explanation": "Перечислить все лучшие общие предки двух веток."
+        },
+        {
+          "type": "example",
+          "text": "Найти общий предок HEAD и отслеживаемой ветки",
           "command": "git merge-base HEAD @{upstream}",
-          "explanation": "Prints a best common ancestor shared with @{upstream}; rewritten history may differ from the original branch creation point"
+          "explanation": "Выводит общего предка с @{upstream}; после переписывания истории он может отличаться от исходной точки создания ветки."
         },
         {
           "type": "example",
-          "text": "show the first topologically ordered commit in HEAD that is not in main",
+          "text": "Определить общую базу локальной ветки и upstream",
+          "command": "git merge-base HEAD @{upstream}",
+          "explanation": "Выводит общего предка с @{upstream}; после переписывания истории он может отличаться от исходной точки создания ветки."
+        },
+        {
+          "type": "example",
+          "text": "показать первый по обратному топологическому порядку коммит HEAD, отсутствующий в main",
           "command": "git log --topo-order --reverse --oneline main..HEAD | head -n 1",
-          "explanation": "Selects the first commit in reverse topological order from main..HEAD; merges can make the historical branch creation point ambiguous"
+          "explanation": "Выбирает первый коммит в обратном топологическом порядке из main..HEAD; слияния могут сделать исходную точку создания ветки неоднозначной."
+        },
+        {
+          "type": "example",
+          "text": "найти ранний собственный коммит ветки относительно main по топологическому порядку",
+          "command": "git log --topo-order --reverse --oneline main..HEAD | head -n 1",
+          "explanation": "Выбирает первый коммит в обратном топологическом порядке из main..HEAD; слияния могут сделать исходную точку создания ветки неоднозначной."
         }
       ]
     }

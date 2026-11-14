@@ -4,349 +4,629 @@
     {
       "name": "docker run",
       "synopsis": "docker run [options] IMAGE [command] [args]",
-      "description": "Create and start a new container from an image",
+      "description": "Создание и запуск контейнера из образа",
       "patterns": [
         {
           "type": "example",
-          "text": "run a container interactively with a shell",
+          "text": "Запустить новый контейнер Ubuntu с интерактивным Bash",
           "command": "docker run -it ubuntu bash",
-          "explanation": "Starts an Ubuntu container with an interactive terminal"
+          "explanation": "Запустить новый контейнер Ubuntu с интерактивным Bash."
         },
         {
           "type": "example",
-          "text": "run a container in the background",
+          "text": "Создать контейнер и сразу открыть в нём оболочку",
+          "command": "docker run -it ubuntu bash",
+          "explanation": "Запустить новый контейнер Ubuntu с интерактивным Bash."
+        },
+        {
+          "type": "example",
+          "text": "Запустить контейнер nginx в фоне",
           "command": "docker run -d nginx",
-          "explanation": "Starts an nginx container in detached mode"
+          "explanation": "Запустить контейнер nginx в фоне."
         },
         {
           "type": "example",
-          "text": "run a container and map a port",
+          "text": "Поднять новый контейнер без занятия терминала",
+          "command": "docker run -d nginx",
+          "explanation": "Запустить контейнер nginx в фоне."
+        },
+        {
+          "type": "example",
+          "text": "Опубликовать порт контейнера nginx как 8080 на хосте",
           "command": "docker run -d -p 8080:80 nginx",
-          "explanation": "Maps host port 8080 to container port 80"
+          "explanation": "Опубликовать порт контейнера nginx как 8080 на хосте."
         },
         {
           "type": "example",
-          "text": "run a container with a volume mount",
+          "text": "Запустить веб-контейнер с пробросом 8080 на внутренний порт 80",
+          "command": "docker run -d -p 8080:80 nginx",
+          "explanation": "Опубликовать порт контейнера nginx как 8080 на хосте."
+        },
+        {
+          "type": "example",
+          "text": "Подключить каталог хоста внутрь нового контейнера",
           "command": "docker run -v /host/path:/container/path myimage",
-          "explanation": "Mounts a host directory into the container"
+          "explanation": "Подключить каталог хоста внутрь нового контейнера."
         },
         {
           "type": "example",
-          "text": "run a container with environment variables",
+          "text": "Запустить Docker с монтированием папки в контейнер",
+          "command": "docker run -v /host/path:/container/path myimage",
+          "explanation": "Подключить каталог хоста внутрь нового контейнера."
+        },
+        {
+          "type": "example",
+          "text": "Передать переменные окружения новому контейнеру",
           "command": "docker run -e DB_HOST=localhost -e DB_PORT=5432 myapp",
-          "explanation": "Passes environment variables to the container"
+          "explanation": "Передать переменные окружения новому контейнеру."
         },
         {
           "type": "example",
-          "text": "run a container that removes itself after exit",
+          "text": "Запустить приложение с заданными DB_HOST и DB_PORT",
+          "command": "docker run -e DB_HOST=localhost -e DB_PORT=5432 myapp",
+          "explanation": "Передать переменные окружения новому контейнеру."
+        },
+        {
+          "type": "example",
+          "text": "Запустить временный контейнер Python с автоматическим удалением",
           "command": "docker run --rm -it python:3.12 python",
-          "explanation": "Automatically removes the container when it stops"
+          "explanation": "Запустить временный контейнер Python с автоматическим удалением."
+        },
+        {
+          "type": "example",
+          "text": "Открыть интерактивный Python в контейнере, исчезающем после выхода",
+          "command": "docker run --rm -it python:3.12 python",
+          "explanation": "Запустить временный контейнер Python с автоматическим удалением."
         }
       ]
     },
     {
       "name": "docker build",
       "synopsis": "docker build [options] PATH",
-      "description": "Build an image from a Dockerfile",
+      "description": "Сборка образа из Dockerfile",
       "patterns": [
         {
           "type": "example",
-          "text": "build a Docker image from the current directory",
+          "text": "Собрать Docker-образ из текущего каталога",
           "command": "docker build -t myapp:latest .",
-          "explanation": "Builds an image and tags it as myapp:latest"
+          "explanation": "Собрать Docker-образ из текущего каталога."
         },
         {
           "type": "example",
-          "text": "build an image using a specific Dockerfile",
+          "text": "Создать образ приложения с тегом myapp:latest",
+          "command": "docker build -t myapp:latest .",
+          "explanation": "Собрать Docker-образ из текущего каталога."
+        },
+        {
+          "type": "example",
+          "text": "Собрать образ по Dockerfile.prod",
           "command": "docker build -f Dockerfile.prod -t myapp:prod .",
-          "explanation": "Uses a custom Dockerfile for the build"
+          "explanation": "Собрать образ по Dockerfile.prod."
         },
         {
           "type": "example",
-          "text": "build with build arguments",
+          "text": "Указать другой Dockerfile для production-сборки",
+          "command": "docker build -f Dockerfile.prod -t myapp:prod .",
+          "explanation": "Собрать образ по Dockerfile.prod."
+        },
+        {
+          "type": "example",
+          "text": "Передать аргумент VERSION при сборке Docker",
           "command": "docker build --build-arg VERSION=1.0 -t myapp .",
-          "explanation": "Passes build-time variables to the Dockerfile"
+          "explanation": "Передать аргумент VERSION при сборке Docker."
         },
         {
           "type": "example",
-          "text": "build without using the cache",
+          "text": "Собрать образ с заданным build-аргументом",
+          "command": "docker build --build-arg VERSION=1.0 -t myapp .",
+          "explanation": "Передать аргумент VERSION при сборке Docker."
+        },
+        {
+          "type": "example",
+          "text": "Пересобрать Docker-образ без кеша",
           "command": "docker build --no-cache -t myapp .",
-          "explanation": "Forces a fresh build ignoring cached layers"
+          "explanation": "Пересобрать Docker-образ без кеша."
         },
         {
           "type": "example",
-          "text": "build a multi-platform image",
+          "text": "Заставить сборку заново выполнить все слои",
+          "command": "docker build --no-cache -t myapp .",
+          "explanation": "Пересобрать Docker-образ без кеша."
+        },
+        {
+          "type": "example",
+          "text": "Собрать образ для amd64 и arm64",
           "command": "docker buildx build --platform linux/amd64,linux/arm64 -t myapp .",
-          "explanation": "Builds images for multiple architectures"
+          "explanation": "Собрать образ для amd64 и arm64."
+        },
+        {
+          "type": "example",
+          "text": "Запустить мультиплатформенную сборку через buildx",
+          "command": "docker buildx build --platform linux/amd64,linux/arm64 -t myapp .",
+          "explanation": "Собрать образ для amd64 и arm64."
         }
       ]
     },
     {
       "name": "docker ps",
       "synopsis": "docker ps [options]",
-      "description": "List running containers",
+      "description": "Просмотр запущенных контейнеров",
       "patterns": [
         {
           "type": "example",
-          "text": "list all running containers",
+          "text": "Покажи контейнеры Docker, которые сейчас запущены.",
           "command": "docker ps",
-          "explanation": "Shows currently running containers"
+          "explanation": "Покажи контейнеры Docker, которые сейчас запущены."
         },
         {
           "type": "example",
-          "text": "list all containers including stopped ones",
+          "text": "Какие контейнеры работают в данный момент?",
+          "command": "docker ps",
+          "explanation": "Покажи контейнеры Docker, которые сейчас запущены."
+        },
+        {
+          "type": "example",
+          "text": "Покажи все контейнеры Docker, в том числе остановленные.",
           "command": "docker ps -a",
-          "explanation": "Shows all containers regardless of their state"
+          "explanation": "Покажи все контейнеры Docker, в том числе остановленные."
         },
         {
           "type": "example",
-          "text": "show only container IDs",
+          "text": "Как посмотреть и работающие, и завершившиеся контейнеры?",
+          "command": "docker ps -a",
+          "explanation": "Покажи все контейнеры Docker, в том числе остановленные."
+        },
+        {
+          "type": "example",
+          "text": "Вывести только идентификаторы запущенных контейнеров",
           "command": "docker ps -q",
-          "explanation": "Displays only the numeric IDs of running containers"
+          "explanation": "Вывести только идентификаторы запущенных контейнеров."
         },
         {
           "type": "example",
-          "text": "show containers with a custom format",
+          "text": "Получить список ID работающих контейнеров без таблицы",
+          "command": "docker ps -q",
+          "explanation": "Вывести только идентификаторы запущенных контейнеров."
+        },
+        {
+          "type": "example",
+          "text": "Вывести имена, состояния и порты контейнеров",
           "command": "docker ps --format '{{.Names}}\\t{{.Status}}\\t{{.Ports}}'",
-          "explanation": "Formats output to show only name, status, and ports"
+          "explanation": "Вывести имена, состояния и порты контейнеров."
         },
         {
           "type": "example",
-          "text": "filter containers by name",
+          "text": "Настроить формат списка работающих контейнеров",
+          "command": "docker ps --format '{{.Names}}\\t{{.Status}}\\t{{.Ports}}'",
+          "explanation": "Вывести имена, состояния и порты контейнеров."
+        },
+        {
+          "type": "example",
+          "text": "Найти запущенные контейнеры по имени myapp",
           "command": "docker ps -f name=myapp",
-          "explanation": "Shows only containers whose name matches the filter"
+          "explanation": "Найти запущенные контейнеры по имени myapp."
+        },
+        {
+          "type": "example",
+          "text": "Отфильтровать docker ps по названию контейнера",
+          "command": "docker ps -f name=myapp",
+          "explanation": "Найти запущенные контейнеры по имени myapp."
         }
       ]
     },
     {
       "name": "docker images",
       "synopsis": "docker images [options] [REPOSITORY[:TAG]]",
-      "description": "List images stored locally",
+      "description": "Просмотр локальных образов Docker",
       "patterns": [
         {
           "type": "example",
-          "text": "list all local Docker images",
+          "text": "Показать локальные Docker-образы",
           "command": "docker images",
-          "explanation": "Shows all downloaded and built images"
+          "explanation": "Показать локальные Docker-образы."
         },
         {
           "type": "example",
-          "text": "list images with their full digests",
+          "text": "Какие образы уже скачаны на этот компьютер",
+          "command": "docker images",
+          "explanation": "Показать локальные Docker-образы."
+        },
+        {
+          "type": "example",
+          "text": "Перечислить образы с полными digest",
           "command": "docker images --digests",
-          "explanation": "Includes the image digest hash in the listing"
+          "explanation": "Перечислить образы с полными digest."
         },
         {
           "type": "example",
-          "text": "show dangling images with no tag",
+          "text": "Показать контрольные идентификаторы локальных образов",
+          "command": "docker images --digests",
+          "explanation": "Перечислить образы с полными digest."
+        },
+        {
+          "type": "example",
+          "text": "Найти образы Docker без тегов",
           "command": "docker images -f dangling=true",
-          "explanation": "Lists images that are not tagged and not referenced"
+          "explanation": "Найти образы Docker без тегов."
         },
         {
           "type": "example",
-          "text": "list images sorted by size",
+          "text": "Показать dangling-образы в локальном хранилище",
+          "command": "docker images -f dangling=true",
+          "explanation": "Найти образы Docker без тегов."
+        },
+        {
+          "type": "example",
+          "text": "Вывести имена и размеры образов с сортировкой по размеру",
           "command": "docker images --format '{{.Repository}}:{{.Tag}} {{.Size}}' | sort -k2 -h",
-          "explanation": "Displays images with their sizes sorted from smallest to largest"
+          "explanation": "Вывести имена и размеры образов с сортировкой по размеру."
+        },
+        {
+          "type": "example",
+          "text": "Упорядочить список Docker-образов от меньшего к большему",
+          "command": "docker images --format '{{.Repository}}:{{.Tag}} {{.Size}}' | sort -k2 -h",
+          "explanation": "Вывести имена и размеры образов с сортировкой по размеру."
         }
       ]
     },
     {
       "name": "docker pull",
       "synopsis": "docker pull [options] NAME[:TAG|@DIGEST]",
-      "description": "Download an image from a registry",
+      "description": "Загрузка образа из реестра",
       "patterns": [
         {
           "type": "example",
-          "text": "download the latest version of an image",
+          "text": "Скачать образ nginx с тегом по умолчанию",
           "command": "docker pull nginx",
-          "explanation": "Downloads the nginx:latest image from Docker Hub"
+          "explanation": "Скачать образ nginx с тегом по умолчанию."
         },
         {
           "type": "example",
-          "text": "pull a specific version of an image",
+          "text": "Загрузить образ nginx с тегом latest из Docker Hub",
+          "command": "docker pull nginx",
+          "explanation": "Скачать образ nginx с тегом по умолчанию."
+        },
+        {
+          "type": "example",
+          "text": "Скачать конкретную версию node:20-alpine",
           "command": "docker pull node:20-alpine",
-          "explanation": "Downloads the Node.js 20 Alpine variant"
+          "explanation": "Скачать конкретную версию node:20-alpine."
         },
         {
           "type": "example",
-          "text": "pull an image from a private registry",
+          "text": "Загрузить образ Node.js с заданным тегом",
+          "command": "docker pull node:20-alpine",
+          "explanation": "Скачать конкретную версию node:20-alpine."
+        },
+        {
+          "type": "example",
+          "text": "Получить образ из частного реестра",
           "command": "docker pull registry.example.com/myapp:v1.0",
-          "explanation": "Downloads from a custom container registry"
+          "explanation": "Получить образ из частного реестра."
         },
         {
           "type": "example",
-          "text": "pull all tags for an image",
+          "text": "Скачать myapp:v1.0 с указанного registry",
+          "command": "docker pull registry.example.com/myapp:v1.0",
+          "explanation": "Получить образ из частного реестра."
+        },
+        {
+          "type": "example",
+          "text": "Скачать все теги образа nginx",
           "command": "docker pull -a nginx",
-          "explanation": "Downloads every tagged version of the nginx image"
+          "explanation": "Скачать все теги образа nginx."
+        },
+        {
+          "type": "example",
+          "text": "Загрузить все доступные версии одного Docker-образа",
+          "command": "docker pull -a nginx",
+          "explanation": "Скачать все теги образа nginx."
         }
       ]
     },
     {
       "name": "docker push",
       "synopsis": "docker push [options] NAME[:TAG]",
-      "description": "Upload an image to a registry",
+      "description": "Отправка образа в реестр",
       "patterns": [
         {
           "type": "example",
-          "text": "push an image to Docker Hub",
+          "text": "Отправить локальный образ в Docker Hub",
           "command": "docker push myuser/myapp:latest",
-          "explanation": "Uploads the image to your Docker Hub repository"
+          "explanation": "Отправить локальный образ в Docker Hub."
         },
         {
           "type": "example",
-          "text": "push an image to a private registry",
+          "text": "Опубликовать myuser/myapp:latest в реестре",
+          "command": "docker push myuser/myapp:latest",
+          "explanation": "Отправить локальный образ в Docker Hub."
+        },
+        {
+          "type": "example",
+          "text": "Загрузить образ в частный Docker-реестр",
           "command": "docker push registry.example.com/myapp:v1.0",
-          "explanation": "Uploads the image to a custom container registry"
+          "explanation": "Загрузить образ в частный Docker-реестр."
         },
         {
           "type": "example",
-          "text": "push all tags of an image",
+          "text": "Опубликовать myapp:v1.0 на указанном registry",
+          "command": "docker push registry.example.com/myapp:v1.0",
+          "explanation": "Загрузить образ в частный Docker-реестр."
+        },
+        {
+          "type": "example",
+          "text": "Отправить в реестр все теги образа",
           "command": "docker push --all-tags myuser/myapp",
-          "explanation": "Pushes every tagged version of the image"
+          "explanation": "Отправить в реестр все теги образа."
         },
         {
           "type": "example",
-          "text": "tag and push an image in one workflow",
+          "text": "Опубликовать каждую локальную метку myuser/myapp",
+          "command": "docker push --all-tags myuser/myapp",
+          "explanation": "Отправить в реестр все теги образа."
+        },
+        {
+          "type": "example",
+          "text": "Добавить образу новый тег и отправить его в Docker Hub",
           "command": "docker tag myapp:latest myuser/myapp:v2.0 && docker push myuser/myapp:v2.0",
-          "explanation": "Tags the local image with a new name and pushes it"
+          "explanation": "Добавить образу новый тег и отправить его в Docker Hub."
+        },
+        {
+          "type": "example",
+          "text": "Опубликовать текущий образ как версию v2.0",
+          "command": "docker tag myapp:latest myuser/myapp:v2.0 && docker push myuser/myapp:v2.0",
+          "explanation": "Добавить образу новый тег и отправить его в Docker Hub."
         }
       ]
     },
     {
       "name": "docker exec",
       "synopsis": "docker exec [options] CONTAINER COMMAND [args]",
-      "description": "Execute a command in a running container",
+      "description": "Выполнение команды в работающем контейнере",
       "patterns": [
         {
           "type": "example",
-          "text": "open a shell inside a running container",
+          "text": "Открой интерактивную оболочку Bash внутри работающего контейнера.",
           "command": "docker exec -it mycontainer bash",
-          "explanation": "Starts an interactive bash shell in the container"
+          "explanation": "Открой интерактивную оболочку Bash внутри работающего контейнера."
         },
         {
           "type": "example",
-          "text": "run a single command in a container",
+          "text": "Как зайти в уже запущенный контейнер и получить bash?",
+          "command": "docker exec -it mycontainer bash",
+          "explanation": "Открой интерактивную оболочку Bash внутри работающего контейнера."
+        },
+        {
+          "type": "example",
+          "text": "Выполнить одну команду внутри контейнера",
           "command": "docker exec mycontainer ls /app",
-          "explanation": "Executes ls inside the container and returns the output"
+          "explanation": "Выполнить одну команду внутри контейнера."
         },
         {
           "type": "example",
-          "text": "run a command as a specific user in a container",
+          "text": "Посмотреть содержимое /app в существующем контейнере",
+          "command": "docker exec mycontainer ls /app",
+          "explanation": "Выполнить одну команду внутри контейнера."
+        },
+        {
+          "type": "example",
+          "text": "Выполнить обновление списков пакетов от root в контейнере",
           "command": "docker exec -u root mycontainer apt-get update",
-          "explanation": "Runs the command as root inside the container"
+          "explanation": "Выполнить обновление списков пакетов от root в контейнере."
         },
         {
           "type": "example",
-          "text": "set an environment variable for the exec command",
+          "text": "Запустить команду в контейнере с указанным пользователем",
+          "command": "docker exec -u root mycontainer apt-get update",
+          "explanation": "Выполнить обновление списков пакетов от root в контейнере."
+        },
+        {
+          "type": "example",
+          "text": "Передать переменную окружения команде внутри контейнера",
           "command": "docker exec -e MY_VAR=hello mycontainer env",
-          "explanation": "Passes an environment variable into the executed command"
+          "explanation": "Передать переменную окружения команде внутри контейнера."
         },
         {
           "type": "example",
-          "text": "run a detached command in a container",
+          "text": "Запустить env с MY_VAR=hello в работающем контейнере",
+          "command": "docker exec -e MY_VAR=hello mycontainer env",
+          "explanation": "Передать переменную окружения команде внутри контейнера."
+        },
+        {
+          "type": "example",
+          "text": "Выполнить команду внутри контейнера в фоновом режиме",
           "command": "docker exec -d mycontainer touch /tmp/flag",
-          "explanation": "Executes the command in the background without attaching"
+          "explanation": "Выполнить команду внутри контейнера в фоновом режиме."
+        },
+        {
+          "type": "example",
+          "text": "Создать файл в контейнере без ожидания вывода exec",
+          "command": "docker exec -d mycontainer touch /tmp/flag",
+          "explanation": "Выполнить команду внутри контейнера в фоновом режиме."
         }
       ]
     },
     {
       "name": "docker logs",
       "synopsis": "docker logs [options] CONTAINER",
-      "description": "Fetch the logs of a container",
+      "description": "Просмотр журналов контейнера",
       "patterns": [
         {
           "type": "example",
-          "text": "view the logs of a container",
+          "text": "Посмотреть журнал выбранного контейнера",
           "command": "docker logs mycontainer",
-          "explanation": "Displays all stdout and stderr output from the container"
+          "explanation": "Посмотреть журнал выбранного контейнера."
         },
         {
           "type": "example",
-          "text": "follow container logs in real time",
+          "text": "Вывести накопленные логи Docker-контейнера",
+          "command": "docker logs mycontainer",
+          "explanation": "Посмотреть журнал выбранного контейнера."
+        },
+        {
+          "type": "example",
+          "text": "Показывай логи контейнера по мере появления новых записей.",
           "command": "docker logs -f mycontainer",
-          "explanation": "Streams logs as they are produced, like tail -f"
+          "explanation": "Показывай логи контейнера по мере появления новых записей."
         },
         {
           "type": "example",
-          "text": "show only the last 100 lines of logs",
+          "text": "Как следить за журналом контейнера Docker в реальном времени?",
+          "command": "docker logs -f mycontainer",
+          "explanation": "Показывай логи контейнера по мере появления новых записей."
+        },
+        {
+          "type": "example",
+          "text": "Показать последние сто строк логов контейнера",
           "command": "docker logs --tail 100 mycontainer",
-          "explanation": "Displays the most recent 100 log lines"
+          "explanation": "Показать последние сто строк логов контейнера."
         },
         {
           "type": "example",
-          "text": "show logs with timestamps",
+          "text": "Ограничить вывод журнала Docker его хвостом",
+          "command": "docker logs --tail 100 mycontainer",
+          "explanation": "Показать последние сто строк логов контейнера."
+        },
+        {
+          "type": "example",
+          "text": "Посмотреть логи контейнера с отметками времени",
           "command": "docker logs -t mycontainer",
-          "explanation": "Prepends each log line with a timestamp"
+          "explanation": "Посмотреть логи контейнера с отметками времени."
         },
         {
           "type": "example",
-          "text": "view logs since a specific time",
+          "text": "Добавить временные метки к каждой строке журнала",
+          "command": "docker logs -t mycontainer",
+          "explanation": "Посмотреть логи контейнера с отметками времени."
+        },
+        {
+          "type": "example",
+          "text": "Показать логи контейнера за последние два часа",
           "command": "docker logs --since 2h mycontainer",
-          "explanation": "Shows logs from the last 2 hours"
+          "explanation": "Показать логи контейнера за последние два часа."
+        },
+        {
+          "type": "example",
+          "text": "Отфильтровать журнал Docker по времени начала",
+          "command": "docker logs --since 2h mycontainer",
+          "explanation": "Показать логи контейнера за последние два часа."
         }
       ]
     },
     {
       "name": "docker stop",
       "synopsis": "docker stop [options] CONTAINER [CONTAINER...]",
-      "description": "Stop one or more running containers",
+      "description": "Остановка работающих контейнеров",
       "patterns": [
         {
           "type": "example",
-          "text": "stop a running container",
+          "text": "Остановить работающий контейнер",
           "command": "docker stop mycontainer",
-          "explanation": "Sends SIGTERM then SIGKILL after a grace period"
+          "explanation": "Остановить работающий контейнер."
         },
         {
           "type": "example",
-          "text": "stop a container with a custom timeout",
+          "text": "Завершить запущенный mycontainer",
+          "command": "docker stop mycontainer",
+          "explanation": "Остановить работающий контейнер."
+        },
+        {
+          "type": "example",
+          "text": "Остановить контейнер с ожиданием до тридцати секунд",
           "command": "docker stop -t 30 mycontainer",
-          "explanation": "Waits 30 seconds before sending SIGKILL"
+          "explanation": "Остановить контейнер с ожиданием до тридцати секунд."
         },
         {
           "type": "example",
-          "text": "stop all running containers",
+          "text": "Задать таймаут штатного завершения Docker-контейнера",
+          "command": "docker stop -t 30 mycontainer",
+          "explanation": "Остановить контейнер с ожиданием до тридцати секунд."
+        },
+        {
+          "type": "example",
+          "text": "Остановить все запущенные контейнеры",
           "command": "docker stop $(docker ps -q)",
-          "explanation": "Stops every currently running container"
+          "explanation": "Остановить все запущенные контейнеры."
         },
         {
           "type": "example",
-          "text": "stop multiple specific containers",
+          "text": "Погасить сразу всё, что сейчас работает в Docker",
+          "command": "docker stop $(docker ps -q)",
+          "explanation": "Остановить все запущенные контейнеры."
+        },
+        {
+          "type": "example",
+          "text": "Остановить несколько контейнеров по именам",
           "command": "docker stop container1 container2 container3",
-          "explanation": "Stops the named containers simultaneously"
+          "explanation": "Остановить несколько контейнеров по именам."
+        },
+        {
+          "type": "example",
+          "text": "Завершить container1, container2 и container3 одной командой",
+          "command": "docker stop container1 container2 container3",
+          "explanation": "Остановить несколько контейнеров по именам."
         }
       ]
     },
     {
       "name": "docker rm",
       "synopsis": "docker rm [options] CONTAINER [CONTAINER...]",
-      "description": "Remove one or more containers",
+      "description": "Удаление контейнеров",
       "patterns": [
         {
           "type": "example",
-          "text": "remove a stopped container",
+          "text": "Удалить остановленный Docker-контейнер",
           "command": "docker rm mycontainer",
-          "explanation": "Deletes the container and its writable layer",
+          "explanation": "Удалить остановленный Docker-контейнер.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "force remove a running container",
+          "text": "Убрать ненужный контейнер mycontainer",
+          "command": "docker rm mycontainer",
+          "explanation": "Удалить остановленный Docker-контейнер.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "Принудительно удалить работающий контейнер",
           "command": "docker rm -f mycontainer",
-          "explanation": "Kills and removes the container in one step",
+          "explanation": "Принудительно удалить работающий контейнер.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "remove all stopped containers",
+          "text": "Завершить и сразу убрать запущенный Docker-контейнер",
+          "command": "docker rm -f mycontainer",
+          "explanation": "Принудительно удалить работающий контейнер.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "Удалить все контейнеры со статусом exited",
           "command": "docker rm $(docker ps -aq -f status=exited)",
-          "explanation": "Finds and removes all containers that have exited",
+          "explanation": "Удалить все контейнеры со статусом exited.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "remove a container and its anonymous volumes",
+          "text": "Очистить список завершившихся контейнеров",
+          "command": "docker rm $(docker ps -aq -f status=exited)",
+          "explanation": "Удалить все контейнеры со статусом exited.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "Удалить контейнер вместе с его анонимными томами",
           "command": "docker rm -v mycontainer",
-          "explanation": "Deletes the container and associated anonymous volumes; named volumes are retained",
+          "explanation": "Удаляет контейнер и связанные анонимные тома; именованные тома сохраняются.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "Убрать mycontainer и привязанные к нему безымянные volumes",
+          "command": "docker rm -v mycontainer",
+          "explanation": "Удаляет контейнер и связанные анонимные тома; именованные тома сохраняются.",
           "destructive": true
         }
       ]
@@ -354,34 +634,62 @@
     {
       "name": "docker rmi",
       "synopsis": "docker rmi [options] IMAGE [IMAGE...]",
-      "description": "Remove one or more images",
+      "description": "Удаление образов Docker",
       "patterns": [
         {
           "type": "example",
-          "text": "delete a local Docker image",
+          "text": "Удалить локальный Docker-образ по тегу",
           "command": "docker rmi myapp:latest",
-          "explanation": "Removes the specified image from local storage",
+          "explanation": "Удалить локальный Docker-образ по тегу.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "force remove an image even if containers use it",
+          "text": "Убрать образ myapp:latest с диска",
+          "command": "docker rmi myapp:latest",
+          "explanation": "Удалить локальный Docker-образ по тегу.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "Принудительно удалить образ, несмотря на связанные контейнеры",
           "command": "docker rmi -f myapp:latest",
-          "explanation": "Forcefully removes the image regardless of references",
+          "explanation": "Принудительно удалить образ, несмотря на связанные контейнеры.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "remove all dangling images",
+          "text": "Выполнить docker rmi с флагом force",
+          "command": "docker rmi -f myapp:latest",
+          "explanation": "Принудительно удалить образ, несмотря на связанные контейнеры.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "Удалить все образы без тегов",
           "command": "docker rmi $(docker images -q -f dangling=true)",
-          "explanation": "Deletes all untagged and unreferenced images",
+          "explanation": "Удалить все образы без тегов.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "attempt to remove all local images that Docker allows removing",
+          "text": "Очистить локальные dangling-образы",
+          "command": "docker rmi $(docker images -q -f dangling=true)",
+          "explanation": "Удалить все образы без тегов.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "Попытаться удалить все локальные образы Docker",
           "command": "images=$(docker image ls --all --quiet | sort -u); if [ -n \"$images\" ]; then printf '%s\\n' \"$images\" | xargs docker image rm; fi",
-          "explanation": "Deduplicates all listed image IDs and removes them when the list is nonempty; images in use may be refused",
+          "explanation": "Убирает повторы идентификаторов образов и удаляет их, если список не пуст; используемые образы могут не удалиться.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "Передать все ID образов команде удаления",
+          "command": "images=$(docker image ls --all --quiet | sort -u); if [ -n \"$images\" ]; then printf '%s\\n' \"$images\" | xargs docker image rm; fi",
+          "explanation": "Убирает повторы идентификаторов образов и удаляет их, если список не пуст; используемые образы могут не удалиться.",
           "destructive": true
         }
       ]
@@ -389,119 +697,218 @@
     {
       "name": "docker compose",
       "synopsis": "docker compose [options] [command]",
-      "description": "Define and run multi-container applications with Docker Compose",
+      "description": "Описание и запуск приложений из нескольких контейнеров через Docker Compose",
       "patterns": [
         {
           "type": "example",
-          "text": "start all services defined in docker-compose.yml",
+          "text": "Запусти все сервисы Docker Compose в фоне.",
           "command": "docker compose up -d",
-          "explanation": "Builds, creates, and starts all services in detached mode"
+          "explanation": "Запусти все сервисы Docker Compose в фоне."
         },
         {
           "type": "example",
-          "text": "stop and remove all compose services",
+          "text": "Как поднять проект через Compose и сразу вернуть терминал?",
+          "command": "docker compose up -d",
+          "explanation": "Запусти все сервисы Docker Compose в фоне."
+        },
+        {
+          "type": "example",
+          "text": "Останови проект Compose и удали его контейнеры и сети.",
           "command": "docker compose down",
-          "explanation": "Stops and removes project containers and networks; named and anonymous volumes are retained without --volumes",
+          "explanation": "Останавливает и удаляет контейнеры и сети проекта; без --volumes именованные и анонимные тома сохраняются.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "rebuild and restart services",
+          "text": "Как завершить работу Docker Compose с удалением контейнеров проекта?",
+          "command": "docker compose down",
+          "explanation": "Останавливает и удаляет контейнеры и сети проекта; без --volumes именованные и анонимные тома сохраняются.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "Пересобрать образы и запустить сервисы Compose",
           "command": "docker compose up -d --build",
-          "explanation": "Rebuilds images before starting the services"
+          "explanation": "Пересобрать образы и запустить сервисы Compose."
         },
         {
           "type": "example",
-          "text": "view logs from all compose services",
+          "text": "Обновить контейнеры проекта с обязательной сборкой образов",
+          "command": "docker compose up -d --build",
+          "explanation": "Пересобрать образы и запустить сервисы Compose."
+        },
+        {
+          "type": "example",
+          "text": "Следить за логами всех сервисов Compose",
           "command": "docker compose logs -f",
-          "explanation": "Follows the combined log output of all services"
+          "explanation": "Следить за логами всех сервисов Compose."
         },
         {
           "type": "example",
-          "text": "scale a service to multiple instances",
+          "text": "Непрерывно показывать общий журнал Compose-проекта",
+          "command": "docker compose logs -f",
+          "explanation": "Следить за логами всех сервисов Compose."
+        },
+        {
+          "type": "example",
+          "text": "Запустить три экземпляра сервиса web",
           "command": "docker compose up -d --scale web=3",
-          "explanation": "Runs 3 instances of the web service"
+          "explanation": "Запустить три экземпляра сервиса web."
         },
         {
           "type": "example",
-          "text": "open a shell in the running web service container",
+          "text": "Масштабировать web через Docker Compose до трёх контейнеров",
+          "command": "docker compose up -d --scale web=3",
+          "explanation": "Запустить три экземпляра сервиса web."
+        },
+        {
+          "type": "example",
+          "text": "Открыть Bash в контейнере сервиса web",
           "command": "docker compose exec web bash",
-          "explanation": "Runs Bash inside the existing web service container using Compose exec"
+          "explanation": "Запускает Bash в существующем контейнере сервиса web через Compose exec."
+        },
+        {
+          "type": "example",
+          "text": "Зайти в уже работающий сервис Docker Compose",
+          "command": "docker compose exec web bash",
+          "explanation": "Запускает Bash в существующем контейнере сервиса web через Compose exec."
         }
       ]
     },
     {
       "name": "docker network",
       "synopsis": "docker network [command] [options]",
-      "description": "Manage Docker networks",
+      "description": "Управление сетями Docker",
       "patterns": [
         {
           "type": "example",
-          "text": "list all Docker networks",
+          "text": "Перечислить сети Docker",
           "command": "docker network ls",
-          "explanation": "Shows all networks including bridge, host, and custom ones"
+          "explanation": "Перечислить сети Docker."
         },
         {
           "type": "example",
-          "text": "create a custom bridge network",
+          "text": "Показать созданные контейнерные сети",
+          "command": "docker network ls",
+          "explanation": "Перечислить сети Docker."
+        },
+        {
+          "type": "example",
+          "text": "Создать пользовательскую bridge-сеть",
           "command": "docker network create mynetwork",
-          "explanation": "Creates a user-defined bridge network for container communication"
+          "explanation": "Создать пользовательскую bridge-сеть."
         },
         {
           "type": "example",
-          "text": "connect a running container to a network",
+          "text": "Добавить Docker-сеть с именем mynetwork",
+          "command": "docker network create mynetwork",
+          "explanation": "Создать пользовательскую bridge-сеть."
+        },
+        {
+          "type": "example",
+          "text": "Подключить работающий контейнер к сети",
           "command": "docker network connect mynetwork mycontainer",
-          "explanation": "Attaches the container to an additional network"
+          "explanation": "Подключить работающий контейнер к сети."
         },
         {
           "type": "example",
-          "text": "inspect a network to see connected containers",
+          "text": "Добавить mycontainer в сеть mynetwork",
+          "command": "docker network connect mynetwork mycontainer",
+          "explanation": "Подключить работающий контейнер к сети."
+        },
+        {
+          "type": "example",
+          "text": "Посмотреть параметры сети и подключённые контейнеры",
           "command": "docker network inspect mynetwork",
-          "explanation": "Shows detailed config and which containers are attached"
+          "explanation": "Посмотреть параметры сети и подключённые контейнеры."
         },
         {
           "type": "example",
-          "text": "remove unused networks",
+          "text": "Вывести подробности Docker-сети mynetwork",
+          "command": "docker network inspect mynetwork",
+          "explanation": "Посмотреть параметры сети и подключённые контейнеры."
+        },
+        {
+          "type": "example",
+          "text": "Удалить неиспользуемые сети Docker",
           "command": "docker network prune",
-          "explanation": "Deletes all networks not used by any container"
+          "explanation": "Удалить неиспользуемые сети Docker."
+        },
+        {
+          "type": "example",
+          "text": "Очистить сети, к которым не подключены контейнеры",
+          "command": "docker network prune",
+          "explanation": "Удалить неиспользуемые сети Docker."
         }
       ]
     },
     {
       "name": "docker volume",
       "synopsis": "docker volume [command] [options]",
-      "description": "Manage Docker volumes for persistent storage",
+      "description": "Управление томами Docker для хранения данных",
       "patterns": [
         {
           "type": "example",
-          "text": "list all Docker volumes",
+          "text": "Показать Docker-тома",
           "command": "docker volume ls",
-          "explanation": "Shows all volumes on the system"
+          "explanation": "Показать Docker-тома."
         },
         {
           "type": "example",
-          "text": "create a named volume",
+          "text": "Перечислить существующие volumes",
+          "command": "docker volume ls",
+          "explanation": "Показать Docker-тома."
+        },
+        {
+          "type": "example",
+          "text": "Создать именованный том mydata",
           "command": "docker volume create mydata",
-          "explanation": "Creates a persistent volume named mydata"
+          "explanation": "Создать именованный том mydata."
         },
         {
           "type": "example",
-          "text": "inspect a volume to see its mount point",
+          "text": "Подготовить постоянное хранилище данных для контейнера",
+          "command": "docker volume create mydata",
+          "explanation": "Создать именованный том mydata."
+        },
+        {
+          "type": "example",
+          "text": "Посмотреть сведения о томе и точку монтирования",
           "command": "docker volume inspect mydata",
-          "explanation": "Shows the volume details including the host path"
+          "explanation": "Посмотреть сведения о томе и точку монтирования."
         },
         {
           "type": "example",
-          "text": "remove all unused named and anonymous Docker volumes",
+          "text": "Узнать, где Docker хранит volume mydata",
+          "command": "docker volume inspect mydata",
+          "explanation": "Посмотреть сведения о томе и точку монтирования."
+        },
+        {
+          "type": "example",
+          "text": "удалить все неиспользуемые именованные и анонимные тома Docker",
           "command": "docker volume prune --all",
-          "explanation": "Deletes named and anonymous local volumes not referenced by any container; requires Docker API 1.42 or newer",
+          "explanation": "Удаляет именованные и анонимные локальные тома, на которые не ссылается ни один контейнер; требуется Docker API 1.42 или новее.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "remove a specific volume",
+          "text": "освободить место, очистив тома, на которые не ссылается ни один контейнер",
+          "command": "docker volume prune --all",
+          "explanation": "Удаляет именованные и анонимные локальные тома, на которые не ссылается ни один контейнер; требуется Docker API 1.42 или новее.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "Удалить конкретный том mydata",
           "command": "docker volume rm mydata",
-          "explanation": "Deletes the named volume and its data",
+          "explanation": "Удалить конкретный том mydata.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "Убрать выбранное постоянное хранилище Docker",
+          "command": "docker volume rm mydata",
+          "explanation": "Удалить конкретный том mydata.",
           "destructive": true
         }
       ]
@@ -509,274 +916,492 @@
     {
       "name": "docker inspect",
       "synopsis": "docker inspect [options] NAME|ID [NAME|ID...]",
-      "description": "Return low-level information on Docker objects",
+      "description": "Просмотр подробной информации об объектах Docker",
       "patterns": [
         {
           "type": "example",
-          "text": "see full details of a container",
+          "text": "Показать полную конфигурацию контейнера",
           "command": "docker inspect mycontainer",
-          "explanation": "Returns complete JSON metadata about the container"
+          "explanation": "Показать полную конфигурацию контейнера."
         },
         {
           "type": "example",
-          "text": "get the IP address of a container",
+          "text": "Посмотреть подробности mycontainer через inspect",
+          "command": "docker inspect mycontainer",
+          "explanation": "Показать полную конфигурацию контейнера."
+        },
+        {
+          "type": "example",
+          "text": "Получить IP-адреса контейнера в его сетях",
           "command": "docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mycontainer",
-          "explanation": "Extracts the container IP using a Go template"
+          "explanation": "Получить IP-адреса контейнера в его сетях."
         },
         {
           "type": "example",
-          "text": "inspect an image for its layers and config",
+          "text": "Вывести сетевые адреса выбранного Docker-контейнера",
+          "command": "docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mycontainer",
+          "explanation": "Получить IP-адреса контейнера в его сетях."
+        },
+        {
+          "type": "example",
+          "text": "Посмотреть конфигурацию и слои Docker-образа",
           "command": "docker inspect myapp:latest",
-          "explanation": "Shows image metadata including layers, env vars, and entry point"
+          "explanation": "Посмотреть конфигурацию и слои Docker-образа."
         },
         {
           "type": "example",
-          "text": "get the mount points of a container",
+          "text": "Изучить метаданные myapp:latest",
+          "command": "docker inspect myapp:latest",
+          "explanation": "Посмотреть конфигурацию и слои Docker-образа."
+        },
+        {
+          "type": "example",
+          "text": "Вывести точки монтирования контейнера как JSON",
           "command": "docker inspect -f '{{json .Mounts}}' mycontainer | jq",
-          "explanation": "Shows all volume and bind mounts for the container"
+          "explanation": "Вывести точки монтирования контейнера как JSON."
+        },
+        {
+          "type": "example",
+          "text": "Посмотреть подключённые каталоги и тома через inspect и jq",
+          "command": "docker inspect -f '{{json .Mounts}}' mycontainer | jq",
+          "explanation": "Вывести точки монтирования контейнера как JSON."
         }
       ]
     },
     {
       "name": "docker system",
       "synopsis": "docker system [command]",
-      "description": "Manage Docker system resources",
+      "description": "Управление системными ресурсами Docker",
       "patterns": [
         {
           "type": "example",
-          "text": "see how much disk space Docker is using",
+          "text": "Показать использование диска Docker",
           "command": "docker system df",
-          "explanation": "Shows disk usage by images, containers, volumes, and build cache"
+          "explanation": "Показать использование диска Docker."
         },
         {
           "type": "example",
-          "text": "clean up all unused Docker resources",
+          "text": "Узнать объём образов, контейнеров, томов и кеша сборки",
+          "command": "docker system df",
+          "explanation": "Показать использование диска Docker."
+        },
+        {
+          "type": "example",
+          "text": "Удалить неиспользуемые ресурсы Docker вместе с ненужными образами",
           "command": "docker system prune -a",
-          "explanation": "Removes all unused images, containers, networks, and build cache",
+          "explanation": "Удалить неиспользуемые ресурсы Docker вместе с ненужными образами.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "prune unused Docker resources including anonymous volumes",
+          "text": "Выполнить полную очистку Docker через system prune -a",
+          "command": "docker system prune -a",
+          "explanation": "Удалить неиспользуемые ресурсы Docker вместе с ненужными образами.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "очистить неиспользуемые ресурсы Docker вместе с анонимными томами",
           "command": "docker system prune -a --volumes",
-          "explanation": "Removes stopped containers, unused networks and images, build cache, and unused anonymous volumes; named volumes are not included",
+          "explanation": "Удаляет остановленные контейнеры, неиспользуемые сети и образы, кеш сборки и неиспользуемые анонимные тома; именованные тома не затрагиваются.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "show real-time resource usage of containers",
-          "command": "docker stats",
-          "explanation": "Displays a live stream of CPU, memory, and network stats"
+          "text": "удалить остановленные контейнеры, лишние образы и кеш, сохранив именованные тома",
+          "command": "docker system prune -a --volumes",
+          "explanation": "Удаляет остановленные контейнеры, неиспользуемые сети и образы, кеш сборки и неиспользуемые анонимные тома; именованные тома не затрагиваются.",
+          "destructive": true
         },
         {
           "type": "example",
-          "text": "show Docker system information",
+          "text": "Следить за потреблением ресурсов контейнерами",
+          "command": "docker stats",
+          "explanation": "Следить за потреблением ресурсов контейнерами."
+        },
+        {
+          "type": "example",
+          "text": "Показать живую статистику CPU, памяти и сети Docker",
+          "command": "docker stats",
+          "explanation": "Следить за потреблением ресурсов контейнерами."
+        },
+        {
+          "type": "example",
+          "text": "Вывести сведения об установке Docker",
           "command": "docker system info",
-          "explanation": "Displays system-wide configuration and resource details"
+          "explanation": "Вывести сведения об установке Docker."
+        },
+        {
+          "type": "example",
+          "text": "Посмотреть системную конфигурацию Docker Engine",
+          "command": "docker system info",
+          "explanation": "Вывести сведения об установке Docker."
         }
       ]
     },
     {
       "name": "kubectl get",
       "synopsis": "kubectl get [resource] [options]",
-      "description": "Display one or many Kubernetes resources",
+      "description": "Просмотр ресурсов Kubernetes",
       "patterns": [
         {
           "type": "example",
-          "text": "list all pods in the current namespace",
+          "text": "Перечислить поды текущего namespace Kubernetes",
           "command": "kubectl get pods",
-          "explanation": "Shows all pods with their status, restarts, and age"
+          "explanation": "Перечислить поды текущего namespace Kubernetes."
         },
         {
           "type": "example",
-          "text": "list pods across all namespaces",
+          "text": "Показать pod в выбранном пространстве имён",
+          "command": "kubectl get pods",
+          "explanation": "Перечислить поды текущего namespace Kubernetes."
+        },
+        {
+          "type": "example",
+          "text": "Показать поды во всех namespace",
           "command": "kubectl get pods --all-namespaces",
-          "explanation": "Shows pods from every namespace"
+          "explanation": "Показать поды во всех namespace."
         },
         {
           "type": "example",
-          "text": "list all services",
+          "text": "Найти все pod кластера Kubernetes",
+          "command": "kubectl get pods --all-namespaces",
+          "explanation": "Показать поды во всех namespace."
+        },
+        {
+          "type": "example",
+          "text": "Перечислить сервисы текущего namespace",
           "command": "kubectl get svc",
-          "explanation": "Displays services with their types, cluster IPs, and ports"
+          "explanation": "Перечислить сервисы текущего namespace."
         },
         {
           "type": "example",
-          "text": "get resources in YAML format",
+          "text": "Показать объекты Service в Kubernetes",
+          "command": "kubectl get svc",
+          "explanation": "Перечислить сервисы текущего namespace."
+        },
+        {
+          "type": "example",
+          "text": "Вывести Deployment myapp в формате YAML",
           "command": "kubectl get deployment myapp -o yaml",
-          "explanation": "Outputs the full YAML definition of the deployment"
+          "explanation": "Вывести Deployment myapp в формате YAML."
         },
         {
           "type": "example",
-          "text": "watch pods for real-time changes",
+          "text": "Получить описание ресурса Kubernetes для просмотра конфигурации",
+          "command": "kubectl get deployment myapp -o yaml",
+          "explanation": "Вывести Deployment myapp в формате YAML."
+        },
+        {
+          "type": "example",
+          "text": "Следить за изменением списка подов",
           "command": "kubectl get pods -w",
-          "explanation": "Continuously watches for pod status changes"
+          "explanation": "Следить за изменением списка подов."
+        },
+        {
+          "type": "example",
+          "text": "Обновлять вывод kubectl get pods при событиях",
+          "command": "kubectl get pods -w",
+          "explanation": "Следить за изменением списка подов."
         }
       ]
     },
     {
       "name": "kubectl apply",
       "synopsis": "kubectl apply -f FILENAME [options]",
-      "description": "Apply a configuration to a resource by file or stdin",
+      "description": "Применение конфигурации Kubernetes из файла или стандартного ввода",
       "patterns": [
         {
           "type": "example",
-          "text": "apply a Kubernetes manifest file",
+          "text": "Применить YAML-манифест Kubernetes",
           "command": "kubectl apply -f deployment.yaml",
-          "explanation": "Creates or updates resources defined in the YAML file"
+          "explanation": "Применить YAML-манифест Kubernetes."
         },
         {
           "type": "example",
-          "text": "apply all manifests in a directory",
+          "text": "Создать или обновить ресурсы из deployment.yaml",
+          "command": "kubectl apply -f deployment.yaml",
+          "explanation": "Применить YAML-манифест Kubernetes."
+        },
+        {
+          "type": "example",
+          "text": "Применить манифесты из каталога k8s",
           "command": "kubectl apply -f ./k8s/",
-          "explanation": "Applies every YAML file in the directory"
+          "explanation": "Применить манифесты из каталога k8s."
         },
         {
           "type": "example",
-          "text": "apply a manifest from a URL",
+          "text": "Обновить Kubernetes-ресурсы по файлам указанной папки",
+          "command": "kubectl apply -f ./k8s/",
+          "explanation": "Применить манифесты из каталога k8s."
+        },
+        {
+          "type": "example",
+          "text": "Применить манифест Kubernetes по URL",
           "command": "kubectl apply -f https://example.com/manifest.yaml",
-          "explanation": "Downloads and applies the remote manifest"
+          "explanation": "Применить манифест Kubernetes по URL."
         },
         {
           "type": "example",
-          "text": "apply with a dry run to preview changes",
+          "text": "Применить ресурсы из YAML по указанному URL",
+          "command": "kubectl apply -f https://example.com/manifest.yaml",
+          "explanation": "Применить манифест Kubernetes по URL."
+        },
+        {
+          "type": "example",
+          "text": "Проверить манифест клиентским dry-run без применения",
           "command": "kubectl apply -f deployment.yaml --dry-run=client",
-          "explanation": "Validates the manifest without actually applying it"
+          "explanation": "Проверить манифест клиентским dry-run без применения."
         },
         {
           "type": "example",
-          "text": "apply a kustomization",
+          "text": "Предварительно обработать deployment.yaml без записи в кластер",
+          "command": "kubectl apply -f deployment.yaml --dry-run=client",
+          "explanation": "Проверить манифест клиентским dry-run без применения."
+        },
+        {
+          "type": "example",
+          "text": "Применить конфигурацию Kustomize для production",
           "command": "kubectl apply -k ./overlays/production/",
-          "explanation": "Applies a Kustomize configuration directory"
+          "explanation": "Применить конфигурацию Kustomize для production."
+        },
+        {
+          "type": "example",
+          "text": "Развернуть ресурсы из каталога overlays/production",
+          "command": "kubectl apply -k ./overlays/production/",
+          "explanation": "Применить конфигурацию Kustomize для production."
         }
       ]
     },
     {
       "name": "kubectl logs",
       "synopsis": "kubectl logs [options] POD [-c CONTAINER]",
-      "description": "Print the logs for a container in a pod",
+      "description": "Просмотр журналов контейнера в pod",
       "patterns": [
         {
           "type": "example",
-          "text": "view logs of a specific pod",
+          "text": "Показать журнал указанного pod",
           "command": "kubectl logs mypod",
-          "explanation": "Displays the stdout/stderr output of the pod's container"
+          "explanation": "Показать журнал указанного pod."
         },
         {
           "type": "example",
-          "text": "follow pod logs in real time",
+          "text": "Посмотреть логи mypod в Kubernetes",
+          "command": "kubectl logs mypod",
+          "explanation": "Показать журнал указанного pod."
+        },
+        {
+          "type": "example",
+          "text": "Следить за новыми логами pod",
           "command": "kubectl logs -f mypod",
-          "explanation": "Streams logs as they are produced"
+          "explanation": "Следить за новыми логами pod."
         },
         {
           "type": "example",
-          "text": "view logs from a specific container in a multi-container pod",
+          "text": "Открыть журнал Kubernetes-пода в режиме реального времени",
+          "command": "kubectl logs -f mypod",
+          "explanation": "Следить за новыми логами pod."
+        },
+        {
+          "type": "example",
+          "text": "Показать логи конкретного контейнера внутри pod",
           "command": "kubectl logs mypod -c sidecar",
-          "explanation": "Shows logs from the sidecar container"
+          "explanation": "Показать логи конкретного контейнера внутри pod."
         },
         {
           "type": "example",
-          "text": "view logs from a previous crashed container",
+          "text": "Посмотреть журнал sidecar в многоконтейнерном поде",
+          "command": "kubectl logs mypod -c sidecar",
+          "explanation": "Показать логи конкретного контейнера внутри pod."
+        },
+        {
+          "type": "example",
+          "text": "Получить логи предыдущего экземпляра контейнера",
           "command": "kubectl logs mypod --previous",
-          "explanation": "Shows logs from the last terminated instance of the container"
+          "explanation": "Получить логи предыдущего экземпляра контейнера."
         },
         {
           "type": "example",
-          "text": "get logs from all pods matching a label",
+          "text": "Посмотреть журнал контейнера до его последнего перезапуска в том же pod",
+          "command": "kubectl logs mypod --previous",
+          "explanation": "Получить логи предыдущего экземпляра контейнера."
+        },
+        {
+          "type": "example",
+          "text": "Показать логи всех контейнеров подов с меткой app=myapp",
           "command": "kubectl logs -l app=myapp --all-containers",
-          "explanation": "Aggregates logs from all pods with the given label"
+          "explanation": "Показать логи всех контейнеров подов с меткой app=myapp."
+        },
+        {
+          "type": "example",
+          "text": "Собрать журналы Kubernetes по селектору меток",
+          "command": "kubectl logs -l app=myapp --all-containers",
+          "explanation": "Показать логи всех контейнеров подов с меткой app=myapp."
         }
       ]
     },
     {
       "name": "kubectl exec",
       "synopsis": "kubectl exec [options] POD -- COMMAND [args]",
-      "description": "Execute a command in a container inside a pod",
+      "description": "Выполнение команды в контейнере Kubernetes",
       "patterns": [
         {
           "type": "example",
-          "text": "open a shell inside a Kubernetes pod",
+          "text": "Открыть интерактивный Bash в Kubernetes-поде",
           "command": "kubectl exec -it mypod -- bash",
-          "explanation": "Starts an interactive bash session in the pod"
+          "explanation": "Открыть интерактивный Bash в Kubernetes-поде."
         },
         {
           "type": "example",
-          "text": "run a single command inside a pod",
+          "text": "Зайти в консоль pod mypod",
+          "command": "kubectl exec -it mypod -- bash",
+          "explanation": "Открыть интерактивный Bash в Kubernetes-поде."
+        },
+        {
+          "type": "example",
+          "text": "Выполнить команду внутри pod",
           "command": "kubectl exec mypod -- cat /etc/hostname",
-          "explanation": "Executes the command and prints the output"
+          "explanation": "Выполнить команду внутри pod."
         },
         {
           "type": "example",
-          "text": "exec into a specific container in a multi-container pod",
+          "text": "Прочитать hostname контейнера через kubectl exec",
+          "command": "kubectl exec mypod -- cat /etc/hostname",
+          "explanation": "Выполнить команду внутри pod."
+        },
+        {
+          "type": "example",
+          "text": "Открыть shell в конкретном контейнере pod",
           "command": "kubectl exec -it mypod -c sidecar -- sh",
-          "explanation": "Opens a shell in the sidecar container specifically"
+          "explanation": "Открыть shell в конкретном контейнере pod."
         },
         {
           "type": "example",
-          "text": "run a command in a pod in a specific namespace",
+          "text": "Зайти через sh в sidecar многоконтейнерного пода",
+          "command": "kubectl exec -it mypod -c sidecar -- sh",
+          "explanation": "Открыть shell в конкретном контейнере pod."
+        },
+        {
+          "type": "example",
+          "text": "Открыть Bash в pod пространства production",
           "command": "kubectl exec -it mypod -n production -- bash",
-          "explanation": "Executes in a pod within the production namespace"
+          "explanation": "Открыть Bash в pod пространства production."
+        },
+        {
+          "type": "example",
+          "text": "Выполнить интерактивный вход с указанием namespace",
+          "command": "kubectl exec -it mypod -n production -- bash",
+          "explanation": "Открыть Bash в pod пространства production."
         }
       ]
     },
     {
       "name": "kubectl describe",
       "synopsis": "kubectl describe [resource] [name] [options]",
-      "description": "Show details of a specific resource or group of resources",
+      "description": "Просмотр подробной информации о ресурсах Kubernetes",
       "patterns": [
         {
           "type": "example",
-          "text": "get detailed information about a pod",
+          "text": "Показать подробности Kubernetes-пода",
           "command": "kubectl describe pod mypod",
-          "explanation": "Shows events, conditions, volumes, and container details"
+          "explanation": "Показать подробности Kubernetes-пода."
         },
         {
           "type": "example",
-          "text": "describe a node to check resource usage",
+          "text": "Посмотреть состояние и события mypod",
+          "command": "kubectl describe pod mypod",
+          "explanation": "Показать подробности Kubernetes-пода."
+        },
+        {
+          "type": "example",
+          "text": "Вывести подробную информацию об узле Kubernetes",
           "command": "kubectl describe node mynode",
-          "explanation": "Shows capacity, allocatable resources, and running pods"
+          "explanation": "Вывести подробную информацию об узле Kubernetes."
         },
         {
           "type": "example",
-          "text": "describe a service to check endpoints",
+          "text": "Изучить ресурсы и события выбранной ноды",
+          "command": "kubectl describe node mynode",
+          "explanation": "Вывести подробную информацию об узле Kubernetes."
+        },
+        {
+          "type": "example",
+          "text": "Посмотреть описание сервиса и его endpoints",
           "command": "kubectl describe svc myservice",
-          "explanation": "Shows service type, selector, ports, and backend endpoints"
+          "explanation": "Посмотреть описание сервиса и его endpoints."
         },
         {
           "type": "example",
-          "text": "describe all pods matching a label",
+          "text": "Проверить, куда направляет трафик Service myservice",
+          "command": "kubectl describe svc myservice",
+          "explanation": "Посмотреть описание сервиса и его endpoints."
+        },
+        {
+          "type": "example",
+          "text": "Подробно описать все поды по метке app=myapp",
           "command": "kubectl describe pods -l app=myapp",
-          "explanation": "Shows detailed info for every pod with that label"
+          "explanation": "Подробно описать все поды по метке app=myapp."
+        },
+        {
+          "type": "example",
+          "text": "Посмотреть состояние группы pod через label selector",
+          "command": "kubectl describe pods -l app=myapp",
+          "explanation": "Подробно описать все поды по метке app=myapp."
         }
       ]
     },
     {
       "name": "kubectl port-forward",
       "synopsis": "kubectl port-forward [resource] LOCAL_PORT:REMOTE_PORT [options]",
-      "description": "Forward one or more local ports to a pod",
+      "description": "Перенаправление локальных портов к pod",
       "patterns": [
         {
           "type": "example",
-          "text": "forward a local port to a pod",
+          "text": "Пробросить локальный порт 8080 на порт 80 pod",
           "command": "kubectl port-forward pod/mypod 8080:80",
-          "explanation": "Makes the pod's port 80 accessible on localhost:8080"
+          "explanation": "Пробросить локальный порт 8080 на порт 80 pod."
         },
         {
           "type": "example",
-          "text": "forward a port to a service",
+          "text": "Открыть доступ к поду Kubernetes через localhost",
+          "command": "kubectl port-forward pod/mypod 8080:80",
+          "explanation": "Пробросить локальный порт 8080 на порт 80 pod."
+        },
+        {
+          "type": "example",
+          "text": "Пробросить локальный порт 3000 к сервису Kubernetes",
           "command": "kubectl port-forward svc/myservice 3000:80",
-          "explanation": "Forwards traffic to the service on localhost:3000"
+          "explanation": "Пробросить локальный порт 3000 к сервису Kubernetes."
         },
         {
           "type": "example",
-          "text": "forward to a pod in a specific namespace",
+          "text": "Подключиться к Service myservice через port-forward",
+          "command": "kubectl port-forward svc/myservice 3000:80",
+          "explanation": "Пробросить локальный порт 3000 к сервису Kubernetes."
+        },
+        {
+          "type": "example",
+          "text": "Пробросить PostgreSQL-порт из pod пространства production",
           "command": "kubectl port-forward -n production pod/mypod 5432:5432",
-          "explanation": "Forwards a database port from a production namespace pod"
+          "explanation": "Пробросить PostgreSQL-порт из pod пространства production."
         },
         {
           "type": "example",
-          "text": "forward and listen on all interfaces",
+          "text": "Открыть локальный доступ к порту 5432 указанного пода",
+          "command": "kubectl port-forward -n production pod/mypod 5432:5432",
+          "explanation": "Пробросить PostgreSQL-порт из pod пространства production."
+        },
+        {
+          "type": "example",
+          "text": "Разрешить port-forward на всех интерфейсах хоста",
           "command": "kubectl port-forward --address 0.0.0.0 pod/mypod 8080:80",
-          "explanation": "Listens on all network interfaces, not just localhost"
+          "explanation": "Разрешить port-forward на всех интерфейсах хоста."
+        },
+        {
+          "type": "example",
+          "text": "Сделать проброшенный порт Kubernetes доступным вне localhost",
+          "command": "kubectl port-forward --address 0.0.0.0 pod/mypod 8080:80",
+          "explanation": "Разрешить port-forward на всех интерфейсах хоста."
         }
       ]
     }

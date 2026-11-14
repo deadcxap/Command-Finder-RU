@@ -4,1090 +4,1949 @@
     {
       "name": "curl",
       "synopsis": "curl [options] [URL]",
-      "description": "Transfer data to or from a server using various protocols",
+      "description": "Передача данных по сетевым протоколам",
       "patterns": [
         {
           "type": "example",
-          "text": "download a file from a URL",
+          "text": "скачать файл по ссылке с исходным именем",
           "command": "curl -O https://example.com/file.tar.gz",
-          "explanation": "Downloads a file preserving the remote filename"
+          "explanation": "Скачать файл по ссылке с исходным именем."
         },
         {
           "type": "example",
-          "text": "make a POST request with JSON data",
+          "text": "сохранить удалённый файл через curl, не меняя его названия",
+          "command": "curl -O https://example.com/file.tar.gz",
+          "explanation": "Скачать файл по ссылке с исходным именем."
+        },
+        {
+          "type": "example",
+          "text": "отправить JSON в API запросом POST",
           "command": "curl -X POST -H 'Content-Type: application/json' -d '{\"key\":\"value\"}' https://api.example.com/endpoint",
-          "explanation": "Sends a JSON payload via POST to an API endpoint"
+          "explanation": "Отправить JSON в API запросом POST."
         },
         {
           "type": "example",
-          "text": "follow redirects and show response headers",
+          "text": "сделать HTTP POST с телом JSON и правильным Content-Type",
+          "command": "curl -X POST -H 'Content-Type: application/json' -d '{\"key\":\"value\"}' https://api.example.com/endpoint",
+          "explanation": "Отправить JSON в API запросом POST."
+        },
+        {
+          "type": "example",
+          "text": "показать HTTP-заголовки сайта и пройти по редиректам",
           "command": "curl -LI https://example.com",
-          "explanation": "Follows redirects (-L) and displays only response headers (-I)"
+          "explanation": "Показать HTTP-заголовки сайта и пройти по редиректам."
         },
         {
           "type": "example",
-          "text": "send a request with a bearer token for authentication",
+          "text": "проверить заголовки ответа с учётом перенаправлений",
+          "command": "curl -LI https://example.com",
+          "explanation": "Показать HTTP-заголовки сайта и пройти по редиректам."
+        },
+        {
+          "type": "example",
+          "text": "выполнить запрос к API с Bearer-токеном",
           "command": "curl -H 'Authorization: Bearer TOKEN' https://api.example.com/data",
-          "explanation": "Includes an authorization header with a bearer token"
+          "explanation": "Выполнить запрос к API с Bearer-токеном."
         },
         {
           "type": "example",
-          "text": "upload a file using multipart form data",
+          "text": "передать токен авторизации в HTTP-заголовке Authorization",
+          "command": "curl -H 'Authorization: Bearer TOKEN' https://api.example.com/data",
+          "explanation": "Выполнить запрос к API с Bearer-токеном."
+        },
+        {
+          "type": "example",
+          "text": "загрузить файл на сервер через multipart-форму",
           "command": "curl -F 'file=@/path/to/file.png' https://example.com/upload",
-          "explanation": "Uploads a file as multipart/form-data to the server"
+          "explanation": "Загрузить файл на сервер через multipart-форму."
+        },
+        {
+          "type": "example",
+          "text": "отправить изображение как поле file в HTTP-запросе",
+          "command": "curl -F 'file=@/path/to/file.png' https://example.com/upload",
+          "explanation": "Загрузить файл на сервер через multipart-форму."
         }
       ]
     },
     {
       "name": "wget",
       "synopsis": "wget [options] [URL]",
-      "description": "Non-interactive network downloader for retrieving files via HTTP, HTTPS, and FTP",
+      "description": "Неинтерактивная загрузка файлов по HTTP, HTTPS и FTP",
       "patterns": [
         {
           "type": "example",
-          "text": "download a file in the background",
+          "text": "скачать большой файл в фоне через wget",
           "command": "wget -b https://example.com/largefile.iso",
-          "explanation": "Downloads a file in the background, logging progress to wget-log"
+          "explanation": "Скачать большой файл в фоне через wget."
         },
         {
           "type": "example",
-          "text": "mirror an entire website for offline browsing",
+          "text": "запустить фоновую загрузку с записью прогресса в wget-log",
+          "command": "wget -b https://example.com/largefile.iso",
+          "explanation": "Скачать большой файл в фоне через wget."
+        },
+        {
+          "type": "example",
+          "text": "сохранить зеркало сайта для просмотра без интернета",
           "command": "wget --mirror --convert-links --page-requisites https://example.com",
-          "explanation": "Recursively downloads an entire site with links converted for local viewing"
+          "explanation": "Сохранить зеркало сайта для просмотра без интернета."
         },
         {
           "type": "example",
-          "text": "resume a partially downloaded file",
+          "text": "скачать страницы с ресурсами и преобразовать ссылки для локального просмотра",
+          "command": "wget --mirror --convert-links --page-requisites https://example.com",
+          "explanation": "Сохранить зеркало сайта для просмотра без интернета."
+        },
+        {
+          "type": "example",
+          "text": "продолжить прерванное скачивание файла",
           "command": "wget -c https://example.com/largefile.iso",
-          "explanation": "Continues a previously interrupted download from where it left off"
+          "explanation": "Продолжить прерванное скачивание файла."
         },
         {
           "type": "example",
-          "text": "download a list of URLs from a file",
+          "text": "докачать частично загруженный файл через wget",
+          "command": "wget -c https://example.com/largefile.iso",
+          "explanation": "Продолжить прерванное скачивание файла."
+        },
+        {
+          "type": "example",
+          "text": "скачать все ссылки из текстового файла",
           "command": "wget -i urls.txt",
-          "explanation": "Reads URLs from a text file and downloads each one"
+          "explanation": "Скачать все ссылки из текстового файла."
         },
         {
           "type": "example",
-          "text": "limit download speed to avoid saturating bandwidth",
+          "text": "передать wget список URL для пакетной загрузки",
+          "command": "wget -i urls.txt",
+          "explanation": "Скачать все ссылки из текстового файла."
+        },
+        {
+          "type": "example",
+          "text": "ограничить скорость скачивания до 500 КиБ в секунду",
           "command": "wget --limit-rate=500k https://example.com/file.zip",
-          "explanation": "Limits the download rate to 500 KiB per second (500 × 1024 bytes/s)"
+          "explanation": "Ограничивает скорость загрузки до 500 КиБ/с, то есть 500 × 1024 байт/с."
+        },
+        {
+          "type": "example",
+          "text": "загрузить файл через wget с лимитом пропускной способности",
+          "command": "wget --limit-rate=500k https://example.com/file.zip",
+          "explanation": "Ограничивает скорость загрузки до 500 КиБ/с, то есть 500 × 1024 байт/с."
         }
       ]
     },
     {
       "name": "ssh",
       "synopsis": "ssh [options] [user@]hostname [command]",
-      "description": "Securely connect to a remote machine over an encrypted connection",
+      "description": "Подключение к удалённой системе по SSH",
       "patterns": [
         {
           "type": "example",
-          "text": "connect to a remote server as a specific user",
+          "text": "подключиться к серверу по SSH",
           "command": "ssh user@192.168.1.100",
-          "explanation": "Opens an SSH session to the remote host as the given user"
+          "explanation": "Подключиться к серверу по SSH."
         },
         {
           "type": "example",
-          "text": "set up a local port forward to access a remote service",
+          "text": "зайти на удалённую машину под указанным пользователем",
+          "command": "ssh user@192.168.1.100",
+          "explanation": "Подключиться к серверу по SSH."
+        },
+        {
+          "type": "example",
+          "text": "пробросить локальный порт 8080 на порт 80 удалённого сервера",
           "command": "ssh -L 8080:localhost:80 user@remote-server",
-          "explanation": "Forwards local port 8080 to port 80 on the remote server"
+          "explanation": "Пробросить локальный порт 8080 на порт 80 удалённого сервера."
         },
         {
           "type": "example",
-          "text": "run a command on a remote server without opening a shell",
+          "text": "сделать SSH-туннель к удалённому веб-сервису",
+          "command": "ssh -L 8080:localhost:80 user@remote-server",
+          "explanation": "Пробросить локальный порт 8080 на порт 80 удалённого сервера."
+        },
+        {
+          "type": "example",
+          "text": "проверить свободное место на удалённом сервере через SSH",
           "command": "ssh user@server 'df -h'",
-          "explanation": "Executes the command remotely and returns output to the local terminal"
+          "explanation": "Проверить свободное место на удалённом сервере через SSH."
         },
         {
           "type": "example",
-          "text": "connect using a specific private key file",
+          "text": "выполнить df -h на другой машине без интерактивного терминала",
+          "command": "ssh user@server 'df -h'",
+          "explanation": "Проверить свободное место на удалённом сервере через SSH."
+        },
+        {
+          "type": "example",
+          "text": "подключиться по SSH с указанным закрытым ключом",
           "command": "ssh -i ~/.ssh/my_key.pem user@server",
-          "explanation": "Authenticates using the specified identity file instead of the default key"
+          "explanation": "Подключиться по SSH с указанным закрытым ключом."
         },
         {
           "type": "example",
-          "text": "create a SOCKS proxy tunnel through a remote server",
+          "text": "выбрать конкретный файл ключа для входа на сервер",
+          "command": "ssh -i ~/.ssh/my_key.pem user@server",
+          "explanation": "Подключиться по SSH с указанным закрытым ключом."
+        },
+        {
+          "type": "example",
+          "text": "создать локальный SOCKS-прокси через SSH на порту 9090",
           "command": "ssh -D 9090 user@server",
-          "explanation": "Sets up a dynamic SOCKS proxy on local port 9090 tunneled through the remote server"
+          "explanation": "Создать локальный SOCKS-прокси через SSH на порту 9090."
         },
         {
           "type": "example",
-          "text": "jump through a bastion host to reach a private server",
+          "text": "настроить динамический SSH-туннель для доступа через удалённую машину",
+          "command": "ssh -D 9090 user@server",
+          "explanation": "Создать локальный SOCKS-прокси через SSH на порту 9090."
+        },
+        {
+          "type": "example",
+          "text": "подключиться к внутреннему серверу через bastion",
           "command": "ssh -J bastion.example.com user@10.0.1.50",
-          "explanation": "ProxyJump opens the second hop through the first without manual netcat hacks"
+          "explanation": "Подключиться к внутреннему серверу через bastion."
+        },
+        {
+          "type": "example",
+          "text": "пройти к удалённой машине по SSH через промежуточный хост",
+          "command": "ssh -J bastion.example.com user@10.0.1.50",
+          "explanation": "Подключиться к внутреннему серверу через bastion."
         }
       ]
     },
     {
       "name": "ssh-keygen",
       "synopsis": "ssh-keygen [-t type] [-f path] [-C comment]",
-      "description": "Generate, convert, and manage SSH authentication keys",
+      "description": "Создание, преобразование и управление ключами SSH",
       "patterns": [
         {
           "type": "example",
-          "text": "create a new ed25519 key with a comment",
+          "text": "создать SSH-ключ Ed25519 с комментарием и отдельным именем файла",
           "command": "ssh-keygen -t ed25519 -C \"you@example.com\" -f ~/.ssh/id_ed25519_work",
-          "explanation": "Ed25519 keys are short, fast, and recommended for new deployments"
+          "explanation": "Создать SSH-ключ Ed25519 с комментарием и отдельным именем файла."
         },
         {
           "type": "example",
-          "text": "remove passphrase from a key non-interactively for automation",
+          "text": "сгенерировать рабочую пару ключей SSH в указанном пути",
+          "command": "ssh-keygen -t ed25519 -C \"you@example.com\" -f ~/.ssh/id_ed25519_work",
+          "explanation": "Создать SSH-ключ Ed25519 с комментарием и отдельным именем файла."
+        },
+        {
+          "type": "example",
+          "text": "снять парольную фразу с закрытого SSH-ключа без диалога",
           "command": "ssh-keygen -p -P 'oldpass' -N '' -f ~/.ssh/id_rsa",
-          "explanation": "Use only for throwaway CI keys; empty passphrases weaken security"
+          "explanation": "Снять парольную фразу с закрытого SSH-ключа без диалога."
         },
         {
           "type": "example",
-          "text": "print the fingerprint of a public key to compare with a server",
+          "text": "задать пустой пароль для файла ключа, передав старую парольную фразу",
+          "command": "ssh-keygen -p -P 'oldpass' -N '' -f ~/.ssh/id_rsa",
+          "explanation": "Снять парольную фразу с закрытого SSH-ключа без диалога."
+        },
+        {
+          "type": "example",
+          "text": "показать отпечаток открытого SSH-ключа",
           "command": "ssh-keygen -lf ~/.ssh/id_ed25519.pub",
-          "explanation": "Shows MD5 or SHA256 fingerprint depending on OpenSSH version"
+          "explanation": "Показать отпечаток открытого SSH-ключа."
+        },
+        {
+          "type": "example",
+          "text": "узнать fingerprint публичного ключа для сравнения",
+          "command": "ssh-keygen -lf ~/.ssh/id_ed25519.pub",
+          "explanation": "Показать отпечаток открытого SSH-ключа."
         }
       ]
     },
     {
       "name": "ssh-add",
       "synopsis": "ssh-add [options] [file ...]",
-      "description": "Add private keys to the ssh-agent for passwordless use in a session",
+      "description": "Добавление закрытых ключей в ssh-agent",
       "patterns": [
         {
           "type": "example",
-          "text": "load the default identities into the agent",
+          "text": "загрузить стандартные SSH-ключи в агент",
           "command": "ssh-add",
-          "explanation": "Prompts for passphrases if needed and caches unlocked keys"
+          "explanation": "Загрузить стандартные SSH-ключи в агент."
         },
         {
           "type": "example",
-          "text": "add a specific key file",
+          "text": "добавить ключи по умолчанию в ssh-agent",
+          "command": "ssh-add",
+          "explanation": "Загрузить стандартные SSH-ключи в агент."
+        },
+        {
+          "type": "example",
+          "text": "добавить конкретный закрытый ключ в SSH-агент",
           "command": "ssh-add ~/.ssh/id_ed25519_work",
-          "explanation": "Registers that key for subsequent ssh and git operations"
+          "explanation": "Добавить конкретный закрытый ключ в SSH-агент."
         },
         {
           "type": "example",
-          "text": "list keys currently loaded in the agent",
+          "text": "загрузить рабочий ключ для последующих подключений SSH и Git",
+          "command": "ssh-add ~/.ssh/id_ed25519_work",
+          "explanation": "Добавить конкретный закрытый ключ в SSH-агент."
+        },
+        {
+          "type": "example",
+          "text": "перечислить ключи, загруженные в SSH-агент",
           "command": "ssh-add -l",
-          "explanation": "Shows fingerprints of each loaded key"
+          "explanation": "Перечислить ключи, загруженные в SSH-агент."
+        },
+        {
+          "type": "example",
+          "text": "показать отпечатки ключей, доступных через ssh-agent",
+          "command": "ssh-add -l",
+          "explanation": "Перечислить ключи, загруженные в SSH-агент."
         }
       ]
     },
     {
       "name": "scp",
       "synopsis": "scp [options] source destination",
-      "description": "Securely copy files between local and remote hosts over SSH",
+      "description": "Защищённое копирование файлов по SSH",
       "patterns": [
         {
           "type": "example",
-          "text": "copy a file from local machine to a remote server",
+          "text": "скопировать локальный файл на сервер по SSH",
           "command": "scp /path/to/file.txt user@server:/remote/path/",
-          "explanation": "Uploads a local file to the specified path on the remote server"
+          "explanation": "Скопировать локальный файл на сервер по SSH."
         },
         {
           "type": "example",
-          "text": "download a file from a remote server to the local machine",
+          "text": "отправить файл в удалённый каталог через scp",
+          "command": "scp /path/to/file.txt user@server:/remote/path/",
+          "explanation": "Скопировать локальный файл на сервер по SSH."
+        },
+        {
+          "type": "example",
+          "text": "скачать файл с сервера на локальный компьютер",
           "command": "scp user@server:/remote/file.txt /local/path/",
-          "explanation": "Copies a file from the remote server to a local directory"
+          "explanation": "Скачать файл с сервера на локальный компьютер."
         },
         {
           "type": "example",
-          "text": "copy an entire directory recursively to a remote server",
+          "text": "скопировать удалённый файл в свою папку через scp",
+          "command": "scp user@server:/remote/file.txt /local/path/",
+          "explanation": "Скачать файл с сервера на локальный компьютер."
+        },
+        {
+          "type": "example",
+          "text": "передать на сервер каталог вместе с содержимым",
           "command": "scp -r /local/dir user@server:/remote/path/",
-          "explanation": "Recursively copies the directory and its contents to the remote host"
+          "explanation": "Передать на сервер каталог вместе с содержимым."
         },
         {
           "type": "example",
-          "text": "copy a file between two remote servers",
+          "text": "рекурсивно скопировать локальную папку по SSH",
+          "command": "scp -r /local/dir user@server:/remote/path/",
+          "explanation": "Передать на сервер каталог вместе с содержимым."
+        },
+        {
+          "type": "example",
+          "text": "скопировать файл с одного удалённого сервера на другой",
           "command": "scp user1@server1:/path/file.txt user2@server2:/path/",
-          "explanation": "Copies between remote hosts; the local scp client may relay the transfer"
+          "explanation": "Копирует между удалёнными узлами; передача может идти через локальный клиент scp."
         },
         {
           "type": "example",
-          "text": "copy a file using a specific SSH port",
+          "text": "передать данные между двумя SSH-хостами через scp",
+          "command": "scp user1@server1:/path/file.txt user2@server2:/path/",
+          "explanation": "Копирует между удалёнными узлами; передача может идти через локальный клиент scp."
+        },
+        {
+          "type": "example",
+          "text": "загрузить файл по SCP через SSH-порт 2222",
           "command": "scp -P 2222 file.txt user@server:/path/",
-          "explanation": "Uses a non-default SSH port for the transfer"
+          "explanation": "Загрузить файл по SCP через SSH-порт 2222."
+        },
+        {
+          "type": "example",
+          "text": "указать нестандартный порт при копировании файла на сервер",
+          "command": "scp -P 2222 file.txt user@server:/path/",
+          "explanation": "Загрузить файл по SCP через SSH-порт 2222."
         }
       ]
     },
     {
       "name": "sftp",
       "synopsis": "sftp [options] [user@]host[:path]",
-      "description": "Interactive secure file transfer program over SSH",
+      "description": "Интерактивная передача файлов по SFTP",
       "patterns": [
         {
           "type": "example",
-          "text": "start an interactive SFTP session with a remote server",
+          "text": "открыть интерактивное соединение SFTP",
           "command": "sftp user@server",
-          "explanation": "Opens an interactive SFTP session for browsing and transferring files"
+          "explanation": "Открыть интерактивное соединение SFTP."
         },
         {
           "type": "example",
-          "text": "download a remote file directly without interactive mode",
+          "text": "подключиться к серверу для просмотра каталогов и передачи файлов",
+          "command": "sftp user@server",
+          "explanation": "Открыть интерактивное соединение SFTP."
+        },
+        {
+          "type": "example",
+          "text": "получить конкретный удалённый файл по SFTP без диалога",
           "command": "sftp user@server:/remote/path/file.txt /local/path/",
-          "explanation": "Fetches a specific remote file to a local directory"
+          "explanation": "Получить конкретный удалённый файл по SFTP без диалога."
         },
         {
           "type": "example",
-          "text": "use a batch file to automate SFTP transfers",
+          "text": "скачать файл с сервера сразу в указанную локальную папку",
+          "command": "sftp user@server:/remote/path/file.txt /local/path/",
+          "explanation": "Получить конкретный удалённый файл по SFTP без диалога."
+        },
+        {
+          "type": "example",
+          "text": "автоматически выполнить SFTP-команды из файла",
           "command": "sftp -b commands.txt user@server",
-          "explanation": "Executes SFTP commands from a batch file non-interactively"
+          "explanation": "Автоматически выполнить SFTP-команды из файла."
         },
         {
           "type": "example",
-          "text": "connect to SFTP on a non-standard port",
+          "text": "запустить пакетную передачу файлов через SFTP",
+          "command": "sftp -b commands.txt user@server",
+          "explanation": "Автоматически выполнить SFTP-команды из файла."
+        },
+        {
+          "type": "example",
+          "text": "подключиться к SFTP-серверу на порту 2222",
           "command": "sftp -P 2222 user@server",
-          "explanation": "Connects to the SFTP server on a custom SSH port"
+          "explanation": "Подключиться к SFTP-серверу на порту 2222."
+        },
+        {
+          "type": "example",
+          "text": "задать нестандартный SSH-порт для сеанса SFTP",
+          "command": "sftp -P 2222 user@server",
+          "explanation": "Подключиться к SFTP-серверу на порту 2222."
         }
       ]
     },
     {
       "name": "rsync",
       "synopsis": "rsync [options] source destination",
-      "description": "Fast and versatile file synchronization tool for local and remote transfers",
+      "description": "Синхронизация файлов локально и по сети",
       "patterns": [
         {
           "type": "example",
-          "text": "sync a local directory to a remote server with progress",
+          "text": "синхронизировать содержимое локальной папки с сервером с показом прогресса",
           "command": "rsync -avz --progress /local/dir/ user@server:/remote/dir/",
-          "explanation": "Archives, compresses, and syncs files showing transfer progress"
+          "explanation": "Синхронизировать содержимое локальной папки с сервером с показом прогресса."
         },
         {
           "type": "example",
-          "text": "sync files and delete those that no longer exist in source",
+          "text": "передать каталог через rsync с архивными атрибутами и сжатием",
+          "command": "rsync -avz --progress /local/dir/ user@server:/remote/dir/",
+          "explanation": "Синхронизировать содержимое локальной папки с сервером с показом прогресса."
+        },
+        {
+          "type": "example",
+          "text": "сделать зеркало папки с удалением лишних файлов в назначении",
           "command": "rsync -av --delete /source/ /destination/",
-          "explanation": "Mirrors source to destination, removing extra files at the destination"
+          "explanation": "Сделать зеркало папки с удалением лишних файлов в назначении."
         },
         {
           "type": "example",
-          "text": "do a dry run to see what would be transferred without making changes",
+          "text": "синхронизировать каталоги, убирая из приёмника то, чего нет в источнике",
+          "command": "rsync -av --delete /source/ /destination/",
+          "explanation": "Сделать зеркало папки с удалением лишних файлов в назначении."
+        },
+        {
+          "type": "example",
+          "text": "предварительно посмотреть изменения rsync без копирования",
           "command": "rsync -avn /source/ /destination/",
-          "explanation": "Simulates the sync and shows what would happen without actually copying"
+          "explanation": "Предварительно посмотреть изменения rsync без копирования."
         },
         {
           "type": "example",
-          "text": "sync files excluding certain patterns like log files",
+          "text": "выполнить пробную синхронизацию каталогов без записи файлов",
+          "command": "rsync -avn /source/ /destination/",
+          "explanation": "Предварительно посмотреть изменения rsync без копирования."
+        },
+        {
+          "type": "example",
+          "text": "синхронизировать папки, исключив логи и каталог .git",
           "command": "rsync -av --exclude='*.log' --exclude='.git' /source/ /dest/",
-          "explanation": "Syncs files while skipping log files and git directories"
+          "explanation": "Синхронизировать папки, исключив логи и каталог .git."
         },
         {
           "type": "example",
-          "text": "resume an interrupted transfer with partial files",
+          "text": "скопировать файлы через rsync с исключениями по маскам",
+          "command": "rsync -av --exclude='*.log' --exclude='.git' /source/ /dest/",
+          "explanation": "Синхронизировать папки, исключив логи и каталог .git."
+        },
+        {
+          "type": "example",
+          "text": "синхронизировать файлы с сохранением недокачанных частей",
           "command": "rsync -avz --partial --progress /source/ user@server:/dest/",
-          "explanation": "Keeps partially transferred files so the sync can resume later"
+          "explanation": "Синхронизировать файлы с сохранением недокачанных частей."
+        },
+        {
+          "type": "example",
+          "text": "продолжить передачу rsync на сервер с прогрессом и сжатием",
+          "command": "rsync -avz --partial --progress /source/ user@server:/dest/",
+          "explanation": "Синхронизировать файлы с сохранением недокачанных частей."
         }
       ]
     },
     {
       "name": "ping",
       "synopsis": "ping [options] destination",
-      "description": "Send ICMP echo requests to test network connectivity to a host",
+      "description": "Проверка доступности узла пакетами ICMP",
       "patterns": [
         {
           "type": "example",
-          "text": "check if a server is reachable",
+          "text": "проверить доступность узла четырьмя ping-запросами",
           "command": "ping -c 4 google.com",
-          "explanation": "Sends 4 ICMP echo requests to test connectivity to google.com"
+          "explanation": "Проверить доступность узла четырьмя ping-запросами."
         },
         {
           "type": "example",
-          "text": "ping a host continuously until interrupted",
+          "text": "отправить четыре ICMP эхо-запроса к серверу",
+          "command": "ping -c 4 google.com",
+          "explanation": "Проверить доступность узла четырьмя ping-запросами."
+        },
+        {
+          "type": "example",
+          "text": "непрерывно проверять связь с хостом через ping",
           "command": "ping google.com",
-          "explanation": "Continuously pings the host until you press Ctrl+C"
+          "explanation": "Непрерывно проверять связь с хостом через ping."
         },
         {
           "type": "example",
-          "text": "test a 1500-byte IPv4 path MTU without fragmentation on Linux",
+          "text": "посылать эхо-запросы до ручной остановки",
+          "command": "ping google.com",
+          "explanation": "Непрерывно проверять связь с хостом через ping."
+        },
+        {
+          "type": "example",
+          "text": "проверить прохождение IPv4-пакета размером 1500 байт без фрагментации",
           "command": "ping -4 -M do -s 1472 -c 4 192.168.1.1",
-          "explanation": "Sends four IPv4 ICMP probes with 1472 payload bytes and the do-not-fragment policy (Linux iputils)"
+          "explanation": "Отправляет четыре IPv4 ICMP-запроса с полезной нагрузкой 1472 байта и запретом фрагментации; используется Linux iputils."
         },
         {
           "type": "example",
-          "text": "ping with a short interval for quick connectivity testing",
+          "text": "отправить четыре ping-запроса с нагрузкой 1472 байта и запретом фрагментации в Linux",
+          "command": "ping -4 -M do -s 1472 -c 4 192.168.1.1",
+          "explanation": "Отправляет четыре IPv4 ICMP-запроса с полезной нагрузкой 1472 байта и запретом фрагментации; используется Linux iputils."
+        },
+        {
+          "type": "example",
+          "text": "быстро проверить связь двадцатью запросами с интервалом 0,2 секунды",
           "command": "ping -i 0.2 -c 20 192.168.1.1",
-          "explanation": "Pings every 0.2 seconds for faster results"
+          "explanation": "Быстро проверить связь двадцатью запросами с интервалом 0,2 секунды."
         },
         {
           "type": "example",
-          "text": "ping only using IPv6",
+          "text": "запустить ping с короткой паузой и ограниченным числом пакетов",
+          "command": "ping -i 0.2 -c 20 192.168.1.1",
+          "explanation": "Быстро проверить связь двадцатью запросами с интервалом 0,2 секунды."
+        },
+        {
+          "type": "example",
+          "text": "проверить доступность узла по IPv6",
           "command": "ping6 google.com",
-          "explanation": "Sends ICMPv6 echo requests to test IPv6 connectivity"
+          "explanation": "Проверить доступность узла по IPv6."
+        },
+        {
+          "type": "example",
+          "text": "отправить ICMPv6 эхо-запросы через ping6",
+          "command": "ping6 google.com",
+          "explanation": "Проверить доступность узла по IPv6."
         }
       ]
     },
     {
       "name": "traceroute",
       "synopsis": "traceroute [options] host",
-      "description": "Trace the route packets take to reach a network host",
+      "description": "Определение маршрута пакетов до узла",
       "patterns": [
         {
           "type": "example",
-          "text": "trace the network path to a remote host",
+          "text": "проследить маршрут пакетов до удалённого сервера",
           "command": "traceroute google.com",
-          "explanation": "Shows each router hop between your machine and the destination"
+          "explanation": "Проследить маршрут пакетов до удалённого сервера."
         },
         {
           "type": "example",
-          "text": "trace route using TCP instead of UDP to bypass firewalls",
+          "text": "показать промежуточные маршрутизаторы на пути к хосту",
+          "command": "traceroute google.com",
+          "explanation": "Проследить маршрут пакетов до удалённого сервера."
+        },
+        {
+          "type": "example",
+          "text": "выполнить трассировку маршрута TCP-пакетами",
           "command": "traceroute -T google.com",
-          "explanation": "Uses TCP SYN packets which are more likely to pass through firewalls"
+          "explanation": "Выполнить трассировку маршрута TCP-пакетами."
         },
         {
           "type": "example",
-          "text": "trace route without resolving hostnames for faster output",
+          "text": "использовать TCP SYN вместо обычных UDP-проб traceroute",
+          "command": "traceroute -T google.com",
+          "explanation": "Выполнить трассировку маршрута TCP-пакетами."
+        },
+        {
+          "type": "example",
+          "text": "показать маршрут только с IP-адресами без DNS",
           "command": "traceroute -n google.com",
-          "explanation": "Shows only IP addresses instead of resolving DNS names at each hop"
+          "explanation": "Показать маршрут только с IP-адресами без DNS."
         },
         {
           "type": "example",
-          "text": "limit the number of hops to trace",
+          "text": "отключить определение имён промежуточных узлов в traceroute",
+          "command": "traceroute -n google.com",
+          "explanation": "Показать маршрут только с IP-адресами без DNS."
+        },
+        {
+          "type": "example",
+          "text": "ограничить трассировку пятнадцатью переходами",
           "command": "traceroute -m 15 google.com",
-          "explanation": "Sets the maximum number of hops (TTL) to 15"
+          "explanation": "Ограничить трассировку пятнадцатью переходами."
+        },
+        {
+          "type": "example",
+          "text": "задать максимальный TTL 15 при поиске сетевого маршрута",
+          "command": "traceroute -m 15 google.com",
+          "explanation": "Ограничить трассировку пятнадцатью переходами."
         }
       ]
     },
     {
       "name": "dig",
       "synopsis": "dig [@server] [name] [type]",
-      "description": "DNS lookup utility for querying name servers",
+      "description": "Запрос DNS-записей у серверов имён",
       "patterns": [
         {
           "type": "example",
-          "text": "look up the IP address of a domain",
+          "text": "узнать IPv4-адрес домена через DNS",
           "command": "dig example.com",
-          "explanation": "Queries DNS for A records of the domain"
+          "explanation": "Узнать IPv4-адрес домена через DNS."
         },
         {
           "type": "example",
-          "text": "find the mail servers for a domain",
+          "text": "запросить A-запись сайта командой dig",
+          "command": "dig example.com",
+          "explanation": "Узнать IPv4-адрес домена через DNS."
+        },
+        {
+          "type": "example",
+          "text": "найти почтовые серверы домена",
           "command": "dig example.com MX",
-          "explanation": "Queries for MX (mail exchange) records"
+          "explanation": "Найти почтовые серверы домена."
         },
         {
           "type": "example",
-          "text": "get just the answer without extra info",
+          "text": "получить MX-записи через DNS",
+          "command": "dig example.com MX",
+          "explanation": "Найти почтовые серверы домена."
+        },
+        {
+          "type": "example",
+          "text": "узнать IP-адрес домена без лишней информации",
           "command": "dig +short example.com",
-          "explanation": "Returns only the IP address without verbose DNS information"
+          "explanation": "Узнать IP-адрес домена без лишней информации."
         },
         {
           "type": "example",
-          "text": "query a specific DNS server for a domain",
+          "text": "получить краткий ответ DNS с адресом сайта",
+          "command": "dig +short example.com",
+          "explanation": "Узнать IP-адрес домена без лишней информации."
+        },
+        {
+          "type": "example",
+          "text": "запросить адрес домена у DNS-сервера 8.8.8.8",
           "command": "dig @8.8.8.8 example.com",
-          "explanation": "Uses Google's DNS server to resolve the domain"
+          "explanation": "Запросить адрес домена у DNS-сервера 8.8.8.8."
         },
         {
           "type": "example",
-          "text": "do a reverse DNS lookup from an IP address",
+          "text": "указать конкретный резолвер для проверки DNS",
+          "command": "dig @8.8.8.8 example.com",
+          "explanation": "Запросить адрес домена у DNS-сервера 8.8.8.8."
+        },
+        {
+          "type": "example",
+          "text": "определить доменное имя по IP-адресу",
           "command": "dig -x 8.8.8.8",
-          "explanation": "Finds the hostname associated with the given IP address"
+          "explanation": "Определить доменное имя по IP-адресу."
+        },
+        {
+          "type": "example",
+          "text": "выполнить обратный DNS-запрос через dig",
+          "command": "dig -x 8.8.8.8",
+          "explanation": "Определить доменное имя по IP-адресу."
         }
       ]
     },
     {
       "name": "nslookup",
       "synopsis": "nslookup [host] [server]",
-      "description": "Query internet name servers interactively or non-interactively",
+      "description": "Интерактивные и обычные DNS-запросы",
       "patterns": [
         {
           "type": "example",
-          "text": "look up the DNS records for a domain",
+          "text": "проверить адрес домена через nslookup",
           "command": "nslookup example.com",
-          "explanation": "Queries the default DNS server for the domain's address"
+          "explanation": "Проверить адрес домена через nslookup."
         },
         {
           "type": "example",
-          "text": "query a specific DNS server for a domain",
+          "text": "запросить DNS-сервер по умолчанию об IP сайта",
+          "command": "nslookup example.com",
+          "explanation": "Проверить адрес домена через nslookup."
+        },
+        {
+          "type": "example",
+          "text": "разрешить имя домена через заданный DNS-сервер",
           "command": "nslookup example.com 8.8.8.8",
-          "explanation": "Uses a specified DNS server to resolve the domain"
+          "explanation": "Разрешить имя домена через заданный DNS-сервер."
         },
         {
           "type": "example",
-          "text": "find the name servers for a domain",
+          "text": "выполнить nslookup с резолвером 8.8.8.8",
+          "command": "nslookup example.com 8.8.8.8",
+          "explanation": "Разрешить имя домена через заданный DNS-сервер."
+        },
+        {
+          "type": "example",
+          "text": "узнать авторитетные DNS-серверы домена",
           "command": "nslookup -type=ns example.com",
-          "explanation": "Queries for NS records to find authoritative name servers"
+          "explanation": "Узнать авторитетные DNS-серверы домена."
         },
         {
           "type": "example",
-          "text": "do a reverse DNS lookup on an IP address",
+          "text": "запросить NS-записи через nslookup",
+          "command": "nslookup -type=ns example.com",
+          "explanation": "Узнать авторитетные DNS-серверы домена."
+        },
+        {
+          "type": "example",
+          "text": "найти имя узла по IP через nslookup",
           "command": "nslookup 93.184.216.34",
-          "explanation": "Finds the hostname for the given IP address via reverse DNS"
+          "explanation": "Найти имя узла по IP через nslookup."
+        },
+        {
+          "type": "example",
+          "text": "сделать обратное DNS-разрешение адреса",
+          "command": "nslookup 93.184.216.34",
+          "explanation": "Найти имя узла по IP через nslookup."
         }
       ]
     },
     {
       "name": "host",
       "synopsis": "host [options] name [server]",
-      "description": "Simple DNS lookup utility",
+      "description": "Простые DNS-запросы",
       "patterns": [
         {
           "type": "example",
-          "text": "quickly find the IP address of a domain",
+          "text": "быстро посмотреть DNS-адреса домена через host",
           "command": "host example.com",
-          "explanation": "Performs a simple DNS lookup and shows the IP address"
+          "explanation": "Быстро посмотреть DNS-адреса домена через host."
         },
         {
           "type": "example",
-          "text": "request a verbose DNS ANY response for a domain",
+          "text": "получить сведения о разрешении имени сайта",
+          "command": "host example.com",
+          "explanation": "Быстро посмотреть DNS-адреса домена через host."
+        },
+        {
+          "type": "example",
+          "text": "выполнить подробный DNS-запрос типа ANY",
           "command": "host -a example.com",
-          "explanation": "Sends an ANY query; the DNS server determines which records it returns"
+          "explanation": "Отправляет DNS-запрос ANY; состав возвращаемых записей определяет сервер."
         },
         {
           "type": "example",
-          "text": "look up the TXT records for a domain",
+          "text": "запросить у сервера доступные записи домена через host -a",
+          "command": "host -a example.com",
+          "explanation": "Отправляет DNS-запрос ANY; состав возвращаемых записей определяет сервер."
+        },
+        {
+          "type": "example",
+          "text": "показать TXT-записи домена",
           "command": "host -t TXT example.com",
-          "explanation": "Queries specifically for TXT records, useful for SPF and DKIM"
+          "explanation": "Показать TXT-записи домена."
         },
         {
           "type": "example",
-          "text": "do a reverse lookup from IP to hostname",
+          "text": "проверить текстовые записи DNS для SPF или DKIM",
+          "command": "host -t TXT example.com",
+          "explanation": "Показать TXT-записи домена."
+        },
+        {
+          "type": "example",
+          "text": "узнать имя хоста по IP-адресу через host",
           "command": "host 8.8.8.8",
-          "explanation": "Performs a reverse DNS query on the IP address"
+          "explanation": "Узнать имя хоста по IP-адресу через host."
+        },
+        {
+          "type": "example",
+          "text": "запросить обратную DNS-запись для адреса",
+          "command": "host 8.8.8.8",
+          "explanation": "Узнать имя хоста по IP-адресу через host."
         }
       ]
     },
     {
       "name": "nc",
       "synopsis": "nc [options] [hostname] [port]",
-      "description": "Netcat - versatile networking utility for reading and writing across network connections",
+      "description": "Чтение и запись данных через сетевые соединения Netcat",
       "patterns": [
         {
           "type": "example",
-          "text": "check if a specific port is open on a remote host",
+          "text": "проверить доступность TCP-порта 443 на сервере",
           "command": "nc -zv example.com 443",
-          "explanation": "Tests connectivity to port 443 without sending data"
+          "explanation": "Проверить доступность TCP-порта 443 на сервере."
         },
         {
           "type": "example",
-          "text": "scan a range of ports on a host",
+          "text": "попробовать подключиться к удалённому порту без передачи данных",
+          "command": "nc -zv example.com 443",
+          "explanation": "Проверить доступность TCP-порта 443 на сервере."
+        },
+        {
+          "type": "example",
+          "text": "проверить TCP-порты с 20 по 100",
           "command": "nc -zv example.com 20-100",
-          "explanation": "Scans ports 20 through 100 to see which are open"
+          "explanation": "Проверить TCP-порты с 20 по 100."
         },
         {
           "type": "example",
-          "text": "set up a simple TCP listener on a port",
+          "text": "просканировать диапазон портов хоста через netcat",
+          "command": "nc -zv example.com 20-100",
+          "explanation": "Проверить TCP-порты с 20 по 100."
+        },
+        {
+          "type": "example",
+          "text": "открыть простой TCP-сервер на порту 8080",
           "command": "nc -l 8080",
-          "explanation": "Listens on port 8080 for incoming connections"
+          "explanation": "Открыть простой TCP-сервер на порту 8080."
         },
         {
           "type": "example",
-          "text": "transfer a file over the network using netcat",
+          "text": "слушать входящие соединения через netcat",
+          "command": "nc -l 8080",
+          "explanation": "Открыть простой TCP-сервер на порту 8080."
+        },
+        {
+          "type": "example",
+          "text": "принять данные по TCP на порту 9999 и сохранить в файл",
           "command": "nc -l 9999 > received_file.txt",
-          "explanation": "Listens on port 9999 and saves incoming data to a file"
+          "explanation": "Принять данные по TCP на порту 9999 и сохранить в файл."
         },
         {
           "type": "example",
-          "text": "send a file to a listening netcat instance",
+          "text": "получить файл через netcat с записью входящего потока",
+          "command": "nc -l 9999 > received_file.txt",
+          "explanation": "Принять данные по TCP на порту 9999 и сохранить в файл."
+        },
+        {
+          "type": "example",
+          "text": "отправить файл принимающему netcat на удалённой машине",
           "command": "nc target-host 9999 < file.txt",
-          "explanation": "Sends the contents of file.txt to the target host on port 9999"
+          "explanation": "Отправить файл принимающему netcat на удалённой машине."
+        },
+        {
+          "type": "example",
+          "text": "передать содержимое file.txt по TCP на порт 9999",
+          "command": "nc target-host 9999 < file.txt",
+          "explanation": "Отправить файл принимающему netcat на удалённой машине."
         }
       ]
     },
     {
       "name": "ss",
       "synopsis": "ss [options] [filter]",
-      "description": "Utility to investigate sockets and display network connections",
+      "description": "Просмотр сокетов и сетевых соединений",
       "patterns": [
         {
           "type": "example",
-          "text": "show all listening TCP ports",
+          "text": "показать прослушиваемые TCP-порты и связанные процессы",
           "command": "ss -tlnp",
-          "explanation": "Lists all TCP listening sockets with port numbers and process info"
+          "explanation": "Показать прослушиваемые TCP-порты и связанные процессы."
         },
         {
           "type": "example",
-          "text": "show all established connections",
+          "text": "какие TCP-порты сейчас открыты для входящих соединений",
+          "command": "ss -tlnp",
+          "explanation": "Показать прослушиваемые TCP-порты и связанные процессы."
+        },
+        {
+          "type": "example",
+          "text": "перечислить установленные TCP-соединения",
           "command": "ss -t state established",
-          "explanation": "Displays only currently established TCP connections"
+          "explanation": "Перечислить установленные TCP-соединения."
         },
         {
           "type": "example",
-          "text": "find the process listening on TCP port 8080",
+          "text": "показать подключения TCP в состоянии established",
+          "command": "ss -t state established",
+          "explanation": "Перечислить установленные TCP-соединения."
+        },
+        {
+          "type": "example",
+          "text": "найти программу, которая слушает TCP-порт 8080",
           "command": "ss -tlnp 'sport = :8080'",
-          "explanation": "Filters listening TCP sockets by the exact local port 8080 and requests process details"
+          "explanation": "Выбирает слушающие TCP-сокеты с точным локальным портом 8080 и запрашивает сведения о процессах."
         },
         {
           "type": "example",
-          "text": "show summary statistics of all socket types",
+          "text": "показать слушающий TCP-сокет с точным локальным портом 8080 и его процесс",
+          "command": "ss -tlnp 'sport = :8080'",
+          "explanation": "Выбирает слушающие TCP-сокеты с точным локальным портом 8080 и запрашивает сведения о процессах."
+        },
+        {
+          "type": "example",
+          "text": "показать сводку сетевых сокетов по состояниям",
           "command": "ss -s",
-          "explanation": "Displays a summary of socket counts by type and state"
+          "explanation": "Показать сводку сетевых сокетов по состояниям."
         },
         {
           "type": "example",
-          "text": "list bound UDP sockets with process information",
+          "text": "получить общую статистику соединений через ss",
+          "command": "ss -s",
+          "explanation": "Показать сводку сетевых сокетов по состояниям."
+        },
+        {
+          "type": "example",
+          "text": "показать привязанные UDP-сокеты и связанные процессы",
           "command": "ss -ulnp",
-          "explanation": "Shows UDP sockets selected by the listening/bound filter and available process details"
+          "explanation": "Показывает UDP-сокеты по фильтру слушающих и привязанных сокетов с доступными сведениями о процессах."
+        },
+        {
+          "type": "example",
+          "text": "узнать, какие программы ожидают UDP-пакеты на локальных портах",
+          "command": "ss -ulnp",
+          "explanation": "Показывает UDP-сокеты по фильтру слушающих и привязанных сокетов с доступными сведениями о процессах."
         }
       ]
     },
     {
       "name": "netstat",
       "synopsis": "netstat [options]",
-      "description": "Display network connections, routing tables, and interface statistics",
+      "description": "Просмотр соединений, таблиц маршрутизации и сетевой статистики",
       "patterns": [
         {
           "type": "example",
-          "text": "show listening TCP and UDP ports with process IDs",
+          "text": "вывести слушающие TCP- и UDP-сокеты через netstat",
           "command": "netstat -tulnp",
-          "explanation": "Lists listening TCP and bound UDP sockets with numeric addresses and available process information"
+          "explanation": "Показывает слушающие TCP- и привязанные UDP-сокеты с числовыми адресами и доступными сведениями о процессах."
         },
         {
           "type": "example",
-          "text": "display the routing table",
+          "text": "показать открытые серверные порты с адресами и PID",
+          "command": "netstat -tulnp",
+          "explanation": "Показывает слушающие TCP- и привязанные UDP-сокеты с числовыми адресами и доступными сведениями о процессах."
+        },
+        {
+          "type": "example",
+          "text": "показать таблицу маршрутизации без разрешения имён",
           "command": "netstat -rn",
-          "explanation": "Shows the kernel routing table with numeric addresses"
+          "explanation": "Показать таблицу маршрутизации без разрешения имён."
         },
         {
           "type": "example",
-          "text": "show network interface statistics",
+          "text": "вывести сетевые маршруты с числовыми адресами через netstat",
+          "command": "netstat -rn",
+          "explanation": "Показать таблицу маршрутизации без разрешения имён."
+        },
+        {
+          "type": "example",
+          "text": "посмотреть статистику сетевых интерфейсов",
           "command": "netstat -i",
-          "explanation": "Displays statistics for all network interfaces"
+          "explanation": "Посмотреть статистику сетевых интерфейсов."
         },
         {
           "type": "example",
-          "text": "show only listening sockets",
+          "text": "вывести счётчики интерфейсов через netstat",
+          "command": "netstat -i",
+          "explanation": "Посмотреть статистику сетевых интерфейсов."
+        },
+        {
+          "type": "example",
+          "text": "показать только слушающие сокеты с числовыми адресами",
           "command": "netstat -ln",
-          "explanation": "Lists all sockets in the listening state"
+          "explanation": "Показать только слушающие сокеты с числовыми адресами."
         },
         {
           "type": "example",
-          "text": "continuously refresh the network connection listing",
+          "text": "перечислить сокеты в состоянии ожидания соединений через netstat",
+          "command": "netstat -ln",
+          "explanation": "Показать только слушающие сокеты с числовыми адресами."
+        },
+        {
+          "type": "example",
+          "text": "непрерывно обновлять список сетевых соединений",
           "command": "netstat -c",
-          "explanation": "Enables continuous netstat output using the utility default refresh interval"
+          "explanation": "Включает непрерывный вывод netstat с интервалом обновления по умолчанию."
+        },
+        {
+          "type": "example",
+          "text": "наблюдать подключения через netstat в циклическом режиме",
+          "command": "netstat -c",
+          "explanation": "Включает непрерывный вывод netstat с интервалом обновления по умолчанию."
         }
       ]
     },
     {
       "name": "ip",
       "synopsis": "ip [options] object command",
-      "description": "Show and manipulate routing, network devices, interfaces, and tunnels",
+      "description": "Просмотр и настройка сетевых интерфейсов, маршрутов и туннелей",
       "patterns": [
         {
           "type": "example",
-          "text": "show all IP addresses assigned to network interfaces",
+          "text": "показать IP-адреса всех сетевых интерфейсов",
           "command": "ip addr show",
-          "explanation": "Displays IP addresses for all network interfaces"
+          "explanation": "Показать IP-адреса всех сетевых интерфейсов."
         },
         {
           "type": "example",
-          "text": "bring the eth0 network interface up",
+          "text": "узнать назначенные адреса через ip addr",
+          "command": "ip addr show",
+          "explanation": "Показать IP-адреса всех сетевых интерфейсов."
+        },
+        {
+          "type": "example",
+          "text": "включить сетевой интерфейс eth0",
           "command": "ip link set eth0 up",
-          "explanation": "Enables the eth0 network interface"
+          "explanation": "Включить сетевой интерфейс eth0."
         },
         {
           "type": "example",
-          "text": "add a static IP address to an interface",
+          "text": "перевести сетевую карту eth0 в состояние up",
+          "command": "ip link set eth0 up",
+          "explanation": "Включить сетевой интерфейс eth0."
+        },
+        {
+          "type": "example",
+          "text": "добавить интерфейсу eth0 адрес 192.168.1.50/24",
           "command": "ip addr add 192.168.1.50/24 dev eth0",
-          "explanation": "Assigns the IP 192.168.1.50 with a /24 subnet to eth0"
+          "explanation": "Добавить интерфейсу eth0 адрес 192.168.1.50/24."
         },
         {
           "type": "example",
-          "text": "show the routing table",
+          "text": "назначить дополнительный статический IPv4-адрес сетевой карте",
+          "command": "ip addr add 192.168.1.50/24 dev eth0",
+          "explanation": "Добавить интерфейсу eth0 адрес 192.168.1.50/24."
+        },
+        {
+          "type": "example",
+          "text": "показать маршруты ядра через ip route",
           "command": "ip route show",
-          "explanation": "Displays all routes in the kernel routing table"
+          "explanation": "Показать маршруты ядра через ip route."
         },
         {
           "type": "example",
-          "text": "add a default gateway",
+          "text": "посмотреть текущую таблицу сетевой маршрутизации",
+          "command": "ip route show",
+          "explanation": "Показать маршруты ядра через ip route."
+        },
+        {
+          "type": "example",
+          "text": "добавить шлюз по умолчанию 192.168.1.1",
           "command": "ip route add default via 192.168.1.1",
-          "explanation": "Sets the default gateway to 192.168.1.1"
+          "explanation": "Добавить шлюз по умолчанию 192.168.1.1."
+        },
+        {
+          "type": "example",
+          "text": "создать маршрут default через указанный маршрутизатор",
+          "command": "ip route add default via 192.168.1.1",
+          "explanation": "Добавить шлюз по умолчанию 192.168.1.1."
         }
       ]
     },
     {
       "name": "ifconfig",
       "synopsis": "ifconfig [interface] [options]",
-      "description": "Configure or display network interface parameters (legacy tool)",
+      "description": "Просмотр и настройка сетевых интерфейсов устаревшей утилитой",
       "patterns": [
         {
           "type": "example",
-          "text": "show active network interfaces and their IP addresses",
+          "text": "показать настройки активных сетевых интерфейсов через ifconfig",
           "command": "ifconfig",
-          "explanation": "Displays configuration for all active network interfaces"
+          "explanation": "Показать настройки активных сетевых интерфейсов через ifconfig."
         },
         {
           "type": "example",
-          "text": "show details for a specific network interface",
+          "text": "посмотреть адреса работающих сетевых карт старой командой ifconfig",
+          "command": "ifconfig",
+          "explanation": "Показать настройки активных сетевых интерфейсов через ifconfig."
+        },
+        {
+          "type": "example",
+          "text": "показать адреса и статистику интерфейса eth0",
           "command": "ifconfig eth0",
-          "explanation": "Shows IP address, MAC address, and stats for eth0"
+          "explanation": "Показать адреса и статистику интерфейса eth0."
         },
         {
           "type": "example",
-          "text": "assign an IP address to an interface",
+          "text": "получить конфигурацию конкретной сетевой карты через ifconfig",
+          "command": "ifconfig eth0",
+          "explanation": "Показать адреса и статистику интерфейса eth0."
+        },
+        {
+          "type": "example",
+          "text": "установить IP и маску интерфейса eth0",
           "command": "ifconfig eth0 192.168.1.50 netmask 255.255.255.0",
-          "explanation": "Sets the IP and subnet mask on the specified interface"
+          "explanation": "Установить IP и маску интерфейса eth0."
         },
         {
           "type": "example",
-          "text": "disable a network interface",
+          "text": "назначить адрес 192.168.1.50 с маской 255.255.255.0 через ifconfig",
+          "command": "ifconfig eth0 192.168.1.50 netmask 255.255.255.0",
+          "explanation": "Установить IP и маску интерфейса eth0."
+        },
+        {
+          "type": "example",
+          "text": "выключить сетевой интерфейс eth0",
           "command": "ifconfig eth0 down",
-          "explanation": "Brings the eth0 interface down"
+          "explanation": "Выключить сетевой интерфейс eth0."
+        },
+        {
+          "type": "example",
+          "text": "перевести сетевую карту в состояние down",
+          "command": "ifconfig eth0 down",
+          "explanation": "Выключить сетевой интерфейс eth0."
         }
       ]
     },
     {
       "name": "arp",
       "synopsis": "arp [options] [hostname]",
-      "description": "Manipulate or display the system ARP cache",
+      "description": "Просмотр и изменение кеша ARP",
       "patterns": [
         {
           "type": "example",
-          "text": "show the ARP table of known MAC addresses on the network",
+          "text": "показать кеш ARP с именами узлов",
           "command": "arp -a",
-          "explanation": "Displays all entries in the ARP cache with hostnames"
+          "explanation": "Показать кеш ARP с именами узлов."
         },
         {
           "type": "example",
-          "text": "display the ARP table with numeric addresses only",
+          "text": "посмотреть известные соответствия IP- и MAC-адресов",
+          "command": "arp -a",
+          "explanation": "Показать кеш ARP с именами узлов."
+        },
+        {
+          "type": "example",
+          "text": "вывести ARP-таблицу без определения имён",
           "command": "arp -n",
-          "explanation": "Shows ARP entries without resolving hostnames"
+          "explanation": "Вывести ARP-таблицу без определения имён."
         },
         {
           "type": "example",
-          "text": "delete an entry from the ARP cache",
+          "text": "показать записи соседей с числовыми IP-адресами",
+          "command": "arp -n",
+          "explanation": "Вывести ARP-таблицу без определения имён."
+        },
+        {
+          "type": "example",
+          "text": "удалить запись определённого IP из кеша ARP",
           "command": "arp -d 192.168.1.50",
-          "explanation": "Removes the ARP entry for the specified IP address"
+          "explanation": "Удалить запись определённого IP из кеша ARP."
         },
         {
           "type": "example",
-          "text": "add a static ARP entry",
+          "text": "сбросить сохранённый MAC-адрес для 192.168.1.50",
+          "command": "arp -d 192.168.1.50",
+          "explanation": "Удалить запись определённого IP из кеша ARP."
+        },
+        {
+          "type": "example",
+          "text": "добавить постоянное соответствие IP и MAC в ARP",
           "command": "arp -s 192.168.1.50 00:11:22:33:44:55",
-          "explanation": "Manually maps an IP address to a MAC address in the ARP table"
+          "explanation": "Добавить постоянное соответствие IP и MAC в ARP."
+        },
+        {
+          "type": "example",
+          "text": "вручную прописать статическую запись соседа",
+          "command": "arp -s 192.168.1.50 00:11:22:33:44:55",
+          "explanation": "Добавить постоянное соответствие IP и MAC в ARP."
         }
       ]
     },
     {
       "name": "route",
       "synopsis": "route [options] [command] [target]",
-      "description": "Show or manipulate the IP routing table",
+      "description": "Просмотр и изменение таблицы IP-маршрутизации",
       "patterns": [
         {
           "type": "example",
-          "text": "display the current routing table",
+          "text": "показать таблицу маршрутизации числовыми адресами",
           "command": "route -n",
-          "explanation": "Shows the kernel routing table with numeric addresses"
+          "explanation": "Показать таблицу маршрутизации числовыми адресами."
         },
         {
           "type": "example",
-          "text": "add a default gateway",
+          "text": "посмотреть маршруты через старую команду route без DNS",
+          "command": "route -n",
+          "explanation": "Показать таблицу маршрутизации числовыми адресами."
+        },
+        {
+          "type": "example",
+          "text": "добавить шлюз по умолчанию через route",
           "command": "route add default gw 192.168.1.1",
-          "explanation": "Sets the default gateway for outbound traffic"
+          "explanation": "Добавить шлюз по умолчанию через route."
         },
         {
           "type": "example",
-          "text": "add a route to a specific network via a gateway",
+          "text": "направить исходящий трафик по default gateway 192.168.1.1",
+          "command": "route add default gw 192.168.1.1",
+          "explanation": "Добавить шлюз по умолчанию через route."
+        },
+        {
+          "type": "example",
+          "text": "добавить маршрут к сети 10.0.0.0/8 через шлюз",
           "command": "route add -net 10.0.0.0/8 gw 192.168.1.1",
-          "explanation": "Routes traffic for the 10.0.0.0/8 network through the specified gateway"
+          "explanation": "Добавить маршрут к сети 10.0.0.0/8 через шлюз."
         },
         {
           "type": "example",
-          "text": "delete a route from the routing table",
+          "text": "направить пакеты указанной подсети через 192.168.1.1",
+          "command": "route add -net 10.0.0.0/8 gw 192.168.1.1",
+          "explanation": "Добавить маршрут к сети 10.0.0.0/8 через шлюз."
+        },
+        {
+          "type": "example",
+          "text": "удалить маршрут к сети 10.0.0.0/8",
           "command": "route del -net 10.0.0.0/8",
-          "explanation": "Removes the route entry for the specified network"
+          "explanation": "Удалить маршрут к сети 10.0.0.0/8."
+        },
+        {
+          "type": "example",
+          "text": "убрать запись определённой подсети из таблицы маршрутизации",
+          "command": "route del -net 10.0.0.0/8",
+          "explanation": "Удалить маршрут к сети 10.0.0.0/8."
         }
       ]
     },
     {
       "name": "nmap",
       "synopsis": "nmap [scan type] [options] target",
-      "description": "Network exploration tool and security scanner",
+      "description": "Исследование узлов, портов и служб сети",
       "patterns": [
         {
           "type": "example",
-          "text": "scan a host for open ports",
+          "text": "проверить стандартный набор TCP-портов хоста через nmap",
           "command": "nmap 192.168.1.1",
-          "explanation": "Scans the most common TCP ports using SYN or TCP connect scanning depending on available privileges"
+          "explanation": "Проверяет наиболее распространённые TCP-порты; SYN-сканирование или TCP connect выбирается с учётом прав доступа."
         },
         {
           "type": "example",
-          "text": "detect what operating system a remote host is running",
+          "text": "найти открытые распространённые порты на сервере",
+          "command": "nmap 192.168.1.1",
+          "explanation": "Проверяет наиболее распространённые TCP-порты; SYN-сканирование или TCP connect выбирается с учётом прав доступа."
+        },
+        {
+          "type": "example",
+          "text": "попытаться определить ОС удалённого узла по сетевым признакам",
           "command": "nmap -O 192.168.1.1",
-          "explanation": "Uses TCP/IP fingerprinting to identify the OS"
+          "explanation": "Попытаться определить ОС удалённого узла по сетевым признакам."
         },
         {
           "type": "example",
-          "text": "scan an entire subnet to discover live hosts",
+          "text": "запустить распознавание операционной системы через nmap",
+          "command": "nmap -O 192.168.1.1",
+          "explanation": "Попытаться определить ОС удалённого узла по сетевым признакам."
+        },
+        {
+          "type": "example",
+          "text": "найти доступные узлы в подсети без сканирования портов",
           "command": "nmap -sn 192.168.1.0/24",
-          "explanation": "Performs a ping scan to find which hosts are up without port scanning"
+          "explanation": "Найти доступные узлы в подсети без сканирования портов."
         },
         {
           "type": "example",
-          "text": "detect service versions running on open ports",
+          "text": "выполнить обнаружение хостов сети 192.168.1.0/24",
+          "command": "nmap -sn 192.168.1.0/24",
+          "explanation": "Найти доступные узлы в подсети без сканирования портов."
+        },
+        {
+          "type": "example",
+          "text": "определить службы и их версии на открытых портах",
           "command": "nmap -sV 192.168.1.1",
-          "explanation": "Probes open ports to determine the service and version running"
+          "explanation": "Определить службы и их версии на открытых портах."
         },
         {
           "type": "example",
-          "text": "run a comprehensive scan with OS detection, scripts, and version info",
+          "text": "проверить серверные программы через nmap с распознаванием версий",
+          "command": "nmap -sV 192.168.1.1",
+          "explanation": "Определить службы и их версии на открытых портах."
+        },
+        {
+          "type": "example",
+          "text": "запустить расширенное сканирование ОС, служб, скриптов и маршрута",
           "command": "nmap -A 192.168.1.1",
-          "explanation": "Enables OS detection, version scanning, script scanning, and traceroute"
+          "explanation": "Запустить расширенное сканирование ОС, служб, скриптов и маршрута."
         },
         {
           "type": "example",
-          "text": "scan specific ports on a target",
+          "text": "получить подробную информацию об узле через nmap -A",
+          "command": "nmap -A 192.168.1.1",
+          "explanation": "Запустить расширенное сканирование ОС, служб, скриптов и маршрута."
+        },
+        {
+          "type": "example",
+          "text": "просканировать только порты 22, 80 и 443",
           "command": "nmap -p 22,80,443 192.168.1.1",
-          "explanation": "Scans only the specified ports on the target host"
+          "explanation": "Просканировать только порты 22, 80 и 443."
+        },
+        {
+          "type": "example",
+          "text": "ограничить проверку nmap выбранными TCP-портами",
+          "command": "nmap -p 22,80,443 192.168.1.1",
+          "explanation": "Просканировать только порты 22, 80 и 443."
         }
       ]
     },
     {
       "name": "tcpdump",
       "synopsis": "tcpdump [options] [expression]",
-      "description": "Capture and analyze network traffic on an interface",
+      "description": "Захват и анализ сетевого трафика",
       "patterns": [
         {
           "type": "example",
-          "text": "capture all traffic on a specific network interface",
+          "text": "перехватывать пакеты на интерфейсе eth0",
           "command": "tcpdump -i eth0",
-          "explanation": "Captures and displays all packets on the eth0 interface"
+          "explanation": "Перехватывать пакеты на интерфейсе eth0."
         },
         {
           "type": "example",
-          "text": "capture traffic to or from a specific host",
+          "text": "показать сетевой трафик выбранной сетевой карты",
+          "command": "tcpdump -i eth0",
+          "explanation": "Перехватывать пакеты на интерфейсе eth0."
+        },
+        {
+          "type": "example",
+          "text": "захватывать только пакеты к указанному IP или от него",
           "command": "tcpdump host 192.168.1.100",
-          "explanation": "Filters packets involving the specified IP address"
+          "explanation": "Захватывать только пакеты к указанному IP или от него."
         },
         {
           "type": "example",
-          "text": "capture packets using port 80 on all interfaces",
+          "text": "отфильтровать tcpdump по узлу 192.168.1.100",
+          "command": "tcpdump host 192.168.1.100",
+          "explanation": "Захватывать только пакеты к указанному IP или от него."
+        },
+        {
+          "type": "example",
+          "text": "перехватывать трафик порта 80 на всех интерфейсах",
           "command": "tcpdump -i any port 80",
-          "explanation": "Selects packets by source or destination port 80 without validating the application protocol"
+          "explanation": "Выбирает пакеты по порту источника или назначения 80, без проверки прикладного протокола."
         },
         {
           "type": "example",
-          "text": "save captured packets to a file for later analysis",
+          "text": "показать пакеты, связанные с сетевым портом веб-сервиса",
+          "command": "tcpdump -i any port 80",
+          "explanation": "Выбирает пакеты по порту источника или назначения 80, без проверки прикладного протокола."
+        },
+        {
+          "type": "example",
+          "text": "сохранить захват трафика eth0 в pcap-файл",
           "command": "tcpdump -i eth0 -w capture.pcap",
-          "explanation": "Writes raw packets to a pcap file that can be opened in Wireshark"
+          "explanation": "Сохранить захват трафика eth0 в pcap-файл."
         },
         {
           "type": "example",
-          "text": "capture DNS-port traffic to debug ordinary name resolution",
+          "text": "записать сетевые пакеты для последующего анализа",
+          "command": "tcpdump -i eth0 -w capture.pcap",
+          "explanation": "Сохранить захват трафика eth0 в pcap-файл."
+        },
+        {
+          "type": "example",
+          "text": "захватывать пакеты порта 53 для проверки DNS",
           "command": "tcpdump -i any port 53",
-          "explanation": "Captures port 53 packets; DNS over HTTPS or TLS on other ports is not included"
+          "explanation": "Захватывает пакеты порта 53; DNS через HTTPS или TLS на других портах не включён."
+        },
+        {
+          "type": "example",
+          "text": "наблюдать обычные DNS-запросы и ответы на всех интерфейсах",
+          "command": "tcpdump -i any port 53",
+          "explanation": "Захватывает пакеты порта 53; DNS через HTTPS или TLS на других портах не включён."
         }
       ]
     },
     {
       "name": "iptables",
       "synopsis": "iptables [options] [chain] [rule]",
-      "description": "Administration tool for IPv4 packet filtering and NAT",
+      "description": "Настройка фильтрации IPv4-пакетов и NAT",
       "patterns": [
         {
           "type": "example",
-          "text": "list firewall rules in the default filter table",
+          "text": "показать правила таблицы filter со счётчиками пакетов",
           "command": "iptables -L -n -v",
-          "explanation": "Displays filter-table chains with numeric addresses, packet counters, and byte counters"
+          "explanation": "Показывает цепочки таблицы filter с числовыми адресами и счётчиками пакетов и байтов."
         },
         {
           "type": "example",
-          "text": "append a firewall rule to drop incoming packets from an IP",
+          "text": "вывести цепочки iptables с числовыми адресами и подробной статистикой",
+          "command": "iptables -L -n -v",
+          "explanation": "Показывает цепочки таблицы filter с числовыми адресами и счётчиками пакетов и байтов."
+        },
+        {
+          "type": "example",
+          "text": "добавить в INPUT правило сброса пакетов от IP 10.0.0.5",
           "command": "iptables -A INPUT -s 10.0.0.5 -j DROP",
-          "explanation": "Appends a DROP rule to INPUT; earlier matching rules may already accept or reject a packet"
+          "explanation": "Добавляет DROP в конец INPUT; более раннее правило может уже принять или отклонить пакет."
         },
         {
           "type": "example",
-          "text": "append an INPUT rule allowing TCP traffic to SSH port 22",
+          "text": "дописать запрет входящего трафика от определённого адреса через iptables",
+          "command": "iptables -A INPUT -s 10.0.0.5 -j DROP",
+          "explanation": "Добавляет DROP в конец INPUT; более раннее правило может уже принять или отклонить пакет."
+        },
+        {
+          "type": "example",
+          "text": "добавить разрешение входящего TCP-трафика на порт 22",
           "command": "iptables -A INPUT -p tcp --dport 22 -j ACCEPT",
-          "explanation": "Adds an ACCEPT rule for destination TCP port 22 after existing INPUT rules"
+          "explanation": "Добавляет разрешение TCP-порта назначения 22 после существующих правил INPUT."
         },
         {
           "type": "example",
-          "text": "flush rules in all chains of the default filter table",
+          "text": "дописать в INPUT правило ACCEPT для SSH-порта",
+          "command": "iptables -A INPUT -p tcp --dport 22 -j ACCEPT",
+          "explanation": "Добавляет разрешение TCP-порта назначения 22 после существующих правил INPUT."
+        },
+        {
+          "type": "example",
+          "text": "очистить правила всех цепочек таблицы filter",
           "command": "iptables -F",
-          "explanation": "Removes rules from filter-table chains without changing chain policies or other tables",
+          "explanation": "Удаляет правила цепочек таблицы filter, не меняя политики цепочек и другие таблицы.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "set up NAT masquerading for internet sharing",
+          "text": "удалить правила iptables из таблицы по умолчанию",
+          "command": "iptables -F",
+          "explanation": "Удаляет правила цепочек таблицы filter, не меняя политики цепочек и другие таблицы.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "настроить NAT-маскарадинг на исходящем интерфейсе eth0",
           "command": "iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE",
-          "explanation": "Enables NAT on outgoing interface for routing traffic from internal network"
+          "explanation": "Настроить NAT-маскарадинг на исходящем интерфейсе eth0."
+        },
+        {
+          "type": "example",
+          "text": "добавить подмену адреса отправителя в POSTROUTING для раздачи интернета",
+          "command": "iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE",
+          "explanation": "Настроить NAT-маскарадинг на исходящем интерфейсе eth0."
         }
       ]
     },
     {
       "name": "ufw",
       "synopsis": "ufw [options] [rule]",
-      "description": "Uncomplicated Firewall - simplified interface for managing firewall rules",
+      "description": "Управление правилами сетевого экрана через UFW",
       "patterns": [
         {
           "type": "example",
-          "text": "enable UFW with its currently configured policies",
+          "text": "включить межсетевой экран UFW",
           "command": "ufw enable",
-          "explanation": "Activates the existing UFW configuration without selecting a new default incoming policy"
+          "explanation": "Включает текущую конфигурацию UFW, не задавая новую политику входящих соединений по умолчанию."
         },
         {
           "type": "example",
-          "text": "allow SSH connections through the firewall",
+          "text": "активировать настроенные правила файрвола ufw",
+          "command": "ufw enable",
+          "explanation": "Включает текущую конфигурацию UFW, не задавая новую политику входящих соединений по умолчанию."
+        },
+        {
+          "type": "example",
+          "text": "разрешить входящие SSH-подключения на TCP-порт 22 через UFW",
           "command": "ufw allow 22/tcp",
-          "explanation": "Opens port 22 for incoming TCP connections"
+          "explanation": "Разрешить входящие SSH-подключения на TCP-порт 22 через UFW."
         },
         {
           "type": "example",
-          "text": "show current firewall rules and status",
+          "text": "открыть порт SSH в файрволе ufw",
+          "command": "ufw allow 22/tcp",
+          "explanation": "Разрешить входящие SSH-подключения на TCP-порт 22 через UFW."
+        },
+        {
+          "type": "example",
+          "text": "показать подробный статус UFW и его правила",
           "command": "ufw status verbose",
-          "explanation": "Displays active rules, default policies, and firewall state"
+          "explanation": "Показать подробный статус UFW и его правила."
         },
         {
           "type": "example",
-          "text": "add a firewall rule allowing traffic from a specific IP address",
+          "text": "проверить состояние файрвола и действующие политики",
+          "command": "ufw status verbose",
+          "explanation": "Показать подробный статус UFW и его правила."
+        },
+        {
+          "type": "example",
+          "text": "добавить разрешение соединений от IP 192.168.1.100",
           "command": "ufw allow from 192.168.1.100",
-          "explanation": "Adds an allow rule for the source IP without making it the only permitted source"
+          "explanation": "Добавляет разрешение для IP-адреса источника, но не делает его единственным разрешённым источником."
         },
         {
           "type": "example",
-          "text": "deny incoming traffic on a specific port",
+          "text": "разрешить трафик выбранного адреса через UFW",
+          "command": "ufw allow from 192.168.1.100",
+          "explanation": "Добавляет разрешение для IP-адреса источника, но не делает его единственным разрешённым источником."
+        },
+        {
+          "type": "example",
+          "text": "запретить входящие TCP-соединения на порт 3306",
           "command": "ufw deny 3306/tcp",
-          "explanation": "Blocks incoming TCP connections on port 3306 (MySQL)"
+          "explanation": "Запретить входящие TCP-соединения на порт 3306."
+        },
+        {
+          "type": "example",
+          "text": "закрыть порт MySQL правилом deny в UFW",
+          "command": "ufw deny 3306/tcp",
+          "explanation": "Запретить входящие TCP-соединения на порт 3306."
         }
       ]
     },
     {
       "name": "lsof",
       "synopsis": "lsof [options]",
-      "description": "List open files and network connections associated with processes",
+      "description": "Просмотр открытых файлов и сетевых соединений процессов",
       "patterns": [
         {
           "type": "example",
-          "text": "find processes listening on TCP port 8080",
+          "text": "узнать, какой процесс слушает TCP-порт 8080 через lsof",
           "command": "lsof -nP -iTCP:8080 -sTCP:LISTEN",
-          "explanation": "Selects listening TCP sockets on port 8080 and prints numeric hosts and ports"
+          "explanation": "Выбирает слушающие TCP-сокеты порта 8080 с числовыми адресами и портами."
         },
         {
           "type": "example",
-          "text": "show all network connections for a specific process",
+          "text": "показать только TCP-слушателей на порту 8080, исключив обычные соединения",
+          "command": "lsof -nP -iTCP:8080 -sTCP:LISTEN",
+          "explanation": "Выбирает слушающие TCP-сокеты порта 8080 с числовыми адресами и портами."
+        },
+        {
+          "type": "example",
+          "text": "показать сетевые сокеты процесса 1234",
           "command": "lsof -i -a -p 1234",
-          "explanation": "Lists all network connections opened by process ID 1234"
+          "explanation": "Показать сетевые сокеты процесса 1234."
         },
         {
           "type": "example",
-          "text": "list all established TCP connections",
+          "text": "вывести соединения только указанного PID через lsof",
+          "command": "lsof -i -a -p 1234",
+          "explanation": "Показать сетевые сокеты процесса 1234."
+        },
+        {
+          "type": "example",
+          "text": "вывести установленные TCP-соединения через lsof",
           "command": "lsof -i TCP -s TCP:ESTABLISHED",
-          "explanation": "Shows all currently established TCP connections"
+          "explanation": "Вывести установленные TCP-соединения через lsof."
         },
         {
           "type": "example",
-          "text": "find all processes listening on any port",
+          "text": "показать процессы с TCP-сокетами в состоянии ESTABLISHED",
+          "command": "lsof -i TCP -s TCP:ESTABLISHED",
+          "explanation": "Вывести установленные TCP-соединения через lsof."
+        },
+        {
+          "type": "example",
+          "text": "найти слушающие процессы с числовыми IP и портами",
           "command": "lsof -i -P -n | grep LISTEN",
-          "explanation": "Lists all listening network sockets with numeric ports and addresses"
+          "explanation": "Найти слушающие процессы с числовыми IP и портами."
         },
         {
           "type": "example",
-          "text": "show all open network connections on the system",
+          "text": "показать сокеты LISTEN через lsof без разрешения адресов и имён служб",
+          "command": "lsof -i -P -n | grep LISTEN",
+          "explanation": "Найти слушающие процессы с числовыми IP и портами."
+        },
+        {
+          "type": "example",
+          "text": "перечислить открытые интернет-сокеты процессов",
           "command": "lsof -i",
-          "explanation": "Lists all open Internet sockets"
+          "explanation": "Перечислить открытые интернет-сокеты процессов."
+        },
+        {
+          "type": "example",
+          "text": "посмотреть сетевые подключения и слушающие порты через lsof",
+          "command": "lsof -i",
+          "explanation": "Перечислить открытые интернет-сокеты процессов."
         }
       ]
     },
     {
       "name": "mtr",
       "synopsis": "mtr [options] hostname",
-      "description": "Network diagnostic tool combining ping and traceroute functionality",
+      "description": "Диагностика сети с проверкой маршрута и потерь пакетов",
       "patterns": [
         {
           "type": "example",
-          "text": "run a continuous traceroute with live latency stats",
+          "text": "наблюдать маршрут до сервера с потерями и задержками",
           "command": "mtr google.com",
-          "explanation": "Displays a continuously updating traceroute with packet loss and latency"
+          "explanation": "Наблюдать маршрут до сервера с потерями и задержками."
         },
         {
           "type": "example",
-          "text": "generate a text report of network path quality",
+          "text": "запустить непрерывную трассировку mtr с живой статистикой",
+          "command": "mtr google.com",
+          "explanation": "Наблюдать маршрут до сервера с потерями и задержками."
+        },
+        {
+          "type": "example",
+          "text": "составить текстовый отчёт mtr за сто циклов проверки",
           "command": "mtr --report -c 100 google.com",
-          "explanation": "Sends 100 probes and outputs a summary report of the route"
+          "explanation": "Составить текстовый отчёт mtr за сто циклов проверки."
         },
         {
           "type": "example",
-          "text": "run mtr without resolving hostnames for faster output",
+          "text": "измерить качество маршрута и вывести итоговую сводку",
+          "command": "mtr --report -c 100 google.com",
+          "explanation": "Составить текстовый отчёт mtr за сто циклов проверки."
+        },
+        {
+          "type": "example",
+          "text": "показать маршрут mtr только с IP-адресами",
           "command": "mtr -n google.com",
-          "explanation": "Shows only IP addresses at each hop without DNS resolution"
+          "explanation": "Показать маршрут mtr только с IP-адресами."
         },
         {
           "type": "example",
-          "text": "use TCP mode for mtr to test through strict firewalls",
+          "text": "отключить DNS-разрешение узлов при наблюдении сетевого пути",
+          "command": "mtr -n google.com",
+          "explanation": "Показать маршрут mtr только с IP-адресами."
+        },
+        {
+          "type": "example",
+          "text": "проверить маршрут TCP-пробами к порту 443",
           "command": "mtr --tcp -P 443 google.com",
-          "explanation": "Uses TCP on port 443 instead of ICMP for firewall-friendly probing"
+          "explanation": "Проверить маршрут TCP-пробами к порту 443."
+        },
+        {
+          "type": "example",
+          "text": "запустить mtr в режиме TCP для HTTPS-порта",
+          "command": "mtr --tcp -P 443 google.com",
+          "explanation": "Проверить маршрут TCP-пробами к порту 443."
         }
       ]
     },
     {
       "name": "whois",
       "synopsis": "whois [options] name",
-      "description": "Query domain registration and IP address allocation information",
+      "description": "Просмотр регистрационных данных домена или IP-адреса",
       "patterns": [
         {
           "type": "example",
-          "text": "look up domain registration information",
+          "text": "посмотреть регистрационные сведения домена",
           "command": "whois example.com",
-          "explanation": "Shows registrar, creation date, expiration, and contact info for the domain"
+          "explanation": "Посмотреть регистрационные сведения домена."
         },
         {
           "type": "example",
-          "text": "find out who owns an IP address",
+          "text": "узнать регистратора и даты регистрации через whois",
+          "command": "whois example.com",
+          "explanation": "Посмотреть регистрационные сведения домена."
+        },
+        {
+          "type": "example",
+          "text": "узнать владельца выделенного IP-адреса",
           "command": "whois 8.8.8.8",
-          "explanation": "Queries the IP allocation registry for ownership information"
+          "explanation": "Узнать владельца выделенного IP-адреса."
         },
         {
           "type": "example",
-          "text": "check when a domain expires",
+          "text": "запросить регистрационные данные сети в IP-реестре",
+          "command": "whois 8.8.8.8",
+          "explanation": "Узнать владельца выделенного IP-адреса."
+        },
+        {
+          "type": "example",
+          "text": "найти дату истечения регистрации домена в whois",
           "command": "whois example.com | grep -i expir",
-          "explanation": "Filters whois output to find the domain expiration date"
+          "explanation": "Найти дату истечения регистрации домена в whois."
         },
         {
           "type": "example",
-          "text": "look up a domain using a specific whois server",
+          "text": "отфильтровать сведения о домене по сроку окончания",
+          "command": "whois example.com | grep -i expir",
+          "explanation": "Найти дату истечения регистрации домена в whois."
+        },
+        {
+          "type": "example",
+          "text": "запросить сведения о домене у конкретного whois-сервера",
           "command": "whois -h whois.verisign-grs.com example.com",
-          "explanation": "Queries a particular whois server for domain information"
+          "explanation": "Запросить сведения о домене у конкретного whois-сервера."
+        },
+        {
+          "type": "example",
+          "text": "указать сервер реестра для проверки регистрации",
+          "command": "whois -h whois.verisign-grs.com example.com",
+          "explanation": "Запросить сведения о домене у конкретного whois-сервера."
         }
       ]
     },
     {
       "name": "telnet",
       "synopsis": "telnet [options] [host [port]]",
-      "description": "User interface to the TELNET protocol for testing network services",
+      "description": "Проверка сетевых служб через протокол Telnet",
       "patterns": [
         {
           "type": "example",
-          "text": "test if a remote port is open and accepting connections",
+          "text": "проверить TCP-подключение к удалённому порту 80",
           "command": "telnet example.com 80",
-          "explanation": "Attempts to connect to port 80 to verify it is open"
+          "explanation": "Проверить TCP-подключение к удалённому порту 80."
         },
         {
           "type": "example",
-          "text": "test an SMTP mail server connection",
+          "text": "открыть соединение с веб-портом через telnet",
+          "command": "telnet example.com 80",
+          "explanation": "Проверить TCP-подключение к удалённому порту 80."
+        },
+        {
+          "type": "example",
+          "text": "подключиться к SMTP-серверу на порту 25 для ручной проверки",
           "command": "telnet mail.example.com 25",
-          "explanation": "Connects to the SMTP port to manually test the mail server"
+          "explanation": "Подключиться к SMTP-серверу на порту 25 для ручной проверки."
         },
         {
           "type": "example",
-          "text": "test a TCP connection to the local Redis port",
+          "text": "открыть текстовый сеанс с почтовым сервисом через telnet",
+          "command": "telnet mail.example.com 25",
+          "explanation": "Подключиться к SMTP-серверу на порту 25 для ручной проверки."
+        },
+        {
+          "type": "example",
+          "text": "проверить подключение к локальному порту Redis 6379",
           "command": "telnet localhost 6379",
-          "explanation": "Opens an interactive TCP connection to localhost:6379 without sending a Redis health check"
+          "explanation": "Открывает интерактивное TCP-соединение с localhost:6379, не отправляя проверку работоспособности Redis."
         },
         {
           "type": "example",
-          "text": "manually send an HTTP request to test a web server",
+          "text": "открыть TCP-сеанс с Redis через telnet",
+          "command": "telnet localhost 6379",
+          "explanation": "Открывает интерактивное TCP-соединение с localhost:6379, не отправляя проверку работоспособности Redis."
+        },
+        {
+          "type": "example",
+          "text": "открыть TCP-соединение для ручного ввода HTTP-запроса",
           "command": "telnet example.com 80",
-          "explanation": "Opens a raw TCP connection to port 80 where you can type HTTP commands"
+          "explanation": "Открыть TCP-соединение для ручного ввода HTTP-запроса."
+        },
+        {
+          "type": "example",
+          "text": "подключиться к порту 80 и самостоятельно отправить команды веб-серверу",
+          "command": "telnet example.com 80",
+          "explanation": "Открыть TCP-соединение для ручного ввода HTTP-запроса."
         }
       ]
     },
     {
       "name": "ab",
       "synopsis": "ab [options] URL",
-      "description": "Apache HTTP server benchmarking tool for load testing",
+      "description": "Нагрузочное тестирование HTTP-сервера утилитой Apache Benchmark",
       "patterns": [
         {
           "type": "example",
-          "text": "benchmark a web server with 1000 requests and 10 concurrent connections",
+          "text": "проверить веб-сервер тысячей запросов при параллельности десять",
           "command": "ab -n 1000 -c 10 http://localhost:8080/",
-          "explanation": "Sends 1000 total requests with 10 at a time to measure server performance"
+          "explanation": "Проверить веб-сервер тысячей запросов при параллельности десять."
         },
         {
           "type": "example",
-          "text": "run a quick load test and show percentile response times",
+          "text": "измерить производительность HTTP с 1000 запросами по 10 одновременно",
+          "command": "ab -n 1000 -c 10 http://localhost:8080/",
+          "explanation": "Проверить веб-сервер тысячей запросов при параллельности десять."
+        },
+        {
+          "type": "example",
+          "text": "выполнить нагрузочный тест API на 500 запросов с параллельностью 50",
           "command": "ab -n 500 -c 50 http://example.com/api/endpoint",
-          "explanation": "Benchmarks 500 requests at 50 concurrency and displays response time distribution"
+          "explanation": "Выполнить нагрузочный тест API на 500 запросов с параллельностью 50."
         },
         {
           "type": "example",
-          "text": "benchmark a POST endpoint with a JSON payload",
+          "text": "получить распределение времени ответов сервера через ab",
+          "command": "ab -n 500 -c 50 http://example.com/api/endpoint",
+          "explanation": "Выполнить нагрузочный тест API на 500 запросов с параллельностью 50."
+        },
+        {
+          "type": "example",
+          "text": "протестировать POST API двумястами JSON-запросами с параллельностью двадцать",
           "command": "ab -n 200 -c 20 -p data.json -T 'application/json' http://localhost:8080/api",
-          "explanation": "Sends 200 POST requests with JSON data from a file"
+          "explanation": "Протестировать POST API двумястами JSON-запросами с параллельностью двадцать."
         },
         {
           "type": "example",
-          "text": "benchmark with keep-alive connections enabled",
+          "text": "передать тело data.json в нагрузочном тесте HTTP",
+          "command": "ab -n 200 -c 20 -p data.json -T 'application/json' http://localhost:8080/api",
+          "explanation": "Протестировать POST API двумястами JSON-запросами с параллельностью двадцать."
+        },
+        {
+          "type": "example",
+          "text": "измерить HTTP-производительность с keep-alive, тысячей запросов и параллельностью сто",
           "command": "ab -n 1000 -c 100 -k http://localhost:8080/",
-          "explanation": "Uses HTTP keep-alive to reuse connections during the test"
+          "explanation": "Измерить HTTP-производительность с keep-alive, тысячей запросов и параллельностью сто."
+        },
+        {
+          "type": "example",
+          "text": "провести нагрузочный тест с повторным использованием соединений",
+          "command": "ab -n 1000 -c 100 -k http://localhost:8080/",
+          "explanation": "Измерить HTTP-производительность с keep-alive, тысячей запросов и параллельностью сто."
         }
       ]
     },
     {
       "name": "httpie",
       "synopsis": "http [options] [METHOD] URL [items]",
-      "description": "User-friendly HTTP client for the command line with intuitive syntax",
+      "description": "Отправка HTTP-запросов удобным интерфейсом HTTPie",
       "patterns": [
         {
           "type": "example",
-          "text": "make a simple GET request with pretty output",
+          "text": "выполнить GET-запрос с форматированным ответом через HTTPie",
           "command": "http https://api.example.com/users",
-          "explanation": "Sends a GET request and displays the response with syntax highlighting"
+          "explanation": "Выполнить GET-запрос с форматированным ответом через HTTPie."
         },
         {
           "type": "example",
-          "text": "send a POST request with JSON fields",
+          "text": "посмотреть ответ API с подсветкой синтаксиса",
+          "command": "http https://api.example.com/users",
+          "explanation": "Выполнить GET-запрос с форматированным ответом через HTTPie."
+        },
+        {
+          "type": "example",
+          "text": "отправить JSON POST с полями имени и электронной почты",
           "command": "http POST https://api.example.com/users name=John email=john@example.com",
-          "explanation": "Sends a JSON POST with the specified key-value pairs"
+          "explanation": "Отправить JSON POST с полями имени и электронной почты."
         },
         {
           "type": "example",
-          "text": "download a file using HTTPie",
+          "text": "создать запись через HTTPie, передав значения полей",
+          "command": "http POST https://api.example.com/users name=John email=john@example.com",
+          "explanation": "Отправить JSON POST с полями имени и электронной почты."
+        },
+        {
+          "type": "example",
+          "text": "скачать файл через HTTPie с показом прогресса",
           "command": "http --download https://example.com/file.zip",
-          "explanation": "Downloads the file with a progress bar"
+          "explanation": "Скачать файл через HTTPie с показом прогресса."
         },
         {
           "type": "example",
-          "text": "send a request with custom headers and authentication",
+          "text": "сохранить удалённый архив командой http --download",
+          "command": "http --download https://example.com/file.zip",
+          "explanation": "Скачать файл через HTTPie с показом прогресса."
+        },
+        {
+          "type": "example",
+          "text": "сделать GET с Basic-аутентификацией и собственным заголовком",
           "command": "http -a user:pass GET https://api.example.com/secret X-Custom-Header:value",
-          "explanation": "Authenticates with basic auth and includes a custom header"
+          "explanation": "Сделать GET с Basic-аутентификацией и собственным заголовком."
         },
         {
           "type": "example",
-          "text": "submit form data instead of JSON",
+          "text": "передать логин, пароль и X-Custom-Header в запросе HTTPie",
+          "command": "http -a user:pass GET https://api.example.com/secret X-Custom-Header:value",
+          "explanation": "Сделать GET с Basic-аутентификацией и собственным заголовком."
+        },
+        {
+          "type": "example",
+          "text": "отправить данные HTML-формы вместо JSON",
           "command": "http --form POST https://example.com/login username=admin password=secret",
-          "explanation": "Sends data as application/x-www-form-urlencoded"
+          "explanation": "Отправить данные HTML-формы вместо JSON."
+        },
+        {
+          "type": "example",
+          "text": "выполнить POST с полями username и password в формате form-urlencoded",
+          "command": "http --form POST https://example.com/login username=admin password=secret",
+          "explanation": "Отправить данные HTML-формы вместо JSON."
         }
       ]
     },
     {
       "name": "ssh-copy-id",
       "synopsis": "ssh-copy-id [-i key] [user@]hostname",
-      "description": "Install your public key in a remote user's authorized_keys",
+      "description": "Установка открытого ключа в authorized_keys удалённого пользователя",
       "patterns": [
         {
           "type": "example",
-          "text": "install an SSH public key for key-based login to a server",
+          "text": "установить стандартный открытый SSH-ключ на сервер",
           "command": "ssh-copy-id user@server.example.com",
-          "explanation": "Adds a selected public key to remote authorized_keys; private-key passphrases and server policy still apply"
+          "explanation": "Добавляет выбранный открытый ключ в удалённый authorized_keys; пароль закрытого ключа и политика сервера по-прежнему учитываются."
         },
         {
           "type": "example",
-          "text": "install a non-default public key",
+          "text": "добавить свой публичный ключ в удалённый authorized_keys",
+          "command": "ssh-copy-id user@server.example.com",
+          "explanation": "Добавляет выбранный открытый ключ в удалённый authorized_keys; пароль закрытого ключа и политика сервера по-прежнему учитываются."
+        },
+        {
+          "type": "example",
+          "text": "скопировать определённый публичный SSH-ключ на сервер",
           "command": "ssh-copy-id -i ~/.ssh/id_ed25519_work.pub user@server",
-          "explanation": "Uses the specified .pub file instead of the default identity"
+          "explanation": "Скопировать определённый публичный SSH-ключ на сервер."
+        },
+        {
+          "type": "example",
+          "text": "настроить вход с отдельным рабочим ключом через ssh-copy-id",
+          "command": "ssh-copy-id -i ~/.ssh/id_ed25519_work.pub user@server",
+          "explanation": "Скопировать определённый публичный SSH-ключ на сервер."
         }
       ]
     },
     {
       "name": "socat",
       "synopsis": "socat [options] <address> <address>",
-      "description": "Multipurpose relay (SOcket CAT)",
+      "description": "Перенаправление потоков данных между сокетами и другими каналами",
       "patterns": [
         {
           "type": "example",
-          "text": "create a simple tcp port forwarder",
+          "text": "перенаправлять TCP-порт 8080 на порт 80 другого узла",
           "command": "socat TCP-LISTEN:8080,fork TCP:target:80",
-          "explanation": "Listens on port 8080 and forwards connections to target port 80"
+          "explanation": "Перенаправлять TCP-порт 8080 на порт 80 другого узла."
         },
         {
           "type": "example",
-          "text": "transfer a file over the network using tcp",
+          "text": "создать TCP-прокси через socat с обработкой нескольких подключений",
+          "command": "socat TCP-LISTEN:8080,fork TCP:target:80",
+          "explanation": "Перенаправлять TCP-порт 8080 на порт 80 другого узла."
+        },
+        {
+          "type": "example",
+          "text": "отдать архив первому клиенту, подключившемуся к TCP-порту 9000",
           "command": "socat -u FILE:data.tar.gz TCP-LISTEN:9000",
-          "explanation": "Acts as a server to send a file to the first connecting client"
+          "explanation": "Отдать архив первому клиенту, подключившемуся к TCP-порту 9000."
+        },
+        {
+          "type": "example",
+          "text": "запустить однонаправленную передачу файла через сервер socat",
+          "command": "socat -u FILE:data.tar.gz TCP-LISTEN:9000",
+          "explanation": "Отдать архив первому клиенту, подключившемуся к TCP-порту 9000."
         }
       ]
     },
     {
       "name": "iperf3",
       "synopsis": "iperf3 -s | -c host [options]",
-      "description": "Perform network throughput tests",
+      "description": "Измерение пропускной способности сети",
       "patterns": [
         {
           "type": "example",
-          "text": "start an iperf3 server to listen for benchmark connections",
+          "text": "запустить сервер iperf3 для измерения скорости сети",
           "command": "iperf3 -s",
-          "explanation": "Runs in server mode to accept incoming speed tests"
+          "explanation": "Запустить сервер iperf3 для измерения скорости сети."
         },
         {
           "type": "example",
-          "text": "run a network speed test against an iperf3 server",
+          "text": "открыть принимающую сторону теста пропускной способности",
+          "command": "iperf3 -s",
+          "explanation": "Запустить сервер iperf3 для измерения скорости сети."
+        },
+        {
+          "type": "example",
+          "text": "измерить пропускную способность до сервера iperf3",
           "command": "iperf3 -c server_ip",
-          "explanation": "Connects to the server and measures bandwidth throughput"
+          "explanation": "Измерить пропускную способность до сервера iperf3."
+        },
+        {
+          "type": "example",
+          "text": "запустить клиентский тест скорости сетевого соединения",
+          "command": "iperf3 -c server_ip",
+          "explanation": "Измерить пропускную способность до сервера iperf3."
         }
       ]
     }

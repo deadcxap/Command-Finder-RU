@@ -2,19 +2,19 @@ import sys
 
 from cf.search import SearchResult
 
-# Sentinel returned when user picks "Show more"
+# Маркер выбора пункта «Показать ещё».
 SHOW_MORE = object()
 
 DESTRUCTIVE_MARK = "⚠ "
 
 
 def _confirm_destructive(r: SearchResult) -> bool:
-    """Prompt y/N on /dev/tty before returning a destructive command."""
+    """Запросить подтверждение через /dev/tty для опасной команды."""
     msg = (
-        f"\n⚠  DESTRUCTIVE COMMAND\n"
+        f"\n⚠  ОПАСНАЯ КОМАНДА\n"
         f"   {r.command_template}\n"
-        f"   This may delete files, kill processes, or rewrite history.\n"
-        f"   Type 'yes' to confirm: "
+        f"   Команда может удалить данные, завершить процессы или переписать историю.\n"
+        f"   Для подтверждения введите «да» или «yes»: "
     )
     try:
         with open("/dev/tty", "r+") as tty:
@@ -22,16 +22,15 @@ def _confirm_destructive(r: SearchResult) -> bool:
             tty.flush()
             answer = tty.readline().strip().lower()
     except OSError:
-        # No tty — refuse rather than silently injecting
-        print("Cannot read confirmation: no tty available.", file=sys.stderr)
+        print("Не удалось запросить подтверждение: терминал недоступен.", file=sys.stderr)
         return False
-    return answer == "yes"
+    return answer in ("да", "yes")
 
 
 def select_command(results: list[SearchResult], verbose: bool = False,
                    non_interactive: bool = False, has_more: bool = True) -> str | None:
     if not results:
-        print("No matching commands found.", file=sys.stderr)
+        print("Подходящие команды не найдены.", file=sys.stderr)
         return None
 
     # Non-interactive mode: return top result
@@ -54,16 +53,16 @@ def _format_entry(r: SearchResult, verbose: bool) -> str:
 
 def _format_preview(r: SearchResult) -> str:
     lines = [
-        f"Command: {r.command_name}",
-        f"Synopsis: {r.synopsis}",
+        f"Команда: {r.command_name}",
+        f"Синтаксис: {r.synopsis}",
         "",
-        f"Pattern: {r.pattern_text}",
-        f"Template: {r.command_template}",
+        f"Запрос: {r.pattern_text}",
+        f"Шаблон: {r.command_template}",
     ]
     if r.explanation:
-        lines.extend(["", f"Explanation: {r.explanation}"])
+        lines.extend(["", f"Пояснение: {r.explanation}"])
     if r.destructive:
-        lines.extend(["", "⚠ DESTRUCTIVE: requires confirmation before injection"])
+        lines.extend(["", "⚠ Опасная команда: перед выбором потребуется подтверждение"])
     return "\n".join(lines)
 
 
@@ -73,7 +72,7 @@ def _select_with_menu(results: list[SearchResult], verbose: bool,
 
     entries = [_format_entry(r, verbose) for r in results]
     if has_more:
-        entries.append("[+] Show more results...")
+        entries.append("[+] Показать ещё...")
 
     previews = {i: _format_preview(r) for i, r in enumerate(results)}
 
@@ -84,7 +83,7 @@ def _select_with_menu(results: list[SearchResult], verbose: bool,
 
     menu = TerminalMenu(
         entries,
-        title="Select a command (press q to cancel):",
+        title="Выберите команду (q — отмена):",
         preview_command=lambda idx: preview_func(
             entries.index(idx) if idx in entries else None
         ),
@@ -104,10 +103,10 @@ def _select_with_menu(results: list[SearchResult], verbose: bool,
 
 def _select_with_input(results: list[SearchResult], verbose: bool,
                        has_more: bool) -> str | None:
-    """Fallback selector using basic input() when simple-term-menu is unavailable."""
-    print("\nMatching commands:\n", file=sys.stderr)
+    """Текстовый выбор, если simple-term-menu недоступен."""
+    print("\nПодходящие команды:\n", file=sys.stderr)
     for i, r in enumerate(results, 1):
-        score = f"  (distance: {r.distance:.3f})" if verbose else ""
+        score = f"  (расстояние: {r.distance:.3f})" if verbose else ""
         mark = DESTRUCTIVE_MARK if r.destructive else ""
         print(f"  {i}) {mark}{r.command_template}", file=sys.stderr)
         print(f"     {r.pattern_text} [{r.command_name}]{score}", file=sys.stderr)
@@ -116,11 +115,11 @@ def _select_with_input(results: list[SearchResult], verbose: bool,
         print(file=sys.stderr)
 
     if has_more:
-        print(f"  +) Show more results...", file=sys.stderr)
+        print("  +) Показать ещё...", file=sys.stderr)
         print(file=sys.stderr)
 
     try:
-        choice = input("Select [1-{}{}] (q to cancel): ".format(
+        choice = input("Выберите [1-{}{}] (q — отмена): ".format(
             len(results), "/+" if has_more else ""))
     except (EOFError, KeyboardInterrupt):
         return None
@@ -139,5 +138,5 @@ def _select_with_input(results: list[SearchResult], verbose: bool,
     except ValueError:
         pass
 
-    print("Invalid selection.", file=sys.stderr)
+    print("Недопустимый выбор.", file=sys.stderr)
     return None

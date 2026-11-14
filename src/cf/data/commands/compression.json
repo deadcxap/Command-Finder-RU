@@ -4,580 +4,1048 @@
     {
       "name": "tar",
       "synopsis": "tar [options] [file ...]",
-      "description": "Archive files together, optionally with compression",
+      "description": "Создание архивов с необязательным сжатием",
       "patterns": [
         {
           "type": "example",
-          "text": "create a compressed tar archive of a directory",
+          "text": "упаковать папку в архив tar.gz",
           "command": "tar -czf archive.tar.gz /path/to/directory",
-          "explanation": "Creates a gzip-compressed tar archive of the directory"
+          "explanation": "Упаковать папку в архив tar.gz."
         },
         {
           "type": "example",
-          "text": "extract a tar.gz archive",
+          "text": "сжать каталог вместе с содержимым в tar.gz",
+          "command": "tar -czf archive.tar.gz /path/to/directory",
+          "explanation": "Упаковать папку в архив tar.gz."
+        },
+        {
+          "type": "example",
+          "text": "распаковать архив tar.gz в текущую папку",
           "command": "tar -xzf archive.tar.gz",
-          "explanation": "Decompresses and extracts all files from the gzip tar archive"
+          "explanation": "Распаковать архив tar.gz в текущую папку."
         },
         {
           "type": "example",
-          "text": "list the contents of a tar archive without extracting",
+          "text": "извлечь файлы из tar.gz сюда",
+          "command": "tar -xzf archive.tar.gz",
+          "explanation": "Распаковать архив tar.gz в текущую папку."
+        },
+        {
+          "type": "example",
+          "text": "посмотреть содержимое tar.gz без извлечения",
           "command": "tar -tzf archive.tar.gz",
-          "explanation": "Shows all file paths inside the archive"
+          "explanation": "Посмотреть содержимое tar.gz без извлечения."
         },
         {
           "type": "example",
-          "text": "extract a tar archive to a specific directory",
+          "text": "вывести список файлов внутри сжатого tar-архива",
+          "command": "tar -tzf archive.tar.gz",
+          "explanation": "Посмотреть содержимое tar.gz без извлечения."
+        },
+        {
+          "type": "example",
+          "text": "распаковать tar.gz в каталог /opt/app",
           "command": "tar -xzf archive.tar.gz -C /opt/app",
-          "explanation": "Extracts the archive contents into /opt/app"
+          "explanation": "Распаковать tar.gz в каталог /opt/app."
         },
         {
           "type": "example",
-          "text": "create a bzip2-compressed tar archive",
+          "text": "извлечь сжатый tar-архив в указанную папку назначения",
+          "command": "tar -xzf archive.tar.gz -C /opt/app",
+          "explanation": "Распаковать tar.gz в каталог /opt/app."
+        },
+        {
+          "type": "example",
+          "text": "создать архив папки в формате tar.bz2",
           "command": "tar -cjf archive.tar.bz2 /path/to/directory",
-          "explanation": "Creates a tar archive with bzip2 compression for better ratio"
+          "explanation": "Создать архив папки в формате tar.bz2."
         },
         {
           "type": "example",
-          "text": "extract a single file from an archive",
+          "text": "упаковать каталог через tar со сжатием bzip2",
+          "command": "tar -cjf archive.tar.bz2 /path/to/directory",
+          "explanation": "Создать архив папки в формате tar.bz2."
+        },
+        {
+          "type": "example",
+          "text": "извлечь один указанный файл из tar.gz",
           "command": "tar -xzf archive.tar.gz path/to/file.txt",
-          "explanation": "Pulls only file.txt out of the archive"
+          "explanation": "Извлечь один указанный файл из tar.gz."
+        },
+        {
+          "type": "example",
+          "text": "достать path/to/file.txt из сжатого tar-архива",
+          "command": "tar -xzf archive.tar.gz path/to/file.txt",
+          "explanation": "Извлечь один указанный файл из tar.gz."
         }
       ]
     },
     {
       "name": "gzip",
       "synopsis": "gzip [options] [file ...]",
-      "description": "Compress files using the Lempel-Ziv coding",
+      "description": "Сжатие файлов алгоритмом gzip",
       "patterns": [
         {
           "type": "example",
-          "text": "compress a file with gzip",
+          "text": "сжать журнал через gzip с заменой исходного файла",
           "command": "gzip access.log",
-          "explanation": "Compresses the file in place, creating access.log.gz and removing the original"
+          "explanation": "Сжать журнал через gzip с заменой исходного файла."
         },
         {
           "type": "example",
-          "text": "compress a file and keep the original",
+          "text": "упаковать access.log в gzip-формат, удалив оригинал после успеха",
+          "command": "gzip access.log",
+          "explanation": "Сжать журнал через gzip с заменой исходного файла."
+        },
+        {
+          "type": "example",
+          "text": "сжать CSV через gzip, сохранив исходный файл",
           "command": "gzip -k data.csv",
-          "explanation": "Creates data.csv.gz while keeping data.csv intact"
+          "explanation": "Сжать CSV через gzip, сохранив исходный файл."
         },
         {
           "type": "example",
-          "text": "compress with maximum compression level",
+          "text": "создать gzip-копию данных без удаления оригинала",
+          "command": "gzip -k data.csv",
+          "explanation": "Сжать CSV через gzip, сохранив исходный файл."
+        },
+        {
+          "type": "example",
+          "text": "сжать SQL-файл через gzip с уровнем 9",
           "command": "gzip -9 largefile.sql",
-          "explanation": "Uses the best compression ratio at the cost of more CPU time"
+          "explanation": "Сжать SQL-файл через gzip с уровнем 9."
         },
         {
           "type": "example",
-          "text": "compress all files in a directory",
+          "text": "упаковать большой файл с максимальным уровнем сжатия gzip",
+          "command": "gzip -9 largefile.sql",
+          "explanation": "Сжать SQL-файл через gzip с уровнем 9."
+        },
+        {
+          "type": "example",
+          "text": "рекурсивно сжать файлы в папке старых журналов через gzip",
           "command": "gzip -r /var/log/old/",
-          "explanation": "Recursively compresses every file in the directory"
+          "explanation": "Рекурсивно сжать файлы в папке старых журналов через gzip."
         },
         {
           "type": "example",
-          "text": "show compression statistics",
+          "text": "обойти /var/log/old и упаковать содержимое файлов по отдельности",
+          "command": "gzip -r /var/log/old/",
+          "explanation": "Рекурсивно сжать файлы в папке старых журналов через gzip."
+        },
+        {
+          "type": "example",
+          "text": "показать подробную статистику gzip-файла",
           "command": "gzip -lv archive.gz",
-          "explanation": "Displays the compression ratio and original file size"
+          "explanation": "Показать подробную статистику gzip-файла."
+        },
+        {
+          "type": "example",
+          "text": "узнать исходный и сжатый размеры архива gz",
+          "command": "gzip -lv archive.gz",
+          "explanation": "Показать подробную статистику gzip-файла."
         }
       ]
     },
     {
       "name": "gunzip",
       "synopsis": "gunzip [options] [file ...]",
-      "description": "Decompress gzip compressed files",
+      "description": "Распаковка файлов gzip",
       "patterns": [
         {
           "type": "example",
-          "text": "decompress a gzip file",
+          "text": "распаковать gzip-файл с удалением сжатой версии после успеха",
           "command": "gunzip archive.gz",
-          "explanation": "Restores the original file and removes the .gz compressed version"
+          "explanation": "Распаковать gzip-файл с удалением сжатой версии после успеха."
         },
         {
           "type": "example",
-          "text": "decompress a file while keeping the compressed version",
+          "text": "разжать archive.gz в исходный файл через gunzip",
+          "command": "gunzip archive.gz",
+          "explanation": "Распаковать gzip-файл с удалением сжатой версии после успеха."
+        },
+        {
+          "type": "example",
+          "text": "распаковать CSV, сохранив gzip-архив",
           "command": "gunzip -k data.csv.gz",
-          "explanation": "Extracts data.csv while leaving data.csv.gz in place"
+          "explanation": "Распаковать CSV, сохранив gzip-архив."
         },
         {
           "type": "example",
-          "text": "decompress to standard output for piping",
+          "text": "получить несжатый файл и оставить исходную копию gz",
+          "command": "gunzip -k data.csv.gz",
+          "explanation": "Распаковать CSV, сохранив gzip-архив."
+        },
+        {
+          "type": "example",
+          "text": "распаковать SQL-резервную копию в поток и передать MySQL",
           "command": "gunzip -c backup.sql.gz | mysql mydb",
-          "explanation": "Streams the decompressed SQL directly into the database"
+          "explanation": "Распаковать SQL-резервную копию в поток и передать MySQL."
         },
         {
           "type": "example",
-          "text": "test if a gzip file is intact without extracting",
+          "text": "восстановить данные в mydb из gzip-сжатого SQL через канал",
+          "command": "gunzip -c backup.sql.gz | mysql mydb",
+          "explanation": "Распаковать SQL-резервную копию в поток и передать MySQL."
+        },
+        {
+          "type": "example",
+          "text": "проверить целостность gzip-архива без извлечения",
           "command": "gunzip -t archive.gz",
-          "explanation": "Verifies the integrity of the compressed file"
+          "explanation": "Проверить целостность gzip-архива без извлечения."
+        },
+        {
+          "type": "example",
+          "text": "протестировать файл gz на ошибки сжатого потока",
+          "command": "gunzip -t archive.gz",
+          "explanation": "Проверить целостность gzip-архива без извлечения."
         }
       ]
     },
     {
       "name": "bzip2",
       "synopsis": "bzip2 [options] [file ...]",
-      "description": "Compress files using the Burrows-Wheeler block sorting algorithm",
+      "description": "Сжатие файлов алгоритмом bzip2",
       "patterns": [
         {
           "type": "example",
-          "text": "compress a file with bzip2",
+          "text": "сжать текстовый файл через bzip2",
           "command": "bzip2 largefile.txt",
-          "explanation": "Creates largefile.txt.bz2 with better compression than gzip"
+          "explanation": "Сжать текстовый файл через bzip2."
         },
         {
           "type": "example",
-          "text": "decompress a bzip2 file",
+          "text": "упаковать largefile.txt в bz2 с заменой исходника после успеха",
+          "command": "bzip2 largefile.txt",
+          "explanation": "Сжать текстовый файл через bzip2."
+        },
+        {
+          "type": "example",
+          "text": "распаковать архив bz2",
           "command": "bzip2 -d archive.bz2",
-          "explanation": "Decompresses the file back to its original form"
+          "explanation": "Распаковать архив bz2."
         },
         {
           "type": "example",
-          "text": "compress a file and keep the original",
+          "text": "разжать bzip2-файл с помощью режима декомпрессии",
+          "command": "bzip2 -d archive.bz2",
+          "explanation": "Распаковать архив bz2."
+        },
+        {
+          "type": "example",
+          "text": "сжать SQL-файл в bzip2 и сохранить оригинал",
           "command": "bzip2 -k database.sql",
-          "explanation": "Creates database.sql.bz2 while preserving database.sql"
+          "explanation": "Сжать SQL-файл в bzip2 и сохранить оригинал."
         },
         {
           "type": "example",
-          "text": "check the integrity of a bzip2 compressed file",
+          "text": "создать bz2-копию базы без удаления несжатых данных",
+          "command": "bzip2 -k database.sql",
+          "explanation": "Сжать SQL-файл в bzip2 и сохранить оригинал."
+        },
+        {
+          "type": "example",
+          "text": "проверить целостность файла bz2",
           "command": "bzip2 -t backup.bz2",
-          "explanation": "Tests whether the compressed file is valid without extracting"
+          "explanation": "Проверить целостность файла bz2."
         },
         {
           "type": "example",
-          "text": "decompress to standard output for piping",
+          "text": "протестировать сжатую резервную копию bzip2 на ошибки",
+          "command": "bzip2 -t backup.bz2",
+          "explanation": "Проверить целостность файла bz2."
+        },
+        {
+          "type": "example",
+          "text": "посчитать строки в сжатом bzip2-файле без отдельной распаковки на диск",
           "command": "bzip2 -dc data.bz2 | wc -l",
-          "explanation": "Decompresses and counts the lines without creating a file"
+          "explanation": "Посчитать строки в сжатом bzip2-файле без отдельной распаковки на диск."
+        },
+        {
+          "type": "example",
+          "text": "разжать data.bz2 в поток и передать содержимое wc -l",
+          "command": "bzip2 -dc data.bz2 | wc -l",
+          "explanation": "Посчитать строки в сжатом bzip2-файле без отдельной распаковки на диск."
         }
       ]
     },
     {
       "name": "xz",
       "synopsis": "xz [options] [file ...]",
-      "description": "Compress files using the LZMA2 algorithm for high compression ratios",
+      "description": "Сжатие файлов алгоритмом LZMA2",
       "patterns": [
         {
           "type": "example",
-          "text": "compress a file with xz for maximum compression",
+          "text": "сжать CSV-файл через xz с уровнем 9",
           "command": "xz -9 large-dataset.csv",
-          "explanation": "Compresses the file with the highest compression level"
+          "explanation": "Сжать CSV-файл через xz с уровнем 9."
         },
         {
           "type": "example",
-          "text": "decompress an xz file",
+          "text": "упаковать большой набор данных с максимальным обычным уровнем xz",
+          "command": "xz -9 large-dataset.csv",
+          "explanation": "Сжать CSV-файл через xz с уровнем 9."
+        },
+        {
+          "type": "example",
+          "text": "распаковать файл xz",
           "command": "xz -d archive.xz",
-          "explanation": "Restores the original uncompressed file"
+          "explanation": "Распаковать файл xz."
         },
         {
           "type": "example",
-          "text": "compress a file and keep the original",
+          "text": "разжать archive.xz через режим декомпрессии",
+          "command": "xz -d archive.xz",
+          "explanation": "Распаковать файл xz."
+        },
+        {
+          "type": "example",
+          "text": "сжать образ прошивки через xz с сохранением исходника",
           "command": "xz -k firmware.bin",
-          "explanation": "Creates firmware.bin.xz while keeping the original file"
+          "explanation": "Сжать образ прошивки через xz с сохранением исходника."
         },
         {
           "type": "example",
-          "text": "compress using multiple CPU threads for speed",
+          "text": "создать xz-файл, не удаляя firmware.bin",
+          "command": "xz -k firmware.bin",
+          "explanation": "Сжать образ прошивки через xz с сохранением исходника."
+        },
+        {
+          "type": "example",
+          "text": "сжать tar-файл через xz с автоматическим выбором числа потоков",
           "command": "xz -T0 huge-file.tar",
-          "explanation": "Uses all available CPU cores to speed up compression"
+          "explanation": "Сжать tar-файл через xz с автоматическим выбором числа потоков."
         },
         {
           "type": "example",
-          "text": "show compression info for an xz file",
+          "text": "задействовать доступные процессорные потоки для упаковки xz",
+          "command": "xz -T0 huge-file.tar",
+          "explanation": "Сжать tar-файл через xz с автоматическим выбором числа потоков."
+        },
+        {
+          "type": "example",
+          "text": "посмотреть сведения о сжатом файле xz",
           "command": "xz -l archive.xz",
-          "explanation": "Displays compression ratio, check type, and stream information"
+          "explanation": "Посмотреть сведения о сжатом файле xz."
+        },
+        {
+          "type": "example",
+          "text": "показать размеры и параметры архива xz без распаковки",
+          "command": "xz -l archive.xz",
+          "explanation": "Посмотреть сведения о сжатом файле xz."
         }
       ]
     },
     {
       "name": "zip",
       "synopsis": "zip [options] zipfile files [...]",
-      "description": "Package and compress files into a zip archive",
+      "description": "Создание сжатых ZIP-архивов",
       "patterns": [
         {
           "type": "example",
-          "text": "create a zip archive of files",
+          "text": "создать ZIP-архив из двух указанных файлов",
           "command": "zip archive.zip file1.txt file2.txt",
-          "explanation": "Compresses file1.txt and file2.txt into archive.zip"
+          "explanation": "Создать ZIP-архив из двух указанных файлов."
         },
         {
           "type": "example",
-          "text": "create a zip archive of an entire directory",
+          "text": "упаковать несколько текстовых файлов в один zip",
+          "command": "zip archive.zip file1.txt file2.txt",
+          "explanation": "Создать ZIP-архив из двух указанных файлов."
+        },
+        {
+          "type": "example",
+          "text": "рекурсивно упаковать весь каталог в ZIP",
           "command": "zip -r project.zip /path/to/project",
-          "explanation": "Recursively zips the entire directory tree into project.zip"
+          "explanation": "Рекурсивно упаковать весь каталог в ZIP."
         },
         {
           "type": "example",
-          "text": "create a password-protected zip archive",
+          "text": "создать zip-архив проекта с вложенными файлами",
+          "command": "zip -r project.zip /path/to/project",
+          "explanation": "Рекурсивно упаковать весь каталог в ZIP."
+        },
+        {
+          "type": "example",
+          "text": "создать ZIP с паролем для документа",
           "command": "zip -e secure.zip confidential.pdf",
-          "explanation": "Prompts for a password and encrypts the zip archive"
+          "explanation": "Создать ZIP с паролем для документа."
         },
         {
           "type": "example",
-          "text": "add files to an existing zip archive",
+          "text": "запросить пароль при упаковке конфиденциального PDF в zip",
+          "command": "zip -e secure.zip confidential.pdf",
+          "explanation": "Создать ZIP с паролем для документа."
+        },
+        {
+          "type": "example",
+          "text": "добавить файл в существующий ZIP-архив",
           "command": "zip archive.zip newfile.txt",
-          "explanation": "Appends newfile.txt to the existing archive"
+          "explanation": "Добавить файл в существующий ZIP-архив."
         },
         {
           "type": "example",
-          "text": "create a zip excluding certain file patterns",
+          "text": "дополнить archive.zip новым файлом без создания отдельного архива",
+          "command": "zip archive.zip newfile.txt",
+          "explanation": "Добавить файл в существующий ZIP-архив."
+        },
+        {
+          "type": "example",
+          "text": "упаковать проект в ZIP, исключив пути с .git и файлы .DS_Store",
           "command": "zip -r project.zip project/ -x '*.git*' '*.DS_Store'",
-          "explanation": "Zips the project directory while excluding git files and macOS metadata"
+          "explanation": "Упаковать проект в ZIP, исключив пути с .git и файлы .DS_Store."
+        },
+        {
+          "type": "example",
+          "text": "создать архив папки без совпадений с масками *.git* и *.DS_Store",
+          "command": "zip -r project.zip project/ -x '*.git*' '*.DS_Store'",
+          "explanation": "Упаковать проект в ZIP, исключив пути с .git и файлы .DS_Store."
         }
       ]
     },
     {
       "name": "unzip",
       "synopsis": "unzip [options] zipfile [file ...] [-d dir]",
-      "description": "Extract files from a zip archive",
+      "description": "Извлечение файлов из ZIP-архивов",
       "patterns": [
         {
           "type": "example",
-          "text": "extract all files from a zip archive",
+          "text": "распаковать все файлы из ZIP-архива",
           "command": "unzip archive.zip",
-          "explanation": "Extracts all contents into the current directory"
+          "explanation": "Распаковать все файлы из ZIP-архива."
         },
         {
           "type": "example",
-          "text": "extract a zip archive to a specific directory",
+          "text": "извлечь содержимое archive.zip в текущую папку",
+          "command": "unzip archive.zip",
+          "explanation": "Распаковать все файлы из ZIP-архива."
+        },
+        {
+          "type": "example",
+          "text": "распаковать ZIP в каталог /opt/app",
           "command": "unzip archive.zip -d /opt/app",
-          "explanation": "Extracts all contents into the /opt/app directory"
+          "explanation": "Распаковать ZIP в каталог /opt/app."
         },
         {
           "type": "example",
-          "text": "list contents of a zip file without extracting",
+          "text": "выбрать папку назначения для извлечения zip-архива",
+          "command": "unzip archive.zip -d /opt/app",
+          "explanation": "Распаковать ZIP в каталог /opt/app."
+        },
+        {
+          "type": "example",
+          "text": "показать список файлов ZIP без распаковки",
           "command": "unzip -l archive.zip",
-          "explanation": "Shows all files and their sizes inside the archive"
+          "explanation": "Показать список файлов ZIP без распаковки."
         },
         {
           "type": "example",
-          "text": "extract a single file from a zip archive",
+          "text": "посмотреть, что находится внутри archive.zip",
+          "command": "unzip -l archive.zip",
+          "explanation": "Показать список файлов ZIP без распаковки."
+        },
+        {
+          "type": "example",
+          "text": "извлечь только config.yaml из ZIP",
           "command": "unzip archive.zip config.yaml",
-          "explanation": "Extracts only config.yaml from the archive"
+          "explanation": "Извлечь только config.yaml из ZIP."
         },
         {
           "type": "example",
-          "text": "extract and overwrite existing files without prompting",
+          "text": "достать один указанный файл из zip-архива",
+          "command": "unzip archive.zip config.yaml",
+          "explanation": "Извлечь только config.yaml из ZIP."
+        },
+        {
+          "type": "example",
+          "text": "распаковать ZIP в /opt/app с перезаписью без подтверждения",
           "command": "unzip -o archive.zip -d /opt/app",
-          "explanation": "Overwrites existing files silently during extraction"
+          "explanation": "Распаковать ZIP в /opt/app с перезаписью без подтверждения."
+        },
+        {
+          "type": "example",
+          "text": "принудительно заменить существующие файлы при извлечении zip-архива",
+          "command": "unzip -o archive.zip -d /opt/app",
+          "explanation": "Распаковать ZIP в /opt/app с перезаписью без подтверждения."
         }
       ]
     },
     {
       "name": "7z",
       "synopsis": "7z [command] [options] archive [files ...]",
-      "description": "Compress and decompress files using the 7-Zip format with high compression",
+      "description": "Создание и распаковка архивов 7-Zip",
       "patterns": [
         {
           "type": "example",
-          "text": "create a 7z archive with maximum compression",
+          "text": "создать архив 7z с максимальным уровнем сжатия 9",
           "command": "7z a -mx=9 archive.7z /path/to/files",
-          "explanation": "Creates a 7z archive with the highest compression level"
+          "explanation": "Создать архив 7z с максимальным уровнем сжатия 9."
         },
         {
           "type": "example",
-          "text": "extract a 7z archive",
+          "text": "упаковать указанные файлы в 7-Zip с высокой степенью сжатия",
+          "command": "7z a -mx=9 archive.7z /path/to/files",
+          "explanation": "Создать архив 7z с максимальным уровнем сжатия 9."
+        },
+        {
+          "type": "example",
+          "text": "распаковать архив 7z с сохранением путей",
           "command": "7z x archive.7z",
-          "explanation": "Extracts all files preserving the directory structure"
+          "explanation": "Распаковать архив 7z с сохранением путей."
         },
         {
           "type": "example",
-          "text": "list contents of a 7z archive",
+          "text": "извлечь содержимое 7-Zip в текущую папку с исходной структурой",
+          "command": "7z x archive.7z",
+          "explanation": "Распаковать архив 7z с сохранением путей."
+        },
+        {
+          "type": "example",
+          "text": "показать содержимое архива 7z",
           "command": "7z l archive.7z",
-          "explanation": "Shows all files and their sizes inside the archive"
+          "explanation": "Показать содержимое архива 7z."
         },
         {
           "type": "example",
-          "text": "create a password-protected 7z archive",
+          "text": "вывести список файлов внутри 7-Zip без извлечения",
+          "command": "7z l archive.7z",
+          "explanation": "Показать содержимое архива 7z."
+        },
+        {
+          "type": "example",
+          "text": "создать архив 7z с паролем и зашифрованными именами файлов",
           "command": "7z a -p -mhe=on secure.7z sensitive-data/",
-          "explanation": "Encrypts the archive contents and the file names with a password"
+          "explanation": "Создать архив 7z с паролем и зашифрованными именами файлов."
         },
         {
           "type": "example",
-          "text": "extract a 7z archive to a specific directory",
+          "text": "упаковать секретную папку в 7-Zip со скрытием заголовков",
+          "command": "7z a -p -mhe=on secure.7z sensitive-data/",
+          "explanation": "Создать архив 7z с паролем и зашифрованными именами файлов."
+        },
+        {
+          "type": "example",
+          "text": "распаковать 7z в каталог /opt/extracted",
           "command": "7z x archive.7z -o/opt/extracted",
-          "explanation": "Extracts the archive contents into /opt/extracted"
+          "explanation": "Распаковать 7z в каталог /opt/extracted."
+        },
+        {
+          "type": "example",
+          "text": "извлечь 7-Zip в указанную выходную папку",
+          "command": "7z x archive.7z -o/opt/extracted",
+          "explanation": "Распаковать 7z в каталог /opt/extracted."
         }
       ]
     },
     {
       "name": "zcat",
       "synopsis": "zcat [file ...]",
-      "description": "View contents of gzip compressed files without extracting",
+      "description": "Вывод содержимого gzip-файлов без отдельной распаковки",
       "patterns": [
         {
           "type": "example",
-          "text": "view the contents of a compressed file without extracting",
+          "text": "вывести содержимое gzip-сжатого журнала без сохранения распакованной копии",
           "command": "zcat access.log.gz",
-          "explanation": "Outputs the decompressed content to the terminal"
+          "explanation": "Вывести содержимое gzip-сжатого журнала без сохранения распакованной копии."
         },
         {
           "type": "example",
-          "text": "pipe compressed file contents into another command",
+          "text": "прочитать текст access.log.gz прямо в стандартный вывод",
+          "command": "zcat access.log.gz",
+          "explanation": "Вывести содержимое gzip-сжатого журнала без сохранения распакованной копии."
+        },
+        {
+          "type": "example",
+          "text": "показать первые двадцать строк сжатого CSV",
           "command": "zcat data.csv.gz | head -20",
-          "explanation": "Shows the first 20 lines of the compressed CSV without extracting"
+          "explanation": "Показать первые двадцать строк сжатого CSV."
         },
         {
           "type": "example",
-          "text": "concatenate multiple compressed files",
+          "text": "разжать data.csv.gz в поток и вывести только начало",
+          "command": "zcat data.csv.gz | head -20",
+          "explanation": "Показать первые двадцать строк сжатого CSV."
+        },
+        {
+          "type": "example",
+          "text": "объединить содержимое двух gzip-файлов в один текстовый файл",
           "command": "zcat part1.gz part2.gz > combined.txt",
-          "explanation": "Decompresses and merges multiple gzipped files into one output"
+          "explanation": "Объединить содержимое двух gzip-файлов в один текстовый файл."
         },
         {
           "type": "example",
-          "text": "count lines in a compressed log file",
+          "text": "последовательно распаковать part1.gz и part2.gz в combined.txt",
+          "command": "zcat part1.gz part2.gz > combined.txt",
+          "explanation": "Объединить содержимое двух gzip-файлов в один текстовый файл."
+        },
+        {
+          "type": "example",
+          "text": "посчитать строки в сжатом системном журнале",
           "command": "zcat /var/log/syslog.1.gz | wc -l",
-          "explanation": "Counts lines in the compressed syslog without extracting to disk"
+          "explanation": "Посчитать строки в сжатом системном журнале."
+        },
+        {
+          "type": "example",
+          "text": "передать содержимое syslog.1.gz в wc -l без распаковки на диск",
+          "command": "zcat /var/log/syslog.1.gz | wc -l",
+          "explanation": "Посчитать строки в сжатом системном журнале."
         }
       ]
     },
     {
       "name": "zless",
       "synopsis": "zless [file ...]",
-      "description": "View compressed files page by page like the less command",
+      "description": "Постраничный просмотр сжатых файлов",
       "patterns": [
         {
           "type": "example",
-          "text": "browse a compressed log file interactively",
+          "text": "открыть сжатый системный журнал для постраничного просмотра",
           "command": "zless /var/log/syslog.1.gz",
-          "explanation": "Opens the compressed file in a pager for scrolling through content"
+          "explanation": "Открыть сжатый системный журнал для постраничного просмотра."
         },
         {
           "type": "example",
-          "text": "read a compressed documentation file",
+          "text": "пролистать syslog.1.gz через zless",
+          "command": "zless /var/log/syslog.1.gz",
+          "explanation": "Открыть сжатый системный журнал для постраничного просмотра."
+        },
+        {
+          "type": "example",
+          "text": "прочитать сжатый журнал изменений установленного пакета",
           "command": "zless /usr/share/doc/package/changelog.gz",
-          "explanation": "Views the compressed changelog without extracting it"
+          "explanation": "Прочитать сжатый журнал изменений установленного пакета."
         },
         {
           "type": "example",
-          "text": "page through a large compressed CSV file",
+          "text": "открыть документацию changelog.gz постранично без ручной распаковки",
+          "command": "zless /usr/share/doc/package/changelog.gz",
+          "explanation": "Прочитать сжатый журнал изменений установленного пакета."
+        },
+        {
+          "type": "example",
+          "text": "постранично просмотреть большой сжатый CSV",
           "command": "zless data-export.csv.gz",
-          "explanation": "Allows scrolling through the compressed data file interactively"
+          "explanation": "Постранично просмотреть большой сжатый CSV."
         },
         {
           "type": "example",
-          "text": "view a compressed text file with search capability",
+          "text": "пролистать data-export.csv.gz через просмотрщик zless",
+          "command": "zless data-export.csv.gz",
+          "explanation": "Постранично просмотреть большой сжатый CSV."
+        },
+        {
+          "type": "example",
+          "text": "просмотреть сжатый текстовый отчёт с возможностью поиска",
           "command": "zless report.txt.gz",
-          "explanation": "Opens the file in a pager where you can search with / like in less"
+          "explanation": "Просмотреть сжатый текстовый отчёт с возможностью поиска."
+        },
+        {
+          "type": "example",
+          "text": "открыть report.txt.gz в постраничном просмотрщике",
+          "command": "zless report.txt.gz",
+          "explanation": "Просмотреть сжатый текстовый отчёт с возможностью поиска."
         }
       ]
     },
     {
       "name": "zgrep",
       "synopsis": "zgrep [options] pattern [file ...]",
-      "description": "Search for patterns inside compressed files without extracting",
+      "description": "Поиск текста в сжатых файлах без отдельной распаковки",
       "patterns": [
         {
           "type": "example",
-          "text": "search for a pattern in a compressed log file",
+          "text": "найти ERROR в сжатом системном журнале",
           "command": "zgrep 'ERROR' /var/log/syslog.1.gz",
-          "explanation": "Finds all lines containing ERROR in the compressed syslog"
+          "explanation": "Найти ERROR в сжатом системном журнале."
         },
         {
           "type": "example",
-          "text": "search case-insensitively in a compressed file",
+          "text": "показать строки с ошибками ERROR из файла syslog.1.gz",
+          "command": "zgrep 'ERROR' /var/log/syslog.1.gz",
+          "explanation": "Найти ERROR в сжатом системном журнале."
+        },
+        {
+          "type": "example",
+          "text": "найти warning в gzip-файле без учёта регистра",
           "command": "zgrep -i 'warning' access.log.gz",
-          "explanation": "Matches warning, WARNING, Warning, etc. in the compressed file"
+          "explanation": "Найти warning в gzip-файле без учёта регистра."
         },
         {
           "type": "example",
-          "text": "count matching lines in each compressed log file",
+          "text": "поискать предупреждения в access.log.gz независимо от размера букв",
+          "command": "zgrep -i 'warning' access.log.gz",
+          "explanation": "Найти warning в gzip-файле без учёта регистра."
+        },
+        {
+          "type": "example",
+          "text": "посчитать строки с 404 в каждом сжатом журнале nginx",
           "command": "zgrep -c '404' /var/log/nginx/access.log.*.gz",
-          "explanation": "Counts lines containing 404 in each compressed access log; multiple matches on one line count once"
+          "explanation": "Считает строки с 404 в каждом сжатом журнале; несколько совпадений в одной строке учитываются как одно."
         },
         {
           "type": "example",
-          "text": "search for a regex pattern across multiple compressed files",
+          "text": "вывести число подходящих строк по файлам access.log.*.gz",
+          "command": "zgrep -c '404' /var/log/nginx/access.log.*.gz",
+          "explanation": "Считает строки с 404 в каждом сжатом журнале; несколько совпадений в одной строке учитываются как одно."
+        },
+        {
+          "type": "example",
+          "text": "найти error, fail или timeout в сжатых журналах приложения",
           "command": "zgrep -E 'error|fail|timeout' /var/log/app/*.gz",
-          "explanation": "Searches for any of the three patterns across all compressed log files"
+          "explanation": "Найти error, fail или timeout в сжатых журналах приложения."
         },
         {
           "type": "example",
-          "text": "show line numbers of matches in a compressed file",
+          "text": "поискать одну из трёх ошибок по регулярному выражению в файлах gz",
+          "command": "zgrep -E 'error|fail|timeout' /var/log/app/*.gz",
+          "explanation": "Найти error, fail или timeout в сжатых журналах приложения."
+        },
+        {
+          "type": "example",
+          "text": "показать номера строк с segfault в сжатом журнале ядра",
           "command": "zgrep -n 'segfault' kern.log.gz",
-          "explanation": "Displays matching lines with their line numbers in the original file"
+          "explanation": "Показать номера строк с segfault в сжатом журнале ядра."
+        },
+        {
+          "type": "example",
+          "text": "найти segfault в kern.log.gz с нумерацией совпавших строк",
+          "command": "zgrep -n 'segfault' kern.log.gz",
+          "explanation": "Показать номера строк с segfault в сжатом журнале ядра."
         }
       ]
     },
     {
       "name": "rar",
       "synopsis": "rar [command] [options] archive [files ...]",
-      "description": "Create and manage RAR archives",
+      "description": "Создание архивов RAR и управление ими",
       "patterns": [
         {
           "type": "example",
-          "text": "create a RAR archive of a directory",
+          "text": "создать RAR-архив указанного каталога",
           "command": "rar a archive.rar /path/to/directory/",
-          "explanation": "Compresses the directory into archive.rar"
+          "explanation": "Создать RAR-архив указанного каталога."
         },
         {
           "type": "example",
-          "text": "create a password-protected RAR archive",
+          "text": "добавить папку в новый архив archive.rar",
+          "command": "rar a archive.rar /path/to/directory/",
+          "explanation": "Создать RAR-архив указанного каталога."
+        },
+        {
+          "type": "example",
+          "text": "создать RAR с паролем и зашифрованными заголовками",
           "command": "rar a -hp archive.rar sensitive-files/",
-          "explanation": "Creates an encrypted archive where both data and filenames are protected"
+          "explanation": "Создать RAR с паролем и зашифрованными заголовками."
         },
         {
           "type": "example",
-          "text": "create a multi-volume RAR archive split into parts",
+          "text": "упаковать конфиденциальные файлы в RAR со скрытием их имён",
+          "command": "rar a -hp archive.rar sensitive-files/",
+          "explanation": "Создать RAR с паролем и зашифрованными заголовками."
+        },
+        {
+          "type": "example",
+          "text": "создать многотомный RAR с частями по 100 МБ",
           "command": "rar a -v100m backup.rar /data/",
-          "explanation": "Splits the archive into 100 MB volumes for easier transport"
+          "explanation": "Создать многотомный RAR с частями по 100 МБ."
         },
         {
           "type": "example",
-          "text": "add recovery records to a RAR archive for error correction",
+          "text": "разбить архив папки /data на тома заданного размера",
+          "command": "rar a -v100m backup.rar /data/",
+          "explanation": "Создать многотомный RAR с частями по 100 МБ."
+        },
+        {
+          "type": "example",
+          "text": "создать RAR с пяти процентами данных для восстановления",
           "command": "rar a -rr5% archive.rar important-data/",
-          "explanation": "Adds 5% recovery data so the archive can repair minor corruption"
+          "explanation": "Создать RAR с пяти процентами данных для восстановления."
+        },
+        {
+          "type": "example",
+          "text": "добавить восстановительную запись 5% к архиву важных файлов",
+          "command": "rar a -rr5% archive.rar important-data/",
+          "explanation": "Создать RAR с пяти процентами данных для восстановления."
         }
       ]
     },
     {
       "name": "unrar",
       "synopsis": "unrar [command] [options] archive [files ...]",
-      "description": "Extract files from RAR archives",
+      "description": "Извлечение файлов из архивов RAR",
       "patterns": [
         {
           "type": "example",
-          "text": "extract all files from a RAR archive",
+          "text": "распаковать RAR с сохранением структуры папок",
           "command": "unrar x archive.rar",
-          "explanation": "Extracts all files preserving the full directory structure"
+          "explanation": "Распаковать RAR с сохранением структуры папок."
         },
         {
           "type": "example",
-          "text": "extract a RAR archive to a specific directory",
+          "text": "извлечь файлы archive.rar вместе с исходными путями",
+          "command": "unrar x archive.rar",
+          "explanation": "Распаковать RAR с сохранением структуры папок."
+        },
+        {
+          "type": "example",
+          "text": "распаковать RAR в каталог /opt/output",
           "command": "unrar x archive.rar /opt/output/",
-          "explanation": "Extracts all contents into the /opt/output directory"
+          "explanation": "Распаковать RAR в каталог /opt/output."
         },
         {
           "type": "example",
-          "text": "list contents of a RAR archive",
+          "text": "извлечь содержимое RAR-архива в заданную папку",
+          "command": "unrar x archive.rar /opt/output/",
+          "explanation": "Распаковать RAR в каталог /opt/output."
+        },
+        {
+          "type": "example",
+          "text": "посмотреть список файлов внутри RAR",
           "command": "unrar l archive.rar",
-          "explanation": "Shows all files and their sizes without extracting"
+          "explanation": "Посмотреть список файлов внутри RAR."
         },
         {
           "type": "example",
-          "text": "test the integrity of a RAR archive",
+          "text": "вывести содержимое archive.rar без извлечения",
+          "command": "unrar l archive.rar",
+          "explanation": "Посмотреть список файлов внутри RAR."
+        },
+        {
+          "type": "example",
+          "text": "проверить целостность RAR-архива",
           "command": "unrar t archive.rar",
-          "explanation": "Verifies that all files in the archive can be extracted correctly"
+          "explanation": "Проверить целостность RAR-архива."
         },
         {
           "type": "example",
-          "text": "extract files without preserving directory paths",
+          "text": "протестировать archive.rar на ошибки чтения и распаковки",
+          "command": "unrar t archive.rar",
+          "explanation": "Проверить целостность RAR-архива."
+        },
+        {
+          "type": "example",
+          "text": "извлечь все файлы из RAR в одну папку без исходных путей",
           "command": "unrar e archive.rar /opt/flat/",
-          "explanation": "Extracts all files into a single directory ignoring archive folder structure"
+          "explanation": "Извлечь все файлы из RAR в одну папку без исходных путей."
+        },
+        {
+          "type": "example",
+          "text": "распаковать archive.rar в /opt/flat с отбрасыванием вложенных каталогов",
+          "command": "unrar e archive.rar /opt/flat/",
+          "explanation": "Извлечь все файлы из RAR в одну папку без исходных путей."
         }
       ]
     },
     {
       "name": "pigz",
       "synopsis": "pigz [options] [file ...]",
-      "description": "Parallel implementation of gzip that uses multiple CPU cores",
+      "description": "Параллельное сжатие gzip на нескольких ядрах CPU",
       "patterns": [
         {
           "type": "example",
-          "text": "compress a large file using all CPU cores",
+          "text": "сжать большой SQL-файл через многопоточный pigz",
           "command": "pigz largefile.sql",
-          "explanation": "Compresses the file using all available cores for much faster speed"
+          "explanation": "Сжать большой SQL-файл через многопоточный pigz."
         },
         {
           "type": "example",
-          "text": "compress a file with a specific number of threads",
+          "text": "упаковать данные в gzip-формат с использованием доступных потоков pigz",
+          "command": "pigz largefile.sql",
+          "explanation": "Сжать большой SQL-файл через многопоточный pigz."
+        },
+        {
+          "type": "example",
+          "text": "сжать дамп базы через pigz в четыре потока",
           "command": "pigz -p 4 database.dump",
-          "explanation": "Uses 4 threads for parallel compression"
+          "explanation": "Сжать дамп базы через pigz в четыре потока."
         },
         {
           "type": "example",
-          "text": "decompress a gzip file with pigz",
+          "text": "ограничить число потоков параллельного gzip-сжатия значением 4",
+          "command": "pigz -p 4 database.dump",
+          "explanation": "Сжать дамп базы через pigz в четыре потока."
+        },
+        {
+          "type": "example",
+          "text": "распаковать gzip-файл через pigz",
           "command": "pigz -d backup.sql.gz",
-          "explanation": "Decompresses backup.sql.gz; deflate decompression itself normally uses one thread"
+          "explanation": "Распаковывает backup.sql.gz; сама распаковка deflate обычно использует один поток."
         },
         {
           "type": "example",
-          "text": "compress with maximum compression and keep the original",
+          "text": "разжать резервную копию backup.sql.gz утилитой pigz",
+          "command": "pigz -d backup.sql.gz",
+          "explanation": "Распаковывает backup.sql.gz; сама распаковка deflate обычно использует один поток."
+        },
+        {
+          "type": "example",
+          "text": "сжать журнал через pigz с уровнем 9 и сохранить оригинал",
           "command": "pigz -9 -k huge-log.txt",
-          "explanation": "Best compression using all cores while preserving the original file"
+          "explanation": "Сжать журнал через pigz с уровнем 9 и сохранить оригинал."
         },
         {
           "type": "example",
-          "text": "use pigz with tar for fast parallel archive creation",
+          "text": "создать сильно сжатую gzip-копию файла без удаления исходных данных",
+          "command": "pigz -9 -k huge-log.txt",
+          "explanation": "Сжать журнал через pigz с уровнем 9 и сохранить оригинал."
+        },
+        {
+          "type": "example",
+          "text": "создать tar.gz папки /data с параллельным gzip-сжатием",
           "command": "tar cf - /data | pigz > backup.tar.gz",
-          "explanation": "Pipes tar output through pigz for parallel gzip compression"
+          "explanation": "Создать tar.gz папки /data с параллельным gzip-сжатием."
+        },
+        {
+          "type": "example",
+          "text": "передать tar-поток в pigz и записать резервный архив",
+          "command": "tar cf - /data | pigz > backup.tar.gz",
+          "explanation": "Создать tar.gz папки /data с параллельным gzip-сжатием."
         }
       ]
     },
     {
       "name": "lz4",
       "synopsis": "lz4 [options] [file ...]",
-      "description": "Extremely fast compression and decompression tool",
+      "description": "Быстрое сжатие и распаковка алгоритмом LZ4",
       "patterns": [
         {
           "type": "example",
-          "text": "compress a file extremely fast with lz4",
+          "text": "сжать двоичный файл алгоритмом LZ4",
           "command": "lz4 largefile.bin",
-          "explanation": "Compresses the file at very high speed, creating largefile.bin.lz4"
+          "explanation": "Сжать двоичный файл алгоритмом LZ4."
         },
         {
           "type": "example",
-          "text": "decompress an lz4 file",
+          "text": "быстро упаковать largefile.bin в формат lz4",
+          "command": "lz4 largefile.bin",
+          "explanation": "Сжать двоичный файл алгоритмом LZ4."
+        },
+        {
+          "type": "example",
+          "text": "распаковать файл lz4",
           "command": "lz4 -d archive.lz4",
-          "explanation": "Decompresses the file back to its original form"
+          "explanation": "Распаковать файл lz4."
         },
         {
           "type": "example",
-          "text": "compress with higher ratio at the cost of some speed",
+          "text": "разжать archive.lz4 в режиме декомпрессии",
+          "command": "lz4 -d archive.lz4",
+          "explanation": "Распаковать файл lz4."
+        },
+        {
+          "type": "example",
+          "text": "сжать данные через LZ4 с уровнем 9",
           "command": "lz4 -9 data.bin",
-          "explanation": "Uses the highest compression level available in lz4"
+          "explanation": "Сжать данные через LZ4 с уровнем 9."
         },
         {
           "type": "example",
-          "text": "compress and keep the original file",
+          "text": "повысить степень сжатия lz4 ценой скорости обработки",
+          "command": "lz4 -9 data.bin",
+          "explanation": "Сжать данные через LZ4 с уровнем 9."
+        },
+        {
+          "type": "example",
+          "text": "сжать образ через LZ4 и сохранить исходный файл",
           "command": "lz4 -k snapshot.img",
-          "explanation": "Creates snapshot.img.lz4 while keeping the original file"
+          "explanation": "Сжать образ через LZ4 и сохранить исходный файл."
         },
         {
           "type": "example",
-          "text": "benchmark lz4 compression speed on a file",
+          "text": "создать lz4-копию snapshot.img без удаления оригинала",
+          "command": "lz4 -k snapshot.img",
+          "explanation": "Сжать образ через LZ4 и сохранить исходный файл."
+        },
+        {
+          "type": "example",
+          "text": "измерить скорость сжатия LZ4 на тестовом файле",
           "command": "lz4 -b testfile.bin",
-          "explanation": "Runs a compression and decompression speed benchmark"
+          "explanation": "Измерить скорость сжатия LZ4 на тестовом файле."
+        },
+        {
+          "type": "example",
+          "text": "запустить встроенный тест производительности lz4 для testfile.bin",
+          "command": "lz4 -b testfile.bin",
+          "explanation": "Измерить скорость сжатия LZ4 на тестовом файле."
         }
       ]
     },
     {
       "name": "zstd",
       "synopsis": "zstd [options] [file ...]",
-      "description": "Compress and decompress files using the Zstandard algorithm",
+      "description": "Сжатие и распаковка алгоритмом Zstandard",
       "patterns": [
         {
           "type": "example",
-          "text": "compress a file with zstandard",
+          "text": "сжать двоичный файл алгоритмом Zstandard",
           "command": "zstd datafile.bin",
-          "explanation": "Creates datafile.bin.zst with a good balance of speed and compression"
+          "explanation": "Сжать двоичный файл алгоритмом Zstandard."
         },
         {
           "type": "example",
-          "text": "decompress a zstandard file",
+          "text": "упаковать datafile.bin в формат zst",
+          "command": "zstd datafile.bin",
+          "explanation": "Сжать двоичный файл алгоритмом Zstandard."
+        },
+        {
+          "type": "example",
+          "text": "распаковать файл zst",
           "command": "zstd -d archive.zst",
-          "explanation": "Decompresses the file back to its original form"
+          "explanation": "Распаковать файл zst."
         },
         {
           "type": "example",
-          "text": "compress with the highest regular zstd compression level",
+          "text": "разжать архив Zstandard в обычный файл",
+          "command": "zstd -d archive.zst",
+          "explanation": "Распаковать файл zst."
+        },
+        {
+          "type": "example",
+          "text": "сжать SQL-файл через zstd с уровнем 19",
           "command": "zstd -19 database.sql",
-          "explanation": "Uses regular level 19; higher levels require the separate --ultra option"
+          "explanation": "Использует обычный уровень 19; более высокие уровни требуют отдельного параметра --ultra."
         },
         {
           "type": "example",
-          "text": "compress using multiple threads for speed",
+          "text": "упаковать базу с максимальным обычным уровнем сжатия Zstandard",
+          "command": "zstd -19 database.sql",
+          "explanation": "Использует обычный уровень 19; более высокие уровни требуют отдельного параметра --ultra."
+        },
+        {
+          "type": "example",
+          "text": "сжать tar-файл через zstd с использованием всех доступных ядер",
           "command": "zstd -T0 hugefile.tar",
-          "explanation": "Uses all available CPU cores for parallel compression"
+          "explanation": "Сжать tar-файл через zstd с использованием всех доступных ядер."
         },
         {
           "type": "example",
-          "text": "compress and keep the original file",
+          "text": "включить автоматическое число рабочих потоков для Zstandard",
+          "command": "zstd -T0 hugefile.tar",
+          "explanation": "Сжать tar-файл через zstd с использованием всех доступных ядер."
+        },
+        {
+          "type": "example",
+          "text": "сжать важные данные через zstd с сохранением исходника",
           "command": "zstd -k important-data.bin",
-          "explanation": "Creates the compressed file while preserving the original"
+          "explanation": "Сжать важные данные через zstd с сохранением исходника."
         },
         {
           "type": "example",
-          "text": "use zstd with tar for fast compressed archives",
+          "text": "создать файл zst, не удаляя первоначальный двоичный файл",
+          "command": "zstd -k important-data.bin",
+          "explanation": "Сжать важные данные через zstd с сохранением исходника."
+        },
+        {
+          "type": "example",
+          "text": "создать tar-архив папки /data со сжатием Zstandard",
           "command": "tar --zstd -cf backup.tar.zst /data/",
-          "explanation": "Creates a tar archive compressed with zstandard for fast speed and good ratio"
+          "explanation": "Создать tar-архив папки /data со сжатием Zstandard."
+        },
+        {
+          "type": "example",
+          "text": "упаковать каталог в резервный файл tar.zst через встроенный режим tar",
+          "command": "tar --zstd -cf backup.tar.zst /data/",
+          "explanation": "Создать tar-архив папки /data со сжатием Zstandard."
         }
       ]
     }

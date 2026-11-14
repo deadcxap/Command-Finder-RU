@@ -4,152 +4,277 @@
     {
       "name": "ls",
       "synopsis": "ls [options] [file...]",
-      "description": "List directory contents",
+      "description": "Просмотр содержимого каталога",
       "patterns": [
         {
           "type": "example",
-          "text": "list all files in the current directory",
+          "text": "показать содержимое текущей папки",
           "command": "ls",
-          "explanation": "Lists files and directories in the current working directory"
+          "explanation": "Показать содержимое текущей папки."
         },
         {
           "type": "example",
-          "text": "show hidden files and dotfiles",
+          "text": "вывести список нескрытых файлов и каталогов здесь",
+          "command": "ls",
+          "explanation": "Показать содержимое текущей папки."
+        },
+        {
+          "type": "example",
+          "text": "показать содержимое текущей папки, включая скрытые файлы",
           "command": "ls -a",
-          "explanation": "The -a flag includes entries starting with a dot"
+          "explanation": "Показать содержимое текущей папки, включая скрытые файлы."
         },
         {
           "type": "example",
-          "text": "list files with details like size and permissions",
+          "text": "как увидеть скрытые файлы и папки здесь",
+          "command": "ls -a",
+          "explanation": "Показать содержимое текущей папки, включая скрытые файлы."
+        },
+        {
+          "type": "example",
+          "text": "показать файлы с правами доступа и понятными размерами",
           "command": "ls -lh",
-          "explanation": "Long format with human-readable file sizes"
+          "explanation": "Показать файлы с правами доступа и понятными размерами."
         },
         {
           "type": "example",
-          "text": "sort files by modification time newest first",
+          "text": "вывести подробный список содержимого текущей папки",
+          "command": "ls -lh",
+          "explanation": "Показать файлы с правами доступа и понятными размерами."
+        },
+        {
+          "type": "example",
+          "text": "отсортировать файлы по времени изменения, начиная с новых",
           "command": "ls -lt",
-          "explanation": "Long listing sorted by modification time, most recent first"
+          "explanation": "Отсортировать файлы по времени изменения, начиная с новых."
         },
         {
           "type": "example",
-          "text": "show only directories in current path",
+          "text": "показать подробный список содержимого папки от свежих изменений к старым",
+          "command": "ls -lt",
+          "explanation": "Отсортировать файлы по времени изменения, начиная с новых."
+        },
+        {
+          "type": "example",
+          "text": "показать только нескрытые папки в текущем каталоге",
           "command": "ls -d */",
-          "explanation": "Lists only directories by matching the trailing slash pattern"
+          "explanation": "Показать только нескрытые папки в текущем каталоге."
+        },
+        {
+          "type": "example",
+          "text": "вывести имена непосредственных подкаталогов без их содержимого",
+          "command": "ls -d */",
+          "explanation": "Показать только нескрытые папки в текущем каталоге."
         }
       ]
     },
     {
       "name": "cp",
       "synopsis": "cp [options] source dest",
-      "description": "Copy files and directories",
+      "description": "Копирование файлов и каталогов",
       "patterns": [
         {
           "type": "example",
-          "text": "copy a file to another location",
+          "text": "скопировать файл в другой файл",
           "command": "cp source.txt destination.txt",
-          "explanation": "Creates a duplicate of the source file at the destination path"
+          "explanation": "Скопировать файл в другой файл."
         },
         {
           "type": "example",
-          "text": "copy a folder and everything inside it recursively",
+          "text": "сделать копию исходного файла по указанному пути",
+          "command": "cp source.txt destination.txt",
+          "explanation": "Скопировать файл в другой файл."
+        },
+        {
+          "type": "example",
+          "text": "скопировать папку со всем содержимым",
           "command": "cp -r src_dir/ dest_dir/",
-          "explanation": "The -r flag copies directories and their contents recursively"
+          "explanation": "Скопировать папку со всем содержимым."
         },
         {
           "type": "example",
-          "text": "copy a file but don't overwrite if destination exists",
+          "text": "как скопировать каталог вместе с вложенными файлами и папками",
+          "command": "cp -r src_dir/ dest_dir/",
+          "explanation": "Скопировать папку со всем содержимым."
+        },
+        {
+          "type": "example",
+          "text": "скопировать файл без перезаписи уже существующего назначения",
           "command": "cp -n source.txt destination.txt",
-          "explanation": "The -n flag prevents overwriting existing files"
+          "explanation": "Скопировать файл без перезаписи уже существующего назначения."
         },
         {
           "type": "example",
-          "text": "copy files preserving permissions and timestamps",
+          "text": "сделать копию файла, пропуская совпадающее имя в месте назначения",
+          "command": "cp -n source.txt destination.txt",
+          "explanation": "Скопировать файл без перезаписи уже существующего назначения."
+        },
+        {
+          "type": "example",
+          "text": "скопировать файл с сохранением прав, владельца и временных меток",
           "command": "cp -p source.txt destination.txt",
-          "explanation": "The -p flag preserves mode, ownership, and timestamps"
+          "explanation": "Скопировать файл с сохранением прав, владельца и временных меток."
         },
         {
           "type": "example",
-          "text": "copy multiple files into a directory",
+          "text": "перенести копию файла вместе с его атрибутами доступа и временем",
+          "command": "cp -p source.txt destination.txt",
+          "explanation": "Скопировать файл с сохранением прав, владельца и временных меток."
+        },
+        {
+          "type": "example",
+          "text": "скопировать несколько файлов в одну папку",
           "command": "cp file1.txt file2.txt file3.txt target_dir/",
-          "explanation": "Copies multiple source files into the target directory"
+          "explanation": "Скопировать несколько файлов в одну папку."
+        },
+        {
+          "type": "example",
+          "text": "поместить копии трёх указанных файлов в целевой каталог",
+          "command": "cp file1.txt file2.txt file3.txt target_dir/",
+          "explanation": "Скопировать несколько файлов в одну папку."
         }
       ]
     },
     {
       "name": "mv",
       "synopsis": "mv [options] source dest",
-      "description": "Move or rename files and directories",
+      "description": "Перемещение и переименование файлов и каталогов",
       "patterns": [
         {
           "type": "example",
-          "text": "rename a file",
+          "text": "переименовать файл",
           "command": "mv oldname.txt newname.txt",
-          "explanation": "Renames a file by moving it to a new name in the same directory"
+          "explanation": "Переименовать файл."
         },
         {
           "type": "example",
-          "text": "move a file into a different directory",
+          "text": "как изменить имя файла в терминале",
+          "command": "mv oldname.txt newname.txt",
+          "explanation": "Переименовать файл."
+        },
+        {
+          "type": "example",
+          "text": "переместить файл в другой каталог",
           "command": "mv file.txt /path/to/directory/",
-          "explanation": "Relocates the file to the specified directory"
+          "explanation": "Переместить файл в другой каталог."
         },
         {
           "type": "example",
-          "text": "move a file but ask before overwriting",
+          "text": "перенести файл в указанную папку",
+          "command": "mv file.txt /path/to/directory/",
+          "explanation": "Переместить файл в другой каталог."
+        },
+        {
+          "type": "example",
+          "text": "переместить файл с подтверждением перезаписи",
           "command": "mv -i source.txt destination.txt",
-          "explanation": "The -i flag prompts before overwriting an existing file"
+          "explanation": "Переместить файл с подтверждением перезаписи."
         },
         {
           "type": "example",
-          "text": "rename a directory",
+          "text": "спросить разрешение, прежде чем заменить файл при перемещении",
+          "command": "mv -i source.txt destination.txt",
+          "explanation": "Переместить файл с подтверждением перезаписи."
+        },
+        {
+          "type": "example",
+          "text": "переименовать папку",
           "command": "mv old_dir/ new_dir/",
-          "explanation": "Renames a directory by moving it to a new name"
+          "explanation": "Переименовать папку."
         },
         {
           "type": "example",
-          "text": "move all text files to a folder",
+          "text": "изменить название каталога",
+          "command": "mv old_dir/ new_dir/",
+          "explanation": "Переименовать папку."
+        },
+        {
+          "type": "example",
+          "text": "переместить файлы с расширением txt в папку",
           "command": "mv *.txt target_dir/",
-          "explanation": "Uses a glob pattern to move all .txt files into the target directory"
+          "explanation": "Переместить файлы с расширением txt в папку."
+        },
+        {
+          "type": "example",
+          "text": "собрать все нескрытые текстовые файлы текущего каталога в другом месте",
+          "command": "mv *.txt target_dir/",
+          "explanation": "Переместить файлы с расширением txt в папку."
         }
       ]
     },
     {
       "name": "rm",
       "synopsis": "rm [options] file...",
-      "description": "Remove files or directories",
+      "description": "Удаление файлов и каталогов",
       "patterns": [
         {
           "type": "example",
-          "text": "delete a file",
+          "text": "удалить указанный файл",
           "command": "rm file.txt",
-          "explanation": "Permanently removes the specified file",
+          "explanation": "Удалить указанный файл.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "delete a directory and all its contents",
+          "text": "стереть файл по его имени",
+          "command": "rm file.txt",
+          "explanation": "Удалить указанный файл.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "принудительно удалить папку со всем содержимым",
           "command": "rm -rf directory/",
-          "explanation": "Recursively and forcefully removes a directory and everything in it",
+          "explanation": "Принудительно удалить папку со всем содержимым.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "remove a file with confirmation prompt",
+          "text": "убрать каталог и вложенные файлы рекурсивно без запросов",
+          "command": "rm -rf directory/",
+          "explanation": "Принудительно удалить папку со всем содержимым.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "удалить файл с подтверждением",
           "command": "rm -i file.txt",
-          "explanation": "The -i flag asks for confirmation before deleting",
+          "explanation": "Удалить файл с подтверждением.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "remove all log files in the current directory",
+          "text": "как удалить файл, чтобы сначала спросило разрешение",
+          "command": "rm -i file.txt",
+          "explanation": "Удалить файл с подтверждением.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "удалить файлы с расширением log в текущей папке",
           "command": "rm *.log",
-          "explanation": "Uses a glob pattern to delete all files ending in .log",
+          "explanation": "Удалить файлы с расширением log в текущей папке.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "delete an empty directory",
+          "text": "стереть нескрытые журналы с именами, заканчивающимися на .log",
+          "command": "rm *.log",
+          "explanation": "Удалить файлы с расширением log в текущей папке.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "удалить пустую папку через rm",
           "command": "rm -d empty_dir/",
-          "explanation": "The -d flag removes empty directories",
+          "explanation": "Удалить пустую папку через rm.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "убрать каталог, только если в нём ничего нет",
+          "command": "rm -d empty_dir/",
+          "explanation": "Удалить пустую папку через rm.",
           "destructive": true
         }
       ]
@@ -157,78 +282,143 @@
     {
       "name": "mkdir",
       "synopsis": "mkdir [options] directory...",
-      "description": "Create directories",
+      "description": "Создание каталогов",
       "patterns": [
         {
           "type": "example",
-          "text": "create a new folder",
+          "text": "создать новую папку",
           "command": "mkdir new_folder",
-          "explanation": "Creates a single directory with the given name"
+          "explanation": "Создать новую папку."
         },
         {
           "type": "example",
-          "text": "create nested directories including parent folders that don't exist",
+          "text": "сделать каталог с указанным именем",
+          "command": "mkdir new_folder",
+          "explanation": "Создать новую папку."
+        },
+        {
+          "type": "example",
+          "text": "создать папку вместе со всеми недостающими родительскими каталогами",
           "command": "mkdir -p path/to/deep/folder",
-          "explanation": "The -p flag creates intermediate parent directories as needed"
+          "explanation": "Создать папку вместе со всеми недостающими родительскими каталогами."
         },
         {
           "type": "example",
-          "text": "create a directory with specific permissions",
+          "text": "как создать вложенные папки за одну команду",
+          "command": "mkdir -p path/to/deep/folder",
+          "explanation": "Создать папку вместе со всеми недостающими родительскими каталогами."
+        },
+        {
+          "type": "example",
+          "text": "создать каталог с правами 755",
           "command": "mkdir -m 755 my_dir",
-          "explanation": "The -m flag sets the directory permissions on creation"
+          "explanation": "Создать каталог с правами 755."
         },
         {
           "type": "example",
-          "text": "create multiple directories at once",
+          "text": "сделать папку, доступную для чтения и прохода всем, а для записи владельцу",
+          "command": "mkdir -m 755 my_dir",
+          "explanation": "Создать каталог с правами 755."
+        },
+        {
+          "type": "example",
+          "text": "создать сразу несколько папок",
           "command": "mkdir dir1 dir2 dir3",
-          "explanation": "Creates several directories in a single command"
+          "explanation": "Создать сразу несколько папок."
         },
         {
           "type": "example",
-          "text": "make a full directory tree structure in one command",
+          "text": "сделать три указанных каталога одной командой",
+          "command": "mkdir dir1 dir2 dir3",
+          "explanation": "Создать сразу несколько папок."
+        },
+        {
+          "type": "example",
+          "text": "создать папки src, tests и docs внутри project",
           "command": "mkdir -p project/{src,tests,docs}",
-          "explanation": "Uses brace expansion with -p to create a project directory structure"
+          "explanation": "Создать папки src, tests и docs внутри project."
+        },
+        {
+          "type": "example",
+          "text": "сделать структуру проекта с каталогами исходников, тестов и документации",
+          "command": "mkdir -p project/{src,tests,docs}",
+          "explanation": "Создать папки src, tests и docs внутри project."
         }
       ]
     },
     {
       "name": "rmdir",
       "synopsis": "rmdir [options] directory...",
-      "description": "Remove empty directories",
+      "description": "Удаление пустых каталогов",
       "patterns": [
         {
           "type": "example",
-          "text": "remove an empty directory",
+          "text": "удалить пустой каталог",
           "command": "rmdir empty_dir",
-          "explanation": "Deletes a directory only if it contains no files",
+          "explanation": "Удалить пустой каталог.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "remove nested empty directories from the bottom up",
+          "text": "убрать папку без содержимого",
+          "command": "rmdir empty_dir",
+          "explanation": "Удалить пустой каталог.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "удалить цепочку пустых каталогов снизу вверх",
           "command": "rmdir -p a/b/c",
-          "explanation": "Removes c, then b, then a if each becomes empty after the child is removed",
+          "explanation": "Удалить цепочку пустых каталогов снизу вверх.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "remove an empty directory while ignoring failures caused by non-empty directories",
+          "text": "убрать пустую папку и затем её пустые родительские директории",
+          "command": "rmdir -p a/b/c",
+          "explanation": "Удалить цепочку пустых каталогов снизу вверх.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "удалить папку, если она пуста, и не ругаться на непустую",
           "command": "rmdir --ignore-fail-on-non-empty dir",
-          "explanation": "Suppresses errors when the directory is not empty",
+          "explanation": "Удалить папку, если она пуста, и не ругаться на непустую.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "clean up a chain of empty parent directories",
+          "text": "попробовать убрать каталог, игнорируя отказ из-за содержимого",
+          "command": "rmdir --ignore-fail-on-non-empty dir",
+          "explanation": "Удалить папку, если она пуста, и не ругаться на непустую.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "очистить цепочку пустых родительских папок",
           "command": "rmdir -p path/to/empty/dirs",
-          "explanation": "Removes each directory component if it is empty after its child is removed",
+          "explanation": "Очистить цепочку пустых родительских папок.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "remove multiple empty directories at once",
+          "text": "удалить конечный пустой каталог вместе с опустевшими предками",
+          "command": "rmdir -p path/to/empty/dirs",
+          "explanation": "Очистить цепочку пустых родительских папок.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "удалить несколько пустых папок сразу",
           "command": "rmdir dir1 dir2 dir3",
-          "explanation": "Removes several empty directories in a single command",
+          "explanation": "Удалить несколько пустых папок сразу.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "убрать три указанных каталога, если они не содержат файлов",
+          "command": "rmdir dir1 dir2 dir3",
+          "explanation": "Удалить несколько пустых папок сразу.",
           "destructive": true
         }
       ]
@@ -236,627 +426,1136 @@
     {
       "name": "touch",
       "synopsis": "touch [options] file...",
-      "description": "Create empty files or update file timestamps",
+      "description": "Создание пустых файлов и изменение временных меток",
       "patterns": [
         {
           "type": "example",
-          "text": "create an empty file",
+          "text": "создать пустой файл или обновить время существующего",
           "command": "touch newfile.txt",
-          "explanation": "Creates the file if it does not exist; updates its timestamp if it does"
+          "explanation": "Создать пустой файл или обновить время существующего."
         },
         {
           "type": "example",
-          "text": "update the modification time of a file to now",
+          "text": "сделать файл с указанным именем, не меняя его содержимое при наличии",
+          "command": "touch newfile.txt",
+          "explanation": "Создать пустой файл или обновить время существующего."
+        },
+        {
+          "type": "example",
+          "text": "обновить время доступа и изменения файла на текущее",
           "command": "touch existing_file.txt",
-          "explanation": "Sets the access and modification times to the current time"
+          "explanation": "Обновить время доступа и изменения файла на текущее."
         },
         {
           "type": "example",
-          "text": "create multiple empty files at once",
+          "text": "поставить существующему файлу сегодняшние временные метки",
+          "command": "touch existing_file.txt",
+          "explanation": "Обновить время доступа и изменения файла на текущее."
+        },
+        {
+          "type": "example",
+          "text": "создать несколько пустых файлов сразу",
           "command": "touch file1.txt file2.txt file3.txt",
-          "explanation": "Creates several empty files in a single command"
+          "explanation": "Создать несколько пустых файлов сразу."
         },
         {
           "type": "example",
-          "text": "set a specific timestamp on a file",
+          "text": "подготовить три файла, обновив время у уже существующих",
+          "command": "touch file1.txt file2.txt file3.txt",
+          "explanation": "Создать несколько пустых файлов сразу."
+        },
+        {
+          "type": "example",
+          "text": "задать файлу время 15 января 2023 года в полдень",
           "command": "touch -t 202301151200 file.txt",
-          "explanation": "Sets the timestamp to January 15, 2023 at 12:00 using -t"
+          "explanation": "Задать файлу время 15 января 2023 года в полдень."
         },
         {
           "type": "example",
-          "text": "make a file's timestamp match another file",
+          "text": "изменить временные метки файла на 2023-01-15 12:00",
+          "command": "touch -t 202301151200 file.txt",
+          "explanation": "Задать файлу время 15 января 2023 года в полдень."
+        },
+        {
+          "type": "example",
+          "text": "скопировать временные метки одного файла на другой",
           "command": "touch -r reference.txt target.txt",
-          "explanation": "Copies the timestamp from the reference file to the target file"
+          "explanation": "Скопировать временные метки одного файла на другой."
+        },
+        {
+          "type": "example",
+          "text": "поставить целевому файлу время доступа и изменения как у образца",
+          "command": "touch -r reference.txt target.txt",
+          "explanation": "Скопировать временные метки одного файла на другой."
         }
       ]
     },
     {
       "name": "ln",
       "synopsis": "ln [options] target link_name",
-      "description": "Create hard and symbolic links",
+      "description": "Создание жёстких и символических ссылок",
       "patterns": [
         {
           "type": "example",
-          "text": "create a symbolic link to a file",
+          "text": "создать символическую ссылку на файл",
           "command": "ln -s /path/to/original link_name",
-          "explanation": "Creates a symlink that points to the original file"
+          "explanation": "Создать символическую ссылку на файл."
         },
         {
           "type": "example",
-          "text": "create a symlink to a directory",
+          "text": "сделать имя, указывающее на исходный файл по абсолютному пути",
+          "command": "ln -s /path/to/original link_name",
+          "explanation": "Создать символическую ссылку на файл."
+        },
+        {
+          "type": "example",
+          "text": "создать символическую ссылку на каталог",
           "command": "ln -s /path/to/dir link_dir",
-          "explanation": "Creates a symbolic link pointing to a directory"
+          "explanation": "Создать символическую ссылку на каталог."
         },
         {
           "type": "example",
-          "text": "create a hard link to a file",
+          "text": "добавить ссылку на папку с другим именем",
+          "command": "ln -s /path/to/dir link_dir",
+          "explanation": "Создать символическую ссылку на каталог."
+        },
+        {
+          "type": "example",
+          "text": "создать жёсткую ссылку на файл",
           "command": "ln original.txt hardlink.txt",
-          "explanation": "Creates a hard link sharing the same inode as the original"
+          "explanation": "Создать жёсткую ссылку на файл."
         },
         {
           "type": "example",
-          "text": "overwrite an existing symlink with a new target",
+          "text": "добавить второе имя для того же содержимого файла на диске",
+          "command": "ln original.txt hardlink.txt",
+          "explanation": "Создать жёсткую ссылку на файл."
+        },
+        {
+          "type": "example",
+          "text": "перенаправить существующую символическую ссылку на новую цель",
           "command": "ln -sf /new/target existing_link",
-          "explanation": "The -f flag forces replacement of the existing link"
+          "explanation": "Перенаправить существующую символическую ссылку на новую цель."
         },
         {
           "type": "example",
-          "text": "create a symbolic link with a relative path",
+          "text": "принудительно заменить ссылку, указав другой путь назначения",
+          "command": "ln -sf /new/target existing_link",
+          "explanation": "Перенаправить существующую символическую ссылку на новую цель."
+        },
+        {
+          "type": "example",
+          "text": "создать относительную символическую ссылку на конфигурацию",
           "command": "ln -s ../shared/config.yml config.yml",
-          "explanation": "Creates a relative symlink pointing to a file in a parent directory"
+          "explanation": "Создать относительную символическую ссылку на конфигурацию."
+        },
+        {
+          "type": "example",
+          "text": "сослаться на config.yml из соседней папки shared относительным путём",
+          "command": "ln -s ../shared/config.yml config.yml",
+          "explanation": "Создать относительную символическую ссылку на конфигурацию."
         }
       ]
     },
     {
       "name": "stat",
       "synopsis": "stat [options] file...",
-      "description": "Display detailed file or filesystem status",
+      "description": "Просмотр подробных свойств файла или файловой системы",
       "patterns": [
         {
           "type": "example",
-          "text": "show detailed metadata about a file",
+          "text": "показать подробные метаданные файла",
           "command": "stat file.txt",
-          "explanation": "Displays size, permissions, inode, timestamps, and other metadata"
+          "explanation": "Показать подробные метаданные файла."
         },
         {
           "type": "example",
-          "text": "print the file size in bytes of a file with GNU stat on Linux",
+          "text": "посмотреть размер, права и временные метки указанного файла",
+          "command": "stat file.txt",
+          "explanation": "Показать подробные метаданные файла."
+        },
+        {
+          "type": "example",
+          "text": "получить размер файла в байтах через GNU stat",
           "command": "stat -c '%s' file.txt",
-          "explanation": "GNU stat -c '%s' prints only the file size in bytes; BSD/macOS stat uses different flags"
+          "explanation": "GNU stat -c '%s' выводит только размер файла в байтах; в BSD и macOS используются другие параметры stat."
         },
         {
           "type": "example",
-          "text": "print the inode number of a file with GNU stat on Linux",
+          "text": "вывести только число байтов указанного файла в Linux",
+          "command": "stat -c '%s' file.txt",
+          "explanation": "GNU stat -c '%s' выводит только размер файла в байтах; в BSD и macOS используются другие параметры stat."
+        },
+        {
+          "type": "example",
+          "text": "узнать номер inode файла в Linux",
           "command": "stat -c '%i' file.txt",
-          "explanation": "GNU stat -c '%i' prints only the inode number; BSD/macOS stat uses different flags"
+          "explanation": "GNU stat -c '%i' выводит только номер inode; в BSD и macOS используются другие параметры stat."
         },
         {
           "type": "example",
-          "text": "print the modification time as a Unix timestamp of a file with GNU stat on Linux",
+          "text": "показать идентификатор индексного узла через GNU stat",
+          "command": "stat -c '%i' file.txt",
+          "explanation": "GNU stat -c '%i' выводит только номер inode; в BSD и macOS используются другие параметры stat."
+        },
+        {
+          "type": "example",
+          "text": "вывести время изменения файла в секундах Unix",
           "command": "stat -c '%Y' file.txt",
-          "explanation": "GNU stat -c '%Y' prints only the modification time as a Unix timestamp; BSD/macOS stat uses different flags"
+          "explanation": "GNU stat -c '%Y' выводит время изменения в формате Unix; в BSD и macOS используются другие параметры stat."
         },
         {
           "type": "example",
-          "text": "print the permissions in octal of a file with GNU stat on Linux",
+          "text": "узнать числовую метку последней правки файла через GNU stat",
+          "command": "stat -c '%Y' file.txt",
+          "explanation": "GNU stat -c '%Y' выводит время изменения в формате Unix; в BSD и macOS используются другие параметры stat."
+        },
+        {
+          "type": "example",
+          "text": "показать права файла восьмеричным числом в Linux",
           "command": "stat -c '%a' file.txt",
-          "explanation": "GNU stat -c '%a' prints only the permissions in octal; BSD/macOS stat uses different flags"
+          "explanation": "GNU stat -c '%a' выводит только права в восьмеричном виде; в BSD и macOS используются другие параметры stat."
+        },
+        {
+          "type": "example",
+          "text": "получить числовой режим доступа через GNU stat",
+          "command": "stat -c '%a' file.txt",
+          "explanation": "GNU stat -c '%a' выводит только права в восьмеричном виде; в BSD и macOS используются другие параметры stat."
         }
       ]
     },
     {
       "name": "file",
       "synopsis": "file [options] file...",
-      "description": "Determine file type",
+      "description": "Определение типа файла",
       "patterns": [
         {
           "type": "example",
-          "text": "find out what type a file is",
+          "text": "определить тип неизвестного файла по содержимому",
           "command": "file unknown_file",
-          "explanation": "Inspects file contents to determine its type (text, binary, image, etc.)"
+          "explanation": "Определить тип неизвестного файла по содержимому."
         },
         {
           "type": "example",
-          "text": "check the mime type of a file",
+          "text": "узнать, что за данные находятся в файле",
+          "command": "file unknown_file",
+          "explanation": "Определить тип неизвестного файла по содержимому."
+        },
+        {
+          "type": "example",
+          "text": "показать MIME-тип PDF-файла",
           "command": "file --mime-type document.pdf",
-          "explanation": "Outputs the MIME type instead of the human-readable description"
+          "explanation": "Показать MIME-тип PDF-файла."
         },
         {
           "type": "example",
-          "text": "identify file types for everything in a directory",
+          "text": "получить тип содержимого документа в формате MIME",
+          "command": "file --mime-type document.pdf",
+          "explanation": "Показать MIME-тип PDF-файла."
+        },
+        {
+          "type": "example",
+          "text": "определить типы всех нескрытых элементов текущей папки",
           "command": "file *",
-          "explanation": "Runs file type detection on every file in the current directory"
+          "explanation": "Определить типы всех нескрытых элементов текущей папки."
         },
         {
           "type": "example",
-          "text": "check if a file is a binary or text file",
+          "text": "посмотреть, какие форматы имеют файлы в каталоге",
+          "command": "file *",
+          "explanation": "Определить типы всех нескрытых элементов текущей папки."
+        },
+        {
+          "type": "example",
+          "text": "проверить, является ли скрипт текстовым файлом",
           "command": "file script.sh",
-          "explanation": "Reports whether the file contains ASCII text, binary data, etc."
+          "explanation": "Проверить, является ли скрипт текстовым файлом."
         },
         {
           "type": "example",
-          "text": "get the encoding of a text file",
+          "text": "узнать формат содержимого файла script.sh",
+          "command": "file script.sh",
+          "explanation": "Проверить, является ли скрипт текстовым файлом."
+        },
+        {
+          "type": "example",
+          "text": "определить кодировку текста в файле",
           "command": "file --mime-encoding file.txt",
-          "explanation": "Outputs the character encoding (utf-8, ascii, etc.)"
+          "explanation": "Определить кодировку текста в файле."
+        },
+        {
+          "type": "example",
+          "text": "показать MIME-кодировку указанного файла",
+          "command": "file --mime-encoding file.txt",
+          "explanation": "Определить кодировку текста в файле."
         }
       ]
     },
     {
       "name": "basename",
       "synopsis": "basename string [suffix]",
-      "description": "Strip directory and suffix from filenames",
+      "description": "Выделение имени файла без пути и необязательного суффикса",
       "patterns": [
         {
           "type": "example",
-          "text": "get just the filename from a full path",
+          "text": "получить имя файла без пути к папкам",
           "command": "basename /home/user/documents/report.pdf",
-          "explanation": "Strips the directory path and returns only report.pdf"
+          "explanation": "Получить имя файла без пути к папкам."
         },
         {
           "type": "example",
-          "text": "extract the filename without its extension",
+          "text": "выделить report.pdf из полного имени файла",
+          "command": "basename /home/user/documents/report.pdf",
+          "explanation": "Получить имя файла без пути к папкам."
+        },
+        {
+          "type": "example",
+          "text": "убрать путь и окончание .tar.gz из имени файла",
           "command": "basename /path/to/file.tar.gz .tar.gz",
-          "explanation": "Removes the directory path and the specified suffix"
+          "explanation": "Убрать путь и окончание .tar.gz из имени файла."
         },
         {
           "type": "example",
-          "text": "strip the directory from a path in a script",
+          "text": "получить базовое имя архива без расширения tar.gz",
+          "command": "basename /path/to/file.tar.gz .tar.gz",
+          "explanation": "Убрать путь и окончание .tar.gz из имени файла."
+        },
+        {
+          "type": "example",
+          "text": "узнать имя запущенного скрипта без каталога",
           "command": "basename \"$0\"",
-          "explanation": "Returns the script name without the directory path"
+          "explanation": "Узнать имя запущенного скрипта без каталога."
         },
         {
           "type": "example",
-          "text": "get the last component of a directory path",
+          "text": "отбросить путь к папкам из значения $0",
+          "command": "basename \"$0\"",
+          "explanation": "Узнать имя запущенного скрипта без каталога."
+        },
+        {
+          "type": "example",
+          "text": "получить последний компонент пути к каталогу",
           "command": "basename /usr/local/bin",
-          "explanation": "Returns bin, the last component of the path"
+          "explanation": "Получить последний компонент пути к каталогу."
         },
         {
           "type": "example",
-          "text": "remove the .txt extension from a filename",
+          "text": "выделить имя bin из пути /usr/local/bin",
+          "command": "basename /usr/local/bin",
+          "explanation": "Получить последний компонент пути к каталогу."
+        },
+        {
+          "type": "example",
+          "text": "убрать окончание .txt из имени файла",
           "command": "basename report.txt .txt",
-          "explanation": "Strips the .txt suffix and returns just report"
+          "explanation": "Убрать окончание .txt из имени файла."
+        },
+        {
+          "type": "example",
+          "text": "получить имя report без расширения текстового файла",
+          "command": "basename report.txt .txt",
+          "explanation": "Убрать окончание .txt из имени файла."
         }
       ]
     },
     {
       "name": "dirname",
       "synopsis": "dirname string",
-      "description": "Strip the last component from a file path",
+      "description": "Выделение каталога из пути к файлу",
       "patterns": [
         {
           "type": "example",
-          "text": "get the directory part of a file path",
+          "text": "получить путь к папке из полного имени файла",
           "command": "dirname /home/user/documents/report.pdf",
-          "explanation": "Returns /home/user/documents, stripping the filename"
+          "explanation": "Получить путь к папке из полного имени файла."
         },
         {
           "type": "example",
-          "text": "find the parent directory of a file",
+          "text": "отбросить report.pdf, оставив каталог, где он лежит",
+          "command": "dirname /home/user/documents/report.pdf",
+          "explanation": "Получить путь к папке из полного имени файла."
+        },
+        {
+          "type": "example",
+          "text": "узнать родительский каталог файла syslog",
           "command": "dirname /var/log/syslog",
-          "explanation": "Outputs /var/log as the parent directory"
+          "explanation": "Узнать родительский каталог файла syslog."
         },
         {
           "type": "example",
-          "text": "get the directory the current script is in",
+          "text": "выделить папку /var/log из полного пути журнала",
+          "command": "dirname /var/log/syslog",
+          "explanation": "Узнать родительский каталог файла syslog."
+        },
+        {
+          "type": "example",
+          "text": "получить каталог из пути запуска текущего скрипта",
           "command": "dirname \"$0\"",
-          "explanation": "Returns the directory containing the running script"
+          "explanation": "Получить каталог из пути запуска текущего скрипта."
         },
         {
           "type": "example",
-          "text": "extract the folder path from a full filepath",
+          "text": "убрать имя скрипта из значения $0, оставив путь к папке",
+          "command": "dirname \"$0\"",
+          "explanation": "Получить каталог из пути запуска текущего скрипта."
+        },
+        {
+          "type": "example",
+          "text": "выделить каталог из пути к CSV-файлу",
           "command": "dirname /tmp/data/output.csv",
-          "explanation": "Returns /tmp/data without the filename"
+          "explanation": "Выделить каталог из пути к CSV-файлу."
         },
         {
           "type": "example",
-          "text": "get the directory two levels up from a file",
+          "text": "получить папку /tmp/data без имени output.csv",
+          "command": "dirname /tmp/data/output.csv",
+          "explanation": "Выделить каталог из пути к CSV-файлу."
+        },
+        {
+          "type": "example",
+          "text": "получить каталог на два уровня выше файла",
           "command": "dirname $(dirname /a/b/c/file.txt)",
-          "explanation": "Nesting dirname calls strips two levels, returning /a/b"
+          "explanation": "Получить каталог на два уровня выше файла."
+        },
+        {
+          "type": "example",
+          "text": "убрать имя файла и последнюю папку из полного пути",
+          "command": "dirname $(dirname /a/b/c/file.txt)",
+          "explanation": "Получить каталог на два уровня выше файла."
         }
       ]
     },
     {
       "name": "realpath",
       "synopsis": "realpath [options] file...",
-      "description": "Resolve the absolute path, resolving symlinks",
+      "description": "Определение абсолютного пути с разрешением символических ссылок",
       "patterns": [
         {
           "type": "example",
-          "text": "get the absolute path of a file resolving all symlinks",
+          "text": "получить абсолютный путь файла с раскрытием символических ссылок",
           "command": "realpath file.txt",
-          "explanation": "Returns the canonical absolute path with all symlinks resolved"
+          "explanation": "Получить абсолютный путь файла с раскрытием символических ссылок."
         },
         {
           "type": "example",
-          "text": "resolve a relative path to its full absolute path",
+          "text": "узнать каноническое расположение файла на диске",
+          "command": "realpath file.txt",
+          "explanation": "Получить абсолютный путь файла с раскрытием символических ссылок."
+        },
+        {
+          "type": "example",
+          "text": "преобразовать относительный путь к конфигурации в абсолютный",
           "command": "realpath ../config/settings.yml",
-          "explanation": "Converts a relative path to an absolute canonical path"
+          "explanation": "Преобразовать относительный путь к конфигурации в абсолютный."
         },
         {
           "type": "example",
-          "text": "find the real location a symlink points to",
+          "text": "раскрыть путь ../config/settings.yml до полного расположения",
+          "command": "realpath ../config/settings.yml",
+          "explanation": "Преобразовать относительный путь к конфигурации в абсолютный."
+        },
+        {
+          "type": "example",
+          "text": "узнать реальный путь, на который указывает ссылка python",
           "command": "realpath /usr/bin/python",
-          "explanation": "Follows the symlink chain and returns the final resolved path"
+          "explanation": "Узнать реальный путь, на который указывает ссылка python."
         },
         {
           "type": "example",
-          "text": "get the canonical path without requiring the file to exist",
+          "text": "раскрыть символические ссылки в пути /usr/bin/python",
+          "command": "realpath /usr/bin/python",
+          "explanation": "Узнать реальный путь, на который указывает ссылка python."
+        },
+        {
+          "type": "example",
+          "text": "нормализовать путь, даже если файл и каталоги ещё не существуют",
           "command": "realpath -m /path/to/nonexistent/file",
-          "explanation": "The -m flag resolves the path even if components do not exist"
+          "explanation": "Нормализовать путь, даже если файл и каталоги ещё не существуют."
         },
         {
           "type": "example",
-          "text": "get the relative path from one directory to another",
+          "text": "получить канонический абсолютный путь без проверки наличия объектов",
+          "command": "realpath -m /path/to/nonexistent/file",
+          "explanation": "Нормализовать путь, даже если файл и каталоги ещё не существуют."
+        },
+        {
+          "type": "example",
+          "text": "вычислить путь к /etc/config относительно /home/user",
           "command": "realpath --relative-to=/home/user /etc/config",
-          "explanation": "Computes the relative path from the first directory to the second"
+          "explanation": "Вычислить путь к /etc/config относительно /home/user."
+        },
+        {
+          "type": "example",
+          "text": "получить относительный маршрут от домашней папки к конфигурации",
+          "command": "realpath --relative-to=/home/user /etc/config",
+          "explanation": "Вычислить путь к /etc/config относительно /home/user."
         }
       ]
     },
     {
       "name": "pwd",
       "synopsis": "pwd [options]",
-      "description": "Print the current working directory",
+      "description": "Вывод текущего рабочего каталога",
       "patterns": [
         {
           "type": "example",
-          "text": "show what directory I am currently in",
+          "text": "показать текущий рабочий каталог",
           "command": "pwd",
-          "explanation": "Prints the absolute path of the current working directory"
+          "explanation": "Показать текущий рабочий каталог."
         },
         {
           "type": "example",
-          "text": "print the physical current directory without symlinks",
+          "text": "узнать, в какой папке я сейчас нахожусь",
+          "command": "pwd",
+          "explanation": "Показать текущий рабочий каталог."
+        },
+        {
+          "type": "example",
+          "text": "показать физический путь текущей папки без символических ссылок",
           "command": "pwd -P",
-          "explanation": "Resolves symlinks and shows the actual physical directory"
+          "explanation": "Показать физический путь текущей папки без символических ссылок."
         },
         {
           "type": "example",
-          "text": "get my current location in the filesystem",
+          "text": "узнать реальное расположение рабочего каталога на диске",
+          "command": "pwd -P",
+          "explanation": "Показать физический путь текущей папки без символических ссылок."
+        },
+        {
+          "type": "example",
+          "text": "узнать свой текущий путь в файловой системе",
           "command": "pwd",
-          "explanation": "Outputs the full path of where you are"
+          "explanation": "Узнать свой текущий путь в файловой системе."
         },
         {
           "type": "example",
-          "text": "display the working directory including symlink path",
+          "text": "вывести полное имя открытого рабочего каталога",
+          "command": "pwd",
+          "explanation": "Узнать свой текущий путь в файловой системе."
+        },
+        {
+          "type": "example",
+          "text": "показать логический путь текущего каталога с учётом символических ссылок",
           "command": "pwd -L",
-          "explanation": "Shows the logical path, preserving symlink names"
+          "explanation": "Показать логический путь текущего каталога с учётом символических ссылок."
+        },
+        {
+          "type": "example",
+          "text": "вывести рабочую папку в том виде, как в неё перешли",
+          "command": "pwd -L",
+          "explanation": "Показать логический путь текущего каталога с учётом символических ссылок."
         }
       ]
     },
     {
       "name": "cd",
       "synopsis": "cd [directory]",
-      "description": "Change the current working directory",
+      "description": "Смена текущего рабочего каталога",
       "patterns": [
         {
           "type": "example",
-          "text": "go to my home directory",
+          "text": "перейти в домашнюю папку",
           "command": "cd ~",
-          "explanation": "Changes to the user's home directory"
+          "explanation": "Перейти в домашнюю папку."
         },
         {
           "type": "example",
-          "text": "go up one directory level",
+          "text": "открыть свой домашний каталог в терминале",
+          "command": "cd ~",
+          "explanation": "Перейти в домашнюю папку."
+        },
+        {
+          "type": "example",
+          "text": "подняться на один каталог выше",
           "command": "cd ..",
-          "explanation": "Navigates to the parent directory"
+          "explanation": "Подняться на один каталог выше."
         },
         {
           "type": "example",
-          "text": "go back to the previous directory",
+          "text": "перейти в родительскую папку",
+          "command": "cd ..",
+          "explanation": "Подняться на один каталог выше."
+        },
+        {
+          "type": "example",
+          "text": "вернуться в предыдущий рабочий каталог",
           "command": "cd -",
-          "explanation": "Returns to the last directory you were in"
+          "explanation": "Вернуться в предыдущий рабочий каталог."
         },
         {
           "type": "example",
-          "text": "navigate to a specific folder",
+          "text": "переключиться обратно в папку, где я был до этого",
+          "command": "cd -",
+          "explanation": "Вернуться в предыдущий рабочий каталог."
+        },
+        {
+          "type": "example",
+          "text": "перейти в каталог системных журналов",
           "command": "cd /var/log",
-          "explanation": "Changes the working directory to the specified path"
+          "explanation": "Перейти в каталог системных журналов."
         },
         {
           "type": "example",
-          "text": "change to the root directory",
+          "text": "открыть папку /var/log в текущей оболочке",
+          "command": "cd /var/log",
+          "explanation": "Перейти в каталог системных журналов."
+        },
+        {
+          "type": "example",
+          "text": "перейти в корень файловой системы",
           "command": "cd /",
-          "explanation": "Navigates to the filesystem root"
+          "explanation": "Перейти в корень файловой системы."
+        },
+        {
+          "type": "example",
+          "text": "сделать / текущим рабочим каталогом",
+          "command": "cd /",
+          "explanation": "Перейти в корень файловой системы."
         }
       ]
     },
     {
       "name": "tree",
       "synopsis": "tree [options] [directory...]",
-      "description": "Display directory structure as a tree",
+      "description": "Просмотр структуры каталогов в виде дерева",
       "patterns": [
         {
           "type": "example",
-          "text": "show the directory structure as a tree",
+          "text": "показать структуру текущей папки деревом",
           "command": "tree",
-          "explanation": "Recursively displays the current directory in a tree-like format"
+          "explanation": "Показать структуру текущей папки деревом."
         },
         {
           "type": "example",
-          "text": "show only directories in the tree, no files",
+          "text": "вывести вложенные каталоги и файлы в виде дерева",
+          "command": "tree",
+          "explanation": "Показать структуру текущей папки деревом."
+        },
+        {
+          "type": "example",
+          "text": "показать дерево папок без файлов",
           "command": "tree -d",
-          "explanation": "The -d flag limits output to directories only"
+          "explanation": "Показать дерево папок без файлов."
         },
         {
           "type": "example",
-          "text": "display a tree limited to 2 levels deep",
+          "text": "вывести только каталоги и их вложенность",
+          "command": "tree -d",
+          "explanation": "Показать дерево папок без файлов."
+        },
+        {
+          "type": "example",
+          "text": "показать дерево каталога не глубже двух уровней",
           "command": "tree -L 2",
-          "explanation": "The -L flag limits the recursion depth"
+          "explanation": "Показать дерево каталога не глубже двух уровней."
         },
         {
           "type": "example",
-          "text": "show the tree with file sizes",
+          "text": "ограничить вывод структуры папок глубиной 2",
+          "command": "tree -L 2",
+          "explanation": "Показать дерево каталога не глубже двух уровней."
+        },
+        {
+          "type": "example",
+          "text": "показать дерево файлов с размерами в удобных единицах",
           "command": "tree -sh",
-          "explanation": "Displays each file's size in human-readable format"
+          "explanation": "Показать дерево файлов с размерами в удобных единицах."
         },
         {
           "type": "example",
-          "text": "show directory tree but ignore node_modules",
+          "text": "вывести структуру каталога и размеры его элементов",
+          "command": "tree -sh",
+          "explanation": "Показать дерево файлов с размерами в удобных единицах."
+        },
+        {
+          "type": "example",
+          "text": "показать дерево каталога без node_modules",
           "command": "tree -I node_modules",
-          "explanation": "The -I flag excludes directories matching the given pattern"
+          "explanation": "Показать дерево каталога без node_modules."
+        },
+        {
+          "type": "example",
+          "text": "исключить папки зависимостей node_modules из вывода структуры",
+          "command": "tree -I node_modules",
+          "explanation": "Показать дерево каталога без node_modules."
         }
       ]
     },
     {
       "name": "du",
       "synopsis": "du [options] [file...]",
-      "description": "Estimate file and directory space usage",
+      "description": "Оценка места, занятого файлами и каталогами",
       "patterns": [
         {
           "type": "example",
-          "text": "check how much space a directory takes up",
+          "text": "узнать, сколько места на диске занимает папка",
           "command": "du -sh directory/",
-          "explanation": "Summarizes total size in human-readable format"
+          "explanation": "Узнать, сколько места на диске занимает папка."
         },
         {
           "type": "example",
-          "text": "find the biggest files and folders in the current directory",
+          "text": "показать общий объём каталога в удобных единицах",
+          "command": "du -sh directory/",
+          "explanation": "Узнать, сколько места на диске занимает папка."
+        },
+        {
+          "type": "example",
+          "text": "показать десять самых больших файлов и папок в текущем каталоге",
           "command": "du -sh * | sort -rh | head -10",
-          "explanation": "Shows sizes of top-level items sorted by size, top 10"
+          "explanation": "Показать десять самых больших файлов и папок в текущем каталоге."
         },
         {
           "type": "example",
-          "text": "show disk usage of all subdirectories one level deep",
+          "text": "найти самые тяжёлые файлы и папки здесь",
+          "command": "du -sh * | sort -rh | head -10",
+          "explanation": "Показать десять самых больших файлов и папок в текущем каталоге."
+        },
+        {
+          "type": "example",
+          "text": "показать расход места в текущем каталоге и непосредственных подпапках",
           "command": "du -h --max-depth=1",
-          "explanation": "Lists sizes for immediate subdirectories only"
+          "explanation": "Показать расход места в текущем каталоге и непосредственных подпапках."
         },
         {
           "type": "example",
-          "text": "get the total size of a folder in megabytes",
+          "text": "вывести размеры папок с ограничением глубины одним уровнем",
+          "command": "du -h --max-depth=1",
+          "explanation": "Показать расход места в текущем каталоге и непосредственных подпапках."
+        },
+        {
+          "type": "example",
+          "text": "узнать общий размер папки в мебибайтах",
           "command": "du -sm directory/",
-          "explanation": "Summarizes total size in megabytes"
+          "explanation": "Узнать общий размер папки в мебибайтах."
         },
         {
           "type": "example",
-          "text": "see how much disk space each subfolder uses",
+          "text": "показать, сколько мегабайтных блоков занимает каталог",
+          "command": "du -sm directory/",
+          "explanation": "Узнать общий размер папки в мебибайтах."
+        },
+        {
+          "type": "example",
+          "text": "отсортировать папки первого уровня по занимаемому месту",
           "command": "du -h --max-depth=1 | sort -rh",
-          "explanation": "Shows subdirectory sizes sorted from largest to smallest"
+          "explanation": "Отсортировать папки первого уровня по занимаемому месту."
+        },
+        {
+          "type": "example",
+          "text": "показать размеры текущего каталога и подпапок от больших к маленьким",
+          "command": "du -h --max-depth=1 | sort -rh",
+          "explanation": "Отсортировать папки первого уровня по занимаемому месту."
         }
       ]
     },
     {
       "name": "df",
       "synopsis": "df [options] [file...]",
-      "description": "Report filesystem disk space usage",
+      "description": "Просмотр свободного и занятого места в файловых системах",
       "patterns": [
         {
           "type": "example",
-          "text": "check free disk space on all mounted filesystems",
+          "text": "сколько свободного места осталось на дисках",
           "command": "df -h",
-          "explanation": "Shows disk space usage in human-readable format for all mounts"
+          "explanation": "Сколько свободного места осталось на дисках."
         },
         {
           "type": "example",
-          "text": "see how much space is left on the root partition",
+          "text": "показать свободное и занятое место на разделах",
+          "command": "df -h",
+          "explanation": "Сколько свободного места осталось на дисках."
+        },
+        {
+          "type": "example",
+          "text": "узнать, сколько места осталось на корневом разделе",
           "command": "df -h /",
-          "explanation": "Shows disk usage for the filesystem containing the root directory"
+          "explanation": "Узнать, сколько места осталось на корневом разделе."
         },
         {
           "type": "example",
-          "text": "display filesystem types alongside disk usage",
+          "text": "проверить свободное пространство файловой системы с каталогом /",
+          "command": "df -h /",
+          "explanation": "Узнать, сколько места осталось на корневом разделе."
+        },
+        {
+          "type": "example",
+          "text": "показать типы файловых систем и их заполненность",
           "command": "df -Th",
-          "explanation": "Includes the filesystem type column in the output"
+          "explanation": "Показать типы файловых систем и их заполненность."
         },
         {
           "type": "example",
-          "text": "show disk usage in gigabytes",
+          "text": "вывести сведения о дисках с форматом разделов и свободным местом",
+          "command": "df -Th",
+          "explanation": "Показать типы файловых систем и их заполненность."
+        },
+        {
+          "type": "example",
+          "text": "показать объём и свободное место файловых систем в гигабайтных блоках",
           "command": "df -BG",
-          "explanation": "Displays sizes in gigabyte units"
+          "explanation": "Показать объём и свободное место файловых систем в гигабайтных блоках."
         },
         {
           "type": "example",
-          "text": "check how much disk space a specific mount point has",
+          "text": "вывести использование дисков с единицей измерения 1G",
+          "command": "df -BG",
+          "explanation": "Показать объём и свободное место файловых систем в гигабайтных блоках."
+        },
+        {
+          "type": "example",
+          "text": "проверить свободное место файловой системы с каталогом /home",
           "command": "df -h /home",
-          "explanation": "Shows usage statistics for the filesystem containing /home"
+          "explanation": "Проверить свободное место файловой системы с каталогом /home."
+        },
+        {
+          "type": "example",
+          "text": "узнать заполненность раздела, на котором находится домашняя папка",
+          "command": "df -h /home",
+          "explanation": "Проверить свободное место файловой системы с каталогом /home."
         }
       ]
     },
     {
       "name": "mount",
       "synopsis": "mount [options] device directory",
-      "description": "Mount a filesystem",
+      "description": "Монтирование файловой системы",
       "patterns": [
         {
           "type": "example",
-          "text": "list all currently mounted filesystems",
+          "text": "показать все смонтированные файловые системы",
           "command": "mount",
-          "explanation": "Without arguments, displays all current mounts"
+          "explanation": "Показать все смонтированные файловые системы."
         },
         {
           "type": "example",
-          "text": "mount a USB drive to a directory",
+          "text": "вывести текущие точки подключения дисков",
+          "command": "mount",
+          "explanation": "Показать все смонтированные файловые системы."
+        },
+        {
+          "type": "example",
+          "text": "подключить раздел флешки к каталогу /mnt/usb",
           "command": "sudo mount /dev/sdb1 /mnt/usb",
-          "explanation": "Attaches the filesystem on the device to the mount point"
+          "explanation": "Подключить раздел флешки к каталогу /mnt/usb."
         },
         {
           "type": "example",
-          "text": "mount an ISO image file",
+          "text": "смонтировать устройство /dev/sdb1 в указанную папку",
+          "command": "sudo mount /dev/sdb1 /mnt/usb",
+          "explanation": "Подключить раздел флешки к каталогу /mnt/usb."
+        },
+        {
+          "type": "example",
+          "text": "смонтировать ISO-образ как файловую систему",
           "command": "sudo mount -o loop image.iso /mnt/iso",
-          "explanation": "Uses a loop device to mount an ISO file as a filesystem"
+          "explanation": "Смонтировать ISO-образ как файловую систему."
         },
         {
           "type": "example",
-          "text": "mount a filesystem as read-only",
+          "text": "подключить файл образа через loop-устройство к каталогу /mnt/iso",
+          "command": "sudo mount -o loop image.iso /mnt/iso",
+          "explanation": "Смонтировать ISO-образ как файловую систему."
+        },
+        {
+          "type": "example",
+          "text": "подключить раздел диска только для чтения",
           "command": "sudo mount -o ro /dev/sdb1 /mnt/disk",
-          "explanation": "The ro option mounts the filesystem in read-only mode"
+          "explanation": "Подключить раздел диска только для чтения."
         },
         {
           "type": "example",
-          "text": "remount a filesystem with different options",
+          "text": "смонтировать /dev/sdb1 без разрешения записи",
+          "command": "sudo mount -o ro /dev/sdb1 /mnt/disk",
+          "explanation": "Подключить раздел диска только для чтения."
+        },
+        {
+          "type": "example",
+          "text": "перемонтировать корневую файловую систему с разрешением записи",
           "command": "sudo mount -o remount,rw /",
-          "explanation": "Changes mount options without unmounting and remounting"
+          "explanation": "Перемонтировать корневую файловую систему с разрешением записи."
+        },
+        {
+          "type": "example",
+          "text": "сменить режим подключения / на чтение и запись",
+          "command": "sudo mount -o remount,rw /",
+          "explanation": "Перемонтировать корневую файловую систему с разрешением записи."
         }
       ]
     },
     {
       "name": "umount",
       "synopsis": "umount [options] directory|device",
-      "description": "Unmount a filesystem",
+      "description": "Отмонтирование файловой системы",
       "patterns": [
         {
           "type": "example",
-          "text": "unmount a USB drive",
+          "text": "отмонтировать флешку от каталога /mnt/usb",
           "command": "sudo umount /mnt/usb",
-          "explanation": "Detaches the filesystem at the given mount point"
+          "explanation": "Отмонтировать флешку от каталога /mnt/usb."
         },
         {
           "type": "example",
-          "text": "safely eject a mounted disk",
+          "text": "отключить файловую систему, подключённую в указанной папке",
+          "command": "sudo umount /mnt/usb",
+          "explanation": "Отмонтировать флешку от каталога /mnt/usb."
+        },
+        {
+          "type": "example",
+          "text": "отмонтировать файловую систему устройства /dev/sdb1",
           "command": "sudo umount /dev/sdb1",
-          "explanation": "Unmounts the filesystem on the specified device"
+          "explanation": "Отмонтировать файловую систему устройства /dev/sdb1."
         },
         {
           "type": "example",
-          "text": "force unmount a busy filesystem",
+          "text": "отключить подключённый раздел диска по имени устройства",
+          "command": "sudo umount /dev/sdb1",
+          "explanation": "Отмонтировать файловую систему устройства /dev/sdb1."
+        },
+        {
+          "type": "example",
+          "text": "попробовать принудительно отмонтировать файловую систему",
           "command": "sudo umount -f /mnt/stuck",
-          "explanation": "The -f flag forces the unmount even if the filesystem is busy"
+          "explanation": "Попробовать принудительно отмонтировать файловую систему."
         },
         {
           "type": "example",
-          "text": "lazy unmount a filesystem that is in use",
+          "text": "запросить принудительное отключение точки монтирования /mnt/stuck",
+          "command": "sudo umount -f /mnt/stuck",
+          "explanation": "Попробовать принудительно отмонтировать файловую систему."
+        },
+        {
+          "type": "example",
+          "text": "выполнить ленивое отмонтирование занятой файловой системы",
           "command": "sudo umount -l /mnt/busy",
-          "explanation": "Detaches the filesystem immediately and cleans up references lazily"
+          "explanation": "Выполнить ленивое отмонтирование занятой файловой системы."
         },
         {
           "type": "example",
-          "text": "unmount all filesystems of a specific type",
+          "text": "отсоединить точку монтирования сейчас и завершить очистку после освобождения",
+          "command": "sudo umount -l /mnt/busy",
+          "explanation": "Выполнить ленивое отмонтирование занятой файловой системы."
+        },
+        {
+          "type": "example",
+          "text": "отмонтировать все файловые системы типа tmpfs",
           "command": "sudo umount -a -t tmpfs",
-          "explanation": "The -a flag unmounts all and -t filters by filesystem type"
+          "explanation": "Отмонтировать все файловые системы типа tmpfs."
+        },
+        {
+          "type": "example",
+          "text": "отключить подключённые временные файловые системы выбранного типа",
+          "command": "sudo umount -a -t tmpfs",
+          "explanation": "Отмонтировать все файловые системы типа tmpfs."
         }
       ]
     },
     {
       "name": "mktemp",
       "synopsis": "mktemp [options] [template]",
-      "description": "Create a temporary file or directory safely",
+      "description": "Безопасное создание временного файла или каталога",
       "patterns": [
         {
           "type": "example",
-          "text": "create a temporary file and get its path",
+          "text": "создать уникальный временный файл и вывести его путь",
           "command": "mktemp",
-          "explanation": "Creates a unique temporary file in /tmp and prints its path"
+          "explanation": "Создать уникальный временный файл и вывести его путь."
         },
         {
           "type": "example",
-          "text": "create a temporary directory",
+          "text": "получить имя нового безопасно созданного временного файла",
+          "command": "mktemp",
+          "explanation": "Создать уникальный временный файл и вывести его путь."
+        },
+        {
+          "type": "example",
+          "text": "создать временную папку с уникальным именем",
           "command": "mktemp -d",
-          "explanation": "The -d flag creates a temporary directory instead of a file"
+          "explanation": "Создать временную папку с уникальным именем."
         },
         {
           "type": "example",
-          "text": "create a temp file with a custom name pattern",
+          "text": "подготовить отдельный временный каталог",
+          "command": "mktemp -d",
+          "explanation": "Создать временную папку с уникальным именем."
+        },
+        {
+          "type": "example",
+          "text": "создать временный файл в /tmp с префиксом myapp",
           "command": "mktemp /tmp/myapp.XXXXXX",
-          "explanation": "Uses a template where X characters are replaced with random values"
+          "explanation": "Создать временный файл в /tmp с префиксом myapp."
         },
         {
           "type": "example",
-          "text": "make a temporary file with a specific suffix",
+          "text": "выбрать уникальное имя временного файла по шаблону myapp.XXXXXX",
+          "command": "mktemp /tmp/myapp.XXXXXX",
+          "explanation": "Создать временный файл в /tmp с префиксом myapp."
+        },
+        {
+          "type": "example",
+          "text": "создать временный файл с расширением log",
           "command": "mktemp --suffix=.log",
-          "explanation": "Creates a temp file ending with the specified suffix"
+          "explanation": "Создать временный файл с расширением log."
         },
         {
           "type": "example",
-          "text": "create a named temporary file in the current directory",
+          "text": "получить уникальный путь нового временного журнала",
+          "command": "mktemp --suffix=.log",
+          "explanation": "Создать временный файл с расширением log."
+        },
+        {
+          "type": "example",
+          "text": "создать временный файл в текущей папке с префиксом temp",
           "command": "mktemp -p . temp.XXXXXX",
-          "explanation": "The -p flag specifies the directory for the temporary file"
+          "explanation": "Создать временный файл в текущей папке с префиксом temp."
+        },
+        {
+          "type": "example",
+          "text": "подготовить уникальный файл по шаблону temp.XXXXXX прямо здесь",
+          "command": "mktemp -p . temp.XXXXXX",
+          "explanation": "Создать временный файл в текущей папке с префиксом temp."
         }
       ]
     },
     {
       "name": "install",
       "synopsis": "install [options] source dest",
-      "description": "Copy files and set attributes in one step",
+      "description": "Копирование файлов с установкой прав и атрибутов",
       "patterns": [
         {
           "type": "example",
-          "text": "copy a binary and set it executable in one step",
+          "text": "скопировать программу в /usr/local/bin и задать права 755",
           "command": "install -m 755 myapp /usr/local/bin/myapp",
-          "explanation": "Copies the file and sets permissions to rwxr-xr-x"
+          "explanation": "Скопировать программу в /usr/local/bin и задать права 755."
         },
         {
           "type": "example",
-          "text": "install a file with specific owner and group",
+          "text": "установить исполняемый файл с доступом на запуск для всех",
+          "command": "install -m 755 myapp /usr/local/bin/myapp",
+          "explanation": "Скопировать программу в /usr/local/bin и задать права 755."
+        },
+        {
+          "type": "example",
+          "text": "установить конфигурацию с владельцем root и группой staff, задав права 644",
           "command": "sudo install -o root -g staff -m 644 config.conf /etc/myapp/",
-          "explanation": "Copies the file setting owner, group, and permissions"
+          "explanation": "Установить конфигурацию с владельцем root и группой staff, задав права 644."
         },
         {
           "type": "example",
-          "text": "create a directory with specific permissions using install",
+          "text": "скопировать файл в /etc/myapp с указанными владельцем, группой и режимом доступа",
+          "command": "sudo install -o root -g staff -m 644 config.conf /etc/myapp/",
+          "explanation": "Установить конфигурацию с владельцем root и группой staff, задав права 644."
+        },
+        {
+          "type": "example",
+          "text": "создать каталог с правами 700 через install",
           "command": "install -d -m 700 /var/lib/myapp",
-          "explanation": "The -d flag creates all components of the specified directories"
+          "explanation": "Создать каталог с правами 700 через install."
         },
         {
           "type": "example",
-          "text": "copy a script making it executable and owned by root",
+          "text": "подготовить папку /var/lib/myapp, доступную только владельцу",
+          "command": "install -d -m 700 /var/lib/myapp",
+          "explanation": "Создать каталог с правами 700 через install."
+        },
+        {
+          "type": "example",
+          "text": "установить скрипт от имени root с правами 755",
           "command": "sudo install -o root -m 755 script.sh /usr/local/bin/",
-          "explanation": "Installs the script with root ownership and executable permissions"
+          "explanation": "Установить скрипт от имени root с правами 755."
         },
         {
           "type": "example",
-          "text": "install a config file with backup of the original",
+          "text": "скопировать исполняемый сценарий в /usr/local/bin с владельцем root",
+          "command": "sudo install -o root -m 755 script.sh /usr/local/bin/",
+          "explanation": "Установить скрипт от имени root с правами 755."
+        },
+        {
+          "type": "example",
+          "text": "установить новую конфигурацию с резервной копией старой",
           "command": "install -b -m 644 new.conf /etc/app/app.conf",
-          "explanation": "The -b flag creates a backup of the destination file before overwriting"
+          "explanation": "Установить новую конфигурацию с резервной копией старой."
+        },
+        {
+          "type": "example",
+          "text": "заменить файл настроек, сохранив прежнюю версию и задав права 644",
+          "command": "install -b -m 644 new.conf /etc/app/app.conf",
+          "explanation": "Установить новую конфигурацию с резервной копией старой."
         }
       ]
     },
     {
       "name": "shred",
       "synopsis": "shred [options] file...",
-      "description": "Securely overwrite a file to hide its contents before deleting",
+      "description": "Перезапись содержимого файла перед удалением",
       "patterns": [
         {
           "type": "example",
-          "text": "overwrite a sensitive file, finish with zeros, and remove it",
+          "text": "перезаписать файл, завершить запись нулями и удалить его",
           "command": "shred -vzu file.txt",
-          "explanation": "Overwrites the file, adds a zeroing pass and removes it; physical erasure is not guaranteed on every storage/filesystem",
+          "explanation": "Перезаписывает файл, выполняет дополнительный проход нулями и удаляет его; физическое стирание гарантируется не на всех накопителях и файловых системах.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "wipe a file with multiple overwrite passes",
+          "text": "стереть содержимое файла с отчётом о ходе перезаписи и убрать его имя",
+          "command": "shred -vzu file.txt",
+          "explanation": "Перезаписывает файл, выполняет дополнительный проход нулями и удаляет его; физическое стирание гарантируется не на всех накопителях и файловых системах.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "перезаписать файл десятью проходами без удаления",
           "command": "shred -n 10 secret.key",
-          "explanation": "Overwrites the file 10 times with random data",
+          "explanation": "Перезаписать файл десятью проходами без удаления.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "overwrite a disk device to destroy all data",
+          "text": "выполнить десятикратное затирание содержимого secret.key",
+          "command": "shred -n 10 secret.key",
+          "explanation": "Перезаписать файл десятью проходами без удаления.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "перезаписать данные на всём дисковом устройстве с показом хода",
           "command": "sudo shred -v /dev/sdb",
-          "explanation": "Overwrites the entire block device with random data",
+          "explanation": "Перезаписать данные на всём дисковом устройстве с показом хода.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "overwrite a file and remove its directory entry afterward",
+          "text": "затереть содержимое диска /dev/sdb через shred",
+          "command": "sudo shred -v /dev/sdb",
+          "explanation": "Перезаписать данные на всём дисковом устройстве с показом хода.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "перезаписать содержимое файла и затем удалить его",
           "command": "shred -u confidential.doc",
-          "explanation": "The -u flag removes the file after overwriting; copies, snapshots, and storage behavior can retain data",
+          "explanation": "Параметр -u удаляет файл после перезаписи; копии, снимки и особенности накопителя могут сохранить данные.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "overwrite a file with zeros instead of random data before deleting",
+          "text": "затереть данные документа и убрать файл после перезаписи",
+          "command": "shred -u confidential.doc",
+          "explanation": "Параметр -u удаляет файл после перезаписи; копии, снимки и особенности накопителя могут сохранить данные.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "записать в файл нули одним проходом и удалить его",
           "command": "shred -vzu -n 0 file.txt",
-          "explanation": "Uses -n 0 to skip random passes, -z for a single zero pass, then removes",
+          "explanation": "Записать в файл нули одним проходом и удалить его.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "обнулить содержимое файла без случайных проходов, показывая ход операции",
+          "command": "shred -vzu -n 0 file.txt",
+          "explanation": "Записать в файл нули одним проходом и удалить его.",
           "destructive": true
         }
       ]
@@ -864,41 +1563,76 @@
     {
       "name": "truncate",
       "synopsis": "truncate [options] file...",
-      "description": "Shrink or extend the size of a file",
+      "description": "Уменьшение или увеличение размера файла",
       "patterns": [
         {
           "type": "example",
-          "text": "empty a file without deleting it",
+          "text": "обнулить длину файла журнала, не удаляя сам файл",
           "command": "truncate -s 0 logfile.log",
-          "explanation": "Sets the file size to 0 bytes, effectively clearing its contents",
+          "explanation": "Обнулить длину файла журнала, не удаляя сам файл.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "create a file of a specific size for testing",
+          "text": "очистить содержимое лог-файла через изменение размера",
+          "command": "truncate -s 0 logfile.log",
+          "explanation": "Обнулить длину файла журнала, не удаляя сам файл.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "установить размер файла образа в один гибибайт",
           "command": "truncate -s 1G testfile.img",
-          "explanation": "Creates a sparse file that appears to be 1 gigabyte",
+          "explanation": "Установить размер файла образа в один гибибайт.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "shrink a file to a specific size",
+          "text": "создать или изменить тестовый файл до длины 1G",
+          "command": "truncate -s 1G testfile.img",
+          "explanation": "Установить размер файла образа в один гибибайт.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "установить размер файла в сто мебибайт",
           "command": "truncate -s 100M large_file.dat",
-          "explanation": "Truncates or extends the file to exactly 100 megabytes",
+          "explanation": "Установить размер файла в сто мебибайт.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "reduce a file size by a certain amount",
+          "text": "обрезать или расширить файл до 100M",
+          "command": "truncate -s 100M large_file.dat",
+          "explanation": "Установить размер файла в сто мебибайт.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "уменьшить длину файла на десять мебибайт",
           "command": "truncate -s -10M file.dat",
-          "explanation": "The minus sign reduces the file size by 10 megabytes",
+          "explanation": "Уменьшить длину файла на десять мебибайт.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "extend a file by appending empty space",
+          "text": "отнять 10M от текущего размера файла",
+          "command": "truncate -s -10M file.dat",
+          "explanation": "Уменьшить длину файла на десять мебибайт.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "увеличить длину файла на пятьдесят мебибайт",
           "command": "truncate -s +50M file.dat",
-          "explanation": "The plus sign grows the file by 50 megabytes, padded with null bytes",
+          "explanation": "Увеличить длину файла на пятьдесят мебибайт.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "расширить файл на 50M с чтением добавленной области как нулей",
+          "command": "truncate -s +50M file.dat",
+          "explanation": "Увеличить длину файла на пятьдесят мебибайт.",
           "destructive": true
         }
       ]
@@ -906,143 +1640,259 @@
     {
       "name": "fallocate",
       "synopsis": "fallocate [options] file",
-      "description": "Preallocate or deallocate space for a file",
+      "description": "Выделение и освобождение места для файла",
       "patterns": [
         {
           "type": "example",
-          "text": "preallocate a file of a specific size quickly",
+          "text": "предварительно выделить файлу десять гибибайт дискового пространства",
           "command": "fallocate -l 10G largefile.img",
-          "explanation": "Instantly allocates 10 GB of disk space without writing data"
+          "explanation": "Предварительно выделить файлу десять гибибайт дискового пространства."
         },
         {
           "type": "example",
-          "text": "allocate space for a future swap file",
+          "text": "быстро зарезервировать место для большого файла размером 10G",
+          "command": "fallocate -l 10G largefile.img",
+          "explanation": "Предварительно выделить файлу десять гибибайт дискового пространства."
+        },
+        {
+          "type": "example",
+          "text": "выделить четыре гибибайта места под файл /swapfile",
           "command": "sudo fallocate -l 4G /swapfile",
-          "explanation": "Allocates a 4 GiB file; mkswap and swapon must be performed separately"
+          "explanation": "Выделяет файл размером 4 ГиБ; mkswap и swapon выполняются отдельно."
         },
         {
           "type": "example",
-          "text": "punch a hole in a file to free up space in the middle",
+          "text": "подготовить файл объёмом 4G для последующей настройки подкачки",
+          "command": "sudo fallocate -l 4G /swapfile",
+          "explanation": "Выделяет файл размером 4 ГиБ; mkswap и swapon выполняются отдельно."
+        },
+        {
+          "type": "example",
+          "text": "освободить область файла длиной 5M со смещения 1M без изменения его размера",
           "command": "fallocate -p -o 1M -l 5M file.dat",
-          "explanation": "Deallocates space within the file without changing its apparent size",
+          "explanation": "Освободить область файла длиной 5M со смещения 1M без изменения его размера.",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "quickly create a large test file",
+          "text": "пробить разреженную область в середине файла через fallocate",
+          "command": "fallocate -p -o 1M -l 5M file.dat",
+          "explanation": "Освободить область файла длиной 5M со смещения 1M без изменения его размера.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "быстро выделить тестовому файлу пятьсот мебибайт",
           "command": "fallocate -l 500M test.bin",
-          "explanation": "Allocates 500 MB almost instantly without writing zeros"
+          "explanation": "Быстро выделить тестовому файлу пятьсот мебибайт."
+        },
+        {
+          "type": "example",
+          "text": "зарезервировать на диске место для test.bin размером 500M",
+          "command": "fallocate -l 500M test.bin",
+          "explanation": "Быстро выделить тестовому файлу пятьсот мебибайт."
         }
       ]
     },
     {
       "name": "sync",
       "synopsis": "sync [options] [file...]",
-      "description": "Flush filesystem caches to disk",
+      "description": "Сброс кешей файловых систем на диск",
       "patterns": [
         {
           "type": "example",
-          "text": "flush all pending writes to disk",
+          "text": "сбросить ожидающие записи на диск",
           "command": "sync",
-          "explanation": "Forces all buffered data to be written to the underlying storage"
+          "explanation": "Сбросить ожидающие записи на диск."
         },
         {
           "type": "example",
-          "text": "sync a specific file's data to disk",
+          "text": "записать буферы файловых систем на постоянный носитель",
+          "command": "sync",
+          "explanation": "Сбросить ожидающие записи на диск."
+        },
+        {
+          "type": "example",
+          "text": "принудительно записать данные и метаданные указанного файла на диск",
           "command": "sync file.dat",
-          "explanation": "Flushes only the specified file's data to disk"
+          "explanation": "Принудительно записать данные и метаданные указанного файла на диск."
         },
         {
           "type": "example",
-          "text": "ensure all data is written before safely removing a drive",
+          "text": "синхронизировать файл file.dat с его хранилищем",
+          "command": "sync file.dat",
+          "explanation": "Принудительно записать данные и метаданные указанного файла на диск."
+        },
+        {
+          "type": "example",
+          "text": "завершить отложенные записи перед отключением накопителя",
           "command": "sync",
-          "explanation": "Writes all cached data ensuring safe hardware removal"
+          "explanation": "Завершить отложенные записи перед отключением накопителя."
         },
         {
           "type": "example",
-          "text": "flush just the file data without metadata",
+          "text": "сбросить файловые буферы на диски перед извлечением устройства",
+          "command": "sync",
+          "explanation": "Завершить отложенные записи перед отключением накопителя."
+        },
+        {
+          "type": "example",
+          "text": "синхронизировать данные файла без необязательных метаданных",
           "command": "sync --data-only file.dat",
-          "explanation": "Syncs only the data, skipping unnecessary metadata updates"
+          "explanation": "Синхронизировать данные файла без необязательных метаданных."
         },
         {
           "type": "example",
-          "text": "force write filesystem buffers before shutdown",
+          "text": "выполнить сброс содержимого file.dat через режим data-only",
+          "command": "sync --data-only file.dat",
+          "explanation": "Синхронизировать данные файла без необязательных метаданных."
+        },
+        {
+          "type": "example",
+          "text": "дважды вызвать сброс файловых буферов на диск",
           "command": "sync; sync",
-          "explanation": "Double sync is a traditional safety measure to ensure all data is flushed"
+          "explanation": "Дважды вызвать сброс файловых буферов на диск."
+        },
+        {
+          "type": "example",
+          "text": "повторно синхронизировать отложенные записи файловых систем",
+          "command": "sync; sync",
+          "explanation": "Дважды вызвать сброс файловых буферов на диск."
         }
       ]
     },
     {
       "name": "chroot",
       "synopsis": "chroot [options] newroot [command]",
-      "description": "Run a command with a different root directory",
+      "description": "Запуск команды с другим корневым каталогом",
       "patterns": [
         {
           "type": "example",
-          "text": "change the root directory and run a shell inside it",
+          "text": "запустить bash с корнем файловой системы в другом каталоге",
           "command": "sudo chroot /mnt/newroot /bin/bash",
-          "explanation": "Starts a bash shell with /mnt/newroot as the apparent root filesystem"
+          "explanation": "Запустить bash с корнем файловой системы в другом каталоге."
         },
         {
           "type": "example",
-          "text": "repair a broken linux install by chrooting into it",
+          "text": "войти через chroot в систему из /mnt/newroot",
+          "command": "sudo chroot /mnt/newroot /bin/bash",
+          "explanation": "Запустить bash с корнем файловой системы в другом каталоге."
+        },
+        {
+          "type": "example",
+          "text": "открыть оболочку внутри корня другой установки Linux",
           "command": "sudo chroot /mnt/broken-system",
-          "explanation": "Changes root to the mounted broken system for repair operations"
+          "explanation": "Открыть оболочку внутри корня другой установки Linux."
         },
         {
           "type": "example",
-          "text": "run a command inside a chroot environment",
+          "text": "войти в смонтированную систему через chroot для её обслуживания",
+          "command": "sudo chroot /mnt/broken-system",
+          "explanation": "Открыть оболочку внутри корня другой установки Linux."
+        },
+        {
+          "type": "example",
+          "text": "запустить оболочку в chroot с очищенным окружением",
           "command": "sudo chroot /srv/jail /usr/bin/env -i /bin/sh",
-          "explanation": "Executes a clean shell in the chroot jail"
+          "explanation": "Запустить оболочку в chroot с очищенным окружением."
         },
         {
           "type": "example",
-          "text": "isolate a process in a sandboxed root filesystem",
+          "text": "войти в каталог /srv/jail как в корень, сбросив переменные окружения",
+          "command": "sudo chroot /srv/jail /usr/bin/env -i /bin/sh",
+          "explanation": "Запустить оболочку в chroot с очищенным окружением."
+        },
+        {
+          "type": "example",
+          "text": "запустить сервер с каталогом /sandbox в качестве корня файловой системы",
           "command": "sudo chroot /sandbox /app/server",
-          "explanation": "Runs the server with filesystem access limited to /sandbox"
+          "explanation": "Запустить сервер с каталогом /sandbox в качестве корня файловой системы."
         },
         {
           "type": "example",
-          "text": "run a command as a different user inside a chroot",
+          "text": "выполнить программу /app/server внутри указанного chroot",
+          "command": "sudo chroot /sandbox /app/server",
+          "explanation": "Запустить сервер с каталогом /sandbox в качестве корня файловой системы."
+        },
+        {
+          "type": "example",
+          "text": "открыть оболочку в chroot от пользователя nobody и группы nogroup",
           "command": "sudo chroot --userspec=nobody:nogroup /jail /bin/sh",
-          "explanation": "Changes to the specified user and group before running the command in the chroot"
+          "explanation": "Открыть оболочку в chroot от пользователя nobody и группы nogroup."
+        },
+        {
+          "type": "example",
+          "text": "запустить команду с непривилегированными учётными данными внутри /jail",
+          "command": "sudo chroot --userspec=nobody:nogroup /jail /bin/sh",
+          "explanation": "Открыть оболочку в chroot от пользователя nobody и группы nogroup."
         }
       ]
     },
     {
       "name": "dd",
       "synopsis": "dd [operand...]",
-      "description": "Convert and copy a file with low-level control",
+      "description": "Низкоуровневое копирование и преобразование данных",
       "patterns": [
         {
           "type": "example",
-          "text": "create a bootable USB drive from an ISO image",
+          "text": "записать ISO-образ на устройство флешки с показом хода",
           "command": "sudo dd if=image.iso of=/dev/sdb bs=4M status=progress",
-          "explanation": "Writes the ISO byte-for-byte to the USB device with progress display"
+          "explanation": "Записать ISO-образ на устройство флешки с показом хода."
         },
         {
           "type": "example",
-          "text": "clone an entire disk to another disk",
+          "text": "скопировать содержимое image.iso на диск /dev/sdb блоками по 4M",
+          "command": "sudo dd if=image.iso of=/dev/sdb bs=4M status=progress",
+          "explanation": "Записать ISO-образ на устройство флешки с показом хода."
+        },
+        {
+          "type": "example",
+          "text": "сделать поблочную копию одного диска на другой",
           "command": "sudo dd if=/dev/sda of=/dev/sdb bs=64K status=progress",
-          "explanation": "Copies every byte from one disk to another"
+          "explanation": "Сделать поблочную копию одного диска на другой."
         },
         {
           "type": "example",
-          "text": "create a disk image backup of a partition",
+          "text": "клонировать /dev/sda на /dev/sdb с отображением прогресса",
+          "command": "sudo dd if=/dev/sda of=/dev/sdb bs=64K status=progress",
+          "explanation": "Сделать поблочную копию одного диска на другой."
+        },
+        {
+          "type": "example",
+          "text": "сохранить раздел диска в файл образа",
           "command": "sudo dd if=/dev/sda1 of=backup.img bs=4M status=progress",
-          "explanation": "Creates a raw image file of the partition"
+          "explanation": "Сохранить раздел диска в файл образа."
         },
         {
           "type": "example",
-          "text": "write zeros to a disk to erase it",
+          "text": "создать поблочную резервную копию /dev/sda1 в backup.img",
+          "command": "sudo dd if=/dev/sda1 of=backup.img bs=4M status=progress",
+          "explanation": "Сохранить раздел диска в файл образа."
+        },
+        {
+          "type": "example",
+          "text": "заполнить дисковое устройство нулями",
           "command": "sudo dd if=/dev/zero of=/dev/sdb bs=1M status=progress",
-          "explanation": "Overwrites the entire disk with zeros"
+          "explanation": "Заполнить дисковое устройство нулями."
         },
         {
           "type": "example",
-          "text": "generate a file filled with random data",
+          "text": "обнулить содержимое диска /dev/sdb с показом хода записи",
+          "command": "sudo dd if=/dev/zero of=/dev/sdb bs=1M status=progress",
+          "explanation": "Заполнить дисковое устройство нулями."
+        },
+        {
+          "type": "example",
+          "text": "создать файл со ста мебибайтами случайных данных",
           "command": "dd if=/dev/urandom of=random.bin bs=1M count=100",
-          "explanation": "Creates a 100 MB file of random bytes",
+          "explanation": "Создать файл со ста мебибайтами случайных данных.",
+          "destructive": true
+        },
+        {
+          "type": "example",
+          "text": "записать в random.bin сто блоков по 1M из /dev/urandom",
+          "command": "dd if=/dev/urandom of=random.bin bs=1M count=100",
+          "explanation": "Создать файл со ста мебибайтами случайных данных.",
           "destructive": true
         }
       ]
@@ -1050,150 +1900,258 @@
     {
       "name": "rsync",
       "synopsis": "rsync [options] source destination",
-      "description": "Efficiently sync files and directories locally or remotely",
+      "description": "Синхронизация файлов и каталогов локально или по сети",
       "patterns": [
         {
           "type": "example",
-          "text": "sync a directory to a backup location",
+          "text": "синхронизировать содержимое каталога с резервной папкой в архивном режиме",
           "command": "rsync -avh source_dir/ backup_dir/",
-          "explanation": "Archive mode sync with verbose output and human-readable sizes"
+          "explanation": "Синхронизировать содержимое каталога с резервной папкой в архивном режиме."
         },
         {
           "type": "example",
-          "text": "copy files to a remote server over SSH",
+          "text": "скопировать дерево файлов в backup_dir с сохранением основных атрибутов",
+          "command": "rsync -avh source_dir/ backup_dir/",
+          "explanation": "Синхронизировать содержимое каталога с резервной папкой в архивном режиме."
+        },
+        {
+          "type": "example",
+          "text": "скопировать каталог на удалённый сервер по SSH со сжатием",
           "command": "rsync -avz local_dir/ user@host:/remote/path/",
-          "explanation": "Syncs to a remote server with compression enabled"
+          "explanation": "Скопировать каталог на удалённый сервер по SSH со сжатием."
         },
         {
           "type": "example",
-          "text": "sync files and delete anything in destination not in source",
+          "text": "синхронизировать локальные файлы с удалённой папкой через rsync",
+          "command": "rsync -avz local_dir/ user@host:/remote/path/",
+          "explanation": "Скопировать каталог на удалённый сервер по SSH со сжатием."
+        },
+        {
+          "type": "example",
+          "text": "синхронизировать папки, удалив лишние файлы на стороне назначения",
           "command": "rsync -avh --delete source/ destination/",
-          "explanation": "Mirrors source exactly, removing extra files from destination"
+          "explanation": "Синхронизировать папки, удалив лишние файлы на стороне назначения."
         },
         {
           "type": "example",
-          "text": "resume an interrupted large file transfer",
+          "text": "привести каталог назначения к источнику с удалением отсутствующих в источнике элементов",
+          "command": "rsync -avh --delete source/ destination/",
+          "explanation": "Синхронизировать папки, удалив лишние файлы на стороне назначения."
+        },
+        {
+          "type": "example",
+          "text": "передать большой файл с показом прогресса и сохранением частичных данных",
           "command": "rsync -avh --partial --progress largefile.zip user@host:/path/",
-          "explanation": "Keeps partial transfers and shows progress for resumable copy"
+          "explanation": "Передать большой файл с показом прогресса и сохранением частичных данных."
         },
         {
           "type": "example",
-          "text": "sync only files that are newer than the destination",
+          "text": "продолжить копирование архива на сервер, используя оставшийся неполный файл",
+          "command": "rsync -avh --partial --progress largefile.zip user@host:/path/",
+          "explanation": "Передать большой файл с показом прогресса и сохранением частичных данных."
+        },
+        {
+          "type": "example",
+          "text": "синхронизировать файлы, не заменяя более новые на стороне назначения",
           "command": "rsync -avhu source/ destination/",
-          "explanation": "The -u flag skips files that are newer on the destination"
+          "explanation": "Синхронизировать файлы, не заменяя более новые на стороне назначения."
         },
         {
           "type": "example",
-          "text": "do a dry run to see what rsync would change without actually copying",
+          "text": "обновить целевую папку через rsync с пропуском более свежих файлов получателя",
+          "command": "rsync -avhu source/ destination/",
+          "explanation": "Синхронизировать файлы, не заменяя более новые на стороне назначения."
+        },
+        {
+          "type": "example",
+          "text": "посмотреть план синхронизации без копирования файлов",
           "command": "rsync -avhn source/ destination/",
-          "explanation": "The -n flag performs a trial run with no changes made"
+          "explanation": "Посмотреть план синхронизации без копирования файлов."
+        },
+        {
+          "type": "example",
+          "text": "выполнить пробный запуск rsync с показом предполагаемых изменений",
+          "command": "rsync -avhn source/ destination/",
+          "explanation": "Посмотреть план синхронизации без копирования файлов."
         }
       ]
     },
     {
       "name": "rename",
       "synopsis": "rename [options] expression replacement file...",
-      "description": "Rename multiple files using a pattern",
+      "description": "Массовое переименование файлов по шаблону",
       "patterns": [
         {
           "type": "example",
-          "text": "rename files by replacing a string in their names",
+          "text": "переименовать текстовые файлы, заменив первое old на new в каждом имени",
           "command": "rename 's/old/new/' *.txt",
-          "explanation": "Replaces the first occurrence of 'old' with 'new' in matching filenames"
+          "explanation": "Переименовать текстовые файлы, заменив первое old на new в каждом имени."
         },
         {
           "type": "example",
-          "text": "change the extension of multiple files",
+          "text": "массово изменить имена файлов .txt по строковому шаблону",
+          "command": "rename 's/old/new/' *.txt",
+          "explanation": "Переименовать текстовые файлы, заменив первое old на new в каждом имени."
+        },
+        {
+          "type": "example",
+          "text": "заменить расширение txt на md у файлов текущей папки",
           "command": "rename 's/\\.txt$/.md/' *.txt",
-          "explanation": "Renames all .txt files to .md using a regex substitution"
+          "explanation": "Заменить расширение txt на md у файлов текущей папки."
         },
         {
           "type": "example",
-          "text": "convert filenames to lowercase",
+          "text": "массово переименовать текстовые файлы в Markdown",
+          "command": "rename 's/\\.txt$/.md/' *.txt",
+          "explanation": "Заменить расширение txt на md у файлов текущей папки."
+        },
+        {
+          "type": "example",
+          "text": "перевести латинские заглавные буквы в именах в нижний регистр",
           "command": "rename 'y/A-Z/a-z/' *",
-          "explanation": "Transliterates uppercase characters to lowercase in all filenames"
+          "explanation": "Перевести латинские заглавные буквы в именах в нижний регистр."
         },
         {
           "type": "example",
-          "text": "add a prefix to all files in a directory",
+          "text": "переименовать нескрытые элементы каталога, заменив A–Z на a–z",
+          "command": "rename 'y/A-Z/a-z/' *",
+          "explanation": "Перевести латинские заглавные буквы в именах в нижний регистр."
+        },
+        {
+          "type": "example",
+          "text": "добавить prefix_ в начало имён нескрытых элементов каталога",
           "command": "rename 's/^/prefix_/' *",
-          "explanation": "Prepends 'prefix_' to every filename"
+          "explanation": "Добавить prefix_ в начало имён нескрытых элементов каталога."
         },
         {
           "type": "example",
-          "text": "do a dry run to preview what rename would change",
+          "text": "массово переименовать файлы и папки с добавлением общего префикса",
+          "command": "rename 's/^/prefix_/' *",
+          "explanation": "Добавить prefix_ в начало имён нескрытых элементов каталога."
+        },
+        {
+          "type": "example",
+          "text": "предварительно посмотреть замену foo на bar в именах файлов txt",
           "command": "rename -n 's/foo/bar/' *.txt",
-          "explanation": "The -n flag shows what would be renamed without actually doing it"
+          "explanation": "Предварительно посмотреть замену foo на bar в именах файлов txt."
+        },
+        {
+          "type": "example",
+          "text": "показать план массового переименования без изменения имён",
+          "command": "rename -n 's/foo/bar/' *.txt",
+          "explanation": "Предварительно посмотреть замену foo на bar в именах файлов txt."
         }
       ]
     },
     {
       "name": "readlink",
       "synopsis": "readlink [options] file",
-      "description": "Print the target of a symbolic link",
+      "description": "Просмотр цели символической ссылки",
       "patterns": [
         {
           "type": "example",
-          "text": "see where a symlink points",
+          "text": "показать цель символической ссылки python",
           "command": "readlink /usr/local/bin/python",
-          "explanation": "Prints the link target path on one line"
+          "explanation": "Показать цель символической ссылки python."
         },
         {
           "type": "example",
-          "text": "resolve a symlink to its ultimate canonical path (GNU readlink)",
+          "text": "узнать, какой путь записан в указанной ссылке",
+          "command": "readlink /usr/local/bin/python",
+          "explanation": "Показать цель символической ссылки python."
+        },
+        {
+          "type": "example",
+          "text": "раскрыть все символические ссылки до канонического пути",
           "command": "readlink -f ./some_link",
-          "explanation": "-f follows every symlink component to the final file"
+          "explanation": "Раскрыть все символические ссылки до канонического пути."
         },
         {
           "type": "example",
-          "text": "show one level of symlink target on macOS using stat",
+          "text": "получить конечное абсолютное расположение объекта через GNU readlink",
+          "command": "readlink -f ./some_link",
+          "explanation": "Раскрыть все символические ссылки до канонического пути."
+        },
+        {
+          "type": "example",
+          "text": "показать цель символической ссылки через stat в macOS",
           "command": "stat -f '%Y' /path/to/symlink",
-          "explanation": "Prints where the symlink points; use realpath or repeated reads for full canonicalization"
+          "explanation": "Показать цель символической ссылки через stat в macOS."
+        },
+        {
+          "type": "example",
+          "text": "узнать один уровень назначения ссылки средствами BSD stat",
+          "command": "stat -f '%Y' /path/to/symlink",
+          "explanation": "Показать цель символической ссылки через stat в macOS."
         }
       ]
     },
     {
       "name": "inotifywait",
       "synopsis": "inotifywait [options] file1 [file2] [...]",
-      "description": "Wait for changes to files using inotify",
+      "description": "Ожидание изменений файлов через inotify",
       "patterns": [
         {
           "type": "example",
-          "text": "watch a directory for new files and print their names",
+          "text": "непрерывно следить за созданием файлов в указанной папке",
           "command": "inotifywait -m -e create /path/to/dir",
-          "explanation": "Runs continuously and outputs events as files are created"
+          "explanation": "Непрерывно следить за созданием файлов в указанной папке."
         },
         {
           "type": "example",
-          "text": "wait until a specific file is modified",
+          "text": "печатать события появления новых элементов каталога через inotify",
+          "command": "inotifywait -m -e create /path/to/dir",
+          "explanation": "Непрерывно следить за созданием файлов в указанной папке."
+        },
+        {
+          "type": "example",
+          "text": "дождаться изменения содержимого указанного файла",
           "command": "inotifywait -e modify file.txt",
-          "explanation": "Blocks until a modification event occurs on the file"
+          "explanation": "Дождаться изменения содержимого указанного файла."
+        },
+        {
+          "type": "example",
+          "text": "завершить ожидание после события modify для file.txt",
+          "command": "inotifywait -e modify file.txt",
+          "explanation": "Дождаться изменения содержимого указанного файла."
         }
       ]
     },
     {
       "name": "fswatch",
       "synopsis": "fswatch [options] ... path ...",
-      "description": "A cross-platform file change monitor",
+      "description": "Отслеживание изменений файлов на разных платформах",
       "patterns": [
         {
           "type": "example",
-          "text": "watch a directory and run a command when files change",
+          "text": "следить за изменениями папки и запускать скрипт на каждый пакет событий",
           "command": "fswatch -o /path/to/dir | xargs -n1 ./script.sh",
-          "explanation": "Triggers the script execution upon any filesystem event in the directory"
+          "explanation": "Следить за изменениями папки и запускать скрипт на каждый пакет событий."
+        },
+        {
+          "type": "example",
+          "text": "выполнять script.sh при уведомлениях fswatch об изменении каталога",
+          "command": "fswatch -o /path/to/dir | xargs -n1 ./script.sh",
+          "explanation": "Следить за изменениями папки и запускать скрипт на каждый пакет событий."
         }
       ]
     },
     {
       "name": "dirs",
       "synopsis": "dirs [-clpv]",
-      "description": "Display list of currently remembered directories",
+      "description": "Просмотр сохранённого стека каталогов",
       "patterns": [
         {
           "type": "example",
-          "text": "show the directory stack managed by pushd and popd",
+          "text": "показать стек каталогов с номерами позиций",
           "command": "dirs -v",
-          "explanation": "Prints the directory stack with index numbers"
+          "explanation": "Показать стек каталогов с номерами позиций."
+        },
+        {
+          "type": "example",
+          "text": "посмотреть список папок, сохранённых через pushd и popd",
+          "command": "dirs -v",
+          "explanation": "Показать стек каталогов с номерами позиций."
         }
       ]
     }
