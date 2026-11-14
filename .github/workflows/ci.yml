@@ -18,7 +18,6 @@ jobs:
     env:
       HF_HUB_OFFLINE: '1'
       TRANSFORMERS_OFFLINE: '1'
-      CF_DB_DIR: ${{ runner.temp }}/cf-ru-tests
     steps:
       - name: Получить исходники
         uses: actions/checkout@v7
@@ -34,6 +33,8 @@ jobs:
       - name: Проверить синтаксис установщиков
         run: bash -n install.sh uninstall.sh shell/cf.bash src/cf/data/cf.bash
       - name: Запустить тесты без загрузки весов
+        env:
+          CF_DB_DIR: ${{ runner.temp }}/cf-ru-tests
         run: python -m pytest
       - name: Собрать пакет
         run: python -m build
