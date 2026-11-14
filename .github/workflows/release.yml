@@ -1,0 +1,177 @@
+name: Релиз
+
+on:
+  push:
+    tags:
+      - 'v[0-9]*.[0-9]*.[0-9]*'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  version:
+    name: Проверить номер версии
+    runs-on: ubuntu-24.04
+    outputs:
+      prerelease: ${{ steps.version.outputs.prerelease }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - run: |
+          python -m pip install --only-binary=:all: packaging
+      - name: Проверить тег и версии пакета
+        id: version
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: python scripts/release.py validate-tag --tag "$RELEASE_TAG" --github-output "$GITHUB_OUTPUT"
+
+  build:
+    name: Подготовить модель, индекс и пакет
+    needs: version
+    runs-on: ubuntu-24.04
+    env:
+      CF_THREADS: '2'
+      CF_BATCH_SIZE: '32'
+      RELEASE_TAG: ${{ github.ref_name }}
+      RELEASE_REPOSITORY: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v7
+      - name: Выбрать временный каталог данных
+        run: echo "CF_DB_DIR=$RUNNER_TEMP/cf-release-data" >> "$GITHUB_ENV"
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Установить CPU-зависимости сборки
+        run: |
+          python -m pip install 'torch==2.6.0' --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install '.[dev,export]' build
+      - name: Запустить проверки без скачивания весов
+        env:
+          HF_HUB_OFFLINE: '1'
+          TRANSFORMERS_OFFLINE: '1'
+        run: |
+          bash -n install.sh uninstall.sh shell/cf.bash src/cf/data/cf.bash
+          python -m pytest
+          python -m pip check
+      - name: Получить неизменившуюся модель из предыдущего стабильного релиза
+        run: |
+          python scripts/release.py restore-model \
+            --base-url "https://github.com/$RELEASE_REPOSITORY/releases" \
+            --out "$CF_DB_DIR/onnx"
+      - name: Подготовить готовую модель и индекс
+        run: |
+          cf --prepare-model
+          cf --seed --force
+          python scripts/release.py verify-runtime
+      - name: Собрать исходный дистрибутив и wheel
+        run: python -m build
+      - name: Закрепить только рабочие зависимости
+        run: |
+          python -m venv "$RUNNER_TEMP/cf-lock"
+          "$RUNNER_TEMP/cf-lock/bin/python" -m pip install --only-binary=:all: dist/*.whl
+          "$RUNNER_TEMP/cf-lock/bin/python" scripts/release.py lock --out "$RUNNER_TEMP/requirements-runtime.txt"
+      - name: Собрать комплект релиза
+        run: |
+          python scripts/release.py package \
+            --tag "$RELEASE_TAG" \
+            --wheel dist/*.whl \
+            --model-dir "$CF_DB_DIR/onnx" \
+            --db "$CF_DB_DIR/cf.db" \
+            --requirements "$RUNNER_TEMP/requirements-runtime.txt" \
+            --out "$RUNNER_TEMP/release-assets"
+          cp dist/*.tar.gz "$RUNNER_TEMP/release-assets/"
+          cd "$RUNNER_TEMP/release-assets"
+          sha256sum -- *.whl *.tar.gz *.sh *.txt release.json > SHA256SUMS
+      - uses: actions/upload-artifact@v6
+        with:
+          name: release-assets
+          path: ${{ runner.temp }}/release-assets/
+          if-no-files-found: error
+          retention-days: 7
+
+  install:
+    name: Установка на Python ${{ matrix.python }}
+    needs: build
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.12', '3.13']
+    env:
+      RELEASE_TAG: ${{ github.ref_name }}
+      HF_HUB_OFFLINE: '1'
+      TRANSFORMERS_OFFLINE: '1'
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python }}
+      - uses: actions/download-artifact@v6
+        with:
+          name: release-assets
+          path: ${{ runner.temp }}/release-assets
+      - name: Проверить скачивание, поиск, повторную установку и удаление
+        env:
+          CF_RELEASE_BASE_URL: http://127.0.0.1:8765
+          CF_BASHRC: ${{ runner.temp }}/cf.bashrc
+        run: |
+          mkdir -p "$RUNNER_TEMP/http/download"
+          ln -s "$RUNNER_TEMP/release-assets" "$RUNNER_TEMP/http/download/$RELEASE_TAG"
+          python -m http.server 8765 --bind 127.0.0.1 --directory "$RUNNER_TEMP/http" > "$RUNNER_TEMP/http.log" 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid"' EXIT
+          python - <<'PY'
+          import time
+          import urllib.request
+          for attempt in range(50):
+              try:
+                  urllib.request.urlopen('http://127.0.0.1:8765/', timeout=1).close()
+                  break
+              except OSError:
+                  time.sleep(0.1)
+          else:
+              raise RuntimeError('Локальный сервер релиза не запустился')
+          PY
+          bash "$RUNNER_TEMP/release-assets/install.sh" --version "$RELEASE_TAG" --shell
+          "$HOME/.local/bin/cf" --version
+          "$HOME/.local/bin/cf" --stats
+          "$HOME/.local/bin/cf" --print 'найди большие файлы' < /dev/null
+          bash "$RUNNER_TEMP/release-assets/install.sh" --version "$RELEASE_TAG" --shell
+          bash "$RUNNER_TEMP/release-assets/uninstall.sh"
+          test ! -e "$HOME/.local/bin/cf"
+          bash "$RUNNER_TEMP/release-assets/install.sh" --version "$RELEASE_TAG" --shell
+          bash "$RUNNER_TEMP/release-assets/uninstall.sh" --purge
+          test ! -e "$HOME/.local/bin/cf"
+
+  publish:
+    name: Опубликовать проверенный релиз
+    needs: [version, install]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      RELEASE_TAG: ${{ github.ref_name }}
+      IS_PRERELEASE: ${{ needs.version.outputs.prerelease }}
+    steps:
+      - uses: actions/download-artifact@v6
+        with:
+          name: release-assets
+          path: release-assets
+      - name: Создать черновик со всеми файлами и опубликовать
+        run: |
+          if [[ "$IS_PRERELEASE" == true ]]; then
+            gh release create "$RELEASE_TAG" release-assets/* --verify-tag --draft --prerelease --title "$RELEASE_TAG" --generate-notes
+            gh release edit "$RELEASE_TAG" --draft=false --prerelease --latest=false
+          else
+            gh release create "$RELEASE_TAG" release-assets/* --verify-tag --draft --title "$RELEASE_TAG" --generate-notes
+            gh release edit "$RELEASE_TAG" --draft=false --prerelease=false --latest
+          fi

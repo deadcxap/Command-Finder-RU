@@ -1,75 +1,83 @@
 #!/usr/bin/env bash
 set -euo pipefail
-
-PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
-VENV_DIR="$PROJECT_DIR/.venv"
-SHELL_FILE="$PROJECT_DIR/shell/cf.bash"
-BASHRC="${CF_BASHRC:-$HOME/.bashrc}"
-LINK_PATH="$HOME/.local/bin/cf"
-DEFAULT_DATA_DIR="$HOME/.local/share/cf-ru"
-PURGE=false
-
-info() { printf '[cf-ru] %s\n' "$*"; }
-error() { printf '[cf-ru] Ошибка: %s\n' "$*" >&2; exit 1; }
-
-for argument in "$@"; do
-    case "$argument" in
-        --purge) PURGE=true ;;
-        --help|-h)
-            printf 'Удаление Command Finder RU\n\nИспользование: ./uninstall.sh [--purge]\n  --purge  также удалить стандартный каталог ~/.local/share/cf-ru\n'
-            exit 0 ;;
-        *) error "Неизвестный параметр: $argument" ;;
-    esac
-done
-
-case "$PROJECT_DIR" in
-    /mnt/[a-zA-Z]/*) error 'Запускайте удаление из файловой системы Linux/WSL.' ;;
-esac
-case "$BASHRC" in
-    /mnt/*) error 'Файл .bashrc должен находиться в файловой системе Linux/WSL.' ;;
-esac
-
-if [[ -L "$LINK_PATH" ]]; then
-    if [[ "$(readlink "$LINK_PATH")" == "$VENV_DIR/bin/cf" ]]; then
-        rm -- "$LINK_PATH"
-        info "Удалена ссылка $LINK_PATH"
-    else
-        info "Ссылка $LINK_PATH относится к другому проекту и сохранена."
-    fi
-elif [[ -e "$LINK_PATH" ]]; then
-    info "Файл $LINK_PATH сохранён: это не ссылка установки."
+PYTHON_BIN="$(command -v "${CF_PYTHON:-python3}" || true)"
+if [[ -z "$PYTHON_BIN" || "$PYTHON_BIN" == /mnt/* || "$PYTHON_BIN" == *.exe ]]; then
+    printf '[cf-ru] Нужен Python, установленный внутри Linux/WSL.\n' >&2
+    exit 1
 fi
+CF_UNINSTALL_SCRIPT="${BASH_SOURCE[0]}" "$PYTHON_BIN" - "$@" <<'PY'
+import argparse
+import fcntl
+import json
+import os
+from pathlib import Path
+import re
+import shlex
+import shutil
+import sys
 
-printf -v SOURCE_LINE 'source %q' "$SHELL_FILE"
-MARKER_LINE="# cf-ru: $SOURCE_LINE"
-OLD_SOURCE_LINE="source $SHELL_FILE"
-if [[ -f "$BASHRC" ]] && { grep -Fqx -- "$SOURCE_LINE" "$BASHRC" || grep -Fqx -- "$OLD_SOURCE_LINE" "$BASHRC"; }; then
-    cp -- "$BASHRC" "$BASHRC.bak.cf-ru"
-    TEMP_RC="$(mktemp "$BASHRC.cf-ru.XXXXXX")"
-    if grep -Fvx -e "$SOURCE_LINE" -e "$OLD_SOURCE_LINE" -e "$MARKER_LINE" \
-        "$BASHRC.bak.cf-ru" > "$TEMP_RC"; then
-        :
-    else
-        FILTER_STATUS=$?
-        [[ "$FILTER_STATUS" -eq 1 ]] || error 'Не удалось обновить .bashrc; резервная копия сохранена.'
-    fi
-    cat "$TEMP_RC" > "$BASHRC"
-    rm -- "$TEMP_RC"
-    info "Интеграция удалена; резервная копия: $BASHRC.bak.cf-ru"
-fi
 
-if [[ -d "$VENV_DIR" || -L "$VENV_DIR" ]]; then
-    rm -rf -- "$VENV_DIR"
-    info 'Рабочее окружение удалено.'
-fi
+def local_path(value):
+    path = Path(value).expanduser().absolute()
+    for part in reversed((path, *path.parents)):
+        if str(part).startswith('/mnt/') or re.match(r'^[A-Za-z]:[\\/]', str(part)):
+            raise ValueError(f'Нужен путь внутри Linux/WSL: {path}')
+        if part.is_symlink():
+            raise ValueError(f'Укажите путь без символических ссылок: {part}')
+    return path
 
-if "$PURGE"; then
-    if [[ -d "$DEFAULT_DATA_DIR" || -L "$DEFAULT_DATA_DIR" ]]; then
-        rm -rf -- "$DEFAULT_DATA_DIR"
-        info "Стандартные данные удалены: $DEFAULT_DATA_DIR"
-    fi
-else
-    info "Данные сохранены: $DEFAULT_DATA_DIR"
-fi
-info 'Пользовательские CF_DB_DIR и CF_MODEL_DIR при необходимости удалите вручную.'
-info 'Исходники проекта сохранены. Повторная установка: ./install.sh'
+
+def main():
+    parser = argparse.ArgumentParser(description='Удаление управляемой установки Command Finder RU.')
+    parser.add_argument('--purge', action='store_true', help='Также удалить модель, базу и кеш запросов')
+    args = parser.parse_args()
+    script_dir = local_path(str(Path(os.environ['CF_UNINSTALL_SCRIPT']).absolute().parent))
+    default = script_dir if (script_dir / 'install.json').is_file() else Path.home() / '.local/share/cf-ru'
+    prefix = local_path(os.environ.get('CF_INSTALL_DIR', str(default)))
+    marker = prefix / 'install.json'
+    if not marker.is_file() or marker.is_symlink() or json.loads(marker.read_text()).get('installer') != 'command-finder-ru-release-install-v1':
+        raise ValueError(f'В {prefix} не найдена управляемая установка; файлы сохранены.')
+    bashrc = local_path(os.environ.get('CF_BASHRC', str(Path.home() / '.bashrc')))
+    link = local_path(str(Path.home() / '.local/bin')) / 'cf'
+    with (prefix / '.install.lock').open('a') as lock:
+        try:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            raise ValueError('Другой установщик работает с этим каталогом.') from None
+        line = 'source ' + shlex.quote(str(prefix / 'cf.bash'))
+        if bashrc.is_file():
+            text = bashrc.read_text()
+            lines = text.splitlines(keepends=True)
+            filtered = ''.join(item for item in lines if item.rstrip('\r\n') not in (line, '# cf-ru: ' + line))
+            if filtered != text:
+                shutil.copyfile(bashrc, str(bashrc) + '.bak.cf-ru')
+                bashrc.write_text(filtered)
+        if link.is_symlink() and os.readlink(link) == str(prefix / 'cf'):
+            link.unlink()
+        for name in ('current', 'cf', 'cf.bash'):
+            path = prefix / name
+            if path.is_file() or path.is_symlink():
+                path.unlink()
+        if args.purge:
+            shutil.rmtree(prefix)
+            print('[cf-ru] Установка, модель и база удалены.')
+        else:
+            releases = local_path(str(prefix / 'releases'))
+            if releases.is_dir():
+                for release in releases.iterdir():
+                    if release.is_dir() and not release.is_symlink():
+                        venv = release / 'venv'
+                        if venv.is_symlink():
+                            venv.unlink()
+                        elif venv.is_dir():
+                            shutil.rmtree(venv)
+            print(f'[cf-ru] Приложение удалено. Модель и база сохранены в {prefix}.')
+            print(f'[cf-ru] Для полного удаления: bash {shlex.quote(str(prefix / "uninstall.sh"))} --purge')
+
+
+try:
+    main()
+except (OSError, ValueError, TypeError) as error:
+    print(f'[cf-ru] Ошибка удаления: {error}', file=sys.stderr)
+    sys.exit(1)
+PY

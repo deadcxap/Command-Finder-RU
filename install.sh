@@ -1,119 +1,314 @@
 #!/usr/bin/env bash
 set -euo pipefail
-
-PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
-VENV_DIR="$PROJECT_DIR/.venv"
-SHELL_FILE="$PROJECT_DIR/shell/cf.bash"
-BASHRC="${CF_BASHRC:-$HOME/.bashrc}"
-LINK_DIR="$HOME/.local/bin"
-LINK_PATH="$LINK_DIR/cf"
-BUILD_DIR=""
-WITH_SHELL=false
-
-info() { printf '[cf-ru] %s\n' "$*"; }
-error() { printf '[cf-ru] Ошибка: %s\n' "$*" >&2; exit 1; }
-cleanup() {
-    if [[ -n "$BUILD_DIR" && -d "$BUILD_DIR" ]]; then
-        rm -rf -- "$BUILD_DIR"
-    fi
-}
-trap cleanup EXIT
-
-for argument in "$@"; do
-    case "$argument" in
-        --shell) WITH_SHELL=true ;;
-        --help|-h)
-            printf 'Установка Command Finder RU\n\nИспользование: ./install.sh [--shell]\n  --shell  добавить интеграцию в .bashrc\n'
-            exit 0 ;;
-        *) error "Неизвестный параметр: $argument" ;;
-    esac
-done
-
-if "$WITH_SHELL" && (( BASH_VERSINFO[0] < 4 )); then
-    error 'Для интеграции нужен Bash 4 или новее. Запустите установщик современным Bash или без --shell.'
-fi
-
-case "$PROJECT_DIR" in
-    /mnt/[a-zA-Z]/*) error "Разместите проект в файловой системе Linux, например в ~/projects." ;;
-esac
-
 PYTHON_BIN="$(command -v "${CF_PYTHON:-python3}" || true)"
-[[ -n "$PYTHON_BIN" ]] || error 'Нужен Python 3.12 или новее.'
-case "$PYTHON_BIN" in
-    /mnt/*|*.exe) error 'Используйте Python, установленный в Linux/WSL или macOS.' ;;
+if [[ -z "$PYTHON_BIN" || "$PYTHON_BIN" == /mnt/* || "$PYTHON_BIN" == *.exe ]]; then
+    printf '[cf-ru] Нужен Python 3.12 или 3.13, установленный внутри Linux/WSL.\n' >&2
+    exit 1
+fi
+CF_INSTALL_PYTHON="$PYTHON_BIN" "$PYTHON_BIN" - "$@" <<'PY'
+import argparse
+import fcntl
+import hashlib
+import json
+import os
+from pathlib import Path
+import platform
+import re
+import shlex
+import shutil
+import subprocess
+import sys
+import tarfile
+import tempfile
+from urllib.parse import urlparse
+from urllib.request import urlopen
+
+TAG = re.compile(r"v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(?:-rc\.([1-9][0-9]*))?")
+FILE = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]*")
+DIGEST = re.compile(r"[a-f0-9]{64}")
+MODEL_FILES = {"model.onnx", "tokenizer.json", "metadata.json", "checksums.json",
+               "tokenizer_config.json", "special_tokens_map.json", "vocab.txt"}
+MODEL_REQUIRED = {"model.onnx", "tokenizer.json", "metadata.json", "checksums.json"}
+MARKER = 'command-finder-ru-release-install-v1'
+
+
+def info(message):
+    print(f'[cf-ru] {message}', flush=True)
+
+
+def fail(message):
+    raise ValueError(message)
+
+
+def local_path(value):
+    path = Path(value).expanduser().absolute()
+    for part in reversed((path, *path.parents)):
+        if str(part).startswith('/mnt/') or re.match(r'^[A-Za-z]:[\\/]', str(part)):
+            fail(f'Нужен путь внутри Linux/WSL: {path}')
+        if part.is_symlink():
+            fail(f'Укажите путь без символических ссылок: {part}')
+    return path
+
+
+def download(url, path):
+    info(f"Скачивание {url.rsplit('/', 1)[-1]}…")
+    with urlopen(url, timeout=60) as response, path.open('wb') as output:
+        shutil.copyfileobj(response, output, length=1024 * 1024)
+
+
+def sha256(path):
+    digest = hashlib.sha256()
+    with path.open('rb') as stream:
+        for block in iter(lambda: stream.read(1024 * 1024), b''):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def checked_file(value):
+    if not isinstance(value, str) or not FILE.fullmatch(value):
+        fail('Недопустимое имя файла в релизе')
+    return value
+
+
+def read_sums(path):
+    sums = {}
+    for line in path.read_text(encoding='utf-8').splitlines():
+        match = re.fullmatch(r'([a-f0-9]{64})  ([A-Za-z0-9][A-Za-z0-9_.-]*)', line)
+        if not match or match[2] in sums:
+            fail('Повреждён SHA256SUMS релиза')
+        sums[match[2]] = match[1]
+    return sums
+
+
+def check(path, digest):
+    if not isinstance(digest, str) or not DIGEST.fullmatch(digest) or sha256(path) != digest:
+        fail(f'Не совпадает SHA-256 файла {path.name}')
+
+
+def extract(archive, target, allowed, required):
+    with tarfile.open(archive, 'r:gz') as source:
+        members = source.getmembers()
+        names = [member.name for member in members]
+        if (len(names) != len(set(names)) or not required.issubset(names)
+                or any(name not in allowed for name in names)
+                or any(not member.isfile() or member.size > 1024 ** 3 for member in members)):
+            fail(f'Недопустимое содержимое архива {archive.name}')
+        for member in members:
+            with source.extractfile(member) as stream, (target / member.name).open('wb') as output:
+                shutil.copyfileobj(stream, output, length=1024 * 1024)
+
+
+def write_atomic(path, content, mode=0o644):
+    temporary = path.with_name(path.name + '.new')
+    temporary.write_text(content, encoding='utf-8')
+    temporary.chmod(mode)
+    temporary.replace(path)
+
+
+def main():
+    parser = argparse.ArgumentParser(description='Установка готового релиза Command Finder RU без сборки модели.')
+    parser.add_argument('--version', help='Тег vX.Y.Z или vX.Y.Z-rc.N; по умолчанию последний стабильный релиз')
+    parser.add_argument('--shell', action='store_true', help='Подключить Bash-интеграцию в ~/.bashrc')
+    args = parser.parse_args()
+    if platform.system() != 'Linux' or platform.machine() != 'x86_64':
+        fail('Автоматическая установка поддерживает только Linux/WSL x86_64.')
+    if sys.version_info[:2] not in ((3, 12), (3, 13)):
+        fail('Нужен Python 3.12 или 3.13 с модулями venv и pip. Выберите его через CF_PYTHON.')
+    if args.version and not TAG.fullmatch(args.version):
+        fail('Версия должна иметь вид vX.Y.Z или vX.Y.Z-rc.N.')
+    base = os.environ.get('CF_RELEASE_BASE_URL', 'https://github.com/deadcxap/Command-Finder-RU/releases').rstrip('/')
+    url = urlparse(base)
+    if url.scheme != 'https' and not (url.scheme == 'http' and url.hostname in ('127.0.0.1', 'localhost', '::1')):
+        fail('Источник релизов должен использовать HTTPS (HTTP разрешён только для localhost).')
+    prefix = local_path(os.environ.get('CF_INSTALL_DIR', str(Path.home() / '.local/share/cf-ru')))
+    if prefix == Path.home() or prefix in Path.home().parents or prefix == Path('/'):
+        fail('Выберите отдельный каталог для установки.')
+    link_dir = local_path(str(Path.home() / '.local/bin'))
+    link = link_dir / 'cf'
+    bashrc = local_path(os.environ.get('CF_BASHRC', str(Path.home() / '.bashrc'))) if args.shell else None
+    shell_line = 'source ' + shlex.quote(str(prefix / 'cf.bash'))
+    shell_text = None
+    if bashrc:
+        if bashrc.exists() and not bashrc.is_file():
+            fail(f'Настройки Bash должны быть обычным файлом: {bashrc}')
+        shell_text = bashrc.read_text() if bashrc.exists() else ''
+        bashrc.parent.mkdir(parents=True, exist_ok=True)
+        if not os.access(bashrc if bashrc.exists() else bashrc.parent, os.W_OK):
+            fail(f'Нет прав на изменение настроек Bash: {bashrc}')
+    marker = prefix / 'install.json'
+    if marker.exists():
+        if marker.is_symlink() or json.loads(marker.read_text()).get('installer') != MARKER:
+            fail(f'Каталог {prefix} принадлежит другой установке.')
+    elif prefix.is_dir() and any(prefix.iterdir()):
+        fail(f'Каталог {prefix} не пуст и не принадлежит релизному установщику. Выберите отдельный CF_INSTALL_DIR.')
+    if link.is_symlink():
+        if os.readlink(link) != str(prefix / 'cf'):
+            fail(f'{link} указывает на другую установку; сначала удалите её прежним установщиком.')
+    elif link.exists():
+        fail(f'{link} уже существует; файл сохранён.')
+    for name in ('releases', 'models'):
+        local_path(str(prefix / name))
+    if (prefix / 'current').exists() and not (prefix / 'current').is_symlink():
+        fail('current должен быть ссылкой управляемой установки.')
+
+    release_dir = None
+    activated = False
+    link_dir.mkdir(parents=True, exist_ok=True)
+    prefix.mkdir(parents=True, exist_ok=True)
+    with (prefix / '.install.lock').open('a') as lock:
+        try:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            fail('Другой установщик уже работает с этим каталогом.')
+        if not marker.exists():
+            write_atomic(marker, json.dumps({'installer': MARKER}) + '\n')
+        try:
+            with tempfile.TemporaryDirectory(prefix='.install-', dir=prefix) as temporary:
+                work = Path(temporary)
+                manifest_path = work / 'release.json'
+                discovery = f'{base}/download/{args.version}' if args.version else f'{base}/latest/download'
+                download(f'{discovery}/release.json', manifest_path)
+                manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
+                tag = manifest.get('tag')
+                match = TAG.fullmatch(tag) if isinstance(tag, str) else None
+                if not match or (args.version and tag != args.version) or (not args.version and match[4]):
+                    fail('Манифест содержит неверный тег или Pre-release вместо стабильного релиза.')
+                release_url = f'{base}/download/{tag}'
+                download(f'{release_url}/SHA256SUMS', work / 'SHA256SUMS')
+                sums = read_sums(work / 'SHA256SUMS')
+                check(manifest_path, sums.get('release.json'))
+                version = '.'.join(match.groups()[:3]) + (f'rc{match[4]}' if match[4] else '')
+                if (manifest.get('schema_version') != 1 or manifest.get('version') != version
+                        or manifest.get('platform') != 'linux-x86_64'
+                        or f'{sys.version_info.major}.{sys.version_info.minor}' not in manifest.get('python_versions', [])):
+                    fail('Релиз несовместим с платформой, Python или форматом установщика.')
+
+                def asset(name, digest=None):
+                    name = checked_file(name)
+                    expected = sums.get(name)
+                    if digest is not None and digest != expected:
+                        fail(f'Манифест и SHA256SUMS расходятся для {name}')
+                    path = work / name
+                    download(f'{release_url}/{name}', path)
+                    check(path, expected)
+                    return path
+
+                wheel = asset(manifest['wheel'], manifest['wheel_sha256'])
+                requirements = asset(manifest['requirements']['file'], manifest['requirements']['sha256'])
+                database = asset(manifest['database']['file'], manifest['database']['sha256'])
+                uninstaller = asset('uninstall.sh')
+                model_info = manifest['model']
+                identity = model_info['identity']
+                if not isinstance(identity, str) or not DIGEST.fullmatch(identity):
+                    fail('Неверный идентификатор модели в релизе.')
+                models = prefix / 'models'
+                models.mkdir(exist_ok=True)
+                model_dir = local_path(str(models / identity))
+                if model_dir.exists():
+                    if (model_dir / '.archive-sha256').read_text().strip() != model_info['sha256']:
+                        fail('Сохранённая модель не соответствует релизу.')
+                    info('Готовая модель уже установлена; повторное скачивание не требуется.')
+                else:
+                    archive = asset(model_info['file'], model_info['sha256'])
+                    staged_model = Path(tempfile.mkdtemp(prefix='.model-', dir=models))
+                    try:
+                        extract(archive, staged_model, MODEL_FILES, MODEL_REQUIRED)
+                        (staged_model / '.archive-sha256').write_text(model_info['sha256'] + '\n')
+                        staged_model.rename(model_dir)
+                    finally:
+                        if staged_model.exists():
+                            shutil.rmtree(staged_model)
+
+                releases = prefix / 'releases'
+                releases.mkdir(exist_ok=True)
+                release_dir = Path(tempfile.mkdtemp(prefix=tag + '.', dir=releases))
+                data = release_dir / 'data'
+                data.mkdir()
+                extract(database, data, {'cf.db'}, {'cf.db'})
+                (release_dir / 'model').symlink_to(model_dir, target_is_directory=True)
+                python = release_dir / 'venv/bin/python'
+                environment = os.environ.copy()
+                environment.pop('PYTHONPATH', None)
+                environment.pop('PYTHONHOME', None)
+                environment['PYTHONNOUSERSITE'] = '1'
+                for key in tuple(environment):
+                    if key.startswith('CF_'):
+                        environment.pop(key)
+                environment.update(CF_DB_DIR=str(data), CF_MODEL_DIR=str(model_dir),
+                                   HF_HUB_OFFLINE='1', TRANSFORMERS_OFFLINE='1', TMPDIR=str(work))
+                info('Установка приложения и готовых зависимостей из PyPI…')
+                subprocess.run([os.environ['CF_INSTALL_PYTHON'], '-m', 'venv', str(release_dir / 'venv')], check=True, env=environment)
+                subprocess.run([str(python), '-m', 'pip', 'install', '--disable-pip-version-check',
+                                '--no-cache-dir', '--only-binary=:all:', '-r', str(requirements), str(wheel)],
+                               check=True, env=environment)
+                info('Проверка модели и готового индекса…')
+                subprocess.run([str(python), '-c', f'''from cf import __version__
+assert __version__ == {version!r}, 'Версия установленного приложения не совпадает с релизом'
+from cf.model import verify_artifact
+from cf.config import ONNX_DIR
+from cf.db import get_connection, init_db, get_stats
+from cf.search import search
+verify_artifact(ONNX_DIR)
+conn = get_connection()
+try:
+    init_db(conn)
+    stats = get_stats(conn)
+    assert stats['commands'] > 0 and stats['patterns'] > 0, 'Пустой индекс'
+finally:
+    conn.close()
+assert search('покажи скрытые файлы', top_k=3), 'Поиск не вернул результаты'
+'''], check=True, env=environment)
+                shutil.copyfile(manifest_path, release_dir / 'release.json')
+                root = shlex.quote(str(prefix))
+                launcher = f'''#!/usr/bin/env bash
+set -euo pipefail
+CF_RELEASE_DIR=$(readlink -f -- {root}/current)
+export CF_DB_DIR="${{CF_DB_DIR:-$CF_RELEASE_DIR/data}}"
+export CF_MODEL_DIR="${{CF_MODEL_DIR:-$CF_RELEASE_DIR/model}}"
+exec "$CF_RELEASE_DIR/venv/bin/cf" "$@"
+'''
+                user_bin = shlex.quote(str(link_dir))
+                shell = f'''case ":$PATH:" in
+    *:{user_bin}:*) ;;
+    *) export PATH={user_bin}:"$PATH" ;;
 esac
-"$PYTHON_BIN" -c 'import sys; raise SystemExit(0 if sys.version_info >= (3, 12) and sys.platform in ("linux", "darwin") else 1)' \
-    || error 'Нужен Python 3.12+ для Linux/WSL или macOS.'
+eval "$({shlex.quote(str(prefix / 'cf'))} --install-shell)"
+'''
+                write_atomic(prefix / 'cf', launcher, 0o755)
+                write_atomic(prefix / 'cf.bash', shell)
+                write_atomic(prefix / 'uninstall.sh', uninstaller.read_text(), 0o755)
+                write_atomic(marker, json.dumps({'installer': MARKER, 'tag': tag}) + '\n')
+                current_new = prefix / 'current.new'
+                current_new.unlink(missing_ok=True)
+                current_new.symlink_to(release_dir, target_is_directory=True)
+                current_new.replace(prefix / 'current')
+                activated = True
+                if not link.is_symlink():
+                    link.symlink_to(prefix / 'cf')
+                if bashrc:
+                    if shell_line not in shell_text.splitlines():
+                        with bashrc.open('a') as output:
+                            output.write('\n# cf-ru: ' + shell_line + '\n' + shell_line + '\n')
+                    info(f'Интеграция подключена в {bashrc}. Откройте новую сессию Bash.')
+                for previous in releases.iterdir():
+                    if previous != release_dir and previous.is_dir() and not previous.is_symlink():
+                        shutil.rmtree(previous)
+                for previous in models.iterdir():
+                    if previous != model_dir and previous.is_dir() and not previous.is_symlink():
+                        shutil.rmtree(previous)
+                info(f'Установлен {tag}. Команда: {link}')
+                if str(link_dir) not in os.environ.get('PATH', '').split(os.pathsep):
+                    info('Добавьте в ~/.bashrc: export PATH="$HOME/.local/bin:$PATH"')
+                if not args.shell:
+                    info('Для Ctrl+F добавьте в ~/.bashrc: source ' + shlex.quote(str(prefix / 'cf.bash')))
+        finally:
+            if release_dir is not None and not activated:
+                shutil.rmtree(release_dir, ignore_errors=True)
 
-if [[ -L "$LINK_PATH" ]]; then
-    [[ "$(readlink "$LINK_PATH")" == "$VENV_DIR/bin/cf" ]] \
-        || error "$LINK_PATH указывает на другой проект. Освободите это имя или установите вручную."
-elif [[ -e "$LINK_PATH" ]]; then
-    error "$LINK_PATH уже существует. Установщик сохраняет этот файл; используйте ручную установку."
-fi
-[[ ! -L "$VENV_DIR" ]] || error 'Каталог .venv должен быть обычным каталогом внутри проекта.'
 
-info 'Подготовка рабочего окружения...'
-if [[ ! -d "$VENV_DIR" ]]; then
-    "$PYTHON_BIN" -m venv "$VENV_DIR"
-fi
-"$VENV_DIR/bin/python" -m pip install --disable-pip-version-check -e "$PROJECT_DIR"
-MODEL_DIR="$("$VENV_DIR/bin/python" -c 'from cf.config import ONNX_DIR; print(ONNX_DIR)')"
-
-if "$VENV_DIR/bin/python" -c 'from cf.config import ONNX_DIR; from cf.model import verify_artifact; verify_artifact(ONNX_DIR)' \
-    >/dev/null 2>&1; then
-    info 'Проверка готовой локальной модели...'
-    "$VENV_DIR/bin/cf" --prepare-model
-else
-    "$PYTHON_BIN" -c 'import sys; raise SystemExit(0 if sys.version_info[:2] in ((3, 12), (3, 13)) else 1)' \
-        || error 'Для сборки закреплённой модели используйте CF_PYTHON=python3.12 ./install.sh либо готовый ONNX-артефакт.'
-    info 'Первоначальная сборка модели: нужны интернет и свободное место для CPU-зависимостей.'
-    BUILD_DIR="$(mktemp -d "$PROJECT_DIR/.model-build.XXXXXX")"
-    "$PYTHON_BIN" -m venv "$BUILD_DIR"
-    export PIP_CACHE_DIR="$BUILD_DIR/pip-cache"
-    if [[ "$(uname -s)" == Linux ]]; then
-        "$BUILD_DIR/bin/python" -m pip install --disable-pip-version-check 'torch==2.6.0' \
-            --index-url https://download.pytorch.org/whl/cpu
-    else
-        "$BUILD_DIR/bin/python" -m pip install --disable-pip-version-check 'torch==2.6.0'
-    fi
-    "$BUILD_DIR/bin/python" -m pip install --disable-pip-version-check -e "${PROJECT_DIR}[export]"
-    HF_HOME="$BUILD_DIR/model-cache" \
-    HF_HUB_CACHE="$BUILD_DIR/model-cache/hub" \
-    SENTENCE_TRANSFORMERS_HOME="$BUILD_DIR/model-cache" \
-    XDG_CACHE_HOME="$BUILD_DIR/cache" \
-        "$BUILD_DIR/bin/cf" --prepare-model
-    cleanup
-    BUILD_DIR=""
-fi
-
-info 'Индексация русского словаря...'
-"$VENV_DIR/bin/cf" --seed
-
-mkdir -p "$LINK_DIR"
-if [[ ! -L "$LINK_PATH" ]]; then
-    ln -s "$VENV_DIR/bin/cf" "$LINK_PATH"
-fi
-info "Команда доступна по пути $LINK_PATH"
-
-case ":$PATH:" in
-    *":$LINK_DIR:"*) ;;
-    *) info 'Добавьте в профиль оболочки: export PATH="$HOME/.local/bin:$PATH"' ;;
-esac
-
-printf -v SOURCE_LINE 'source %q' "$SHELL_FILE"
-MARKER_LINE="# cf-ru: $SOURCE_LINE"
-if "$WITH_SHELL"; then
-    case "$BASHRC" in
-        /mnt/*) error 'Файл .bashrc должен находиться в файловой системе Linux/WSL.' ;;
-    esac
-    mkdir -p "$(dirname "$BASHRC")"
-    if [[ ! -f "$BASHRC" ]] || ! grep -Fqx -- "$SOURCE_LINE" "$BASHRC"; then
-        printf '\n%s\n%s\n' "$MARKER_LINE" "$SOURCE_LINE" >> "$BASHRC"
-    fi
-    info "Интеграция подключена в $BASHRC. Перезапустите терминал."
-else
-    info "Для интеграции Bash добавьте в .bashrc: $SOURCE_LINE"
-fi
-
-info 'Установка завершена. Пример: cf "найди большие файлы"'
+try:
+    main()
+except (OSError, ValueError, KeyError, TypeError, tarfile.TarError, subprocess.CalledProcessError) as error:
+    print(f'[cf-ru] Ошибка установки: {error}', file=sys.stderr)
+    sys.exit(1)
+PY
