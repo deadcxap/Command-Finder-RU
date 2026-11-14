@@ -56,6 +56,39 @@ def fail(message):
     raise ValueError(message)
 
 
+def venv_help():
+    version = f'{sys.version_info.major}.{sys.version_info.minor}'
+    return (
+        f'Для Python {version} недоступна поддержка venv/ensurepip для создания окружения с pip.\n'
+        f'Для Debian/Ubuntu установите пакет:\n'
+        f'    sudo apt-get install python{version}-venv\n'
+        'Затем повторите установку cf. Другой Python можно выбрать через CF_PYTHON.'
+    )
+
+
+def check_venv_support():
+    result = subprocess.run(
+        [os.environ['CF_INSTALL_PYTHON'], '-I', '-c',
+         'import venv; import ensurepip; ensurepip.version()'],
+        capture_output=True, text=True,
+    )
+    if result.returncode:
+        fail(venv_help())
+    info('Поддержка Python-окружений с pip доступна.')
+
+
+def create_environment(directory, environment):
+    result = subprocess.run(
+        [os.environ['CF_INSTALL_PYTHON'], '-m', 'venv', str(directory)],
+        capture_output=True, text=True, env=environment,
+    )
+    if result.returncode:
+        details = '\n'.join(value.strip() for value in (result.stdout, result.stderr) if value.strip())
+        if 'ensurepip' in details or 'No module named venv' in details:
+            fail(venv_help())
+        fail('Не удалось создать Python-окружение.' + (f'\n{details}' if details else ''))
+
+
 def local_path(value):
     path = Path(value).expanduser().absolute()
     for part in reversed((path, *path.parents)):
@@ -175,6 +208,7 @@ def main():
         fail('Нужен Python 3.12 или 3.13 с модулями venv и pip. Выберите его через CF_PYTHON.')
     if args.version and not TAG.fullmatch(args.version):
         fail('Версия должна иметь вид vX.Y.Z или vX.Y.Z-rc.N.')
+    check_venv_support()
     base = os.environ.get('CF_RELEASE_BASE_URL', 'https://github.com/deadcxap/Command-Finder-RU/releases').rstrip('/')
     url = urlparse(base)
     if url.scheme != 'https' and not (url.scheme == 'http' and url.hostname in ('127.0.0.1', 'localhost', '::1')):
@@ -302,7 +336,7 @@ def main():
                 environment.update(CF_DB_DIR=str(data), CF_MODEL_DIR=str(model_dir),
                                    HF_HUB_OFFLINE='1', TRANSFORMERS_OFFLINE='1', TMPDIR=str(work))
                 step(5, 'Создание Python-окружения')
-                subprocess.run([os.environ['CF_INSTALL_PYTHON'], '-m', 'venv', str(release_dir / 'venv')], check=True, env=environment)
+                create_environment(release_dir / 'venv', environment)
                 step(6, 'Установка приложения и зависимостей')
                 info('Готовые пакеты загружаются из PyPI; ниже вывод pip.')
                 subprocess.run([str(python), '-m', 'pip', 'install', '--disable-pip-version-check',
@@ -357,7 +391,7 @@ eval "$({shlex.quote(str(prefix / 'cf'))} --install-shell)"
                     if shell_line not in shell_text.splitlines():
                         with bashrc.open('a') as output:
                             output.write('\n# cf-ru: ' + shell_line + '\n' + shell_line + '\n')
-                    info(f'Интеграция подключена в {bashrc}. Откройте новую сессию Bash.')
+                    info(f'Интеграция подключена в {bashrc}.')
                 for previous in releases.iterdir():
                     if previous != release_dir and previous.is_dir() and not previous.is_symlink():
                         shutil.rmtree(previous)
@@ -370,6 +404,8 @@ eval "$({shlex.quote(str(prefix / 'cf'))} --install-shell)"
                     info('Добавьте в ~/.bashrc: export PATH="$HOME/.local/bin:$PATH"')
                 if not args.shell:
                     info('Для Ctrl+F добавьте в ~/.bashrc: source ' + shlex.quote(str(prefix / 'cf.bash')))
+                else:
+                    info('Для активации в текущем Bash выполните: source ' + shlex.quote(str(bashrc)))
         finally:
             if release_dir is not None and not activated:
                 shutil.rmtree(release_dir, ignore_errors=True)

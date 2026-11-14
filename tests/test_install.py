@@ -9,6 +9,7 @@ import json
 import os
 from pathlib import Path
 import re
+import shlex
 import shutil
 import subprocess
 import sys
@@ -24,7 +25,17 @@ FAKE_PYTHON = r'''#!{python}
 import json, os, pathlib, re, shutil, sys
 args = sys.argv[1:]
 log = pathlib.Path(os.environ['FAKE_LOG'])
+probe = args[args.index('-c') + 1] if '-c' in args else ''
+if 'ensurepip' in probe:
+    missing = os.environ.get('FAKE_BOOTSTRAP_MISSING')
+    if missing:
+        print("ModuleNotFoundError: No module named '" + missing + "'", file=sys.stderr)
+        sys.exit(19)
+    sys.exit(0)
 if args[:2] == ['-m', 'venv']:
+    if os.environ.get('FAKE_VENV_FAILURE') == '1':
+        print('The virtual environment was not created successfully because ensurepip is not available.', file=sys.stderr)
+        sys.exit(20)
     target = pathlib.Path(args[-1]) / 'bin'
     target.mkdir(parents=True)
     shutil.copyfile(__file__, target / 'python')
@@ -51,6 +62,10 @@ if args and args[0] in ('-', '-c'):
         sys.exit(0)
     if os.environ.get('FAKE_MACHINE'):
         code = 'import platform; platform.machine = lambda: ' + repr(os.environ['FAKE_MACHINE']) + '\n' + code
+    if os.environ.get('FAKE_PYTHON_MINOR'):
+        minor = int(os.environ['FAKE_PYTHON_MINOR'])
+        code = ('import sys\nclass FakeVersion(tuple):\n    major = 3\n    minor = ' + str(minor)
+                + '\nsys.version_info = FakeVersion((3, ' + str(minor) + ', 0, "final", 0))\n' + code)
     if args[0] == '-':
         args = ['-c', code, *args[1:]]
     else:
@@ -300,6 +315,20 @@ def test_shell_loader_makes_command_available_without_manual_path_edit(installat
     assert path.split(':').count(str(installation.home / '.local/bin')) == 1
 
 
+def test_source_hint_activates_command_in_parent_bash(installation):
+    installation.release()
+    bashrc = installation.directory / 'shell config with spaces.bashrc'
+    result = subprocess.run(
+        ['/bin/bash', '-c', 'bash "$1" --shell && source "$2" && command -v cf',
+         'bash', str(ROOT / 'install.sh'), str(bashrc)],
+        env={**installation.environment, 'CF_BASHRC': str(bashrc)},
+        cwd=installation.directory, capture_output=True, text=True, timeout=20,
+    )
+    success(result)
+    assert f'source {shlex.quote(str(bashrc))}' in result.stderr
+    assert result.stdout.strip() == str(installation.home / '.local/bin/cf')
+
+
 @pytest.mark.parametrize('asset', ['cf-data-v0.3.0.tar.gz', 'command_finder_ru-0.3.0-py3-none-any.whl',
                                    'requirements-runtime.txt', 'release.json'])
 def test_corrupt_download_preserves_existing_installation(installation, asset):
@@ -351,6 +380,44 @@ def test_invalid_version_is_rejected_before_download(installation):
     result = installation.run('--version', 'main')
     assert result.returncode != 0
     assert not QuietHandler.requests
+
+
+@pytest.mark.parametrize('missing', ['venv', 'ensurepip'])
+def test_missing_python_bootstrap_fails_before_download_or_installation_changes(installation, missing):
+    result = installation.run(FAKE_BOOTSTRAP_MISSING=missing)
+    assert result.returncode != 0
+    assert re.search(r'Ошибка[^\n]*\[1/8\]', result.stderr)
+    assert f'sudo apt-get install python3.{sys.version_info.minor}-venv' in result.stderr
+    assert 'CF_PYTHON' in result.stderr
+    assert 'returned non-zero exit status' not in result.stderr
+    assert 'Traceback' not in result.stderr
+    assert not QuietHandler.requests
+    assert not installation.prefix.exists()
+    assert not (installation.home / '.local/bin').exists()
+
+
+def test_missing_bootstrap_advice_matches_selected_python_minor(installation):
+    result = installation.run(FAKE_BOOTSTRAP_MISSING='ensurepip', FAKE_PYTHON_MINOR='13')
+    assert result.returncode != 0
+    assert 'sudo apt-get install python3.13-venv' in result.stderr
+    assert 'python3.12-venv' not in result.stderr
+    assert not QuietHandler.requests
+    assert not installation.prefix.exists()
+
+
+def test_late_missing_ensurepip_reports_actionable_error_and_preserves_current(installation):
+    installation.release()
+    success(installation.run())
+    current = (installation.prefix / 'current').resolve()
+    installation.release('v0.3.0', latest=False)
+    result = installation.run('--version', 'v0.3.0', FAKE_VENV_FAILURE='1')
+    assert result.returncode != 0
+    assert re.search(r'Ошибка[^\n]*\[5/8\]', result.stderr)
+    assert f'sudo apt-get install python3.{sys.version_info.minor}-venv' in result.stderr
+    assert 'returned non-zero exit status' not in result.stderr
+    assert '[6/8]' not in result.stderr
+    assert 'Установлен v0.3.0' not in result.stderr
+    assert (installation.prefix / 'current').resolve() == current
 
 
 def test_failed_runtime_validation_preserves_existing_installation(installation):
