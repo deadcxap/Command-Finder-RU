@@ -8,11 +8,13 @@ import io
 import json
 import os
 from pathlib import Path
+import re
 import shutil
 import subprocess
 import sys
 import tarfile
 import threading
+from types import SimpleNamespace
 
 import pytest
 
@@ -196,6 +198,80 @@ def test_latest_installs_published_assets_without_build_or_seed(installation):
     assert any('/releases/download/v0.2.0/' in path for path in QuietHandler.requests)
 
 
+def test_installation_reports_numbered_steps_and_download_progress(installation):
+    installation.release()
+    result = installation.run()
+    success(result)
+    assert re.findall(r'\[([1-8])/8\]', result.stderr) == list('12345678')
+    assert 'Проверка системы' in result.stderr
+    assert 'Создание Python-окружения' in result.stderr
+    assert 'Проверка модели и поиска' in result.stderr
+    model_output = result.stderr.split('cf-model-fixture.tar.gz', 1)[1].split('[5/8]', 1)[0]
+    assert re.search(r'100(?:[.,]0)?\s*%', model_output)
+    assert re.search(r'\d+(?:[.,]\d+)?\s*(?:Б|КиБ|МиБ|ГиБ|B|KiB|MiB|GiB)', model_output)
+    assert '\r' not in result.stderr
+
+
+def test_download_without_content_length_reports_received_size(installation, monkeypatch):
+    send_header = QuietHandler.send_header
+
+    def without_length(self, keyword, value):
+        if keyword.lower() != 'content-length':
+            send_header(self, keyword, value)
+
+    monkeypatch.setattr(QuietHandler, 'send_header', without_length)
+    installation.release()
+    result = installation.run()
+    success(result)
+    model_output = result.stderr.split('cf-model-fixture.tar.gz', 1)[1].split('[5/8]', 1)[0]
+    assert re.search(r'\d+(?:[.,]\d+)?\s*(?:Б|КиБ|МиБ|ГиБ|B|KiB|MiB|GiB)', model_output)
+    assert not re.search(r'\d+\s*%', model_output)
+
+
+def test_failed_installation_identifies_step_without_reporting_success(installation):
+    installation.release()
+    result = installation.run(FAKE_PIP_FAILURE='1')
+    assert result.returncode != 0
+    assert '[6/8]' in result.stderr
+    assert 'Установка приложения и зависимостей' in result.stderr
+    assert re.search(r'Ошибка[^\n]*\[6/8\]', result.stderr)
+    assert '[7/8]' not in result.stderr
+    assert '[8/8]' not in result.stderr
+    assert 'Установлен v0.2.0' not in result.stderr + result.stdout
+
+
+def test_terminal_download_updates_received_bytes_before_completion(tmp_path):
+    source = (ROOT / 'install.sh').read_text().split("<<'PY'\n", 1)[1].rsplit('\nPY', 1)[0]
+    definitions = source.rsplit('\ntry:\n    main()', 1)[0]
+    installer = {}
+    exec(compile(definitions, str(ROOT / 'install.sh'), 'exec'), installer)
+
+    class Terminal(io.StringIO):
+        def isatty(self):
+            return True
+
+    class Response(io.BytesIO):
+        headers = {'Content-Length': '6'}
+
+        def read(self, size=-1):
+            return super().read(min(size, 2))
+
+        read1 = read
+
+    output = Terminal()
+    ticks = iter((0, 0.25, 0.5, 0.75))
+    installer['sys'] = SimpleNamespace(stderr=output)
+    installer['time'] = SimpleNamespace(monotonic=lambda: next(ticks))
+    installer['urlopen'] = lambda *args, **kwargs: Response(b'abcdef')
+    destination = tmp_path / 'model.tar.gz'
+    installer['download']('https://example.invalid/model.tar.gz', destination)
+    assert destination.read_bytes() == b'abcdef'
+    rendered = output.getvalue()
+    assert '\r\x1b[2K' in rendered
+    assert rendered.index('33%') < rendered.index('66%') < rendered.index('100%')
+    assert rendered.endswith('\n')
+
+
 def test_rc_requires_explicit_version_and_shell_is_not_duplicated(installation):
     installation.release('v0.2.0')
     installation.release('v0.3.0-rc.1', latest=False)
@@ -293,7 +369,10 @@ def test_unchanged_model_is_reused_across_releases(installation):
     original_model = (installation.prefix / 'current/model').resolve()
     installation.release('v0.3.0', latest=False)
     QuietHandler.requests.clear()
-    success(installation.run('--version', 'v0.3.0'))
+    result = installation.run('--version', 'v0.3.0')
+    success(result)
+    assert '[4/8]' in result.stderr
+    assert 'Готовая модель уже установлена' in result.stderr
     assert (installation.prefix / 'current/model').resolve() == original_model
     assert not any(path.endswith('/cf-model-fixture.tar.gz') for path in QuietHandler.requests)
 

@@ -20,6 +20,7 @@ import subprocess
 import sys
 import tarfile
 import tempfile
+import time
 from urllib.parse import urlparse
 from urllib.request import urlopen
 
@@ -30,10 +31,25 @@ MODEL_FILES = {"model.onnx", "tokenizer.json", "metadata.json", "checksums.json"
                "tokenizer_config.json", "special_tokens_map.json", "vocab.txt"}
 MODEL_REQUIRED = {"model.onnx", "tokenizer.json", "metadata.json", "checksums.json"}
 MARKER = 'command-finder-ru-release-install-v1'
+CURRENT_STEP = None
+TOTAL_STEPS = 8
 
 
 def info(message):
-    print(f'[cf-ru] {message}', flush=True)
+    print(f'[cf-ru] {message}', file=sys.stderr, flush=True)
+
+
+def step(number, message):
+    global CURRENT_STEP
+    CURRENT_STEP = f'[{number}/{TOTAL_STEPS}] {message}'
+    info(CURRENT_STEP)
+
+
+def size_text(size):
+    for unit in ('Б', 'КиБ', 'МиБ', 'ГиБ'):
+        if size < 1024 or unit == 'ГиБ':
+            return f'{size:.1f} {unit}'
+        size /= 1024
 
 
 def fail(message):
@@ -51,9 +67,50 @@ def local_path(value):
 
 
 def download(url, path):
-    info(f"Скачивание {url.rsplit('/', 1)[-1]}…")
+    name = url.rsplit('/', 1)[-1]
+    info(f'Скачивание {name}…')
     with urlopen(url, timeout=60) as response, path.open('wb') as output:
-        shutil.copyfileobj(response, output, length=1024 * 1024)
+        header = response.headers.get('Content-Length', '')
+        total = int(header) if header.isdigit() and int(header) > 0 else None
+        received = 0
+        last_update = time.monotonic()
+        interactive = sys.stderr.isatty()
+        active_line = False
+
+        def show(final=False):
+            nonlocal active_line
+            amount = size_text(received)
+            if total:
+                percent = min(100, int(received * 100 / total))
+                amount = f'{percent:3d}% · {amount} / {size_text(total)}'
+            label = name
+            if interactive:
+                available = max(12, shutil.get_terminal_size().columns - len(amount) - 12)
+                if len(label) > available:
+                    label = label[:available - 9] + '…' + label[-8:]
+            text = f'[cf-ru] {label}: {amount}'
+            if interactive:
+                print('\r\033[2K' + text, file=sys.stderr, end='\n' if final else '', flush=True)
+                active_line = not final
+            else:
+                print(text, file=sys.stderr, flush=True)
+
+        show()
+        read = getattr(response, 'read1', response.read)
+        try:
+            while block := read(64 * 1024):
+                output.write(block)
+                received += len(block)
+                now = time.monotonic()
+                if now - last_update >= (0.2 if interactive else 5):
+                    show()
+                    last_update = now
+            if total and received != total:
+                fail(f'Загрузка {name} неполна: {size_text(received)} из {size_text(total)}')
+            show(final=True)
+        finally:
+            if active_line:
+                print(file=sys.stderr, flush=True)
 
 
 def sha256(path):
@@ -110,6 +167,8 @@ def main():
     parser.add_argument('--version', help='Тег vX.Y.Z или vX.Y.Z-rc.N; по умолчанию последний стабильный релиз')
     parser.add_argument('--shell', action='store_true', help='Подключить Bash-интеграцию в ~/.bashrc')
     args = parser.parse_args()
+    started = time.monotonic()
+    step(1, 'Проверка системы и каталогов')
     if platform.system() != 'Linux' or platform.machine() != 'x86_64':
         fail('Автоматическая установка поддерживает только Linux/WSL x86_64.')
     if sys.version_info[:2] not in ((3, 12), (3, 13)):
@@ -166,6 +225,7 @@ def main():
             with tempfile.TemporaryDirectory(prefix='.install-', dir=prefix) as temporary:
                 work = Path(temporary)
                 manifest_path = work / 'release.json'
+                step(2, 'Выбор и проверка релиза')
                 discovery = f'{base}/download/{args.version}' if args.version else f'{base}/latest/download'
                 download(f'{discovery}/release.json', manifest_path)
                 manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
@@ -182,6 +242,7 @@ def main():
                         or manifest.get('platform') != 'linux-x86_64'
                         or f'{sys.version_info.major}.{sys.version_info.minor}' not in manifest.get('python_versions', [])):
                     fail('Релиз несовместим с платформой, Python или форматом установщика.')
+                info(f'Версия: {tag}. Каталог установки: {prefix}')
 
                 def asset(name, digest=None):
                     name = checked_file(name)
@@ -193,10 +254,12 @@ def main():
                     check(path, expected)
                     return path
 
+                step(3, 'Скачивание приложения и базы')
                 wheel = asset(manifest['wheel'], manifest['wheel_sha256'])
                 requirements = asset(manifest['requirements']['file'], manifest['requirements']['sha256'])
                 database = asset(manifest['database']['file'], manifest['database']['sha256'])
                 uninstaller = asset('uninstall.sh')
+                step(4, 'Подготовка модели')
                 model_info = manifest['model']
                 identity = model_info['identity']
                 if not isinstance(identity, str) or not DIGEST.fullmatch(identity):
@@ -212,6 +275,7 @@ def main():
                     archive = asset(model_info['file'], model_info['sha256'])
                     staged_model = Path(tempfile.mkdtemp(prefix='.model-', dir=models))
                     try:
+                        info('Распаковка модели…')
                         extract(archive, staged_model, MODEL_FILES, MODEL_REQUIRED)
                         (staged_model / '.archive-sha256').write_text(model_info['sha256'] + '\n')
                         staged_model.rename(model_dir)
@@ -224,6 +288,7 @@ def main():
                 release_dir = Path(tempfile.mkdtemp(prefix=tag + '.', dir=releases))
                 data = release_dir / 'data'
                 data.mkdir()
+                info('Распаковка готовой базы команд…')
                 extract(database, data, {'cf.db'}, {'cf.db'})
                 (release_dir / 'model').symlink_to(model_dir, target_is_directory=True)
                 python = release_dir / 'venv/bin/python'
@@ -236,12 +301,14 @@ def main():
                         environment.pop(key)
                 environment.update(CF_DB_DIR=str(data), CF_MODEL_DIR=str(model_dir),
                                    HF_HUB_OFFLINE='1', TRANSFORMERS_OFFLINE='1', TMPDIR=str(work))
-                info('Установка приложения и готовых зависимостей из PyPI…')
+                step(5, 'Создание Python-окружения')
                 subprocess.run([os.environ['CF_INSTALL_PYTHON'], '-m', 'venv', str(release_dir / 'venv')], check=True, env=environment)
+                step(6, 'Установка приложения и зависимостей')
+                info('Готовые пакеты загружаются из PyPI; ниже вывод pip.')
                 subprocess.run([str(python), '-m', 'pip', 'install', '--disable-pip-version-check',
                                 '--no-cache-dir', '--only-binary=:all:', '-r', str(requirements), str(wheel)],
                                check=True, env=environment)
-                info('Проверка модели и готового индекса…')
+                step(7, 'Проверка модели и поиска')
                 subprocess.run([str(python), '-c', f'''from cf import __version__
 assert __version__ == {version!r}, 'Версия установленного приложения не совпадает с релизом'
 from cf.model import verify_artifact
@@ -258,6 +325,7 @@ finally:
     conn.close()
 assert search('покажи скрытые файлы', top_k=3), 'Поиск не вернул результаты'
 '''], check=True, env=environment)
+                step(8, 'Подключение команды и очистка')
                 shutil.copyfile(manifest_path, release_dir / 'release.json')
                 root = shlex.quote(str(prefix))
                 launcher = f'''#!/usr/bin/env bash
@@ -297,7 +365,8 @@ eval "$({shlex.quote(str(prefix / 'cf'))} --install-shell)"
                     if previous != model_dir and previous.is_dir() and not previous.is_symlink():
                         shutil.rmtree(previous)
                 info(f'Установлен {tag}. Команда: {link}')
-                if str(link_dir) not in os.environ.get('PATH', '').split(os.pathsep):
+                info(f'Все {TOTAL_STEPS} шагов завершены за {time.monotonic() - started:.1f} с.')
+                if not args.shell and str(link_dir) not in os.environ.get('PATH', '').split(os.pathsep):
                     info('Добавьте в ~/.bashrc: export PATH="$HOME/.local/bin:$PATH"')
                 if not args.shell:
                     info('Для Ctrl+F добавьте в ~/.bashrc: source ' + shlex.quote(str(prefix / 'cf.bash')))
@@ -309,6 +378,7 @@ eval "$({shlex.quote(str(prefix / 'cf'))} --install-shell)"
 try:
     main()
 except (OSError, ValueError, KeyError, TypeError, tarfile.TarError, subprocess.CalledProcessError) as error:
-    print(f'[cf-ru] Ошибка установки: {error}', file=sys.stderr)
+    context = f' на шаге {CURRENT_STEP}' if CURRENT_STEP else ''
+    print(f'[cf-ru] Ошибка установки{context}: {error}', file=sys.stderr)
     sys.exit(1)
 PY
