@@ -124,91 +124,91 @@
         {
           "type": "example",
           "text": "сжать журнал через gzip с заменой исходного файла",
-          "command": "gzip -- <file>",
+          "command": "gzip -- <files>",
           "explanation": "Сжать журнал через gzip с заменой исходного файла.",
           "arguments": {
-            "file": "path"
+            "files": "paths"
           }
         },
         {
           "type": "example",
           "text": "упаковать access.log в gzip-формат, удалив оригинал после успеха",
-          "command": "gzip -- <file>",
+          "command": "gzip -- <files>",
           "explanation": "Сжать журнал через gzip с заменой исходного файла.",
           "arguments": {
-            "file": "path"
+            "files": "paths"
           }
         },
         {
           "type": "example",
           "text": "сжать CSV через gzip, сохранив исходный файл",
-          "command": "gzip -k -- <file>",
+          "command": "gzip -k -- <files>",
           "explanation": "Сжать CSV через gzip, сохранив исходный файл.",
           "arguments": {
-            "file": "path"
+            "files": "paths"
           }
         },
         {
           "type": "example",
           "text": "создать gzip-копию данных без удаления оригинала",
-          "command": "gzip -k -- <file>",
+          "command": "gzip -k -- <files>",
           "explanation": "Сжать CSV через gzip, сохранив исходный файл.",
           "arguments": {
-            "file": "path"
+            "files": "paths"
           }
         },
         {
           "type": "example",
           "text": "сжать SQL-файл через gzip с уровнем 9",
-          "command": "gzip -9 -- <file>",
+          "command": "gzip -9 -- <files>",
           "explanation": "Сжать SQL-файл через gzip с уровнем 9.",
           "arguments": {
-            "file": "path"
+            "files": "paths"
           }
         },
         {
           "type": "example",
           "text": "упаковать большой файл с максимальным уровнем сжатия gzip",
-          "command": "gzip -9 -- <file>",
+          "command": "gzip -9 -- <files>",
           "explanation": "Сжать SQL-файл через gzip с уровнем 9.",
           "arguments": {
-            "file": "path"
+            "files": "paths"
           }
         },
         {
           "type": "example",
           "text": "рекурсивно сжать файлы в папке старых журналов через gzip",
-          "command": "gzip -r -- <directory>",
+          "command": "gzip -r -- <directories>",
           "explanation": "Рекурсивно сжать файлы в папке старых журналов через gzip.",
           "arguments": {
-            "directory": "path"
+            "directories": "paths"
           }
         },
         {
           "type": "example",
           "text": "обойти /var/log/old и упаковать содержимое файлов по отдельности",
-          "command": "gzip -r -- <directory>",
+          "command": "gzip -r -- <directories>",
           "explanation": "Рекурсивно сжать файлы в папке старых журналов через gzip.",
           "arguments": {
-            "directory": "path"
+            "directories": "paths"
           }
         },
         {
           "type": "example",
           "text": "показать подробную статистику gzip-файла",
-          "command": "gzip -lv -- <file>",
+          "command": "gzip -lv -- <files>",
           "explanation": "Показать подробную статистику gzip-файла.",
           "arguments": {
-            "file": "path"
+            "files": "paths"
           }
         },
         {
           "type": "example",
           "text": "узнать исходный и сжатый размеры архива gz",
-          "command": "gzip -lv -- <file>",
+          "command": "gzip -lv -- <files>",
           "explanation": "Показать подробную статистику gzip-файла.",
           "arguments": {
-            "file": "path"
+            "files": "paths"
           }
         }
       ]
@@ -276,73 +276,73 @@
         {
           "type": "example",
           "text": "сжать текстовый файл через bzip2",
-          "command": "bzip2 -- <file>",
+          "command": "bzip2 -- <files>",
           "explanation": "Сжать текстовый файл через bzip2.",
           "arguments": {
-            "file": "path"
+            "files": "paths"
           }
         },
         {
           "type": "example",
           "text": "упаковать largefile.txt в bz2 с заменой исходника после успеха",
-          "command": "bzip2 -- <file>",
+          "command": "bzip2 -- <files>",
           "explanation": "Сжать текстовый файл через bzip2.",
           "arguments": {
-            "file": "path"
+            "files": "paths"
           }
         },
         {
           "type": "example",
           "text": "распаковать архив bz2",
-          "command": "bzip2 -d -- <file>",
+          "command": "bzip2 -d -- <files>",
           "explanation": "Распаковать архив bz2.",
           "arguments": {
-            "file": "path"
+            "files": "paths"
           }
         },
         {
           "type": "example",
           "text": "разжать bzip2-файл с помощью режима декомпрессии",
-          "command": "bzip2 -d -- <file>",
+          "command": "bzip2 -d -- <files>",
           "explanation": "Распаковать архив bz2.",
           "arguments": {
-            "file": "path"
+            "files": "paths"
           }
         },
         {
           "type": "example",
           "text": "сжать SQL-файл в bzip2 и сохранить оригинал",
-          "command": "bzip2 -k -- <file>",
+          "command": "bzip2 -k -- <files>",
           "explanation": "Сжать SQL-файл в bzip2 и сохранить оригинал.",
           "arguments": {
-            "file": "path"
+            "files": "paths"
           }
         },
         {
           "type": "example",
           "text": "создать bz2-копию базы без удаления несжатых данных",
-          "command": "bzip2 -k -- <file>",
+          "command": "bzip2 -k -- <files>",
           "explanation": "Сжать SQL-файл в bzip2 и сохранить оригинал.",
           "arguments": {
-            "file": "path"
+            "files": "paths"
           }
         },
         {
           "type": "example",
           "text": "проверить целостность файла bz2",
-          "command": "bzip2 -t -- <file>",
+          "command": "bzip2 -t -- <files>",
           "explanation": "Проверить целостность файла bz2.",
           "arguments": {
-            "file": "path"
+            "files": "paths"
           }
         },
         {
           "type": "example",
           "text": "протестировать сжатую резервную копию bzip2 на ошибки",
-          "command": "bzip2 -t -- <file>",
+          "command": "bzip2 -t -- <files>",
           "explanation": "Проверить целостность файла bz2.",
           "arguments": {
-            "file": "path"
+            "files": "paths"
           }
         },
         {
@@ -367,91 +367,91 @@
         {
           "type": "example",
           "text": "сжать CSV-файл через xz с уровнем 9",
-          "command": "xz -9 -- <file>",
+          "command": "xz -9 -- <files>",
           "explanation": "Сжать CSV-файл через xz с уровнем 9.",
           "arguments": {
-            "file": "path"
+            "files": "paths"
           }
         },
         {
           "type": "example",
           "text": "упаковать большой набор данных с максимальным обычным уровнем xz",
-          "command": "xz -9 -- <file>",
+          "command": "xz -9 -- <files>",
           "explanation": "Сжать CSV-файл через xz с уровнем 9.",
           "arguments": {
-            "file": "path"
+            "files": "paths"
           }
         },
         {
           "type": "example",
           "text": "распаковать файл xz",
-          "command": "xz -d -- <file>",
+          "command": "xz -d -- <files>",
           "explanation": "Распаковать файл xz.",
           "arguments": {
-            "file": "path"
+            "files": "paths"
           }
         },
         {
           "type": "example",
           "text": "разжать archive.xz через режим декомпрессии",
-          "command": "xz -d -- <file>",
+          "command": "xz -d -- <files>",
           "explanation": "Распаковать файл xz.",
           "arguments": {
-            "file": "path"
+            "files": "paths"
           }
         },
         {
           "type": "example",
           "text": "сжать образ прошивки через xz с сохранением исходника",
-          "command": "xz -k -- <file>",
+          "command": "xz -k -- <files>",
           "explanation": "Сжать образ прошивки через xz с сохранением исходника.",
           "arguments": {
-            "file": "path"
+            "files": "paths"
           }
         },
         {
           "type": "example",
           "text": "создать xz-файл, не удаляя firmware.bin",
-          "command": "xz -k -- <file>",
+          "command": "xz -k -- <files>",
           "explanation": "Сжать образ прошивки через xz с сохранением исходника.",
           "arguments": {
-            "file": "path"
+            "files": "paths"
           }
         },
         {
           "type": "example",
           "text": "сжать tar-файл через xz с автоматическим выбором числа потоков",
-          "command": "xz -T0 -- <file>",
+          "command": "xz -T0 -- <files>",
           "explanation": "Сжать tar-файл через xz с автоматическим выбором числа потоков.",
           "arguments": {
-            "file": "path"
+            "files": "paths"
           }
         },
         {
           "type": "example",
           "text": "задействовать доступные процессорные потоки для упаковки xz",
-          "command": "xz -T0 -- <file>",
+          "command": "xz -T0 -- <files>",
           "explanation": "Сжать tar-файл через xz с автоматическим выбором числа потоков.",
           "arguments": {
-            "file": "path"
+            "files": "paths"
           }
         },
         {
           "type": "example",
           "text": "посмотреть сведения о сжатом файле xz",
-          "command": "xz -l -- <file>",
+          "command": "xz -l -- <files>",
           "explanation": "Посмотреть сведения о сжатом файле xz.",
           "arguments": {
-            "file": "path"
+            "files": "paths"
           }
         },
         {
           "type": "example",
           "text": "показать размеры и параметры архива xz без распаковки",
-          "command": "xz -l -- <file>",
+          "command": "xz -l -- <files>",
           "explanation": "Посмотреть сведения о сжатом файле xz.",
           "arguments": {
-            "file": "path"
+            "files": "paths"
           }
         }
       ]

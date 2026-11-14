@@ -233,3 +233,113 @@ def test_comma_separated_sources_do_not_drop_the_first_path():
     assert bind_arguments("скопируй из ~/one, ~/two в ~/dest", "cp <source> <destination>",
                           {"source": "source", "destination": "destination"}) == (
         "cp <source> <destination>", ("source", "destination"))
+
+
+@pytest.mark.parametrize("query, expected", [
+    ("удалить файлы test.tar.gz large_file.dat", "rm -- test.tar.gz large_file.dat"),
+    ("удали файлы foo bar", "rm -- foo bar"),
+    ("удали файлы foo и bar", "rm -- foo bar"),
+    ("удали файл foo и файл bar", "rm -- foo bar"),
+    ("удали файл a.txt файл b.txt", "rm -- a.txt b.txt"),
+    ("удали папки ~/a ./b ../c", "rm -- ~/a ./b ../c"),
+    ("удали файлы 'a b.txt' «~/My Files» -rf", "rm -- 'a b.txt' ~/'My Files' ./-rf"),
+    ('удали файлы "не" ./not/a.txt', "rm -- 'не' ./not/a.txt"),
+    ('удали файлы "или" "кроме" "без"', "rm -- 'или' 'кроме' 'без'"),
+    ("удали файлы not/a.txt b.txt", "rm -- not/a.txt b.txt"),
+    ("удали файлы foo foo", "rm -- foo foo"),
+    ("удали файл tar.gz", "rm -- tar.gz"),
+    ("удали файл .tar.gz", "rm -- .tar.gz"),
+])
+def test_path_list_keeps_every_filename_in_original_order(query, expected):
+    assert bind_arguments(query, "rm -- <files>", {"files": "paths"}) == (expected, ())
+
+
+@pytest.mark.parametrize("query", [
+    "удали a.txt или b.txt", "удали a.txt либо b.txt", "удали a.txt кроме b.txt",
+    "удали a.txt но не b.txt", "не удаляй a.txt", "удали файлы foo без bar",
+    "удали файлы foo исключая bar", "удали a.txt за исключением b.txt",
+    "удали файлы foo вместо bar", "удали a.txt, кроме b.txt", "удали файлы",
+    "delete a.txt or b.txt", "delete a.txt except b.txt", "do not delete a.txt",
+    "delete a.txt but keep b.txt", "delete a.txt without b.txt",
+])
+def test_path_list_is_not_filled_for_alternatives_negations_or_exclusions(query):
+    assert bind_arguments(query, "rm -- <files>", {"files": "paths"}) == (
+        "rm -- <files>", ("files",))
+
+
+@pytest.mark.parametrize("query", ["прочитай файлы a.txt b.txt", "прочитай файлы foo bar"])
+def test_scalar_path_does_not_take_the_first_item_of_a_list(query):
+    assert bind_arguments(query, "cat <file>", {"file": "path"}) == ("cat <file>", ("file",))
+
+
+@pytest.mark.parametrize("arguments", [
+    {"files": "paths", "destination": "destination"},
+    {"files": "paths", "file": "path"},
+    {"files": "paths", "archive": "archive"},
+    {"files": "paths", "more": "paths"},
+])
+def test_path_list_role_cannot_be_mixed_with_other_parameters(arguments):
+    template = "tool " + " ".join(f"<{name}>" for name in arguments)
+    with pytest.raises(ValueError):
+        validate_arguments(template, arguments)
+
+
+def test_bash_receives_list_values_as_separate_literal_arguments():
+    values = ["a b.txt", "$(printf hacked)", "~/My Files", "-rf", "не", "a;printf hacked", "it's mine"]
+    query = "удали файлы " + " ".join("«" + value + "»" for value in values)
+    rendered, missing = bind_arguments(query, "<files>", {"files": "paths"})
+    assert not missing
+    result = subprocess.run(["/bin/bash", "--noprofile", "--norc", "-c", "printf '%s\\0' " + rendered],
+                            capture_output=True, check=True, env={"HOME": "/tmp/cf-argument-home"})
+    expected = ["/tmp/cf-argument-home/" + value[2:] if value.startswith("~/")
+                else "./" + value if value.startswith("-") else value for value in values]
+    assert result.stdout.split(b"\0") == [value.encode() for value in expected] + [b""]
+
+
+@pytest.mark.parametrize("query, expected", [
+    ("удалить файлы test.tar.gz large_file.dat", "удалить файлы"),
+    ("удали файлы foo bar", "удали файлы"),
+    ("удали a.tar.gz b.txt", "удали"),
+    ("удали файл tar.gz", "удали файл"),
+    ("удали файл .tar.gz", "удали файл"),
+    ("прочитай файл test.tar.gz", "прочитай файл"),
+    ("скопируй архив test.tar.gz в папку ~/backup", "скопируй архив в папку"),
+    ("размер архива test.tar.gz", "размер архива"),
+    ("создай файл test.tar.gz", "создай файл"),
+    ("упакуй папку ~/test в архив primer.tar.gz", "упакуй папку в архив tar.gz"),
+    ("создай архив удали.tar.gz из папки ~/test", "создай архив tar.gz из папки"),
+    ("создай архив скопируй.tar.gz из папки ~/test", "создай архив tar.gz из папки"),
+    ("создай архив ./удали/backup.tar.gz из папки ~/test", "создай архив tar.gz из папки"),
+    ("сделай архив primer.tar.gz из папки ~/test", "сделай архив tar.gz из папки"),
+    ("покажи содержимое архива backup.tar.gz", "покажи содержимое архива tar.gz"),
+    ("создай архив .tar.gz", "создай архив .tar.gz"),
+    ("создай архив tar.gz", "создай архив tar.gz"),
+    ("установи node.js", "установи node.js"),
+    ("покажи TCP/IP и ввод/вывод", "покажи TCP/IP и ввод/вывод"),
+    ("найди текст 'error' в файле ~/log", "найди текст 'error' в файле"),
+])
+def test_search_query_preserves_archive_formats_only_for_archive_operations(query, expected):
+    assert search_query(query) == expected
+
+
+@pytest.mark.parametrize("modifier", ["принудительно", "навсегда", "безопасно", "окончательно", "немедленно"])
+def test_operational_modifiers_are_not_list_paths_and_remain_in_semantic_query(modifier):
+    query = "удали файлы a.txt b.txt " + modifier
+    assert bind_arguments(query, "rm -- <files>", {"files": "paths"}) == ("rm -- a.txt b.txt", ())
+    assert search_query(query) == "удали файлы " + modifier
+
+
+@pytest.mark.parametrize("constraint", [
+    "исключив", "исключая", "исключить", "сохранив", "сохраняя", "сохрани", "оставив", "оставляя",
+    "оставь", "помимо", "заисключением", "за исключением",
+])
+def test_exclusions_and_preservation_requests_leave_the_entire_path_list_unfilled(constraint):
+    query = f"удали файлы a.txt b.txt {constraint} c.txt"
+    assert bind_arguments(query, "rm -- <files>", {"files": "paths"}) == ("rm -- <files>", ("files",))
+    assert search_query(query) == "удали файлы " + constraint
+
+
+def test_constraint_words_and_modifiers_are_literal_when_quoted_or_inside_paths():
+    query = 'удали файлы "исключив" "сохраняя" "оставь" "принудительно" ./оставь /tmp/сохрани исключив.txt'
+    assert bind_arguments(query, "rm -- <files>", {"files": "paths"}) == (
+        "rm -- 'исключив' 'сохраняя' 'оставь' 'принудительно' './оставь' '/tmp/сохрани' 'исключив.txt'", ())

@@ -6,7 +6,7 @@ import shlex
 
 
 _PLACEHOLDER = re.compile(r"<([a-z][a-z0-9_]*)>")
-_ROLES = {"path", "source", "destination", "archive"}
+_ROLES = {"path", "paths", "source", "destination", "archive"}
 _TOKENS = re.compile(r'''"((?:\\.|[^"\\\n])*)"|'([^'\n]*)'|«([^»\n]*)»|([^\s"'«»]+)''')
 _ARCHIVE = re.compile(r"\.(?:tar(?:\.(?:gz|bz2|xz|zst))?|tgz|tbz2?|txz|zip|7z|rar|gz|bz2|xz|zst)$", re.I)
 _NOUN = re.compile(r"^(?:папк[а-яё]*|каталог[а-яё]*|файл[а-яё]*|архив[а-яё]*)$", re.I)
@@ -14,7 +14,7 @@ _FILE = re.compile(r"^[^\s.]+(?:\.[^\s.]+)+$")
 _FORMATS = {"tar", "tar.gz", "tar.bz2", "tar.xz", "tar.zst", "tgz", "tbz", "tbz2", "txz",
             "zip", "7z", "rar", "gz", "bz2", "xz", "zst"}
 _NON_VALUES = {
-    "в", "из", "на", "с", "со", "для", "и", "или", "без", "по", "не", "а", "но",
+    "в", "из", "на", "с", "со", "для", "и", "или", "без", "по", "не", "а", "но", "за",
     "целиком", "полностью", "подробно", "рекурсивно", "кратко", "быстро", "здесь", "тут", "там",
     "весь", "всю", "все", "всё", "всех", "всеми", "каждый", "каждую", "размер", "размеры",
     "текущий", "текущую", "текущей", "текущего", "текущем", "родительский", "родительскую",
@@ -23,7 +23,40 @@ _NON_VALUES = {
     "построчно", "включая", "исключая", "сначала", "потом", "затем", "рядом", "только", "также",
     "вместе", "отдельно", "скрытые", "обычные", "большие", "маленькие", "размером", "старше",
     "младше", "больше", "меньше", "крупнее", "крупные", "глубиной", "пожалуйста",
+    "либо", "кроме", "вместо", "исключением",
+    "принудительно", "навсегда", "безопасно", "окончательно", "немедленно",
 }
+_LIST_CONSTRAINTS = {"не", "ни", "или", "либо", "кроме", "исключая", "исключением", "без", "но", "вместо",
+                     "помимо", "заисключением", "not", "no", "or", "except", "excluding", "without",
+                     "but", "instead", "keep", "preserve"}
+_FILE_ACTIONS = ("удал", "убер", "убра", "сотр", "стере", "очист", "скоп", "копир", "перемест", "перенес", "прочит")
+
+
+def _list_constraint(word: str) -> bool:
+    return bool(re.fullmatch(r"[a-zа-яё]+", word)
+                and (word in _LIST_CONSTRAINTS or word.startswith(("исключ", "сохра", "остав"))))
+
+
+def _operation_words(query: str) -> list[str]:
+    words = []
+    for token in _TOKENS.finditer(query):
+        value = token[4]
+        if value is None or "/" in value or value.startswith(".") or _FILE.fullmatch(value):
+            continue
+        word = value.lower().strip(".,:;!?")
+        if re.fullmatch(r"[a-zа-яё]+", word):
+            words.append(word)
+    return words
+
+
+def _archive_operation(words: list[str]) -> bool:
+    if any(word.startswith(_FILE_ACTIONS) for word in words):
+        return False
+    if any(word.startswith(("упак", "распак", "архивир", "разархив", "сожм", "сжат", "сжим", "разж", "извлек", "извлеч"))
+           for word in words):
+        return True
+    archive_noun = any(word.startswith("архив") and _NOUN.fullmatch(word) for word in words)
+    return archive_noun and any(word.startswith(("созда", "сдела", "содержим", "список")) for word in words)
 
 
 def validate_arguments(template: str, arguments: dict[str, str]) -> None:
@@ -37,6 +70,8 @@ def validate_arguments(template: str, arguments: dict[str, str]) -> None:
         raise ValueError("Недопустимое имя или роль параметра команды")
     if len(set(arguments.values())) != len(arguments):
         raise ValueError("Роли параметров команды должны быть различными")
+    if "paths" in arguments.values() and len(arguments) != 1:
+        raise ValueError("Роль paths должна быть единственным параметром команды")
     matches = list(_PLACEHOLDER.finditer(template))
     if ({match[1] for match in matches} != set(arguments)
             or set(re.findall(r"<[^<>\s]+>", template)) != {match[0] for match in matches}):
@@ -60,6 +95,7 @@ class _Candidate:
     start: int
     end: int
     searchable: bool
+    named_context: bool
 
 
 def _candidates(query: str) -> list[_Candidate]:
@@ -72,6 +108,9 @@ def _candidates(query: str) -> list[_Candidate]:
     if query[position:].strip():
         return []
     candidates = []
+    words = _operation_words(query)
+    archive_operation = _archive_operation(words)
+    file_operation = any(word.startswith(_FILE_ACTIONS) for word in words)
     for index, token in enumerate(tokens):
         quoted = token[4] is None
         value = next(group for group in token.groups() if group is not None)
@@ -83,14 +122,17 @@ def _candidates(query: str) -> list[_Candidate]:
         coordinated = bool(gap and gap[0] in {"и", "или"}
                            and (len(gap) == 1 or (len(gap) == 2 and _NOUN.fullmatch(gap[1]))))
         adjacent = bool(candidates and not gap)
+        inherited_context = bool(candidates and candidates[-1].named_context and (adjacent or coordinated))
         preceding = [item.group(0).lower().strip(",:;") for item in tokens[max(0, index - 3):index]]
         noun = preceding[-1] if preceding and _NOUN.fullmatch(preceding[-1]) else None
         if not value or any(ord(char) < 32 or ord(char) == 127 for char in value):
             continue
         explicit = value in {"~", ".", ".."} or "/" in value or _FILE.fullmatch(value)
-        if not (quoted or explicit or noun or coordinated):
+        if not (quoted or explicit or noun or coordinated or inherited_context):
             continue
-        if not quoted and (value.lower() in _NON_VALUES | _FORMATS or _NOUN.fullmatch(value)):
+        format_only = value.lower().removeprefix(".") in _FORMATS
+        if not quoted and (value.lower() in _NON_VALUES or _list_constraint(value.lower()) or _NOUN.fullmatch(value)
+                           or (format_only and (archive_operation or not (noun or inherited_context or file_operation)))):
             continue
         context = preceding[:-1] if noun else preceding
         preposition = context[-1] if context else None
@@ -105,16 +147,19 @@ def _candidates(query: str) -> list[_Candidate]:
             hint = candidates[-1].hint
         archive = bool(_ARCHIVE.search(value)) or bool(noun and noun.startswith("архив"))
         searchable = (value in {"~", ".", ".."} or value.startswith(("/", "./", "../", "~/"))
-                      or bool(noun) or hint is not None or archive)
-        candidates.append(_Candidate(value, hint, archive, token.start(), token.end(), searchable))
+                      or bool(noun) or hint is not None or archive or inherited_context
+                      or (file_operation and bool(_FILE.fullmatch(value))))
+        candidates.append(_Candidate(value, hint, archive, token.start(), token.end(), searchable,
+                                     bool(noun) or inherited_context))
     return candidates
 
 
 def search_query(query: str) -> str:
-    """Убрать явно указанные пути из текста, сохранив формат архива."""
+    """Убрать пути из запроса; в задачах архивации сохранить формат архива."""
     if any(ord(char) < 32 or ord(char) == 127 for char in query):
         return query
     replacements = []
+    archive_operation = _archive_operation(_operation_words(query))
     for candidate in _candidates(query):
         if not candidate.searchable:
             continue
@@ -124,7 +169,7 @@ def search_query(query: str) -> str:
             replacements.append((candidate.start, candidate.end, candidate.value.rsplit("/", 1)[1]))
             continue
         extension = _ARCHIVE.search(candidate.value)
-        replacement = extension[0][1:].lower() if extension else ""
+        replacement = extension[0][1:].lower() if extension and archive_operation else ""
         replacements.append((candidate.start, candidate.end, replacement))
     normalized = query
     for start, end, replacement in reversed(replacements):
@@ -158,6 +203,11 @@ def bind_arguments(query: str, template: str,
             used.update(indexes)
 
     roles = set(arguments.values())
+    if roles == {"paths"}:
+        if not candidates or any(_list_constraint(word) for word in _operation_words(query)):
+            return template, tuple(arguments)
+        rendered = " ".join(_quote_path(candidate.value) for candidate in candidates)
+        return _PLACEHOLDER.sub(lambda match: rendered, template), ()
     if roles == {"path"}:
         choose("path", list(range(len(candidates))))
     else:

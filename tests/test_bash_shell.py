@@ -304,16 +304,37 @@ exit "$CF_TEST_STATUS"
         self.assertEqual(terminal.snapshot(), (self.result, len(self.result)))
         self.assertFalse(self.sentinel.exists())
 
-    def test_real_destructive_confirmation_accepts_russian_answer_with_enter(self):
-        terminal = self.terminal(CF_TEST_REAL_MENU='1', CF_TEST_DESTRUCTIVE='1')
-        terminal.send('покажи файлы'.encode() + b'\x06')
-        terminal.expect('Выберите команду'.encode())
-        terminal.send(b'\r')
-        terminal.expect('Для подтверждения'.encode())
-        terminal.send('да'.encode() + b'\r')
-        terminal.expect(DONE)
-        self.assertEqual(terminal.snapshot(), (self.result, len(self.result)))
-        self.assertFalse(self.sentinel.exists())
+    def test_real_destructive_confirmation_accepts_short_and_full_answers_with_enter(self):
+        for answer in ('y', 'да', 'да, подтверждаю', 'yes, proceed'):
+            with self.subTest(answer=answer):
+                terminal = self.terminal(CF_TEST_REAL_MENU='1', CF_TEST_DESTRUCTIVE='1')
+                terminal.send('покажи файлы'.encode() + b'\x06')
+                terminal.expect('Выберите команду'.encode())
+                terminal.send(b'\r')
+                terminal.expect(b'[y/N]')
+                terminal.send(answer.encode() + b'\r')
+                terminal.expect(DONE)
+                self.assertEqual(terminal.snapshot(), (self.result, len(self.result)))
+                self.assertFalse(self.sentinel.exists())
+                terminal.close()
+
+    def test_real_destructive_confirmation_defaults_to_no_and_restores_readline(self):
+        for answer in ('', 'n', 'да нет', 'да, но не надо', 'не подтверждаю', 'unknown'):
+            with self.subTest(answer=answer):
+                terminal = self.terminal(CF_TEST_REAL_MENU='1', CF_TEST_DESTRUCTIVE='1')
+                query = 'покажи файлы'
+                terminal.send(query.encode() + b'\x02\x06')
+                terminal.expect('Выберите команду'.encode())
+                terminal.send(b'\r')
+                terminal.expect(b'[y/N]')
+                terminal.send(answer.encode() + b'\r')
+                terminal.expect(DONE)
+                self.assertEqual(terminal.snapshot(), (query, len(query) - 1))
+                terminal.send(b"printf '__AFTER_DENIAL__\\n'\r")
+                terminal.expect(b'__AFTER_DENIAL__\r\n')
+                terminal.expect(PROMPT)
+                self.assertFalse(self.sentinel.exists())
+                terminal.close()
 
     def test_regular_cf_prints_and_recall_is_editable_without_execution(self):
         terminal = self.terminal()

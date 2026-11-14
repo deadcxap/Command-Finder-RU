@@ -4,7 +4,7 @@ from cf.arguments import bind_arguments, search_query
 from cf.db import cache_query, get_cached_query, get_connection, init_db, search_similar
 
 def _normalize_query(query: str) -> str:
-    return "v3:" + query.strip()
+    return "v4:" + query.strip()
 
 
 @dataclass

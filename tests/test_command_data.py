@@ -25,7 +25,8 @@ def run_recipe(category, command_index, pattern_index, directory, *, env=None):
     if recipe.get("arguments"):
         from cf.arguments import bind_arguments
 
-        command, missing = bind_arguments("проверь файл file.txt", command, recipe["arguments"])
+        fixture_query = "проверь папку dir" if (category, command_index) == ("filesystem", 5) else "проверь файл file.txt"
+        command, missing = bind_arguments(fixture_query, command, recipe["arguments"])
         assert not missing
     allowed = {
         ("filesystem", 5, 2),

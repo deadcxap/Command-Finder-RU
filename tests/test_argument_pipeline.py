@@ -21,6 +21,10 @@ from cf.seed import load_seed_files, seed_database
      "создай архив primer.tar.gz из папки ~/test", "tar -czf primer.tar.gz -- ~/test"),
     ("cp -r -- <source> <destination>", {"source": "source", "destination": "destination"},
      'скопируй папку "./мои файлы" в ./backup', "cp -r -- './мои файлы' ./backup"),
+    ("rm -- <files>", {"files": "paths"},
+     "удалить файлы test.tar.gz large_file.dat", "rm -- test.tar.gz large_file.dat"),
+    ("rm -- <files>", {"files": "paths"},
+     'удалить файлы "./мои файлы.tar.gz" -options.dat', "rm -- './мои файлы.tar.gz' ./-options.dat"),
 ])
 def test_json_to_cli_with_arguments(tmp_path, monkeypatch, template, arguments, query, expected):
     data = tmp_path / "commands"
@@ -29,7 +33,8 @@ def test_json_to_cli_with_arguments(tmp_path, monkeypatch, template, arguments, 
         "category": "test", "commands": [{
             "name": "test", "synopsis": "test", "description": "Тест",
             "patterns": [{"type": "example", "text": "Описание задачи",
-                          "command": template, "arguments": arguments}],
+                          "command": template, "arguments": arguments,
+                          "destructive": template.startswith("rm ")}],
         }],
     }), encoding="utf-8")
     database = tmp_path / "cf.db"
@@ -49,6 +54,7 @@ def test_json_to_cli_with_arguments(tmp_path, monkeypatch, template, arguments, 
         assert first.command_template == template
         assert first.command == expected
         assert first.missing_arguments == ()
+        assert first.destructive is template.startswith("rm ")
         # Подстановка относится к запросу; в базе остаётся исходный шаблон.
         other = search(query.replace("~/test", "~/other"), db_path=database)[0]
         assert other.command == expected.replace("~/test", "~/other")
