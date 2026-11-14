@@ -20,7 +20,13 @@ def pattern(category, command_index, pattern_index):
 
 
 def run_recipe(category, command_index, pattern_index, directory, *, env=None):
-    command = pattern(category, command_index, pattern_index)["command"]
+    recipe = pattern(category, command_index, pattern_index)
+    command = recipe["command"]
+    if recipe.get("arguments"):
+        from cf.arguments import bind_arguments
+
+        command, missing = bind_arguments("проверь файл file.txt", command, recipe["arguments"])
+        assert not missing
     allowed = {
         ("filesystem", 5, 2),
         *(('filesystem', 8, index) for index in range(1, 5)),

@@ -130,7 +130,7 @@ class ReleaseInstallation:
         self.thread.join()
 
     def release(self, tag='v0.2.0', latest=True, malicious=None):
-        version = tag.removeprefix('v').replace('-rc.', 'rc')
+        version = tag.removeprefix('v').replace('-rc', 'rc')
         destination = self.web / 'releases/download' / tag
         destination.mkdir(parents=True, exist_ok=True)
         wheel = destination / f'command_finder_ru-{version}-py3-none-any.whl'
@@ -289,15 +289,15 @@ def test_terminal_download_updates_received_bytes_before_completion(tmp_path):
 
 def test_rc_requires_explicit_version_and_shell_is_not_duplicated(installation):
     installation.release('v0.2.0')
-    installation.release('v0.3.0-rc.1', latest=False)
-    success(installation.run('--version', 'v0.3.0-rc.1', '--shell'))
-    success(installation.run('--version', 'v0.3.0-rc.1', '--shell'))
+    installation.release('v1.1.0-rc1', latest=False)
+    success(installation.run('--version', 'v1.1.0-rc1', '--shell'))
+    success(installation.run('--version', 'v1.1.0-rc1', '--shell'))
     bashrc = (installation.home / '.bashrc').read_text()
     assert sum(line.startswith('source ') for line in bashrc.splitlines()) == 1
     assert str(installation.prefix / 'cf.bash') in bashrc
     result = subprocess.run([str(installation.home / '.local/bin/cf'), '--version'],
                             env=installation.environment, capture_output=True, text=True, timeout=5)
-    assert '0.3.0rc1' in result.stdout
+    assert '1.1.0rc1' in result.stdout
     assert not any('/latest/' in path for path in QuietHandler.requests)
 
 
@@ -376,8 +376,9 @@ def test_existing_foreign_command_is_preserved(installation):
     assert executable.read_text() == 'a different application'
 
 
-def test_invalid_version_is_rejected_before_download(installation):
-    result = installation.run('--version', 'main')
+@pytest.mark.parametrize('tag', ['main', 'v1.1.0-rc.1', 'v1.1.0-rc0', 'v1.1.0-rc01'])
+def test_invalid_version_is_rejected_before_download(installation, tag):
+    result = installation.run('--version', tag)
     assert result.returncode != 0
     assert not QuietHandler.requests
 
@@ -464,7 +465,7 @@ def test_uninstall_preserves_data_unless_purged(installation):
 
 
 def test_latest_never_installs_a_release_candidate(installation):
-    installation.release('v0.3.0-rc.1')
+    installation.release('v1.1.0-rc1')
     result = installation.run()
     assert result.returncode != 0
     assert not (installation.prefix / 'current').exists()

@@ -24,7 +24,7 @@ from packaging.version import Version
 
 
 ROOT = Path(__file__).resolve().parent.parent
-TAG_PATTERN = re.compile(r"v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-rc\.([1-9]\d*))?", re.ASCII)
+TAG_PATTERN = re.compile(r"v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-rc([1-9]\d*))?", re.ASCII)
 MODEL_FILES = (
     "checksums.json", "metadata.json", "model.onnx", "special_tokens_map.json",
     "tokenizer.json", "tokenizer_config.json", "vocab.txt",
@@ -117,7 +117,7 @@ def restore_model(base_url: str, destination: Path, root: Path = ROOT) -> bool:
 def validate_tag(tag: str, root: Path = ROOT) -> dict:
     match = TAG_PATTERN.fullmatch(tag)
     if match is None:
-        raise ValueError("Тег должен иметь вид vX.Y.Z или vX.Y.Z-rc.N")
+        raise ValueError("Тег должен иметь вид vX.Y.Z или vX.Y.Z-rcN")
     expected = Version(tag[1:])
     project = tomllib.loads((root / "pyproject.toml").read_text(encoding="utf-8"))
     tree = ast.parse((root / "src/cf/__init__.py").read_text(encoding="utf-8"))

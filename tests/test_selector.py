@@ -137,3 +137,33 @@ def test_destructive_confirmation_accepts_explicit_russian_or_english_yes(sample
     with patch("builtins.open", terminal):
         assert _confirm_destructive(sample_results[0]) is accepted
     assert "ОПАСНАЯ КОМАНДА" in terminal().write.call_args.args[0]
+
+
+def test_filled_command_is_shown_selected_and_confirmed(sample_results):
+    from cf.selector import _select_with_input
+
+    result = sample_results[0]
+    result.command_template = "mv -- <source> <destination>"
+    result.filled_command = "mv -- './мои файлы' ./backup"
+    result.destructive = True
+    assert result.command in _format_entry(result, verbose=False)
+    preview = _format_preview(result)
+    assert "Шаблон: mv -- <source> <destination>" in preview
+    assert "Подстановка: " + result.command in preview
+    terminal = mock_open(read_data="да\n")
+    with patch("builtins.input", return_value="1"), patch("builtins.open", terminal):
+        selected = _select_with_input([result], verbose=False, has_more=False)
+    assert selected == result.command
+    assert result.command in terminal().write.call_args.args[0]
+    assert select_command([result], non_interactive=True) == result.command
+
+
+def test_missing_arguments_are_visible_in_both_menus(sample_results, capsys):
+    from cf.selector import _select_with_input
+
+    result = sample_results[0]
+    result.missing_arguments = ("source", "destination")
+    assert "Заполните параметры: <source>, <destination>" in _format_preview(result)
+    with patch("builtins.input", return_value="q"):
+        _select_with_input([result], verbose=False, has_more=False)
+    assert "Заполните параметры: <source>, <destination>" in capsys.readouterr().err

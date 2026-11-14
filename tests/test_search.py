@@ -27,10 +27,10 @@ class TestNormalizeQuery:
         assert _normalize_query("  найди файл\n") == _normalize_query("найди файл")
 
     def test_does_not_reuse_old_normalized_keys(self):
-        assert _normalize_query("delete files") == "v2:delete files"
+        assert _normalize_query("delete files") == "v3:delete files"
 
     def test_empty_string(self):
-        assert _normalize_query("") == "v2:"
+        assert _normalize_query("") == "v3:"
 
 
 class TestSearchResult:
@@ -61,6 +61,18 @@ class TestSearchResult:
 
 
 class TestSearch:
+    def test_argument_search_ignores_old_cached_vectors(self, populated_db, embedding_bytes, random_embedding):
+        from cf.db import cache_query
+
+        path, conn = populated_db
+        query = "скопируй файл README.md в папку ~/backup"
+        cache_query(conn, "v2:" + query, embedding_bytes(1))
+        with patch("cf.embeddings.encode_text", return_value=random_embedding(2)) as encode:
+            first = search(query, db_path=path)
+            repeated = search(query, db_path=path)
+        encode.assert_called_once_with("скопируй файл в папку")
+        assert first == repeated
+
     @pytest.mark.parametrize("first,second", [("delete files", "do not delete files"),
                                             ("copy a into b", "copy b into a"),
                                             ("read README.md", "read readme.md"),

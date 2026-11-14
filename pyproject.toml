@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "command-finder-ru"
-version = "1.0.0"
+version = "1.1.0rc1"
 description = "Локальный поиск консольных команд по описанию задачи на русском языке"
 readme = "README.md"
 requires-python = ">=3.12"

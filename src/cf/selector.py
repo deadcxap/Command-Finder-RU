@@ -12,7 +12,7 @@ def _confirm_destructive(r: SearchResult) -> bool:
     """Запросить подтверждение через /dev/tty для опасной команды."""
     msg = (
         f"\n⚠  ОПАСНАЯ КОМАНДА\n"
-        f"   {r.command_template}\n"
+        f"   {r.command}\n"
         f"   Команда может удалить данные, завершить процессы или переписать историю.\n"
         f"   Для подтверждения введите «да» или «yes»: "
     )
@@ -36,7 +36,7 @@ def select_command(results: list[SearchResult], verbose: bool = False,
 
     # Non-interactive mode: return top result
     if non_interactive or not sys.stdin.isatty():
-        return results[0].command_template
+        return results[0].command
 
     try:
         from simple_term_menu import TerminalMenu
@@ -49,7 +49,7 @@ def select_command(results: list[SearchResult], verbose: bool = False,
 def _format_entry(r: SearchResult, verbose: bool) -> str:
     score = f" ({r.distance:.3f})" if verbose else ""
     mark = DESTRUCTIVE_MARK if r.destructive else ""
-    return f"{mark}{r.command_template}  [{r.command_name}]{score}"
+    return f"{mark}{r.command}  [{r.command_name}]{score}"
 
 
 def _format_preview(r: SearchResult) -> str:
@@ -60,6 +60,10 @@ def _format_preview(r: SearchResult) -> str:
         f"Запрос: {r.pattern_text}",
         f"Шаблон: {r.command_template}",
     ]
+    if r.command != r.command_template:
+        lines.extend(["", f"Подстановка: {r.command}"])
+    if r.missing_arguments:
+        lines.extend(["", "Заполните параметры: " + ", ".join(f"<{name}>" for name in r.missing_arguments)])
     if r.explanation:
         lines.extend(["", f"Пояснение: {r.explanation}"])
     if r.destructive:
@@ -99,7 +103,7 @@ def _select_with_menu(results: list[SearchResult], verbose: bool,
     selected = results[chosen]
     if selected.destructive and not _confirm_destructive(selected):
         return None
-    return selected.command_template
+    return selected.command
 
 
 def _select_with_input(results: list[SearchResult], verbose: bool,
@@ -109,10 +113,12 @@ def _select_with_input(results: list[SearchResult], verbose: bool,
     for i, r in enumerate(results, 1):
         score = f"  (расстояние: {r.distance:.3f})" if verbose else ""
         mark = DESTRUCTIVE_MARK if r.destructive else ""
-        print(f"  {i}) {mark}{r.command_template}", file=sys.stderr)
+        print(f"  {i}) {mark}{r.command}", file=sys.stderr)
         print(f"     {r.pattern_text} [{r.command_name}]{score}", file=sys.stderr)
         if r.explanation:
             print(f"     {r.explanation}", file=sys.stderr)
+        if r.missing_arguments:
+            print("     Заполните параметры: " + ", ".join(f"<{name}>" for name in r.missing_arguments), file=sys.stderr)
         print(file=sys.stderr)
 
     if has_more:
@@ -135,7 +141,7 @@ def _select_with_input(results: list[SearchResult], verbose: bool,
             selected = results[idx]
             if selected.destructive and not _confirm_destructive(selected):
                 return None
-            return selected.command_template
+            return selected.command
     except ValueError:
         pass
 

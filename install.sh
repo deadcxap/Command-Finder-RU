@@ -24,7 +24,7 @@ import time
 from urllib.parse import urlparse
 from urllib.request import urlopen
 
-TAG = re.compile(r"v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(?:-rc\.([1-9][0-9]*))?")
+TAG = re.compile(r"v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(?:-rc([1-9][0-9]*))?")
 FILE = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]*")
 DIGEST = re.compile(r"[a-f0-9]{64}")
 MODEL_FILES = {"model.onnx", "tokenizer.json", "metadata.json", "checksums.json",
@@ -197,7 +197,7 @@ def write_atomic(path, content, mode=0o644):
 
 def main():
     parser = argparse.ArgumentParser(description='Установка готового релиза Command Finder RU без сборки модели.')
-    parser.add_argument('--version', help='Тег vX.Y.Z или vX.Y.Z-rc.N; по умолчанию последний стабильный релиз')
+    parser.add_argument('--version', help='Тег vX.Y.Z или vX.Y.Z-rcN; по умолчанию последний стабильный релиз')
     parser.add_argument('--shell', action='store_true', help='Подключить Bash-интеграцию в ~/.bashrc')
     args = parser.parse_args()
     started = time.monotonic()
@@ -207,7 +207,7 @@ def main():
     if sys.version_info[:2] not in ((3, 12), (3, 13)):
         fail('Нужен Python 3.12 или 3.13 с модулями venv и pip. Выберите его через CF_PYTHON.')
     if args.version and not TAG.fullmatch(args.version):
-        fail('Версия должна иметь вид vX.Y.Z или vX.Y.Z-rc.N.')
+        fail('Версия должна иметь вид vX.Y.Z или vX.Y.Z-rcN.')
     check_venv_support()
     base = os.environ.get('CF_RELEASE_BASE_URL', 'https://github.com/deadcxap/Command-Finder-RU/releases').rstrip('/')
     url = urlparse(base)

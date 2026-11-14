@@ -26,7 +26,7 @@ def version_root(tmp_path, version="1.2.3", runtime=None):
     return tmp_path
 
 
-@pytest.mark.parametrize("tag", ["main", "v1.2", "v1.2.3-beta.1", "v1.2.3-rc", "v1.2.3-rc.01", "v1.2.3-rc.0",
+@pytest.mark.parametrize("tag", ["main", "v1.2", "v1.2.3-beta.1", "v1.2.3-rc", "v1.2.3-rc01", "v1.2.3-rc0", "v1.2.3-rc.1",
                                   "v01.2.3", "v1.2.3.extra", "v1.2.3\n", "v1.2.3;echo bad"])
 def test_reject_non_release_tags(tmp_path, tag):
     root = version_root(tmp_path)
@@ -35,7 +35,9 @@ def test_reject_non_release_tags(tmp_path, tag):
 
 
 @pytest.mark.parametrize("tag,version,prerelease", [("v1.2.3", "1.2.3", False),
-                                                  ("v1.2.3-rc.1", "1.2.3rc1", True)])
+                                                  ("v1.2.3-rc1", "1.2.3rc1", True),
+                                                  ("v1.1.0-rc1", "1.1.0rc1", True),
+                                                  ("v1.1.4-rc12", "1.1.4rc12", True)])
 def test_tag_matches_both_python_versions(tmp_path, tag, version, prerelease):
     root = version_root(tmp_path, version)
     assert release.validate_tag(tag, root) == {"tag": tag, "version": version, "prerelease": prerelease}
@@ -48,9 +50,9 @@ def test_tag_rejects_runtime_version_mismatch(tmp_path):
 
 
 def test_release_candidate_requires_canonical_python_version(tmp_path):
-    root = version_root(tmp_path, version="1.2.3-rc.1")
+    root = version_root(tmp_path, version="1.2.3-rc1")
     with pytest.raises(ValueError, match="каноническом"):
-        release.validate_tag("v1.2.3-rc.1", root)
+        release.validate_tag("v1.2.3-rc1", root)
 
 
 def test_runtime_lock_traverses_only_default_dependencies(monkeypatch):

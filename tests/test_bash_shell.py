@@ -92,11 +92,17 @@ class BashTerminal:
         path.unlink(missing_ok=True)
         self.send(SNAPSHOT)
         deadline = time.monotonic() + 5
-        while not path.exists():
+        while True:
+            try:
+                snapshot = path.read_bytes()
+            except FileNotFoundError:
+                snapshot = b''
+            if snapshot.count(b'\0') == 2 and snapshot.endswith(b'\0'):
+                break
             if time.monotonic() > deadline:
                 raise AssertionError('Readline не выполнил контрольную привязку клавиши')
             time.sleep(0.01)
-        fields = path.read_bytes().decode().split('\0')
+        fields = snapshot.decode().split('\0')
         return fields[0], int(fields[1])
 
     def close(self):

@@ -76,50 +76,82 @@
         {
           "type": "example",
           "text": "скопировать файл в другой файл",
-          "command": "cp source.txt destination.txt",
-          "explanation": "Скопировать файл в другой файл."
+          "command": "cp -- <source> <destination>",
+          "explanation": "Скопировать файл в другой файл.",
+          "arguments": {
+            "source": "source",
+            "destination": "destination"
+          }
         },
         {
           "type": "example",
           "text": "сделать копию исходного файла по указанному пути",
-          "command": "cp source.txt destination.txt",
-          "explanation": "Скопировать файл в другой файл."
+          "command": "cp -- <source> <destination>",
+          "explanation": "Скопировать файл в другой файл.",
+          "arguments": {
+            "source": "source",
+            "destination": "destination"
+          }
         },
         {
           "type": "example",
           "text": "скопировать папку со всем содержимым",
-          "command": "cp -r src_dir/ dest_dir/",
-          "explanation": "Скопировать папку со всем содержимым."
+          "command": "cp -r -- <source> <destination>",
+          "explanation": "Скопировать папку со всем содержимым.",
+          "arguments": {
+            "source": "source",
+            "destination": "destination"
+          }
         },
         {
           "type": "example",
           "text": "как скопировать каталог вместе с вложенными файлами и папками",
-          "command": "cp -r src_dir/ dest_dir/",
-          "explanation": "Скопировать папку со всем содержимым."
+          "command": "cp -r -- <source> <destination>",
+          "explanation": "Скопировать папку со всем содержимым.",
+          "arguments": {
+            "source": "source",
+            "destination": "destination"
+          }
         },
         {
           "type": "example",
           "text": "скопировать файл без перезаписи уже существующего назначения",
-          "command": "cp -n source.txt destination.txt",
-          "explanation": "Скопировать файл без перезаписи уже существующего назначения."
+          "command": "cp -n -- <source> <destination>",
+          "explanation": "Скопировать файл без перезаписи уже существующего назначения.",
+          "arguments": {
+            "source": "source",
+            "destination": "destination"
+          }
         },
         {
           "type": "example",
           "text": "сделать копию файла, пропуская совпадающее имя в месте назначения",
-          "command": "cp -n source.txt destination.txt",
-          "explanation": "Скопировать файл без перезаписи уже существующего назначения."
+          "command": "cp -n -- <source> <destination>",
+          "explanation": "Скопировать файл без перезаписи уже существующего назначения.",
+          "arguments": {
+            "source": "source",
+            "destination": "destination"
+          }
         },
         {
           "type": "example",
           "text": "скопировать файл с сохранением прав, владельца и временных меток",
-          "command": "cp -p source.txt destination.txt",
-          "explanation": "Скопировать файл с сохранением прав, владельца и временных меток."
+          "command": "cp -p -- <source> <destination>",
+          "explanation": "Скопировать файл с сохранением прав, владельца и временных меток.",
+          "arguments": {
+            "source": "source",
+            "destination": "destination"
+          }
         },
         {
           "type": "example",
           "text": "перенести копию файла вместе с его атрибутами доступа и временем",
-          "command": "cp -p source.txt destination.txt",
-          "explanation": "Скопировать файл с сохранением прав, владельца и временных меток."
+          "command": "cp -p -- <source> <destination>",
+          "explanation": "Скопировать файл с сохранением прав, владельца и временных меток.",
+          "arguments": {
+            "source": "source",
+            "destination": "destination"
+          }
         },
         {
           "type": "example",
@@ -143,50 +175,82 @@
         {
           "type": "example",
           "text": "переименовать файл",
-          "command": "mv oldname.txt newname.txt",
-          "explanation": "Переименовать файл."
+          "command": "mv -- <source> <destination>",
+          "explanation": "Переименовать файл.",
+          "arguments": {
+            "source": "source",
+            "destination": "destination"
+          }
         },
         {
           "type": "example",
           "text": "как изменить имя файла в терминале",
-          "command": "mv oldname.txt newname.txt",
-          "explanation": "Переименовать файл."
+          "command": "mv -- <source> <destination>",
+          "explanation": "Переименовать файл.",
+          "arguments": {
+            "source": "source",
+            "destination": "destination"
+          }
         },
         {
           "type": "example",
           "text": "переместить файл в другой каталог",
-          "command": "mv file.txt /path/to/directory/",
-          "explanation": "Переместить файл в другой каталог."
+          "command": "mv -- <source> <destination>",
+          "explanation": "Переместить файл в другой каталог.",
+          "arguments": {
+            "source": "source",
+            "destination": "destination"
+          }
         },
         {
           "type": "example",
           "text": "перенести файл в указанную папку",
-          "command": "mv file.txt /path/to/directory/",
-          "explanation": "Переместить файл в другой каталог."
+          "command": "mv -- <source> <destination>",
+          "explanation": "Переместить файл в другой каталог.",
+          "arguments": {
+            "source": "source",
+            "destination": "destination"
+          }
         },
         {
           "type": "example",
           "text": "переместить файл с подтверждением перезаписи",
-          "command": "mv -i source.txt destination.txt",
-          "explanation": "Переместить файл с подтверждением перезаписи."
+          "command": "mv -i -- <source> <destination>",
+          "explanation": "Переместить файл с подтверждением перезаписи.",
+          "arguments": {
+            "source": "source",
+            "destination": "destination"
+          }
         },
         {
           "type": "example",
           "text": "спросить разрешение, прежде чем заменить файл при перемещении",
-          "command": "mv -i source.txt destination.txt",
-          "explanation": "Переместить файл с подтверждением перезаписи."
+          "command": "mv -i -- <source> <destination>",
+          "explanation": "Переместить файл с подтверждением перезаписи.",
+          "arguments": {
+            "source": "source",
+            "destination": "destination"
+          }
         },
         {
           "type": "example",
           "text": "переименовать папку",
-          "command": "mv old_dir/ new_dir/",
-          "explanation": "Переименовать папку."
+          "command": "mv -- <source> <destination>",
+          "explanation": "Переименовать папку.",
+          "arguments": {
+            "source": "source",
+            "destination": "destination"
+          }
         },
         {
           "type": "example",
           "text": "изменить название каталога",
-          "command": "mv old_dir/ new_dir/",
-          "explanation": "Переименовать папку."
+          "command": "mv -- <source> <destination>",
+          "explanation": "Переименовать папку.",
+          "arguments": {
+            "source": "source",
+            "destination": "destination"
+          }
         },
         {
           "type": "example",
@@ -565,62 +629,92 @@
         {
           "type": "example",
           "text": "показать подробные метаданные файла",
-          "command": "stat file.txt",
-          "explanation": "Показать подробные метаданные файла."
+          "command": "stat -- <file>",
+          "explanation": "Показать подробные метаданные файла.",
+          "arguments": {
+            "file": "path"
+          }
         },
         {
           "type": "example",
           "text": "посмотреть размер, права и временные метки указанного файла",
-          "command": "stat file.txt",
-          "explanation": "Показать подробные метаданные файла."
+          "command": "stat -- <file>",
+          "explanation": "Показать подробные метаданные файла.",
+          "arguments": {
+            "file": "path"
+          }
         },
         {
           "type": "example",
           "text": "получить размер файла в байтах через GNU stat",
-          "command": "stat -c '%s' file.txt",
-          "explanation": "GNU stat -c '%s' выводит только размер файла в байтах; в BSD и macOS используются другие параметры stat."
+          "command": "stat -c '%s' -- <file>",
+          "explanation": "GNU stat -c '%s' выводит только размер файла в байтах; в BSD и macOS используются другие параметры stat.",
+          "arguments": {
+            "file": "path"
+          }
         },
         {
           "type": "example",
           "text": "вывести только число байтов указанного файла в Linux",
-          "command": "stat -c '%s' file.txt",
-          "explanation": "GNU stat -c '%s' выводит только размер файла в байтах; в BSD и macOS используются другие параметры stat."
+          "command": "stat -c '%s' -- <file>",
+          "explanation": "GNU stat -c '%s' выводит только размер файла в байтах; в BSD и macOS используются другие параметры stat.",
+          "arguments": {
+            "file": "path"
+          }
         },
         {
           "type": "example",
           "text": "узнать номер inode файла в Linux",
-          "command": "stat -c '%i' file.txt",
-          "explanation": "GNU stat -c '%i' выводит только номер inode; в BSD и macOS используются другие параметры stat."
+          "command": "stat -c '%i' -- <file>",
+          "explanation": "GNU stat -c '%i' выводит только номер inode; в BSD и macOS используются другие параметры stat.",
+          "arguments": {
+            "file": "path"
+          }
         },
         {
           "type": "example",
           "text": "показать идентификатор индексного узла через GNU stat",
-          "command": "stat -c '%i' file.txt",
-          "explanation": "GNU stat -c '%i' выводит только номер inode; в BSD и macOS используются другие параметры stat."
+          "command": "stat -c '%i' -- <file>",
+          "explanation": "GNU stat -c '%i' выводит только номер inode; в BSD и macOS используются другие параметры stat.",
+          "arguments": {
+            "file": "path"
+          }
         },
         {
           "type": "example",
           "text": "вывести время изменения файла в секундах Unix",
-          "command": "stat -c '%Y' file.txt",
-          "explanation": "GNU stat -c '%Y' выводит время изменения в формате Unix; в BSD и macOS используются другие параметры stat."
+          "command": "stat -c '%Y' -- <file>",
+          "explanation": "GNU stat -c '%Y' выводит время изменения в формате Unix; в BSD и macOS используются другие параметры stat.",
+          "arguments": {
+            "file": "path"
+          }
         },
         {
           "type": "example",
           "text": "узнать числовую метку последней правки файла через GNU stat",
-          "command": "stat -c '%Y' file.txt",
-          "explanation": "GNU stat -c '%Y' выводит время изменения в формате Unix; в BSD и macOS используются другие параметры stat."
+          "command": "stat -c '%Y' -- <file>",
+          "explanation": "GNU stat -c '%Y' выводит время изменения в формате Unix; в BSD и macOS используются другие параметры stat.",
+          "arguments": {
+            "file": "path"
+          }
         },
         {
           "type": "example",
           "text": "показать права файла восьмеричным числом в Linux",
-          "command": "stat -c '%a' file.txt",
-          "explanation": "GNU stat -c '%a' выводит только права в восьмеричном виде; в BSD и macOS используются другие параметры stat."
+          "command": "stat -c '%a' -- <file>",
+          "explanation": "GNU stat -c '%a' выводит только права в восьмеричном виде; в BSD и macOS используются другие параметры stat.",
+          "arguments": {
+            "file": "path"
+          }
         },
         {
           "type": "example",
           "text": "получить числовой режим доступа через GNU stat",
-          "command": "stat -c '%a' file.txt",
-          "explanation": "GNU stat -c '%a' выводит только права в восьмеричном виде; в BSD и macOS используются другие параметры stat."
+          "command": "stat -c '%a' -- <file>",
+          "explanation": "GNU stat -c '%a' выводит только права в восьмеричном виде; в BSD и macOS используются другие параметры stat.",
+          "arguments": {
+            "file": "path"
+          }
         }
       ]
     },
@@ -632,26 +726,38 @@
         {
           "type": "example",
           "text": "определить тип неизвестного файла по содержимому",
-          "command": "file unknown_file",
-          "explanation": "Определить тип неизвестного файла по содержимому."
+          "command": "file -- <file>",
+          "explanation": "Определить тип неизвестного файла по содержимому.",
+          "arguments": {
+            "file": "path"
+          }
         },
         {
           "type": "example",
           "text": "узнать, что за данные находятся в файле",
-          "command": "file unknown_file",
-          "explanation": "Определить тип неизвестного файла по содержимому."
+          "command": "file -- <file>",
+          "explanation": "Определить тип неизвестного файла по содержимому.",
+          "arguments": {
+            "file": "path"
+          }
         },
         {
           "type": "example",
           "text": "показать MIME-тип PDF-файла",
-          "command": "file --mime-type document.pdf",
-          "explanation": "Показать MIME-тип PDF-файла."
+          "command": "file --mime-type -- <file>",
+          "explanation": "Показать MIME-тип PDF-файла.",
+          "arguments": {
+            "file": "path"
+          }
         },
         {
           "type": "example",
           "text": "получить тип содержимого документа в формате MIME",
-          "command": "file --mime-type document.pdf",
-          "explanation": "Показать MIME-тип PDF-файла."
+          "command": "file --mime-type -- <file>",
+          "explanation": "Показать MIME-тип PDF-файла.",
+          "arguments": {
+            "file": "path"
+          }
         },
         {
           "type": "example",
@@ -668,26 +774,38 @@
         {
           "type": "example",
           "text": "проверить, является ли скрипт текстовым файлом",
-          "command": "file script.sh",
-          "explanation": "Проверить, является ли скрипт текстовым файлом."
+          "command": "file -- <file>",
+          "explanation": "Проверить, является ли скрипт текстовым файлом.",
+          "arguments": {
+            "file": "path"
+          }
         },
         {
           "type": "example",
           "text": "узнать формат содержимого файла script.sh",
-          "command": "file script.sh",
-          "explanation": "Проверить, является ли скрипт текстовым файлом."
+          "command": "file -- <file>",
+          "explanation": "Проверить, является ли скрипт текстовым файлом.",
+          "arguments": {
+            "file": "path"
+          }
         },
         {
           "type": "example",
           "text": "определить кодировку текста в файле",
-          "command": "file --mime-encoding file.txt",
-          "explanation": "Определить кодировку текста в файле."
+          "command": "file --mime-encoding -- <file>",
+          "explanation": "Определить кодировку текста в файле.",
+          "arguments": {
+            "file": "path"
+          }
         },
         {
           "type": "example",
           "text": "показать MIME-кодировку указанного файла",
-          "command": "file --mime-encoding file.txt",
-          "explanation": "Определить кодировку текста в файле."
+          "command": "file --mime-encoding -- <file>",
+          "explanation": "Определить кодировку текста в файле.",
+          "arguments": {
+            "file": "path"
+          }
         }
       ]
     },
@@ -1089,14 +1207,20 @@
         {
           "type": "example",
           "text": "узнать, сколько места на диске занимает папка",
-          "command": "du -sh directory/",
-          "explanation": "Узнать, сколько места на диске занимает папка."
+          "command": "du -sh -- <directory>",
+          "explanation": "Узнать, сколько места на диске занимает папка.",
+          "arguments": {
+            "directory": "path"
+          }
         },
         {
           "type": "example",
           "text": "показать общий объём каталога в удобных единицах",
-          "command": "du -sh directory/",
-          "explanation": "Узнать, сколько места на диске занимает папка."
+          "command": "du -sh -- <directory>",
+          "explanation": "Узнать, сколько места на диске занимает папка.",
+          "arguments": {
+            "directory": "path"
+          }
         },
         {
           "type": "example",
@@ -1125,14 +1249,20 @@
         {
           "type": "example",
           "text": "узнать общий размер папки в мебибайтах",
-          "command": "du -sm directory/",
-          "explanation": "Узнать общий размер папки в мебибайтах."
+          "command": "du -sm -- <directory>",
+          "explanation": "Узнать общий размер папки в мебибайтах.",
+          "arguments": {
+            "directory": "path"
+          }
         },
         {
           "type": "example",
           "text": "показать, сколько мегабайтных блоков занимает каталог",
-          "command": "du -sm directory/",
-          "explanation": "Узнать общий размер папки в мебибайтах."
+          "command": "du -sm -- <directory>",
+          "explanation": "Узнать общий размер папки в мебибайтах.",
+          "arguments": {
+            "directory": "path"
+          }
         },
         {
           "type": "example",

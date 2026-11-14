@@ -4,6 +4,7 @@ import sys
 import numpy as np
 from pathlib import Path
 
+from cf.arguments import validate_arguments
 from cf.config import DATA_DIR, EMBEDDING_DIM
 from cf.db import (
     bulk_load_pragmas,
@@ -65,8 +66,11 @@ def seed_database(db_path=None, force: bool = False) -> dict:
                     cmd_rows.append((cmd["name"], category, cmd["synopsis"], cmd["description"]))
                 cmd_idx = cmd_seen[key]
                 for pat in cmd["patterns"]:
+                    arguments = pat.get("arguments", {})
+                    validate_arguments(pat["command"], arguments)
                     pat_meta.append((cmd_idx, pat["type"], pat["text"], pat["command"],
-                                     pat.get("explanation"), 1 if pat.get("destructive") else 0))
+                                     pat.get("explanation"), 1 if pat.get("destructive") else 0,
+                                     json.dumps(arguments, ensure_ascii=False, sort_keys=True)))
 
         texts = [pattern[2] for pattern in pat_meta]
         print(f"Кодирование описаний: {len(texts)}...", file=sys.stderr)
@@ -84,8 +88,8 @@ def seed_database(db_path=None, force: bool = False) -> dict:
             if force:
                 reset_index(conn)
             cmd_ids = insert_commands_batch(conn, cmd_rows)
-            pat_rows = [(cmd_ids[ci], ptype, text, template, explanation, destructive)
-                        for ci, ptype, text, template, explanation, destructive in pat_meta]
+            pat_rows = [(cmd_ids[ci], ptype, text, template, explanation, destructive, arguments)
+                        for ci, ptype, text, template, explanation, destructive, arguments in pat_meta]
             pat_ids = insert_patterns_batch(conn, pat_rows)
             insert_embeddings_batch(conn, [(pat_id, to_bytes(vectors[i])) for i, pat_id in enumerate(pat_ids)])
             store_index_identity(conn, fingerprint)
