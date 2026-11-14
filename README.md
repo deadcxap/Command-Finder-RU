@@ -10,6 +10,8 @@ cf --copy "сожми папку в tar.gz"
 
 В словаре **392 команды и 3 892 русские формулировки в 15 категориях**. Команды заданы в JSON, модель ищет подходящие по смыслу описания. Генерация команд и облачный API для поиска не нужны.
 
+История выпусков и изменений ведётся в [CHANGELOG.md](CHANGELOG.md).
+
 Рабочая модель — [`sergeyzh/rubert-mini-retriever`](https://huggingface.co/sergeyzh/rubert-mini-retriever), 312 измерений, ONNX с 8-битным квантованием. Файл модели занимает около 27 МБ. Во время поиска используются ONNX Runtime и Tokenizers. Готовая модель и поисковая база доставляются из релиза; PyTorch нужен только для подготовки нового артефакта разработчиком или в CI.
 
 ## Установка
@@ -51,7 +53,7 @@ curl -fsSL https://github.com/deadcxap/Command-Finder-RU/releases/latest/downloa
 Обычная установка выбирает стабильный релиз. Для конкретной версии, включая RC, используйте `--version`:
 
 ```bash
-curl -fsSL https://github.com/deadcxap/Command-Finder-RU/releases/download/v1.1.0-rc2/install.sh | bash -s -- --version v1.1.0-rc2 --shell && source ~/.bashrc
+curl -fsSL https://github.com/deadcxap/Command-Finder-RU/releases/download/v1.1.0-rc3/install.sh | bash -s -- --version v1.1.0-rc3 --shell && source ~/.bashrc
 ```
 
 Пример показывает синтаксис выбора версии: указанный тег должен быть опубликован в Releases.
