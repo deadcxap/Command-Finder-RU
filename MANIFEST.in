@@ -1,0 +1,6 @@
+include README.md LICENSE AGENT.md CLAUDE.md install.sh uninstall.sh
+recursive-include shell *.bash
+recursive-include docs *.md *.json *.csv *.html *.gz *.txt
+recursive-include benchmarks *.py *.json *.md *.txt
+recursive-include tests *.py
+global-exclude *.py[cod] __pycache__ .coverage *.onnx *.safetensors

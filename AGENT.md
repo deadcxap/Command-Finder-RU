@@ -1,123 +1,41 @@
-# AGENT.md — Command Finder (`cf`)
+# Инструкции для работы с Command Finder RU
 
-Quick-reference for any AI coding agent (Claude, Cursor, Aider, Copilot, etc.) operating on this repo. For the full writeup see `CLAUDE.md`.
+`cf` ищет готовые консольные команды по описанию задачи. Архитектура: локальный энкодер → SQLite/sqlite-vec → устранение повторов команд → меню → выбранный способ вывода.
 
-## TL;DR
+Подробное описание: [docs/architecture.md](docs/architecture.md). Пользовательская документация: [README.md](README.md).
 
-- `cf` turns a natural-language query into a shell command via vector search over pre-embedded "patterns".
-- **Source of truth = `src/cf/data/commands/*.json`.** Edit JSON, then run `cf --seed --force`.
-- Never hand-edit the SQLite database. It is regenerated from JSON.
+## Основные правила
 
-## Architecture at a glance
+- Источник команд — `src/cf/data/commands/*.json`. Изменяйте JSON, затем перестраивайте индекс. Строки в базе вручную не редактируют.
+- Рабочая модель — закреплённая `sergeyzh/rubert-mini-retriever`, 312 измерений, полный sentence encoder ONNX с 8-битными весами. Поиск не зависит от PyTorch или Sentence Transformers.
+- Сохраняйте пакетную индексацию в `seed.py`; не заменяйте её вставками и кодированием по одной строке.
+- Размерность модели, схема `vec0` и идентичность индекса должны совпадать. При смене модели или словаря нужна переиндексация.
+- Кеш описаний зависит от содержимого артефакта модели и упорядоченного списка текстов. Кеш запросов относится к конкретному индексу.
+- Основная интеграция оболочки — Bash 4+ и Readline. Полный скрипт хранится в `src/cf/data/cf.bash`, загрузчик — в `shell/cf.bash`. Горячая клавиша редактирует строку ввода; найденные команды автоматически не исполняются.
+- Для новых описаний и пояснений используйте русский язык. Названия утилит, флаги, поля JSON и синтаксис команд сохраняются.
+- Не добавляйте совместимость с устаревшими названиями полей; обновляйте источник данных и его потребителей вместе.
+- Документация проекта ведётся на русском. Пояснения архитектуры размещайте в документации, а не в комментариях, пересказывающих код.
+- Не коммитьте модели, базы, кеши, виртуальные окружения и результаты локальной сборки. Правила исключения заданы в `.gitignore`.
 
-```
-User query
-  → sentence-transformers (all-MiniLM-L6-v2, 384-dim) → query embedding
-  → sqlite-vec vector search over pattern_embeddings
-  → top-K patterns → join to commands → interactive selector
-  → selected command → stdout / readline / clipboard / tmux
-```
+## Данные команд
 
-Key files:
+Поле `text` описывает намерение пользователя: «найди большие файлы», «покажи размер каталогов». Несколько разных формулировок могут ссылаться на один `command`.
 
-| File | Role |
-|------|------|
-| `src/cf/cli.py` | Typer CLI. `cf`, `cf --seed`, `cf --print`, `cf --copy`, `cf --tmux`. |
-| `src/cf/seed.py` | Reads all JSON → batch-inserts into SQLite + vec0. |
-| `src/cf/db.py` | Schema, batch inserts, `search_similar()`, PRAGMA tuning. |
-| `src/cf/embeddings.py` | sentence-transformers + ONNX wrapper. Cached encoding. |
-| `src/cf/search.py` | Query encode + vector search + dedup. |
-| `src/cf/selector.py` | `simple-term-menu` UI with "Show more". |
-| `src/cf/data/commands/*.json` | Seed data. **This is what agents usually edit.** |
-| `shell/cf.zsh` | `print -z` readline injection + `Ctrl+F` ZLE widget. |
+`command` должен содержать применимый шаблон с понятными параметрами (`<file>`, `/path/to/dir`). Флаги и цепочки должны выполнять именно описанную задачу.
 
-## Database schema
+`destructive: true` обязателен для удаления данных, завершения процессов, перезаписи истории Git, форматирования дисков и других труднообратимых операций. Меню требует подтверждения для таких результатов. Отрицания в запросах не гарантируют, что модель исключит противоположную операцию.
 
-```sql
-commands(id, name, category, synopsis, description)
-patterns(id, command_id FK, pattern_type, text, command_template, explanation, destructive)
-pattern_embeddings  -- vec0 virtual table, PK pattern_id, FLOAT[384]
-query_cache(query_text PK, embedding BLOB)
-```
+Команды объединяются по `(category, name)`. Не добавляйте одно и то же средство в несколько категорий без конкретной причины. Категория JSON должна совпадать с именем файла.
 
-Dedup key: `(category, name)` — see `seed.py::cmd_seen`. Patterns attach to the deduped command.
-
-## Seeding flow (`seed.py::seed_database`)
-
-1. `load_seed_files()` → reads every `*.json` in `DATA_DIR`.
-2. Flatten to `cmd_rows` + `pat_meta`, deduping by `(category, name)`.
-3. `encode_batch([p.text for p in patterns])` — single batched embedding call.
-4. `bulk_load_pragmas` → speed-tuned inserts:
-   - `insert_commands_batch` → returns generated IDs.
-   - `insert_patterns_batch(command_id=...)` → returns pattern IDs.
-   - `insert_embeddings_batch(pattern_id, bytes)` into the vec0 table.
-5. `restore_pragmas`, commit, close.
-
-Re-running with `--force` is safe: embedding encoding is cached, so only new `pattern.text` strings cost CPU.
-
-## Adding a command — minimal recipe
-
-Find the right category file under `src/cf/data/commands/` (or create `<new-category>.json`). Append a command to the `commands` array:
-
-```json
-{
-  "name": "fd",
-  "synopsis": "fd [pattern] [path]",
-  "description": "User-friendly alternative to find",
-  "patterns": [
-    {
-      "type": "example",
-      "text": "find files by name quickly",
-      "command": "fd <pattern>",
-      "explanation": "Recursively searches for files matching the pattern"
-    },
-    {
-      "type": "example",
-      "text": "search for files with a specific extension",
-      "command": "fd -e <ext>",
-      "explanation": "Filters results to files with the given extension"
-    }
-  ]
-}
-```
-
-Then:
+## Проверки
 
 ```bash
-python -m json.tool src/cf/data/commands/<file>.json > /dev/null   # validate
-cf --seed --force                                                  # rebuild DB
-cf "<natural-language query for the new entry>"                    # smoke test
+python -m pytest
+python -m build
 ```
 
-## Pattern-writing rules
+После изменения данных дополнительно проверьте `cf --seed --force` в отдельном `CF_DB_DIR`, ненулевое число команд и описаний, несколько обычных запросов и примеры с ограничениями. Не исполняйте выбранные шаблоны в ходе проверки поиска.
 
-- **`text`** is the embedded string. Write it as user intent ("compress a folder to tar.gz"), not man-page language.
-- **`command`** is the injected shell command. Must be runnable, copy-pasteable, with placeholders (`<file>`, `/path/to/dir`) where concrete values would mislead.
-- **`destructive`** is an optional boolean, defaulting to `false`. Set it to `true` when a pattern deletes data, kills processes, rewrites git history, wipes volumes, or otherwise causes hard-to-undo changes; cf marks the result with `⚠` and requires typing `yes` before returning the command.
-- **More patterns per command = better recall.** Add 3–8 paraphrased `text` entries that share or vary the `command`.
-- **Category uniqueness**: don't re-add a command that already lives in another category file.
-- **`pattern_type`**: use `"example"` unless you are introducing a new type end-to-end.
+После изменения экспорта сравнивайте ONNX с PyTorch на разных длинах текста и размерах пакета. После изменения модели или квантования оценивайте качество на неизменном наборе запросов; не исправляйте эталоны под полученную выдачу.
 
-## Things agents should NOT do
-
-- Do not insert, update, or delete rows in `cf.db` directly. The DB is disposable.
-- Do not commit `cf.db`, `.venv/`, or the ONNX model. `.gitignore` already excludes them.
-- Do not change `EMBEDDING_DIM` without also changing the model — the vec0 column dimension is fixed at schema creation.
-- Do not switch `seed.py` to per-row inserts; keep the batched Phase 1/2/3 structure.
-- Do not add backwards-compat shims for renamed JSON fields. Update all files and reseed.
-- Do not write comments explaining what code does; `CLAUDE.md` and this file are the documentation.
-
-## Validation checklist after changes
-
-- [ ] JSON files still parse (`python -m json.tool`).
-- [ ] `cf --seed --force` runs cleanly and reports non-zero counts.
-- [ ] `pytest` passes.
-- [ ] A representative natural-language query returns the expected new entry in the top results.
-- [ ] `README.md` coverage table reflects new categories/counts if materially changed.
-
-## Environment
-
-- Python 3.12+, macOS or Linux.
-- Config via env vars: `CF_TOP`, `CF_MAX_TOP`, `CF_MODEL`, `CF_EMBEDDING_DIM`, `CF_DB_DIR`, `CF_DB_NAME`, `CF_DATA_DIR`.
-- Default DB dir: `~/.local/share/cf/`.
-- Default model: `all-MiniLM-L6-v2` (384-dim).
+Изменения покрытия словаря отражайте в README. Тяжёлые артефакты воспроизводятся отдельной подготовкой; компактные опубликованные результаты находятся в `docs/benchmarks/`.

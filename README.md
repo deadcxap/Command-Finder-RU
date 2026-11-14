@@ -1,321 +1,196 @@
-```
-      ___           ___
-     /  /\         /  /\
-    /  /:/        /  /:/_
-   /  /:/        /  /:/ /\
-  /  /:/  ___   /  /:/ /:/
- /__/:/  /  /\ /__/:/ /:/
- \  \:\ /  /:/ \  \:\/:/
-  \  \:\  /:/   \  \::/
-   \  \:\/:/     \  \:\
-    \  \::/       \  \:\
-     \__\/         \__\/
+# Command Finder RU — поиск команд в терминале
 
-   ╔═══════════════════════════╗
-   ║   c o m m a n d           ║
-   ║          f i n d e r      ║
-   ╚═══════════════════════════╝
-```
-
-# cf - Command Finder
-
-Find shell commands using natural language. Type what you want to do, get the command.
-
-```
-$ cf find large files older than 30 days
-
-  > find . -size +100M -mtime +30 -type f
-    find / -size +100M -type f
-    find . -mtime +30 -type f -delete
-
-  [arrows: navigate] [enter: select] [q: cancel]
-```
-or
-
-```
-$ find large files older than 30 days # CTRL+f
-
-  > find . -size +100M -mtime +30 -type f
-    find / -size +100M -type f
-    find . -mtime +30 -type f -delete
-
-  [arrows: navigate] [enter: select] [q: cancel]
-```
-
-
-The selected command is injected directly into your shell prompt, ready to edit or run.
-
-## Install
+`cf` подбирает консольные команды по описанию задачи на русском или английском языке. Модель работает локально на CPU. В Bash описание задачи в строке ввода можно заменить выбранной командой нажатием `Ctrl+F`, затем проверить, изменить и выполнить её.
 
 ```bash
-git clone <repo-url> ~/codes/cf
-cd ~/codes/cf
+cf "найди большие файлы в текущем каталоге"
+cf --print "покажи изменения в git"
+cf --copy "сожми папку в tar.gz"
+```
+
+В словаре **392 команды и 3 892 русские формулировки в 15 категориях**. Команды заданы в JSON, модель ищет подходящие по смыслу описания. Генерация команд и облачный API для поиска не нужны.
+
+Рабочая модель — [`sergeyzh/rubert-mini-retriever`](https://huggingface.co/sergeyzh/rubert-mini-retriever), 312 измерений, ONNX с 8-битным квантованием. Файл модели занимает около 27 МБ. Во время поиска используются ONNX Runtime и Tokenizers; PyTorch нужен только для первоначальной сборки модели.
+
+## Установка
+
+Нужны Python 3.12+ и Linux, WSL2 или macOS. Для первоначальной сборки закреплённой модели используйте Python 3.12 или 3.13; проверенное окружение сборки — 3.12. Для горячей клавиши нужен интерактивный Bash 4+ с GNU Readline; обычный CLI доступен и из других оболочек. Системный Bash 3.2 в macOS подходит для обычного CLI; для интеграции установите современный Bash и откройте его сессию.
+
+```bash
+git clone https://github.com/deadcxap/Command-Finder-RU.git
+cd Command-Finder-RU
 ./install.sh
 ```
 
-The install script:
-- Creates a Python virtual environment
-- Installs dependencies (sentence-transformers, sqlite-vec, etc.)
-- Seeds the database with 327 commands and 1,536 searchable patterns
-- Downloads the embedding model (~80MB, one-time)
-- Symlinks `cf` to `~/.local/bin/`
-- Optionally adds shell integration to `~/.zshrc`
+Установщик создаёт `.venv`, готовит модель, загружает словарь в SQLite и добавляет ссылку `cf` в `~/.local/bin`. Первоначальная сборка скачивает закреплённую ревизию модели и CPU-зависимости в отдельное временное окружение. Для неё требуется несколько гигабайт свободного места и доступ в интернет. Окружение сборки удаляется после подготовки; дальнейший поиск работает без сети.
 
-### Manual install
+Если нужный Python установлен под другим именем, укажите его явно: `CF_PYTHON=python3.12 ./install.sh`.
+
+Чтобы сразу подключить интеграцию Bash:
+
+```bash
+./install.sh --shell
+```
+
+Этот флаг добавляет строку `source` в `~/.bashrc`. Другое расположение можно задать переменной `CF_BASHRC` перед запуском установщика. После установки откройте новый терминал или выполните `source ~/.bashrc`. Если `~/.local/bin` отсутствует в `PATH`, добавьте в `.bashrc`:
+
+```bash
+export PATH="$HOME/.local/bin:$PATH"
+```
+
+### Установка с готовой локальной моделью
+
+Если ONNX-артефакт уже подготовлен, его можно импортировать без установки PyTorch:
 
 ```bash
 python3 -m venv .venv
-source .venv/bin/activate
-pip install -e .
-cf --seed
+.venv/bin/python -m pip install -e .
+.venv/bin/cf --prepare-model --model-source /home/user/models/rubert-mini-retriever-int8
+.venv/bin/cf --seed
 ```
 
-Then add to `~/.zshrc`:
+Для дальнейшего вызова `cf` в текущем терминале активируйте окружение: `source .venv/bin/activate`.
+
+Каталог артефакта должен содержать `model.onnx`, `tokenizer.json` и `metadata.json` рабочей модели. Для использования готового каталога на месте задайте `CF_MODEL_DIR` перед установкой или запуском:
 
 ```bash
-source /path/to/cf/shell/cf.zsh
+export CF_MODEL_DIR="$HOME/models/rubert-mini-retriever-int8"
+./install.sh
 ```
 
-### Requirements
+### Обновление и удаление
 
-- Python 3.12+
-- macOS or Linux
-- ~200MB disk (model + dependencies)
-
-## Usage
-
-### Basic search
-
-```bash
-cf "compress a directory"
-# Interactive selector appears, chosen command goes to your prompt
-```
-
-### Output modes
-
-```bash
-cf "query"                    # Default: inject into zsh readline buffer
-cf --print "query"            # Print to stdout
-cf --copy  "query"            # Copy to clipboard (pbcopy/xclip)
-cf --tmux  "query"            # Send to current tmux pane
-```
-
-### Options
-
-```
-cf [OPTIONS] QUERY...
-
-Options:
-  --print, -p          Print command to stdout
-  --copy, -c           Copy to clipboard
-  --tmux, -t           Send to tmux pane via send-keys
-  --top N              Number of results (default: 7, env: CF_TOP)
-  --verbose, -v        Show similarity scores and DB stats
-  --seed               Seed/rebuild the database and export ONNX model
-  --seed --force       Clear and reseed from scratch
-  --install-shell      Print zsh integration setup instructions
-  --version            Show version
-```
-
-### Configuration
-
-All settings can be configured via environment variables. Set them in `~/.zshrc` for permanent defaults:
-
-| Environment variable | Default | Description |
-|---------------------|---------|-------------|
-| `CF_TOP` | `7` | Number of results to show |
-| `CF_MAX_TOP` | `50` | Maximum results when using "Show more" |
-| `CF_MODEL` | `all-MiniLM-L6-v2` | Sentence-transformers embedding model |
-| `CF_EMBEDDING_DIM` | `384` | Embedding dimensions (must match model) |
-| `CF_DB_DIR` | `~/.local/share/cf` | Database and cache directory |
-| `CF_DB_NAME` | `cf.db` | Database filename |
-| `CF_DATA_DIR` | *(package default)* | Path to seed JSON files |
-
-```bash
-# Example: show 15 results by default, use a different data dir
-export CF_TOP=15
-export CF_DB_DIR="$HOME/.cf"
-```
-
-The `--top` flag overrides `CF_TOP` for a single invocation.
-
-### Navigating results
-
-The selector shows `CF_TOP` results by default (7 if unset). Scroll to the bottom and select `[+] Show more results...` to load 10 more at a time (up to 50 max). Use `--top N` to change the count for a single run:
-
-```bash
-cf --top 15 "find files"     # Start with 15 results
-```
-
-### Keyboard shortcut
-
-With shell integration enabled, press `Ctrl+F` anywhere in your terminal to open cf as a ZLE widget:
-
-- **Text on the line**: type a query then press `Ctrl+F` -- it searches and replaces the line with the selected command
-- **Empty prompt**: press `Ctrl+F` -- it shows a `cf>` prompt to type your query
-
-### Shell integration setup
-
-```bash
-cf --install-shell           # Print setup instructions
-```
-
-Or add directly to `~/.zshrc`:
-
-```bash
-source /path/to/cf/shell/cf.zsh
-```
-
-This enables:
-- `cf "query"` pushes the selected command into your prompt via `print -z`
-- `Ctrl+F` opens the search widget inline as a ZLE widget
-
-## How it works
-
-```
- "find files larger than 1GB"
-            |
-            v
-   ┌─────────────────┐
-   │  Encode query    │  sentence-transformers
-   │  (all-MiniLM)    │  384-dim embedding
-   └────────┬────────┘
-            │
-   ┌────────v────────┐
-   │  Vector search   │  sqlite-vec
-   │  cosine distance │  ~1,909 indexed patterns
-   └────────┬────────┘
-            │
-   ┌────────v────────┐
-   │  Interactive     │  simple-term-menu
-   │  selector        │  with preview
-   └────────┬────────┘
-            │
-   ┌────────v────────┐
-   │  Output          │  readline / clipboard
-   │                  │  / tmux / stdout
-   └──────────────────┘
-```
-
-Each shell command has multiple **patterns** indexed separately -- natural language descriptions like "find files larger than 100MB", "search for big files on disk", "locate large files". This means your query matches the *specific use case*, not just the command name.
-
-## Command coverage
-
-389 commands across 15 categories, 1,909 searchable patterns:
-
-| Category | Commands | Patterns | Highlights |
-|----------|----------|----------|------------|
-| filesystem | 34 | 156 | ls, cp, mv, rm, find, rsync, du, df, ln, stat |
-| text_processing | 34 | 136 | grep, sed, awk, cut, sort, uniq, diff, tr, wc |
-| search | 14 | 71 | find, locate, fd, rg, fzf, xargs, parallel |
-| networking | 33 | 143 | curl, wget, ssh, scp, ping, dig, netstat, nmap |
-| system | 34 | 154 | uname, systemctl, journalctl, free, lscpu, env |
-| process | 32 | 140 | ps, top, kill, tmux, crontab, strace, lsof |
-| permissions | 21 | 96 | chmod, chown, sudo, useradd, passwd, setfacl |
-| compression | 16 | 78 | tar, gzip, zip, xz, 7z, zstd, bzip2 |
-| disk | 20 | 92 | fdisk, mkfs, mount, lsblk, smartctl, ncdu |
-| git | 28 | 161 | init, clone, commit, branch, rebase, stash, bisect |
-| docker | 22 | 102 | run, build, compose, exec, logs, kubectl |
-| package_managers | 17 | 125 | apt, brew, pip, npm, **npx (45 patterns)**, cargo |
-| perl_oneliners | 21 | 211 | substitution, regex, calculations, ROT13, CSV |
-| macos | 19 | 58 | open, pbcopy, defaults, caffeinate, say |
-| misc | 44 | 186 | jq, bc, alias, history, tput, bat, man, fzf |
-
-## Shell integration
-
-### How readline injection works
-
-When you source `shell/cf.zsh`, two things are set up:
-
-1. **`cf` function** -- wraps the Python CLI. Captures the selected command and pushes it onto the zsh edit buffer using `print -z`. The command appears on your next prompt line, ready to edit or press Enter.
-
-2. **`cf-widget`** -- a ZLE widget bound to `Ctrl+F`. If you have text on the line, it uses that as the query. On an empty prompt, it shows a `cf>` input. The result is injected directly into `BUFFER` (the current command line).
-
-Both use `</dev/tty` redirection so the interactive selector works correctly inside command substitution.
-
-### Selector keybindings
-
-Inside the interactive selector menu:
-
-| Key | Action |
-|-----|--------|
-| `Up` / `k` | Move up |
-| `Down` / `j` | Move down |
-| `Enter` | Select command |
-| `q` / `Esc` | Cancel |
-| Select `[+] Show more...` | Load 10 more results |
-
-### Customizing the shell keybinding
-
-Edit `shell/cf.zsh` or add to your `.zshrc`:
-
-```bash
-bindkey '^K' cf-widget   # Ctrl+K instead of Ctrl+F
-```
-
-## Adding commands
-
-Seed data lives in `src/cf/data/commands/*.json`. To add commands:
-
-1. Edit or create a JSON file in that directory:
-
-```json
-{
-  "category": "my_tools",
-  "commands": [
-    {
-      "name": "mytool",
-      "synopsis": "mytool [options] <arg>",
-      "description": "What mytool does",
-      "patterns": [
-        {
-          "type": "example",
-          "text": "natural language description of this use case",
-          "command": "mytool --flag value",
-          "explanation": "brief explanation",
-          "destructive": false
-        }
-      ]
-    }
-  ]
-}
-```
-
-2. Rebuild the database:
+После изменения словаря обновите индекс:
 
 ```bash
 cf --seed --force
 ```
 
-### Tips for good patterns
+Рабочие файлы хранятся в `~/.local/share/cf-ru`. Это отдельный каталог от исходного проекта с моделью MiniLM и векторами размерности 384. При замене модели требуется совместимый артефакт и полная переиндексация.
 
-- Write `text` as natural language -- how you'd describe the task, not the command
-- Include multiple phrasings: "delete empty folders", "remove directories that are empty", "clean up empty dirs"
-- Each pattern gets its own embedding, so more patterns = better recall
-- The `command` field is what gets injected -- make it a real, runnable command
-- Set `destructive` to `true` for commands that delete files, kill processes, rewrite history, wipe volumes, or otherwise make hard-to-undo changes. Destructive results are marked with `⚠` in the selector and require typing `yes` before cf injects, copies, prints, or sends the command.
-
-## Project structure
-
-```
-.
-├── install.sh              # One-step installer
-├── pyproject.toml          # Python package config
-├── shell/
-│   └── cf.zsh              # Zsh integration (source in .zshrc)
-├── src/cf/
-│   ├── cli.py              # Typer CLI entry point
-│   ├── config.py           # Paths, model name, constants
-│   ├── db.py               # SQLite + sqlite-vec layer
-│   ├── embeddings.py       # sentence-transformers wrapper
-│   ├── output.py           # Print / clipboard / tmux handlers
-│   ├── search.py           # Vector search + dedup
-│   ├── seed.py             # JSON loader + DB population
-│   ├── selector.py         # Interactive terminal menu
-│   └── data/commands/      # 13 JSON seed files
-└── tests/
+```bash
+./uninstall.sh          # удалить окружение, ссылку cf и интеграцию этого проекта
+./uninstall.sh --purge  # также удалить стандартный каталог данных cf-ru
 ```
 
-## License
+Пользовательские каталоги, заданные через `CF_DB_DIR` или `CF_MODEL_DIR`, удаляются вручную.
 
-MIT
+## Использование
+
+```bash
+cf "покажи процессы, которые слушают порт"
+cf --top 15 "найди файлы по имени"
+cf --verbose "покажи свободное место на диске"
+```
+
+По умолчанию открывается меню выбора, после которого команда печатается в терминал. С подключённой интеграцией Bash обычный вызов `cf "запрос"` также добавляет выбранную команду в историю, если она включена: нажмите `↑`, чтобы вернуть её в строку ввода и отредактировать. Для замены текущей строки сразу после выбора используйте `Ctrl+F`.
+
+| Режим | Действие |
+|---|---|
+| `cf "запрос"` | Открыть меню выбора |
+| `cf --print "запрос"` | Напечатать выбранную команду |
+| `cf --copy "запрос"` | Скопировать команду в буфер обмена |
+| `cf --tmux "запрос"` | Передать команду в текущую панель tmux |
+| `cf --seed` | Создать индекс словаря |
+| `cf --seed --force` | Перестроить индекс |
+| `cf --prepare-model` | Подготовить рабочую модель |
+| `cf --install-shell` | Напечатать скрипт интеграции Bash |
+| `cf --help` | Показать полный список параметров |
+
+Для буфера обмена используются `pbcopy` в macOS или `xclip` в Linux; для режима tmux нужен установленный tmux.
+
+### Меню и Ctrl+F
+
+В меню доступны стрелки или `j`/`k`, `Enter` для выбора, `Esc` или `q` для отмены. Пункт «Показать ещё» подгружает дополнительные результаты.
+
+После подключения интеграции Bash:
+
+- На непустой строке `Ctrl+F` ищет по набранному описанию и заменяет строку выбранной командой.
+- На пустой строке `Ctrl+F` сначала предлагает ввести запрос.
+- После выбора команда остаётся в строке Readline для редактирования; для выполнения нажмите `Enter`.
+- При отмене поиска или ошибке исходная строка сохраняется.
+
+Для поиска горячей клавишей набирайте само описание задачи, без `cf` в начале и без нажатия `Enter`:
+
+```text
+найди большие файлы в текущем каталоге  ← Ctrl+F
+```
+
+Для установки из пакета добавьте в `.bashrc`:
+
+```bash
+eval "$(command cf --install-shell)"
+```
+
+В checkout репозитория доступен тонкий загрузчик того же скрипта:
+
+```bash
+source /home/user/Command-Finder-RU/shell/cf.bash
+```
+
+Привязка `Ctrl+F` действует в текущей интерактивной сессии Bash после подключения скрипта. Она заменяет стандартное перемещение курсора на один символ вправо.
+
+Если используете режим vi (`set -o vi`), включайте его до подключения интеграции `cf`.
+
+### Ограничения поиска
+
+Проверяйте выбранную команду перед выполнением. Модель может перепутать близкие операции, отрицания или важный флаг. На тесте запрос «заморозить процесс, не завершать» ставил `kill` выше нужного `kill -STOP`.
+
+Команды с признаком `destructive` помечаются в меню и в интерактивном терминале требуют отдельного подтверждения перед выводом. При перенаправленном stdin выбирается первый результат, интерактивного подтверждения нет. Эта отметка относится к данным словаря и не проверяет смысл запроса. При запросах вне словаря поиск также может предложить неподходящие команды.
+
+## Настройка
+
+| Переменная | Значение по умолчанию | Назначение |
+|---|---|---|
+| `CF_TOP` | `7` | Число результатов в меню |
+| `CF_MAX_TOP` | `50` | Максимальное число результатов |
+| `CF_DB_DIR` | `~/.local/share/cf-ru` | База, модель и кеш векторов описаний |
+| `CF_DB_NAME` | `cf.db` | Имя файла базы |
+| `CF_MODEL_DIR` | `$CF_DB_DIR/onnx` | Каталог готового ONNX-артефакта |
+| `CF_DATA_DIR` | Словарь из пакета | Каталог JSON с командами |
+| `CF_THREADS` | `2` | Число CPU-потоков модели |
+| `CF_BATCH_SIZE` | `32` | Размер пакета при индексации |
+
+Для одного запуска число результатов можно изменить флагом `--top`. Расширенные настройки модели описаны в [архитектуре](docs/architecture.md).
+
+## Словарь
+
+| Категория | Команд | Русских формулировок |
+|---|---:|---:|
+| Файлы и каталоги | 34 | 312 |
+| Обработка текста | 34 | 272 |
+| Поиск | 14 | 142 |
+| Сеть | 33 | 286 |
+| Система | 34 | 308 |
+| Процессы | 32 | 280 |
+| Права и пользователи | 21 | 192 |
+| Архивы и сжатие | 16 | 156 |
+| Диски | 20 | 184 |
+| Git | 30 | 382 |
+| Docker и Kubernetes | 22 | 204 |
+| Менеджеры пакетов | 17 | 250 |
+| Однострочные команды Perl | 21 | 422 |
+| macOS | 19 | 116 |
+| Другие инструменты | 45 | 386 |
+| **Всего** | **392** | **3 892** |
+
+Часть команд относится к конкретной ОС или требует установки отдельной утилиты. Словарь подбирает пример; пути, имена файлов и другие параметры нужно адаптировать к своей задаче.
+
+Источник данных — `src/cf/data/commands/*.json`. Как добавлять команды и проверять изменения, описано в [архитектуре](docs/architecture.md#добавление-команд).
+
+## Проверки и сравнение моделей
+
+```bash
+.venv/bin/python -m pip install -e '.[dev]'
+.venv/bin/python -m pytest
+```
+
+Выбор mini-retriever основан на сравнении 23 конфигураций на 90 задачах для каждого из двух языков. Рабочий 8-битный вариант получил Hit@3 **81,1% для русского и 82,2% для английского**. На тестовой WSL-системе медиана русского поиска после загрузки составила около **9 мс**, пик памяти процесса — **125 МиБ**.
+
+[Результаты и условия сравнения](docs/benchmarks.md) · [Архитектура и разработка](docs/architecture.md) · [Воспроизведение бенчмарка](benchmarks/README.md)
+
+## Происхождение и лицензии
+
+Проект основан на [Command Finder Стивена Коха](https://github.com/stvkoch/Command-Finder). Сохранены схема поиска по словарю, SQLite/sqlite-vec, пакетная индексация, меню выбора и интеграция оболочки. В этой версии добавлены русские формулировки, исправления команд и локальная квантованная модель mini-retriever.
+
+Код распространяется по [лицензии MIT](LICENSE). Модель `sergeyzh/rubert-mini-retriever` также опубликована автором под MIT; её происхождение и закреплённая ревизия указаны в метаданных модели. Веса модели, базы данных и локальные окружения не входят в Git-репозиторий.

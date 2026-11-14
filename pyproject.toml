@@ -1,13 +1,16 @@
 [build-system]
-requires = ["setuptools>=69.0"]
+requires = ["setuptools>=77.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "cf"
-version = "0.1.0"
-description = "Find bash commands using natural language"
+name = "command-finder-ru"
+version = "0.2.0"
+description = "Локальный поиск консольных команд по описанию задачи на русском языке"
+readme = "README.md"
 requires-python = ">=3.12"
-license = {text = "MIT"}
+license = "MIT"
+license-files = ["LICENSE"]
+keywords = ["cli", "semantic-search", "russian", "onnx", "sqlite-vec"]
 dependencies = [
     "sqlite-vec>=0.1.9",
     "typer>=0.12",
@@ -38,6 +41,10 @@ benchmark = [
 
 [project.scripts]
 cf = "cf.cli:app"
+
+[project.urls]
+Repository = "https://github.com/deadcxap/Command-Finder-RU"
+Issues = "https://github.com/deadcxap/Command-Finder-RU/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]
