@@ -9,12 +9,13 @@ _PLACEHOLDER = re.compile(r"<([a-z][a-z0-9_]*)>")
 _ROLES = {"path", "paths", "source", "destination", "archive"}
 _TOKENS = re.compile(r'''"((?:\\.|[^"\\\n])*)"|'([^'\n]*)'|«([^»\n]*)»|([^\s"'«»]+)''')
 _ARCHIVE = re.compile(r"\.(?:tar(?:\.(?:gz|bz2|xz|zst))?|tgz|tbz2?|txz|zip|7z|rar|gz|bz2|xz|zst)$", re.I)
-_NOUN = re.compile(r"^(?:папк[а-яё]*|каталог[а-яё]*|файл[а-яё]*|архив[а-яё]*)$", re.I)
+_NOUN = re.compile(r"^(?:папк[а-яё]*|папок|каталог[а-яё]*|файл[а-яё]*|архив[а-яё]*)$", re.I)
 _FILE = re.compile(r"^[^\s.]+(?:\.[^\s.]+)+$")
 _FORMATS = {"tar", "tar.gz", "tar.bz2", "tar.xz", "tar.zst", "tgz", "tbz", "tbz2", "txz",
             "zip", "7z", "rar", "gz", "bz2", "xz", "zst"}
 _NON_VALUES = {
     "в", "из", "на", "с", "со", "для", "и", "или", "без", "по", "не", "а", "но", "за",
+    "при", "после", "перед", "во", "до", "через",
     "целиком", "полностью", "подробно", "рекурсивно", "кратко", "быстро", "здесь", "тут", "там",
     "весь", "всю", "все", "всё", "всех", "всеми", "каждый", "каждую", "размер", "размеры",
     "текущий", "текущую", "текущей", "текущего", "текущем", "родительский", "родительскую",
@@ -25,11 +26,21 @@ _NON_VALUES = {
     "младше", "больше", "меньше", "крупнее", "крупные", "глубиной", "пожалуйста",
     "либо", "кроме", "вместо", "исключением",
     "принудительно", "навсегда", "безопасно", "окончательно", "немедленно",
+    "номерами", "номера", "номер", "нумерацией", "нумерованными", "пронумерованными", "строками", "строки", "строк",
 }
 _LIST_CONSTRAINTS = {"не", "ни", "или", "либо", "кроме", "исключая", "исключением", "без", "но", "вместо",
                      "помимо", "заисключением", "not", "no", "or", "except", "excluding", "without",
                      "but", "instead", "keep", "preserve"}
 _FILE_ACTIONS = ("удал", "убер", "убра", "сотр", "стере", "очист", "скоп", "копир", "перемест", "перенес", "прочит")
+_REMOVAL_INTENT = re.compile(
+    r"^(?:удал(?:и|ите|ить|ять|яй|яйте)|уб(?:ери|ерите|рать|ирай|ирайте|ирать)|сотр(?:и|ите)|стереть|"
+    r"стир(?:ай|айте|ать)|очист(?:и|ите|ить)|очищ(?:ай|айте|ать)|delete|remove|erase|rm|rmdir)$")
+_OTHER_ACTIONS = ("скоп", "копир", "созда", "сдела", "упак", "распак", "сожм", "сжим", "архивир", "разархив",
+                  "извле", "перемест", "перенес", "покаж", "посмотр", "прочит", "провер", "замороз", "останов",
+                  "найд", "найт", "ищ", "отыщ", "прикин", "посчит", "узна", "вычисл", "оцени", "определи",
+                  "copy", "create", "archive", "find", "search", "list", "count", "estimate", "preview")
+_NON_FILESYSTEM_DOMAINS = {"git", "apt", "apt-get", "aptitude", "dnf", "yum", "rpm", "dpkg", "pacman",
+                         "zypper", "flatpak", "snap", "brew", "pip", "npm", "cargo", "systemctl", "kill", "pkill"}
 
 
 def _list_constraint(word: str) -> bool:
@@ -57,6 +68,39 @@ def _archive_operation(words: list[str]) -> bool:
         return True
     archive_noun = any(word.startswith("архив") and _NOUN.fullmatch(word) for word in words)
     return archive_noun and any(word.startswith(("созда", "сдела", "содержим", "список")) for word in words)
+
+
+def unsupported_path_constraint(query: str) -> str | None:
+    """Объяснить неподдерживаемое ограничение списка файлов при удалении."""
+    words = _operation_words(query)
+    constraints = [word for word in words if _list_constraint(word)]
+    if not constraints:
+        return None
+    if all(word in {"но", "but"} for word in constraints) and any(
+            word.startswith(("спрос", "подтверж", "подтверд", "confirm", "ask")) for word in words):
+        return None
+    if any(word.startswith(("процесс", "пакет", "служб")) for word in words):
+        return None
+    if any(token[4] is not None and token[4].lower().strip(".,:;!?") in _NON_FILESYSTEM_DOMAINS
+           for token in _TOKENS.finditer(query)):
+        return None
+    for index, word in enumerate(words):
+        if _REMOVAL_INTENT.fullmatch(word):
+            break
+        if word in {"cp", "mv", "tar", "zip", "gzip"} or word.startswith(_OTHER_ACTIONS):
+            return None
+    else:
+        return None
+    file_evidence = any(_NOUN.fullmatch(word) for word in words[index + 1:index + 4]) or word in {"rm", "rmdir"}
+    for token in _TOKENS.finditer(query):
+        value = next(group for group in token.groups() if group is not None).rstrip(",;!?")
+        if value.startswith(("/", "./", "../", "~/")) or _FILE.fullmatch(value):
+            file_evidence = True
+            break
+    if not file_evidence:
+        return None
+    return ("Подстановка списка файлов с исключениями, отрицаниями или альтернативами пока не поддерживается. "
+            "Укажите только пути, к которым нужно применить операцию.")
 
 
 def validate_arguments(template: str, arguments: dict[str, str]) -> None:
@@ -154,6 +198,13 @@ def _candidates(query: str) -> list[_Candidate]:
     return candidates
 
 
+def explicit_path_values(query: str) -> tuple[str, ...]:
+    """Вернуть распознанные значения путей без повторов в порядке запроса."""
+    if any(ord(char) < 32 or ord(char) == 127 for char in query):
+        return ()
+    return tuple(dict.fromkeys(candidate.value for candidate in _candidates(query)))
+
+
 def search_query(query: str) -> str:
     """Убрать пути из запроса; в задачах архивации сохранить формат архива."""
     if any(ord(char) < 32 or ord(char) == 127 for char in query):
@@ -171,8 +222,13 @@ def search_query(query: str) -> str:
         extension = _ARCHIVE.search(candidate.value)
         replacement = extension[0][1:].lower() if extension and archive_operation else ""
         replacements.append((candidate.start, candidate.end, replacement))
+    connectors = []
+    for left, right in zip(replacements, replacements[1:]):
+        if not left[2] and not right[2] and re.fullmatch(r"\s+и\s+", query[left[1]:right[0]], re.I):
+            connectors.append((left[1], right[0], " "))
+    replacements.extend(connectors)
     normalized = query
-    for start, end, replacement in reversed(replacements):
+    for start, end, replacement in sorted(replacements, reverse=True):
         normalized = normalized[:start] + replacement + normalized[end:]
     return " ".join(normalized.split()) if replacements else query
 

@@ -77,3 +77,19 @@ def test_old_index_without_arguments_remains_searchable(populated_db, embedding_
     from cf.search import _normalize_query
     cache_query(conn, _normalize_query("покажи файлы"), embedding_bytes(0))
     assert search("покажи файлы", db_path=path)
+
+
+@pytest.mark.parametrize("mode", ["--print", "--copy", "--tmux"])
+def test_cli_does_not_offer_or_emit_deletion_when_exclusion_is_unsupported(populated_db, monkeypatch, mode):
+    path, _ = populated_db
+    monkeypatch.setattr("cf.config.DB_PATH", path)
+    monkeypatch.setattr("cf.db.get_connection", lambda db_path=path: get_connection(db_path))
+    with patch("cf.selector.select_command") as menu, patch("cf.embeddings.encode_text") as encoder, \
+            patch("cf.output.output_print") as print_command, patch("cf.output.output_clipboard") as clipboard, \
+            patch("cf.output.output_tmux") as tmux:
+        result = CliRunner().invoke(app, [mode, "удали файлы /tmp/old.log /tmp/current.log, кроме /tmp/current.log"])
+    assert result.exit_code == 1
+    assert result.stdout == ""
+    assert "списка файлов" in result.stderr
+    for consumer in (menu, encoder, print_command, clipboard, tmux):
+        consumer.assert_not_called()

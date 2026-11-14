@@ -4,7 +4,7 @@ import subprocess
 
 import pytest
 
-from cf.arguments import bind_arguments, search_query, validate_arguments
+from cf.arguments import bind_arguments, explicit_path_values, search_query, unsupported_path_constraint, validate_arguments
 
 
 @pytest.mark.parametrize("query, expected", [
@@ -343,3 +343,125 @@ def test_constraint_words_and_modifiers_are_literal_when_quoted_or_inside_paths(
     query = 'удали файлы "исключив" "сохраняя" "оставь" "принудительно" ./оставь /tmp/сохрани исключив.txt'
     assert bind_arguments(query, "rm -- <files>", {"files": "paths"}) == (
         "rm -- 'исключив' 'сохраняя' 'оставь' 'принудительно' './оставь' '/tmp/сохрани' 'исключив.txt'", ())
+
+
+@pytest.mark.parametrize("query", [
+    "Собираюсь стереть file.txt, но сначала обязательно спроси меня ещё раз.",
+    "удали файл ./old.log, но запроси подтверждение",
+])
+def test_requesting_confirmation_is_not_an_exclusion_from_a_file_list(query):
+    from cf.arguments import unsupported_path_constraint
+
+    assert unsupported_path_constraint(query) is None
+
+
+def test_requesting_confirmation_does_not_hide_an_actual_exclusion():
+    from cf.arguments import unsupported_path_constraint
+
+    assert unsupported_path_constraint("удали файлы ./old.log ./live.log, но спроси и не трогай ./live.log")
+
+
+def test_plural_directory_list_drops_only_the_argument_connector_for_search():
+    query = "посчитай размер папок /var/log/nginx и /var/log/postgresql"
+    assert search_query(query) == "посчитай размер папок"
+    assert bind_arguments(query, "du -sh -- <directories>", {"directories": "paths"}) == (
+        "du -sh -- /var/log/nginx /var/log/postgresql", ())
+
+
+def test_plural_genitive_directory_noun_introduces_bare_paths():
+    query = "посчитай размер папок nginx и postgresql"
+    assert search_query(query) == "посчитай размер папок"
+    assert bind_arguments(query, "du -sh -- <directories>", {"directories": "paths"}) == (
+        "du -sh -- nginx postgresql", ())
+
+
+def test_argument_connectors_do_not_remove_conjunctions_between_instructions():
+    query = "прочитай файл /tmp/a.txt и покажи файл /tmp/b.txt"
+    assert search_query(query) == "прочитай файл и покажи файл"
+    assert search_query("удали файлы a.txt или b.txt") == "удали файлы или"
+
+
+@pytest.mark.parametrize("instruction", ["с номерами строк", "нумерованными строками"])
+def test_line_number_instruction_is_preserved_and_is_not_a_path(instruction):
+    query = "покажи файл /etc/nginx/nginx.conf " + instruction
+    assert search_query(query) == "покажи файл " + instruction
+    assert bind_arguments(query, "cat -n -- <files>", {"files": "paths"}) == (
+        "cat -n -- /etc/nginx/nginx.conf", ())
+
+
+def test_archive_extraction_with_absolute_paths_preserves_format_and_roles():
+    query = "распакуй архив /tmp/myapp-backup.tar.gz в папку /srv/restore"
+    assert search_query(query) == "распакуй архив tar.gz в папку"
+    assert bind_arguments(query, "tar -xzf <archive> -C <directory>",
+                          {"archive": "archive", "directory": "destination"}) == (
+        "tar -xzf /tmp/myapp-backup.tar.gz -C /srv/restore", ())
+
+
+@pytest.mark.parametrize("query", [
+    "удали файлы /tmp/old.log /tmp/current.log, кроме /tmp/current.log",
+    'удали файлы "/tmp/old.log" "/tmp/current.log," кроме "/tmp/current.log"',
+    "удали файлы /tmp/a.log /tmp/b.log или /tmp/c.log",
+    "удали /tmp/a.log /tmp/b.log, но не /tmp/b.log",
+    "удали файлы a.txt b.txt исключив b.txt",
+    "удали файлы a.txt b.txt сохранив b.txt",
+    "не удалять файлы",
+    "не удаляй /tmp/current.log",
+    "rm a.txt b.txt except b.txt",
+    "rmdir /tmp/a /tmp/b except /tmp/b",
+])
+def test_unsupported_deletion_list_constraints_have_a_user_explanation(query):
+    message = unsupported_path_constraint(query)
+    assert message is not None
+    assert "не поддерживается" in message
+    assert "Укажите только пути" in message
+
+
+@pytest.mark.parametrize("query", [
+    "копируй без перезаписи",
+    "скопируй файл /tmp/a в /tmp/b без перезаписи",
+    "создай архив без удаления источника",
+    "создай архив /tmp/backup.tar.gz из папки /tmp/source без удаления источника",
+    "заморозить процесс, не завершать",
+    "удали файлы /tmp/old.log /tmp/current.log",
+    'удали файлы "кроме" "не" "или"',
+    "удали файлы /tmp/not/a.txt ./кроме /tmp/не.txt",
+    'удали файлы "a,b.txt" "c.txt"',
+    "удали процесс, но не замораживай",
+    "прочитай файл a.txt без номеров строк",
+])
+def test_path_constraint_guard_does_not_apply_to_other_tasks_or_literal_filenames(query):
+    assert unsupported_path_constraint(query) is None
+
+
+def test_explicit_path_values_are_literal_unique_and_in_query_order():
+    assert explicit_path_values('удали файлы "~/My Files" -rf ./a.txt «~/My Files»') == (
+        "~/My Files", "-rf", "./a.txt")
+    assert explicit_path_values("удали файлы a.txt b.txt кроме c.txt") == ("a.txt", "b.txt", "c.txt")
+
+
+def test_explicit_path_values_reject_malformed_quotes_and_control_characters():
+    for query in ['прочитай "~/hello', 'прочитай "~/hello\nworld"', "прочитай ./file\x00.txt"]:
+        assert explicit_path_values(query) == ()
+
+
+@pytest.mark.parametrize("instruction", ["при выводе", "после сортировки", "перед выводом", "во время просмотра", "до обработки"])
+def test_instruction_prepositions_end_inherited_filename_context(instruction):
+    query = "пронумеруй все строки файла /etc/ssh/sshd_config " + instruction
+    assert bind_arguments(query, "cat -n -- <files>", {"files": "paths"}) == (
+        "cat -n -- /etc/ssh/sshd_config", ())
+    assert search_query(query) == "пронумеруй все строки файла " + instruction
+    assert explicit_path_values(query) == ("/etc/ssh/sshd_config",)
+
+
+@pytest.mark.parametrize("query", [
+    "Перед git clean хочу только прикинуть список удаляемых неотслеживаемых файлов; ничего пока не стирать.",
+    "Убери nginx через APT, но его конфигурационные файлы пока сохрани.",
+    "В этой ветке каталогов нужны совсем пустые папки; удалять их не требуется.",
+    "Найди файлы /tmp/a.log /tmp/b.log, не удаляй их.",
+    "Прикинь список удаляемых файлов; ничего не стирать.",
+    "Посчитай размер файлов /tmp/a.log /tmp/b.log, но не удаляй.",
+    "Удали пакет nginx через apt-get, но сохрани конфигурационные файлы.",
+    "Удали процесс, но не трогай файлы.",
+])
+def test_deletion_constraint_guard_requires_primary_filesystem_removal_intent(query):
+    assert unsupported_path_constraint(query) is None

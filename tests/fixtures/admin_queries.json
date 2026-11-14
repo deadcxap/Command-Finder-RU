@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "description": "Неизменяемые ожидания по смыслу административных запросов. Эталонные команды не исполняются. Результаты поиска не используются для изменения ожиданий.",
+  "top_k": 7,
+  "cases": [
+    {
+      "id": "reference_01",
+      "group": "reference",
+      "query": "покажи общий размер папки /var/log в мегабайтах",
+      "expected_commands": ["du -sm -- /var/log"]
+    },
+    {
+      "id": "reference_02",
+      "group": "reference",
+      "query": "посчитай размер папок /var/log/nginx и /var/log/postgresql",
+      "expected_commands": [
+        "du -sh -- /var/log/nginx /var/log/postgresql",
+        "du -sm -- /var/log/nginx /var/log/postgresql"
+      ]
+    },
+    {
+      "id": "reference_03",
+      "group": "reference",
+      "query": "покажи последние пятьдесят строк файла /var/log/nginx/error.log",
+      "expected_commands": ["tail -n 50 -- /var/log/nginx/error.log"]
+    },
+    {
+      "id": "reference_04",
+      "group": "reference",
+      "query": "покажи файл /etc/nginx/nginx.conf с номерами строк",
+      "expected_commands": ["cat -n -- /etc/nginx/nginx.conf"]
+    },
+    {
+      "id": "reference_05",
+      "group": "reference",
+      "query": "скопируй файл /etc/nginx/nginx.conf в /tmp/nginx.conf.bak без перезаписи существующего файла",
+      "expected_commands": ["cp -n -- /etc/nginx/nginx.conf /tmp/nginx.conf.bak"]
+    },
+    {
+      "id": "reference_06",
+      "group": "reference",
+      "query": "перемести файл /tmp/deploy.log в /var/log/myapp/deploy.log",
+      "expected_commands": ["mv -- /tmp/deploy.log /var/log/myapp/deploy.log"]
+    },
+    {
+      "id": "reference_07",
+      "group": "reference",
+      "query": "создай архив /tmp/myapp-backup.tar.gz из папки /srv/myapp",
+      "expected_commands": ["tar -czf /tmp/myapp-backup.tar.gz -- /srv/myapp"]
+    },
+    {
+      "id": "reference_08",
+      "group": "reference",
+      "query": "распакуй архив /tmp/myapp-backup.tar.gz в папку /srv/restore",
+      "expected_commands": ["tar -xzf /tmp/myapp-backup.tar.gz -C /srv/restore"]
+    },
+    {
+      "id": "reference_09",
+      "group": "reference",
+      "query": "удали файлы /tmp/nginx-access.log.gz /tmp/nginx-error.log.gz с подтверждением",
+      "expected_commands": ["rm -i -- /tmp/nginx-access.log.gz /tmp/nginx-error.log.gz"]
+    },
+    {
+      "id": "reference_10",
+      "group": "reference",
+      "query": "посчитай размер папки \"/srv/project backups\"",
+      "expected_commands": [
+        "du -sh -- '/srv/project backups'",
+        "du -sm -- '/srv/project backups'"
+      ]
+    },
+    {
+      "id": "held_out_01",
+      "group": "held_out",
+      "query": "сколько мегабайт занимает каталог /opt/backups",
+      "expected_commands": ["du -sm -- /opt/backups"]
+    },
+    {
+      "id": "held_out_02",
+      "group": "held_out",
+      "query": "покажи размеры каталогов /srv/uploads и /srv/cache",
+      "expected_commands": [
+        "du -sh -- /srv/uploads /srv/cache",
+        "du -sm -- /srv/uploads /srv/cache"
+      ]
+    },
+    {
+      "id": "held_out_03",
+      "group": "held_out",
+      "query": "выведи последние 50 строк файла /var/log/postgresql/postgresql.log",
+      "expected_commands": ["tail -n 50 -- /var/log/postgresql/postgresql.log"]
+    },
+    {
+      "id": "held_out_04",
+      "group": "held_out",
+      "query": "пронумеруй все строки файла /etc/ssh/sshd_config при выводе",
+      "expected_commands": ["cat -n -- /etc/ssh/sshd_config"]
+    },
+    {
+      "id": "held_out_05",
+      "group": "held_out",
+      "query": "скопируй /etc/ssh/sshd_config в /tmp/sshd_config.bak без замены существующего файла",
+      "expected_commands": ["cp -n -- /etc/ssh/sshd_config /tmp/sshd_config.bak"]
+    },
+    {
+      "id": "held_out_06",
+      "group": "held_out",
+      "query": "перенеси файл /tmp/worker.log в /var/log/worker/worker.log",
+      "expected_commands": ["mv -- /tmp/worker.log /var/log/worker/worker.log"]
+    },
+    {
+      "id": "held_out_07",
+      "group": "held_out",
+      "query": "упакуй папку /srv/uploads в архив /tmp/uploads.tar.gz",
+      "expected_commands": ["tar -czf /tmp/uploads.tar.gz -- /srv/uploads"]
+    },
+    {
+      "id": "held_out_08",
+      "group": "held_out",
+      "query": "извлеки архив /tmp/uploads.tar.gz в каталог /srv/unpacked",
+      "expected_commands": ["tar -xzf /tmp/uploads.tar.gz -C /srv/unpacked"]
+    },
+    {
+      "id": "held_out_09",
+      "group": "held_out",
+      "query": "удали с подтверждением файлы /tmp/worker.log.gz /tmp/audit.log.gz",
+      "expected_commands": ["rm -i -- /tmp/worker.log.gz /tmp/audit.log.gz"]
+    },
+    {
+      "id": "held_out_10",
+      "group": "held_out",
+      "query": "покажи размер каталога «/srv/nightly backups»",
+      "expected_commands": [
+        "du -sh -- '/srv/nightly backups'",
+        "du -sm -- '/srv/nightly backups'"
+      ]
+    },
+    {
+      "id": "constraint_01",
+      "group": "constraints",
+      "query": "удали файлы /tmp/old.log /tmp/current.log, кроме /tmp/current.log",
+      "expected_error": {"type": "UnsupportedQueryError", "contains": "списка файлов"}
+    },
+    {
+      "id": "constraint_02",
+      "group": "constraints",
+      "query": "удали файлы /tmp/worker.log /tmp/audit.log кроме /tmp/audit.log",
+      "expected_error": {"type": "UnsupportedQueryError", "contains": "списка файлов"}
+    },
+    {
+      "id": "constraint_03",
+      "group": "constraints",
+      "query": "удали файлы /tmp/cache.log и /tmp/live.log но не /tmp/live.log",
+      "expected_error": {"type": "UnsupportedQueryError", "contains": "списка файлов"}
+    },
+    {
+      "id": "constraint_04",
+      "group": "constraints",
+      "query": "удали файлы /tmp/first.log или /tmp/second.log",
+      "expected_error": {"type": "UnsupportedQueryError", "contains": "списка файлов"}
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "evaluated_on": "2026-11-15",
+  "baseline_commit": "2570823f5f8d27583bf336468e58354e2f8f76f5",
+  "candidate_version": "1.1.0rc3",
+  "model": "sergeyzh/rubert-mini-retriever",
+  "admin_set": {
+    "path": "tests/fixtures/admin_queries.json",
+    "sha256": "c3ea06359a54aec4c38e7beee8973611011bffaccda41ffe762b2c245104d563",
+    "baseline": {
+      "reference": 6,
+      "held_out": 6,
+      "constraints": 0
+    },
+    "candidate": {
+      "reference": 10,
+      "held_out": 10,
+      "constraints": 4
+    },
+    "totals": {
+      "reference": 10,
+      "held_out": 10,
+      "constraints": 4
+    }
+  },
+  "regression_set": {
+    "path": "benchmarks/queries.json",
+    "language": "ru",
+    "count": 96,
+    "sha256": "47a4d23f67d42ec544d98fd0384cf39b7dfffb21252032f0293b87ae60b13c43",
+    "baseline": {
+      "hit_at_1": 53,
+      "hit_at_3": 72,
+      "hit_at_7": 78
+    },
+    "candidate": {
+      "hit_at_1": 53,
+      "hit_at_3": 72,
+      "hit_at_7": 78
+    },
+    "expected_template_mapping": "Строки старых шаблонов сопоставлены с текущими по идентичности формулировки в словаре; запросы и ожидаемые операции не изменены."
+  },
+  "commands_executed": false,
+  "scope": "Повторное ранжирование только для явных путей /, ~/, ./, ../. Отказ ограничен неподдерживаемыми условиями удаления файлов, не является общим пониманием отрицаний."
+}
