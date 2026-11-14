@@ -1,0 +1,1447 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "compression-01",
+      "category": "compression",
+      "query_ru": "Нужна одна сжатая tar.gz-копия каталога вместе со всем, что внутри.",
+      "query_en": "Bundle this directory and its children into one gzip-compressed tarball.",
+      "expected_commands": [
+        "tar -czf archive.tar.gz /path/to/directory"
+      ],
+      "tags": [
+        "natural",
+        "technical"
+      ]
+    },
+    {
+      "id": "compression-02",
+      "category": "compression",
+      "query_ru": "Архив tar.gz уже есть; разложи его файлы рядом в рабочей папке.",
+      "query_en": "An existing tar.gz should be unpacked here into the working folder.",
+      "expected_commands": [
+        "tar -xzf archive.tar.gz"
+      ],
+      "tags": [
+        "natural",
+        "contrast"
+      ],
+      "forbidden_commands": [
+        "tar -tzf archive.tar.gz"
+      ]
+    },
+    {
+      "id": "compression-03",
+      "category": "compression",
+      "query_ru": "Что лежит в tar.gz? Нужен перечень, распаковывать ничего не надо.",
+      "query_en": "What is inside this tar.gz? Give me a listing without unpacking anything.",
+      "expected_commands": [
+        "tar -tzf archive.tar.gz"
+      ],
+      "tags": [
+        "negation",
+        "contrast",
+        "read_only"
+      ],
+      "forbidden_commands": [
+        "tar -xzf archive.tar.gz",
+        "tar -xzf archive.tar.gz -C /opt/app"
+      ]
+    },
+    {
+      "id": "compression-04",
+      "category": "compression",
+      "query_ru": "Хочу gzip-версию data.csv, а сам data.csv должен остаться на месте.",
+      "query_en": "Make a gzip version of data.csv while leaving the original data.csv in place.",
+      "expected_commands": [
+        "gzip -k data.csv"
+      ],
+      "tags": [
+        "negation",
+        "contrast"
+      ],
+      "forbidden_commands": [
+        "gzip access.log"
+      ]
+    },
+    {
+      "id": "compression-05",
+      "category": "compression",
+      "query_ru": "Документ confidential.pdf надо положить в ZIP, который спросит пароль.",
+      "query_en": "Put confidential.pdf into a ZIP that requires a password to open.",
+      "expected_commands": [
+        "zip -e secure.zip confidential.pdf"
+      ],
+      "tags": [
+        "natural",
+        "technical"
+      ]
+    },
+    {
+      "id": "compression-06",
+      "category": "compression",
+      "query_ru": "До извлечения ZIP покажи его оглавление: хочется проверить имена файлов.",
+      "query_en": "Before extracting the ZIP, let me inspect its table of contents and filenames.",
+      "expected_commands": [
+        "unzip -l archive.zip"
+      ],
+      "tags": [
+        "negation",
+        "contrast",
+        "read_only"
+      ],
+      "forbidden_commands": [
+        "unzip archive.zip",
+        "unzip -o archive.zip -d /opt/app"
+      ]
+    },
+    {
+      "id": "disk-01",
+      "category": "disk",
+      "query_ru": "Проверь /dev/sda1 через fsck, но любые исправления и запись запрети.",
+      "query_en": "Inspect /dev/sda1 with fsck while disallowing repairs and writes.",
+      "expected_commands": [
+        "sudo fsck -n /dev/sda1"
+      ],
+      "tags": [
+        "negation",
+        "contrast",
+        "read_only"
+      ],
+      "forbidden_commands": [
+        "sudo fsck -y /dev/sda1"
+      ]
+    },
+    {
+      "id": "disk-02",
+      "category": "disk",
+      "query_ru": "Хочу понять, какие блочные устройства есть и как к ним относятся разделы.",
+      "query_en": "I need a tree showing the block devices and their partition relationships.",
+      "expected_commands": [
+        "lsblk"
+      ],
+      "tags": [
+        "natural",
+        "read_only"
+      ]
+    },
+    {
+      "id": "disk-03",
+      "category": "disk",
+      "query_ru": "У разделов нужны тип файловой системы, UUID и папка подключения в одном выводе.",
+      "query_en": "For each partition, show its filesystem type, UUID, and mounted directory together.",
+      "expected_commands": [
+        "lsblk -f",
+        "lsblk -o NAME,SIZE,FSTYPE,LABEL,UUID,MOUNTPOINTS"
+      ],
+      "tags": [
+        "technical",
+        "read_only"
+      ]
+    },
+    {
+      "id": "disk-04",
+      "category": "disk",
+      "query_ru": "Для скрипта нужен исключительно UUID /dev/sda1, без названия поля и остального вывода.",
+      "query_en": "A script needs just the UUID of /dev/sda1, with no field label or extra output.",
+      "expected_commands": [
+        "sudo blkid -s UUID -o value /dev/sda1"
+      ],
+      "tags": [
+        "technical",
+        "read_only"
+      ]
+    },
+    {
+      "id": "disk-05",
+      "category": "disk",
+      "query_ru": "SMART-тест диска уже закончился: где посмотреть его журнал результатов?",
+      "query_en": "The disk SMART self-test has finished; how can I read the recorded results?",
+      "expected_commands": [
+        "sudo smartctl -l selftest /dev/sda"
+      ],
+      "tags": [
+        "natural",
+        "contrast",
+        "read_only"
+      ],
+      "forbidden_commands": [
+        "sudo smartctl -t short /dev/sda",
+        "sudo smartctl -t long /dev/sda"
+      ]
+    },
+    {
+      "id": "disk-06",
+      "category": "disk",
+      "query_ru": "В домашнем каталоге пропало место, хочу походить по размерам в интерактивном ncdu.",
+      "query_en": "My home folder is filling up; let me explore its sizes interactively in ncdu.",
+      "expected_commands": [
+        "ncdu ~"
+      ],
+      "tags": [
+        "colloquial",
+        "technical"
+      ]
+    },
+    {
+      "id": "docker-01",
+      "category": "docker",
+      "query_ru": "Покажи Docker-контейнеры, которые живы сейчас; остановленные в этот список не включай.",
+      "query_en": "Show Docker containers that are alive now, excluding the stopped ones.",
+      "expected_commands": [
+        "docker ps"
+      ],
+      "tags": [
+        "contrast",
+        "negation"
+      ],
+      "forbidden_commands": [
+        "docker ps -a"
+      ]
+    },
+    {
+      "id": "docker-02",
+      "category": "docker",
+      "query_ru": "Контейнер завершился и исчез из обычного списка: хочу увидеть и его тоже.",
+      "query_en": "A container exited and vanished from the usual list; include exited containers as well.",
+      "expected_commands": [
+        "docker ps -a"
+      ],
+      "tags": [
+        "colloquial",
+        "contrast"
+      ],
+      "forbidden_commands": [
+        "docker ps"
+      ]
+    },
+    {
+      "id": "docker-03",
+      "category": "docker",
+      "query_ru": "Оставь журнал mycontainer открытым и дописывай на экран новые сообшения.",
+      "query_en": "Keep mycontainer output open and append each new log message as it arrives.",
+      "expected_commands": [
+        "docker logs -f mycontainer"
+      ],
+      "tags": [
+        "natural",
+        "technical",
+        "typo"
+      ]
+    },
+    {
+      "id": "docker-04",
+      "category": "docker",
+      "query_ru": "mycontainer уже работает, мне нужен терминал Bash прямо в нём.",
+      "query_en": "mycontainer is already running and I need an interactive Bash terminal inside it.",
+      "expected_commands": [
+        "docker exec -it mycontainer bash"
+      ],
+      "tags": [
+        "technical",
+        "contrast"
+      ],
+      "forbidden_commands": [
+        "docker run -it ubuntu bash"
+      ]
+    },
+    {
+      "id": "docker-05",
+      "category": "docker",
+      "query_ru": "Подними Compose-проект в фоне и верни мне консоль; отдельную пересборку образов я не запрашиваю.",
+      "query_en": "Bring up the Compose project detached and return my terminal; I am not requesting an explicit image rebuild.",
+      "expected_commands": [
+        "docker compose up -d"
+      ],
+      "tags": [
+        "colloquial",
+        "contrast",
+        "negation"
+      ],
+      "forbidden_commands": [
+        "docker compose up -d --build",
+        "docker compose down"
+      ]
+    },
+    {
+      "id": "docker-06",
+      "category": "docker",
+      "query_ru": "Разбери окружение Compose: контейнеры и проектные сети убрать, именованные тома оставить.",
+      "query_en": "Tear down Compose containers and project networks while retaining named volumes.",
+      "expected_commands": [
+        "docker compose down"
+      ],
+      "tags": [
+        "contrast",
+        "negation",
+        "destructive"
+      ],
+      "forbidden_commands": [
+        "docker system prune -a --volumes"
+      ]
+    },
+    {
+      "id": "filesystem-01",
+      "category": "filesystem",
+      "query_ru": "Обычный список не показывает .env; хочу видеть и такие имена в этой папке.",
+      "query_en": "The normal directory listing hides .env; include dot-prefixed names here too.",
+      "expected_commands": [
+        "ls -a"
+      ],
+      "tags": [
+        "natural",
+        "contrast"
+      ],
+      "forbidden_commands": [
+        "ls"
+      ]
+    },
+    {
+      "id": "filesystem-02",
+      "category": "filesystem",
+      "query_ru": "Нужна вторая копия src_dir со всем деревом, исходную папку не трогать.",
+      "query_en": "Make another copy of the entire src_dir tree and leave the source directory intact.",
+      "expected_commands": [
+        "cp -r src_dir/ dest_dir/"
+      ],
+      "tags": [
+        "negation",
+        "contrast"
+      ],
+      "forbidden_commands": [
+        "mv old_dir/ new_dir/"
+      ]
+    },
+    {
+      "id": "filesystem-03",
+      "category": "filesystem",
+      "query_ru": "У oldname.txt должно стать имя newname.txt, отдельная копия файла мне не нужна.",
+      "query_en": "oldname.txt should become newname.txt; I do not want an additional file copy.",
+      "expected_commands": [
+        "mv oldname.txt newname.txt"
+      ],
+      "tags": [
+        "negation",
+        "contrast"
+      ],
+      "forbidden_commands": [
+        "cp source.txt destination.txt"
+      ]
+    },
+    {
+      "id": "filesystem-04",
+      "category": "filesystem",
+      "query_ru": "Собираюсь стереть file.txt, но сначала обязательно спроси меня ещё раз.",
+      "query_en": "I intend to remove file.txt, but make the removal tool ask me first.",
+      "expected_commands": [
+        "rm -i file.txt"
+      ],
+      "tags": [
+        "colloquial",
+        "contrast",
+        "destructive"
+      ],
+      "forbidden_commands": [
+        "rm file.txt",
+        "rm -rf directory/"
+      ]
+    },
+    {
+      "id": "filesystem-05",
+      "category": "filesystem",
+      "query_ru": "Цепочки path/to/deep пока нет: создай её целиком до конечной folder.",
+      "query_en": "The path/to/deep chain does not exist yet; create every parent needed for folder.",
+      "expected_commands": [
+        "mkdir -p path/to/deep/folder"
+      ],
+      "tags": [
+        "natural",
+        "contrast"
+      ],
+      "forbidden_commands": [
+        "mkdir new_folder"
+      ]
+    },
+    {
+      "id": "filesystem-06",
+      "category": "filesystem",
+      "query_ru": "Куда делось место в текущей папке? Покажи десятку самых прожорливых нескрытых файлов и каталогов.",
+      "query_en": "What is eating space here? Rank the ten largest non-hidden files and subdirectories.",
+      "expected_commands": [
+        "du -sh * | sort -rh | head -10"
+      ],
+      "tags": [
+        "colloquial"
+      ]
+    },
+    {
+      "id": "git-01",
+      "category": "git",
+      "query_ru": "Хочу увидеть правки отслеживаемых файлов, ещё не попавшие в git add, а не уже подготовленный патч.",
+      "query_en": "Show unstaged edits to tracked files, rather than the patch already staged for a commit.",
+      "expected_commands": [
+        "git diff"
+      ],
+      "tags": [
+        "contrast",
+        "negation",
+        "technical"
+      ],
+      "forbidden_commands": [
+        "git diff --staged"
+      ]
+    },
+    {
+      "id": "git-02",
+      "category": "git",
+      "query_ru": "Что конкретно войдёт в ближайший коммит из индекса? Нужен diff подготовленных строк.",
+      "query_en": "Which staged lines will enter the next commit? Show the index patch itself.",
+      "expected_commands": [
+        "git diff --staged"
+      ],
+      "tags": [
+        "contrast",
+        "technical"
+      ],
+      "forbidden_commands": [
+        "git diff"
+      ]
+    },
+    {
+      "id": "git-03",
+      "category": "git",
+      "query_ru": "Перед работой хочу сводку: где модификации, что подготовлено и что Git ещё не отслеживает.",
+      "query_en": "Give me a repository overview covering modifications, staged paths, and untracked files.",
+      "expected_commands": [
+        "git status",
+        "git status -s",
+        "git status -sb"
+      ],
+      "tags": [
+        "natural"
+      ]
+    },
+    {
+      "id": "git-04",
+      "category": "git",
+      "query_ru": "История слишком длинная: оставь для каждого коммита хеш и заголовок в одной строке.",
+      "query_en": "The history is too verbose; reduce every commit to its hash and subject on one line.",
+      "expected_commands": [
+        "git log --oneline"
+      ],
+      "tags": [
+        "natural",
+        "technical"
+      ]
+    },
+    {
+      "id": "git-05",
+      "category": "git",
+      "query_ru": "Надо спрятать незавершённую работу, причём новые неотслеживаемые файлы тоже забрать в stash.",
+      "query_en": "Stash my unfinished work and include the newly created untracked files as well.",
+      "expected_commands": [
+        "git stash -u"
+      ],
+      "tags": [
+        "contrast",
+        "technical"
+      ],
+      "forbidden_commands": [
+        "git stash"
+      ]
+    },
+    {
+      "id": "git-06",
+      "category": "git",
+      "query_ru": "Перед git clean хочу только прикинуть список удаляемых неотслеживаемых файлов; ничего пока не стирать.",
+      "query_en": "Before cleaning, preview which untracked files would be deleted without actually removing anything.",
+      "expected_commands": [
+        "git clean -n"
+      ],
+      "tags": [
+        "contrast",
+        "negation",
+        "read_only"
+      ],
+      "forbidden_commands": [
+        "git clean -f",
+        "git clean -fd",
+        "git clean -fdx"
+      ]
+    },
+    {
+      "id": "macos-01",
+      "category": "macos",
+      "query_ru": "Для диагностики Mac нужен только идентификатор сборки, без номера версии продукта.",
+      "query_en": "Mac diagnostics require only the build identifier, with no product version number.",
+      "expected_commands": [
+        "sw_vers -buildVersion"
+      ],
+      "tags": [
+        "macos",
+        "contrast"
+      ],
+      "forbidden_commands": [
+        "sw_vers -productVersion"
+      ]
+    },
+    {
+      "id": "macos-02",
+      "category": "macos",
+      "query_ru": "com.example.plist не загружается; проверь синтаксис без перевода в другой формат.",
+      "query_en": "com.example.plist fails to load; lint its syntax without converting its format.",
+      "expected_commands": [
+        "plutil -lint com.example.plist"
+      ],
+      "tags": [
+        "macos",
+        "negation",
+        "read_only"
+      ],
+      "forbidden_commands": [
+        "plutil -convert binary1 Info.plist",
+        "plutil -convert xml1 data.json -o data.plist"
+      ]
+    },
+    {
+      "id": "macos-03",
+      "category": "macos",
+      "query_ru": "Внутри Developer нужны значения extended attributes всех вложенных файлов, ничего не удалять.",
+      "query_en": "Inspect extended attribute values throughout the Developer tree without deleting attributes.",
+      "expected_commands": [
+        "xattr -lr ~/Library/Developer"
+      ],
+      "tags": [
+        "macos",
+        "technical",
+        "negation",
+        "read_only"
+      ],
+      "forbidden_commands": [
+        "xattr -c suspicious.bin"
+      ]
+    },
+    {
+      "id": "macos-04",
+      "category": "macos",
+      "query_ru": "Сначала хочу узнать, что macOS предлагает обновить, установку ещё не запускаем.",
+      "query_en": "First tell me which macOS updates are offered; do not begin installation yet.",
+      "expected_commands": [
+        "softwareupdate -l"
+      ],
+      "tags": [
+        "macos",
+        "contrast",
+        "negation",
+        "read_only"
+      ],
+      "forbidden_commands": [
+        "sudo softwareupdate -ia"
+      ]
+    },
+    {
+      "id": "macos-05",
+      "category": "macos",
+      "query_ru": "Загрузи обновления Mac заранее, применять их сейчас не надо.",
+      "query_en": "Pre-download the Mac updates, but do not apply them now.",
+      "expected_commands": [
+        "sudo softwareupdate -d -a"
+      ],
+      "tags": [
+        "macos",
+        "contrast",
+        "negation"
+      ],
+      "forbidden_commands": [
+        "sudo softwareupdate -ia"
+      ]
+    },
+    {
+      "id": "macos-06",
+      "category": "macos",
+      "query_ru": "Хочу мышкой выделить прямоугольник экрана Mac и сохранить только его скриншот.",
+      "query_en": "Let me drag a rectangular area of the Mac display and save just that screenshot.",
+      "expected_commands": [
+        "screencapture -i selection.png"
+      ],
+      "tags": [
+        "macos",
+        "natural"
+      ]
+    },
+    {
+      "id": "misc-01",
+      "category": "misc",
+      "query_ru": "data.json весь в одну строку: покажи тот же JSON с аккуратными отступами.",
+      "query_en": "data.json is one long line; display the same JSON with readable indentation.",
+      "expected_commands": [
+        "jq '.' data.json"
+      ],
+      "tags": [
+        "natural",
+        "technical"
+      ]
+    },
+    {
+      "id": "misc-02",
+      "category": "misc",
+      "query_ru": "Из JSON нужен только атрибут name на верхнем уровне, не весь документ.",
+      "query_en": "Retrieve only the top-level name member from the JSON instead of the whole document.",
+      "expected_commands": [
+        "jq '.name' data.json"
+      ],
+      "tags": [
+        "negation",
+        "contrast",
+        "technical"
+      ],
+      "forbidden_commands": [
+        "jq '.' data.json"
+      ]
+    },
+    {
+      "id": "misc-03",
+      "category": "misc",
+      "query_ru": "Нужна man-страница системного вызова open из раздела 2, не команда открытия файлов.",
+      "query_en": "Find the section 2 manual for the open syscall, not a file-opening application.",
+      "expected_commands": [
+        "man 2 open"
+      ],
+      "tags": [
+        "technical",
+        "contrast",
+        "negation"
+      ]
+    },
+    {
+      "id": "misc-04",
+      "category": "misc",
+      "query_ru": "Скрипт должен узнать текущую ширину терминала в символах.",
+      "query_en": "A shell script needs the current terminal width measured in character columns.",
+      "expected_commands": [
+        "tput cols"
+      ],
+      "tags": [
+        "natural",
+        "technical"
+      ],
+      "forbidden_commands": [
+        "tput lines"
+      ]
+    },
+    {
+      "id": "misc-05",
+      "category": "misc",
+      "query_ru": "В encoded.txt лежит Base64: хочу обратно исходное содержимое в Linux.",
+      "query_en": "encoded.txt contains Base64; recover its original contents on Linux.",
+      "expected_commands": [
+        "base64 -d encoded.txt"
+      ],
+      "tags": [
+        "technical",
+        "contrast"
+      ],
+      "forbidden_commands": [
+        "printf 'secret-value' | base64"
+      ]
+    },
+    {
+      "id": "misc-06",
+      "category": "misc",
+      "query_ru": "Придумай стандартный UUID для новой записи из командной строки.",
+      "query_en": "Produce a standard UUID for a new record from the command line.",
+      "expected_commands": [
+        "uuidgen",
+        "uuidgen | tr '[:upper:]' '[:lower:]'"
+      ],
+      "tags": [
+        "natural",
+        "technical"
+      ]
+    },
+    {
+      "id": "networking-01",
+      "category": "networking",
+      "query_ru": "Проверь HTTP headers сайта до конечного адреса, пройдя всю цепочку redirect.",
+      "query_en": "Inspect the site response headers through its redirect chain to the final destination.",
+      "expected_commands": [
+        "curl -LI https://example.com"
+      ],
+      "tags": [
+        "technical",
+        "mixed_language"
+      ]
+    },
+    {
+      "id": "networking-02",
+      "category": "networking",
+      "query_ru": "Удалённый веб-сервис на localhost:80 хочу открыть через локальный порт 8080 и SSH-туннель.",
+      "query_en": "Expose the remote localhost:80 web service through my local port 8080 using an SSH tunnel.",
+      "expected_commands": [
+        "ssh -L 8080:localhost:80 user@remote-server"
+      ],
+      "tags": [
+        "technical"
+      ]
+    },
+    {
+      "id": "networking-03",
+      "category": "networking",
+      "query_ru": "Для google.com хватит четырёх проб ping, бесконечный опрос не нужен.",
+      "query_en": "Send only four ping probes to google.com instead of running indefinitely.",
+      "expected_commands": [
+        "ping -c 4 google.com"
+      ],
+      "tags": [
+        "contrast",
+        "negation",
+        "technical"
+      ],
+      "forbidden_commands": [
+        "ping google.com"
+      ]
+    },
+    {
+      "id": "networking-04",
+      "category": "networking",
+      "query_ru": "Какие MX отвечают за доставку почты домена example.com?",
+      "query_en": "Which MX hosts handle mail delivery for example.com?",
+      "expected_commands": [
+        "dig example.com MX"
+      ],
+      "tags": [
+        "technical"
+      ]
+    },
+    {
+      "id": "networking-05",
+      "category": "networking",
+      "query_ru": "Какие процессы принимают новые TCP-подключения и на каких номерах портов? UDP-сокеты не включай.",
+      "query_en": "Which processes accept incoming TCP connections, and on which numeric ports? Exclude UDP sockets.",
+      "expected_commands": [
+        "ss -tlnp"
+      ],
+      "tags": [
+        "technical",
+        "contrast",
+        "read_only",
+        "negation"
+      ],
+      "forbidden_commands": [
+        "netstat -tulnp"
+      ]
+    },
+    {
+      "id": "networking-06",
+      "category": "networking",
+      "query_ru": "На сервер нужно поставить именно рабочий публичный ключ id_ed25519_work.pub, не ключ по умолчанию.",
+      "query_en": "Install the specific id_ed25519_work.pub public key on the server rather than the default key.",
+      "expected_commands": [
+        "ssh-copy-id -i ~/.ssh/id_ed25519_work.pub user@server"
+      ],
+      "tags": [
+        "technical",
+        "contrast",
+        "negation"
+      ],
+      "forbidden_commands": [
+        "ssh-copy-id user@server.example.com"
+      ]
+    },
+    {
+      "id": "package_managers-01",
+      "category": "package_managers",
+      "query_ru": "Перед установкой освежи каталог APT; обновлять уже установленные программы ещё не надо.",
+      "query_en": "Refresh the APT package catalogue before installation without upgrading installed software.",
+      "expected_commands": [
+        "sudo apt update"
+      ],
+      "tags": [
+        "contrast",
+        "negation",
+        "technical"
+      ],
+      "forbidden_commands": [
+        "sudo apt upgrade -y"
+      ]
+    },
+    {
+      "id": "package_managers-02",
+      "category": "package_managers",
+      "query_ru": "Убери nginx через APT, но его конфигурационные файлы пока сохрани.",
+      "query_en": "Uninstall nginx with APT while retaining its configuration files for later.",
+      "expected_commands": [
+        "sudo apt remove nginx"
+      ],
+      "tags": [
+        "contrast",
+        "negation",
+        "destructive"
+      ],
+      "forbidden_commands": [
+        "sudo apt-get purge nginx"
+      ]
+    },
+    {
+      "id": "package_managers-03",
+      "category": "package_managers",
+      "query_ru": "nginx больше не нужен: хочу удалить пакет вместе с оставшимися настройками.",
+      "query_en": "nginx is no longer needed; remove the package together with its configuration remnants.",
+      "expected_commands": [
+        "sudo apt-get purge nginx"
+      ],
+      "tags": [
+        "contrast",
+        "destructive"
+      ],
+      "forbidden_commands": [
+        "sudo apt remove nginx"
+      ]
+    },
+    {
+      "id": "package_managers-04",
+      "category": "package_managers",
+      "query_ru": "Кто поставил /usr/bin/vim? Найди имя Debian-пакета, которому принадлежит этот путь.",
+      "query_en": "Which Debian package installed /usr/bin/vim? Identify the owner of that pathname.",
+      "expected_commands": [
+        "dpkg -S /usr/bin/vim"
+      ],
+      "tags": [
+        "natural",
+        "technical",
+        "read_only"
+      ]
+    },
+    {
+      "id": "package_managers-05",
+      "category": "package_managers",
+      "query_ru": "Разверни Python-завсимости из готового requirements.txt, вручную перечислять их не хочу.",
+      "query_en": "Set up the Python dependencies listed in requirements.txt rather than naming each one manually.",
+      "expected_commands": [
+        "pip install -r requirements.txt"
+      ],
+      "tags": [
+        "technical",
+        "negation",
+        "typo"
+      ]
+    },
+    {
+      "id": "package_managers-06",
+      "category": "package_managers",
+      "query_ru": "Jest нужен проекту только как devDependency, не как обычная runtime-зависимость.",
+      "query_en": "Add Jest as a development-only dependency rather than a runtime dependency.",
+      "expected_commands": [
+        "npm install --save-dev jest"
+      ],
+      "tags": [
+        "technical",
+        "contrast",
+        "negation"
+      ],
+      "forbidden_commands": [
+        "npm install express"
+      ]
+    },
+    {
+      "id": "perl_oneliners-01",
+      "category": "perl_oneliners",
+      "query_ru": "Через Perl достань из .env то, что стоит справа от DB_PASSWORD=.",
+      "query_en": "Use Perl to retrieve the value to the right of DB_PASSWORD= in .env.",
+      "expected_commands": [
+        "perl -ne 'print \"$1\\n\" if /^DB_PASSWORD=(.*)/' .env"
+      ],
+      "tags": [
+        "technical"
+      ]
+    },
+    {
+      "id": "perl_oneliners-02",
+      "category": "perl_oneliners",
+      "query_ru": "Убери повторные строки через Perl, но оставь порядок первого появления, без сортировки.",
+      "query_en": "Use Perl to discard repeated lines while preserving first-seen order, without sorting.",
+      "expected_commands": [
+        "perl -ne 'print unless $seen{$_}++' file.txt"
+      ],
+      "tags": [
+        "contrast",
+        "negation",
+        "technical"
+      ],
+      "forbidden_commands": [
+        "sort -u file.txt",
+        "sort file.txt | uniq"
+      ]
+    },
+    {
+      "id": "perl_oneliners-03",
+      "category": "perl_oneliners",
+      "query_ru": "Perl должен вывести участок file.txt с десятой строки по двадцатую включительно.",
+      "query_en": "Have Perl print file.txt from line ten through line twenty, including both endpoints.",
+      "expected_commands": [
+        "perl -ne 'print if 10..20' file.txt"
+      ],
+      "tags": [
+        "technical"
+      ]
+    },
+    {
+      "id": "perl_oneliners-04",
+      "category": "perl_oneliners",
+      "query_ru": "Через Perl оставь из log.txt строки с error, но без deprecated; регистр обоих слов не важен.",
+      "query_en": "In Perl, keep log.txt lines with error but without deprecated, matching both words case-insensitively.",
+      "expected_commands": [
+        "perl -ne 'print if /error/i && !/deprecated/i' log.txt"
+      ],
+      "tags": [
+        "technical",
+        "negation",
+        "contrast"
+      ]
+    },
+    {
+      "id": "perl_oneliners-05",
+      "category": "perl_oneliners",
+      "query_ru": "В numbers.txt по числу на строку: сложи их Perl-однострочником и выведи итог.",
+      "query_en": "numbers.txt has one number per line; use a Perl one-liner to print their total.",
+      "expected_commands": [
+        "perl -ne '$s += $_; END { print \"$s\\n\" }' numbers.txt"
+      ],
+      "tags": [
+        "technical"
+      ],
+      "forbidden_commands": [
+        "perl -ne '$s += $_; $n++; END { print $s/$n, \"\\n\" }' numbers.txt"
+      ]
+    },
+    {
+      "id": "perl_oneliners-06",
+      "category": "perl_oneliners",
+      "query_ru": "Нумерация Perl нужна только у непустых строк, пустые оставить без цифр.",
+      "query_en": "With Perl, add consecutive numbers to nonblank lines while leaving blank lines unnumbered.",
+      "expected_commands": [
+        "perl -pe '$_ = ++$x.\" $_\" if /\\S/' file.txt",
+        "perl -pe '$_ = /\\S/ ? ++$x.\" $_\" : \"\\n\"' file.txt"
+      ],
+      "tags": [
+        "contrast",
+        "negation",
+        "technical"
+      ],
+      "forbidden_commands": [
+        "perl -pe '$_ = \"$. $_\"' file.txt"
+      ]
+    },
+    {
+      "id": "permissions-01",
+      "category": "permissions",
+      "query_ru": "script.sh не запускается напрямую: добавь ему право выполнения.",
+      "query_en": "script.sh cannot be launched directly; grant it execute permission.",
+      "expected_commands": [
+        "chmod +x script.sh"
+      ],
+      "tags": [
+        "natural",
+        "technical"
+      ]
+    },
+    {
+      "id": "permissions-02",
+      "category": "permissions",
+      "query_ru": "Секретный ключ должен читать и менять только владелец; группе и остальным доступ закрыть.",
+      "query_en": "Only the owner should read and edit the secret key; grant nothing to group or others.",
+      "expected_commands": [
+        "chmod 600 secret.key"
+      ],
+      "tags": [
+        "negation",
+        "technical"
+      ]
+    },
+    {
+      "id": "permissions-03",
+      "category": "permissions",
+      "query_ru": "У important-file.txt запрети запись группе и посторонним, остальные биты не меняй.",
+      "query_en": "Revoke group and other write bits on important-file.txt while preserving the remaining mode bits.",
+      "expected_commands": [
+        "chmod go-w important-file.txt"
+      ],
+      "tags": [
+        "negation",
+        "technical"
+      ]
+    },
+    {
+      "id": "permissions-04",
+      "category": "permissions",
+      "query_ru": "report.pdf должен принадлежать alice, группу файла менять не требуется.",
+      "query_en": "Transfer ownership of report.pdf to alice without requesting a group change.",
+      "expected_commands": [
+        "sudo chown alice report.pdf"
+      ],
+      "tags": [
+        "negation",
+        "contrast"
+      ],
+      "forbidden_commands": [
+        "sudo chown www-data:www-data /var/www/index.html"
+      ]
+    },
+    {
+      "id": "permissions-05",
+      "category": "permissions",
+      "query_ru": "Пусть alice обязательно задаст новый пароль при следующем входе.",
+      "query_en": "Require alice to choose a new password at the next login.",
+      "expected_commands": [
+        "sudo passwd -e alice"
+      ],
+      "tags": [
+        "natural",
+        "technical"
+      ]
+    },
+    {
+      "id": "permissions-06",
+      "category": "permissions",
+      "query_ru": "Добавь alice доступ через группу docker, но не потеряй её другие дополнительные группы.",
+      "query_en": "Add alice to the docker group while preserving her other supplementary memberships.",
+      "expected_commands": [
+        "sudo usermod -aG docker alice"
+      ],
+      "tags": [
+        "negation",
+        "technical"
+      ]
+    },
+    {
+      "id": "process-01",
+      "category": "process",
+      "query_ru": "Процесс 1234 надо попросить закончить работу обычным TERM, без kill -9.",
+      "query_en": "Ask process 1234 to terminate with the normal TERM signal rather than kill -9.",
+      "expected_commands": [
+        "kill 1234"
+      ],
+      "tags": [
+        "contrast",
+        "negation",
+        "destructive",
+        "technical"
+      ],
+      "forbidden_commands": [
+        "kill -9 1234"
+      ]
+    },
+    {
+      "id": "process-02",
+      "category": "process",
+      "query_ru": "PID 1234 полностью завис: нужен SIGKILL, а не ожидание обработки TERM.",
+      "query_en": "PID 1234 is completely stuck; send SIGKILL instead of waiting for TERM handling.",
+      "expected_commands": [
+        "kill -9 1234"
+      ],
+      "tags": [
+        "contrast",
+        "negation",
+        "destructive",
+        "technical"
+      ],
+      "forbidden_commands": [
+        "kill 1234"
+      ]
+    },
+    {
+      "id": "process-03",
+      "category": "process",
+      "query_ru": "PID 1234 нужно заморозить, не завершать: пусть останется для продолжения потом.",
+      "query_en": "Freeze PID 1234 without terminating it so that it can be resumed later.",
+      "expected_commands": [
+        "kill -STOP 1234"
+      ],
+      "tags": [
+        "contrast",
+        "negation",
+        "technical"
+      ],
+      "forbidden_commands": [
+        "kill 1234",
+        "kill -9 1234"
+      ]
+    },
+    {
+      "id": "process-04",
+      "category": "process",
+      "query_ru": "Приложение ругается, что 8080 занят. Покажи использующие этот порт процессы, не ограничиваясь слушающими TCP-сокетами.",
+      "query_en": "My application says port 8080 is busy. List processes using it without limiting the result to listening TCP sockets.",
+      "expected_commands": [
+        "lsof -i :8080"
+      ],
+      "tags": [
+        "colloquial",
+        "technical",
+        "negation",
+        "contrast",
+        "read_only"
+      ],
+      "forbidden_commands": [
+        "ss -tlnp 'sport = :8080'",
+        "lsof -nP -iTCP:8080 -sTCP:LISTEN"
+      ]
+    },
+    {
+      "id": "process-05",
+      "category": "process",
+      "query_ru": "SSH оборвался, хочу снова войти в существующий tmux-сеанс dev, а не создавать новый.",
+      "query_en": "SSH disconnected; reconnect to the existing dev tmux session instead of creating another one.",
+      "expected_commands": [
+        "tmux attach -t dev"
+      ],
+      "tags": [
+        "contrast",
+        "negation",
+        "technical"
+      ],
+      "forbidden_commands": [
+        "tmux new -s dev",
+        "tmux kill-session -t dev"
+      ]
+    },
+    {
+      "id": "process-06",
+      "category": "process",
+      "query_ru": "Какие задания cron сейчас стоят у моего пользователя? Открой только список, не редактор.",
+      "query_en": "Which cron entries does my user currently have? List them rather than opening an editor.",
+      "expected_commands": [
+        "crontab -l"
+      ],
+      "tags": [
+        "contrast",
+        "negation",
+        "read_only"
+      ],
+      "forbidden_commands": [
+        "crontab -e",
+        "crontab -r"
+      ]
+    },
+    {
+      "id": "search-01",
+      "category": "search",
+      "query_ru": "В этом дереве перечисли пути обычных файлов, чьи имена оканчиваются на .py; каталоги не нужны.",
+      "query_en": "Walk this tree for regular files ending in .py and leave matching directories out.",
+      "expected_commands": [
+        "find . -type f -name '*.py'"
+      ],
+      "tags": [
+        "natural",
+        "technical",
+        "negation"
+      ]
+    },
+    {
+      "id": "search-02",
+      "category": "search",
+      "query_ru": "В этой ветке каталогов нужны совсем пустые папки; удалять их не требуется.",
+      "query_en": "Locate entirely empty directories below here without removing any of them.",
+      "expected_commands": [
+        "find . -type d -empty"
+      ],
+      "tags": [
+        "contrast",
+        "negation",
+        "read_only"
+      ]
+    },
+    {
+      "id": "search-03",
+      "category": "search",
+      "query_ru": "Нужны обычные файлы прямо здесь, глубже текущего каталога не заходи.",
+      "query_en": "Find regular files directly here without descending into child directories.",
+      "expected_commands": [
+        "find . -maxdepth 1 -type f"
+      ],
+      "tags": [
+        "negation",
+        "contrast",
+        "read_only"
+      ]
+    },
+    {
+      "id": "search-04",
+      "category": "search",
+      "query_ru": "Покажи, где в исходниках src забыли TODO-комментарии.",
+      "query_en": "Locate forgotten TODO comments anywhere under the src source tree.",
+      "expected_commands": [
+        "rg 'TODO' src/",
+        "grep -r 'TODO' src/"
+      ],
+      "tags": [
+        "natural",
+        "technical"
+      ]
+    },
+    {
+      "id": "search-05",
+      "category": "search",
+      "query_ru": "Для error в logs нужен контекст по три строки с обеих сторон совпадения.",
+      "query_en": "For error matches under logs, include three surrounding lines on either side.",
+      "expected_commands": [
+        "rg -C 3 'error' logs/"
+      ],
+      "tags": [
+        "technical"
+      ]
+    },
+    {
+      "id": "search-06",
+      "category": "search",
+      "query_ru": "Найди точный текст price[$i], скобки и доллар не должны работать как regexp.",
+      "query_en": "Search for the exact text price[$i], treating brackets and the dollar sign literally.",
+      "expected_commands": [
+        "rg -F 'price[$i]'"
+      ],
+      "tags": [
+        "negation",
+        "technical"
+      ]
+    },
+    {
+      "id": "system-01",
+      "category": "system",
+      "query_ru": "Нужен номер релиза запущенного ядра Linux одной командой.",
+      "query_en": "Report the release number of the Linux kernel that is currently running.",
+      "expected_commands": [
+        "uname -r"
+      ],
+      "tags": [
+        "technical",
+        "read_only"
+      ]
+    },
+    {
+      "id": "system-02",
+      "category": "system",
+      "query_ru": "Как получить текущее время числом секунд от Unix epoch?",
+      "query_en": "Give me the current time as an integer count of seconds since the Unix epoch.",
+      "expected_commands": [
+        "date +%s"
+      ],
+      "tags": [
+        "technical"
+      ]
+    },
+    {
+      "id": "system-03",
+      "category": "system",
+      "query_ru": "После перезагрузки nginx должен подниматься сам: настрой именно автозапуск.",
+      "query_en": "Configure nginx to come up automatically after reboot, not merely start it once.",
+      "expected_commands": [
+        "systemctl enable nginx"
+      ],
+      "tags": [
+        "contrast",
+        "technical"
+      ],
+      "forbidden_commands": [
+        "systemctl start nginx",
+        "systemctl restart nginx"
+      ]
+    },
+    {
+      "id": "system-04",
+      "category": "system",
+      "query_ru": "Проверь, включён ли nginx в автозагрузку, состояние работающего процесса сейчас не нужно.",
+      "query_en": "Check whether nginx is enabled at boot rather than checking its current running state.",
+      "expected_commands": [
+        "systemctl is-enabled nginx"
+      ],
+      "tags": [
+        "contrast",
+        "negation",
+        "read_only"
+      ],
+      "forbidden_commands": [
+        "systemctl status nginx",
+        "systemctl enable nginx"
+      ]
+    },
+    {
+      "id": "system-05",
+      "category": "system",
+      "query_ru": "В journal нужны события лишь после последнего включения машины.",
+      "query_en": "Restrict the system journal to events from the latest machine boot.",
+      "expected_commands": [
+        "journalctl -b"
+      ],
+      "tags": [
+        "natural",
+        "technical",
+        "read_only"
+      ]
+    },
+    {
+      "id": "system-06",
+      "category": "system",
+      "query_ru": "Скоко осталось оперативки и сколько подкачки занято? Хочу удобные единицы.",
+      "query_en": "How much RAM remains and how much swap is used? Use readable units.",
+      "expected_commands": [
+        "free -h"
+      ],
+      "tags": [
+        "typo",
+        "colloquial",
+        "read_only"
+      ]
+    },
+    {
+      "id": "text_processing-01",
+      "category": "text_processing",
+      "query_ru": "Где в config лежит password? Нужны только пути, содержимое строк не показывай.",
+      "query_en": "Which files under config contain password? Return paths without showing matching line contents.",
+      "expected_commands": [
+        "grep -rl 'password' config/"
+      ],
+      "tags": [
+        "contrast",
+        "negation",
+        "technical",
+        "read_only"
+      ]
+    },
+    {
+      "id": "text_processing-02",
+      "category": "text_processing",
+      "query_ru": "Из config.ini выведи всё, кроме строк, начинающихся с решётки.",
+      "query_en": "Display config.ini while omitting lines whose very first character is a hash.",
+      "expected_commands": [
+        "grep -v '^#' config.ini"
+      ],
+      "tags": [
+        "negation",
+        "technical",
+        "read_only"
+      ]
+    },
+    {
+      "id": "text_processing-03",
+      "category": "text_processing",
+      "query_ru": "В выводе замени каждое old на new, но сам file.txt оставь нетронутым.",
+      "query_en": "Replace every old with new in the displayed output while leaving file.txt unchanged.",
+      "expected_commands": [
+        "sed 's/old/new/g' file.txt"
+      ],
+      "tags": [
+        "contrast",
+        "negation",
+        "read_only"
+      ],
+      "forbidden_commands": [
+        "sed -i 's/foo/bar/g' file.txt"
+      ]
+    },
+    {
+      "id": "text_processing-04",
+      "category": "text_processing",
+      "query_ru": "Упорядочь scores.txt как числа: 2 должно идти раньше 10, а не по алфавиту.",
+      "query_en": "Order scores.txt numerically so that 2 precedes 10 instead of using dictionary order.",
+      "expected_commands": [
+        "sort -n scores.txt"
+      ],
+      "tags": [
+        "contrast",
+        "technical"
+      ]
+    },
+    {
+      "id": "text_processing-05",
+      "category": "text_processing",
+      "query_ru": "Из file.txt нужны разные значения, встретившиеся хотя бы дважды; одиночные отбрось.",
+      "query_en": "Return each distinct file.txt line that occurs at least twice, discarding singletons.",
+      "expected_commands": [
+        "sort file.txt | uniq -d"
+      ],
+      "tags": [
+        "contrast",
+        "negation"
+      ],
+      "forbidden_commands": [
+        "sort file.txt | uniq -u"
+      ]
+    },
+    {
+      "id": "text_processing-06",
+      "category": "text_processing",
+      "query_ru": "Покажи строки file.txt с частотой ровно один; любое повторяющееся значение исключи.",
+      "query_en": "Keep file.txt lines with frequency exactly one and exclude every repeated value.",
+      "expected_commands": [
+        "sort file.txt | uniq -u"
+      ],
+      "tags": [
+        "contrast",
+        "negation"
+      ],
+      "forbidden_commands": [
+        "sort file.txt | uniq -d"
+      ]
+    },
+    {
+      "id": "out_of_scope-01",
+      "category": "out_of_scope",
+      "query_ru": "Порекомендуй роман на вечер с неожиданной развязкой.",
+      "query_en": "Recommend a novel for tonight with a surprising ending.",
+      "expected_commands": [],
+      "tags": [
+        "out_of_scope"
+      ]
+    },
+    {
+      "id": "out_of_scope-02",
+      "category": "out_of_scope",
+      "query_ru": "Составь меню завтрака на неделю без молочных продуктов.",
+      "query_en": "Plan a week of dairy-free breakfasts.",
+      "expected_commands": [],
+      "tags": [
+        "out_of_scope"
+      ]
+    },
+    {
+      "id": "out_of_scope-03",
+      "category": "out_of_scope",
+      "query_ru": "Удали фон с портретной фотографии и размывай края волос.",
+      "query_en": "Remove the background from a portrait photo and soften the hair edges.",
+      "expected_commands": [],
+      "tags": [
+        "out_of_scope"
+      ]
+    },
+    {
+      "id": "out_of_scope-04",
+      "category": "out_of_scope",
+      "query_ru": "Объясни ребёнку, почему у жирафа длинная шея.",
+      "query_en": "Explain to a child why giraffes have long necks.",
+      "expected_commands": [],
+      "tags": [
+        "out_of_scope"
+      ]
+    },
+    {
+      "id": "out_of_scope-05",
+      "category": "out_of_scope",
+      "query_ru": "Придумай текст поздравления бабушке с юбилеем.",
+      "query_en": "Write a milestone birthday greeting for my grandmother.",
+      "expected_commands": [],
+      "tags": [
+        "out_of_scope"
+      ]
+    },
+    {
+      "id": "out_of_scope-06",
+      "category": "out_of_scope",
+      "query_ru": "Какой автобус едет завтра утром от вокзала до музея?",
+      "query_en": "Which bus goes from the station to the museum tomorrow morning?",
+      "expected_commands": [],
+      "tags": [
+        "out_of_scope"
+      ]
+    }
+  ]
+}

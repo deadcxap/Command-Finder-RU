@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "profiles": {
+    "original": {
+      "model": "all-MiniLM-L6-v2",
+      "revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+      "dimensions": 384,
+      "query_prefix": "",
+      "document_prefix": "",
+      "description": "Исходная модель проекта; контроль английского поиска и исходного уровня поддержки русского."
+    },
+    "tiny2": {
+      "model": "cointegrated/rubert-tiny2",
+      "revision": "e8ed3b0c8bbf4fb6984c3de043bf7d2f4e5969ae",
+      "dimensions": 312,
+      "query_prefix": "",
+      "document_prefix": "",
+      "description": "Компактный русский энкодер; получение вектора определяется конфигурацией Sentence Transformers."
+    },
+    "tiny-retriever": {
+      "model": "sergeyzh/rubert-tiny-retriever",
+      "revision": "6dc0f7c2b9c938d8e86d7bd9a5077592ffecd72e",
+      "dimensions": 312,
+      "query_prefix": "",
+      "document_prefix": "",
+      "description": "Трёхслойный энкодер для поиска на русском и английском; дополнительные префиксы не нужны."
+    },
+    "mini-retriever": {
+      "model": "sergeyzh/rubert-mini-retriever",
+      "revision": "4ae6298c749e413b958d64a4b349a907c15a3b54",
+      "dimensions": 312,
+      "query_prefix": "",
+      "document_prefix": "",
+      "description": "Семислойный энкодер для поиска на русском и английском; дополнительные префиксы не нужны."
+    },
+    "user2-small": {
+      "model": "deepvk/USER2-small",
+      "revision": "23f65b34cf7632032061f5cc66c14714e6d4cee4",
+      "dimensions": 384,
+      "query_prefix": "search_query: ",
+      "document_prefix": "search_document: ",
+      "description": "Русский ModernBERT-энкодер; профиль использует рекомендованные префиксы поиска.",
+      "config_kwargs": {
+        "reference_compile": false
+      }
+    },
+    "e5-small": {
+      "model": "intfloat/multilingual-e5-small",
+      "revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+      "dimensions": 384,
+      "query_prefix": "query: ",
+      "document_prefix": "query: ",
+      "description": "Многоязычный контрольный энкодер; обе стороны имеют query: для симметричного поиска перефразировок."
+    }
+  }
+}

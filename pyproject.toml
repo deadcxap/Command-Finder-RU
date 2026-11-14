@@ -24,6 +24,13 @@ dev = [
     "pytest-cov",
 ]
 
+benchmark = [
+    "torch==2.6.0",
+    "sentence-transformers==4.0.2",
+    "transformers==4.49.0",
+    "onnx>=1.16",
+]
+
 [project.scripts]
 cf = "cf.cli:app"
 
