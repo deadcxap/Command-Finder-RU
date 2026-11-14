@@ -1,9 +1,11 @@
+import json
+import re
 import sqlite3
 from pathlib import Path
 
 import sqlite_vec
 
-from cf.config import DB_DIR, DB_PATH, EMBEDDING_DIM
+from cf.config import DB_PATH, EMBEDDING_DIM, MAX_TOKENS, MODEL_NAME, MODEL_PRECISION, MODEL_REVISION, MODEL_SPEC, ONNX_DIR
 
 
 def get_connection(db_path: Path | str = DB_PATH) -> sqlite3.Connection:
@@ -18,8 +20,53 @@ def get_connection(db_path: Path | str = DB_PATH) -> sqlite3.Connection:
     return conn
 
 
-def init_db(conn: sqlite3.Connection) -> None:
-    conn.executescript(f"""
+def index_identity() -> dict:
+    return {"model": MODEL_NAME, "revision": MODEL_REVISION, "dimensions": EMBEDDING_DIM,
+            "precision": MODEL_PRECISION, "max_tokens": MAX_TOKENS,
+            "quantization": MODEL_SPEC["quantization"], "query_prefix": MODEL_SPEC["query_prefix"],
+            "document_prefix": MODEL_SPEC["document_prefix"]}
+
+
+def _incompatible_index() -> RuntimeError:
+    return RuntimeError("База создана для другой модели или размерности. Выполните cf --seed --force.")
+
+
+def _model_checksums() -> dict | None:
+    try:
+        value = json.loads((ONNX_DIR / "checksums.json").read_text(encoding="utf-8"))
+    except FileNotFoundError:
+        return None
+    except (json.JSONDecodeError, UnicodeError) as error:
+        raise ValueError("Повреждены контрольные суммы модели. Выполните cf --prepare-model --force.") from error
+    if not isinstance(value, dict):
+        raise ValueError("Контрольные суммы модели должны содержать JSON-объект")
+    return value
+
+
+def _check_index_compatibility(conn: sqlite3.Connection) -> None:
+    existing = conn.execute("SELECT sql FROM sqlite_master WHERE name = 'pattern_embeddings'").fetchone()
+    if existing:
+        dimension = re.search(r"embedding\s+FLOAT\s*\[\s*(\d+)\s*\]", existing[0] or "", re.IGNORECASE)
+        if dimension is None or int(dimension.group(1)) != EMBEDDING_DIM:
+            raise _incompatible_index()
+    marked = conn.execute("SELECT 1 FROM sqlite_master WHERE name = 'index_metadata'").fetchone()
+    if marked:
+        try:
+            row = conn.execute("SELECT value FROM index_metadata WHERE key = 'model_identity'").fetchone()
+            if row and json.loads(row[0]) != index_identity():
+                raise _incompatible_index()
+            saved_checksums = conn.execute("SELECT value FROM index_metadata WHERE key = 'model_checksums'").fetchone()
+            if saved_checksums:
+                current = _model_checksums()
+                if current is not None and json.loads(saved_checksums[0]) != current:
+                    raise ValueError("Файлы модели изменились. Выполните cf --seed --force.")
+        except (sqlite3.DatabaseError, json.JSONDecodeError, TypeError) as error:
+            raise _incompatible_index() from error
+
+
+def init_db(conn: sqlite3.Connection, *, commit: bool = True) -> None:
+    _check_index_compatibility(conn)
+    schema = f"""
         CREATE TABLE IF NOT EXISTS commands (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
@@ -50,21 +97,49 @@ def init_db(conn: sqlite3.Connection) -> None:
             query_text TEXT PRIMARY KEY,
             embedding BLOB NOT NULL
         );
-    """)
-    # Migrate older DBs that predate the destructive column.
+
+        CREATE TABLE IF NOT EXISTS index_metadata (
+            key TEXT PRIMARY KEY,
+            value TEXT NOT NULL
+        );
+    """
+    for statement in schema.split(";"):
+        if statement.strip():
+            conn.execute(statement)
     cols = {row[1] for row in conn.execute("PRAGMA table_info(patterns)")}
     if "destructive" not in cols:
         conn.execute(
             "ALTER TABLE patterns ADD COLUMN destructive INTEGER NOT NULL DEFAULT 0"
         )
-    conn.commit()
+    if commit:
+        conn.commit()
+
+
+def store_index_identity(conn: sqlite3.Connection, fingerprint: str | None = None) -> None:
+    conn.execute("INSERT OR REPLACE INTO index_metadata (key, value) VALUES ('model_identity', ?)",
+                 (json.dumps(index_identity(), sort_keys=True),))
+    if fingerprint is not None:
+        conn.execute("INSERT OR REPLACE INTO index_metadata (key, value) VALUES ('model_fingerprint', ?)",
+                     (fingerprint,))
+    checksums = _model_checksums()
+    if checksums is not None:
+        conn.execute("INSERT OR REPLACE INTO index_metadata (key, value) VALUES ('model_checksums', ?)",
+                     (json.dumps(checksums, sort_keys=True, separators=(",", ":")),))
+
+
+def reset_index(conn: sqlite3.Connection) -> None:
+    for table in ("pattern_embeddings", "patterns", "commands", "query_cache", "index_metadata"):
+        conn.execute(f"DROP TABLE IF EXISTS {table}")
+    init_db(conn, commit=False)
 
 
 def get_cached_query(conn: sqlite3.Connection, query: str) -> bytes | None:
     row = conn.execute(
         "SELECT embedding FROM query_cache WHERE query_text = ?", (query,)
     ).fetchone()
-    return row[0] if row else None
+    if row and isinstance(row[0], bytes) and len(row[0]) == EMBEDDING_DIM * 4:
+        return row[0]
+    return None
 
 
 def cache_query(conn: sqlite3.Connection, query: str, embedding_bytes: bytes) -> None:
@@ -199,4 +274,5 @@ def clear_all(conn: sqlite3.Connection) -> None:
     conn.execute("DELETE FROM patterns")
     conn.execute("DELETE FROM commands")
     conn.execute("DELETE FROM query_cache")
+    conn.execute("DELETE FROM index_metadata")
     conn.commit()

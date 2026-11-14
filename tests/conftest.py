@@ -13,10 +13,11 @@ from cf.search import SearchResult
 
 
 @pytest.fixture
-def tmp_db(tmp_path):
+def tmp_db(tmp_path, monkeypatch):
     """Create a temporary SQLite database with sqlite-vec loaded and schema initialized."""
     db_path = tmp_path / "test.db"
     from cf.db import get_connection, init_db
+    monkeypatch.setattr("cf.db.ONNX_DIR", tmp_path / "model")
 
     conn = get_connection(db_path)
     init_db(conn)

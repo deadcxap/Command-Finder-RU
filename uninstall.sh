@@ -1,116 +1,75 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# cf - Natural Language Shell Command Finder
-# Uninstall script for macOS/Linux
-
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-VENV_DIR="$SCRIPT_DIR/.venv"
-SHELL_FILE="$SCRIPT_DIR/shell/cf.zsh"
+PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
+VENV_DIR="$PROJECT_DIR/.venv"
+SHELL_FILE="$PROJECT_DIR/shell/cf.zsh"
 ZSHRC="${ZDOTDIR:-$HOME}/.zshrc"
-LINK_DIR="$HOME/.local/bin"
-DATA_DIR="$HOME/.local/share/cf"
+LINK_PATH="$HOME/.local/bin/cf"
+DEFAULT_DATA_DIR="$HOME/.local/share/cf-ru"
+PURGE=false
 
-# Colors
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-CYAN='\033[0;36m'
-BOLD='\033[1m'
-DIM='\033[2m'
-NC='\033[0m'
+info() { printf '[cf-ru] %s\n' "$*"; }
+error() { printf '[cf-ru] Ошибка: %s\n' "$*" >&2; exit 1; }
 
-info()  { echo -e "${CYAN}[info]${NC}  $*"; }
-ok()    { echo -e "${GREEN}[ok]${NC}    $*"; }
-warn()  { echo -e "${YELLOW}[warn]${NC}  $*"; }
-skip()  { echo -e "${DIM}[skip]${NC}  $*"; }
+for argument in "$@"; do
+    case "$argument" in
+        --purge) PURGE=true ;;
+        --help|-h)
+            printf 'Удаление Command Finder RU\n\nИспользование: ./uninstall.sh [--purge]\n  --purge  также удалить стандартный каталог ~/.local/share/cf-ru\n'
+            exit 0 ;;
+        *) error "Неизвестный параметр: $argument" ;;
+    esac
+done
 
-echo -e "${BOLD}"
-echo "  _____ ___ "
-echo " / ____|  _|"
-echo "| |    | |_  Command Finder"
-echo "| |___ |  _| Uninstaller"
-echo " \_____|_|"
-echo -e "${NC}"
+case "$PROJECT_DIR" in
+    /mnt/[a-zA-Z]/*) error 'Запускайте удаление из файловой системы Linux/WSL.' ;;
+esac
+case "$ZSHRC" in
+    /mnt/*) error 'Файл .zshrc должен находиться в файловой системе Linux/WSL.' ;;
+esac
 
-# ── Confirm ──────────────────────────────────────────────────
-echo -e "  ${BOLD}This will remove:${NC}"
-[ -d "$VENV_DIR" ]               && echo "    - Virtual environment  ($VENV_DIR)"
-[ -L "$LINK_DIR/cf" ] || [ -f "$LINK_DIR/cf" ] && echo "    - Symlink              ($LINK_DIR/cf)"
-[ -d "$DATA_DIR" ]               && echo "    - Database & cache     ($DATA_DIR)"
-[ -f "$ZSHRC" ] && grep -qF "source $SHELL_FILE" "$ZSHRC" 2>/dev/null \
-                                 && echo "    - Shell integration    ($ZSHRC entry)"
-echo ""
-
-read -rp "  Proceed with uninstall? [y/N] " answer
-answer="${answer:-N}"
-
-if [[ ! "$answer" =~ ^[Yy]$ ]]; then
-    echo "  Cancelled."
-    exit 0
-fi
-
-echo ""
-
-# ── Remove symlink ───────────────────────────────────────────
-if [ -L "$LINK_DIR/cf" ]; then
-    # Verify it points to our venv before removing
-    LINK_TARGET="$(readlink "$LINK_DIR/cf" 2>/dev/null || true)"
-    if [[ "$LINK_TARGET" == *"$SCRIPT_DIR"* ]]; then
-        rm "$LINK_DIR/cf"
-        ok "Removed symlink $LINK_DIR/cf"
+if [[ -L "$LINK_PATH" ]]; then
+    if [[ "$(readlink "$LINK_PATH")" == "$VENV_DIR/bin/cf" ]]; then
+        rm -- "$LINK_PATH"
+        info "Удалена ссылка $LINK_PATH"
     else
-        warn "Symlink $LINK_DIR/cf points elsewhere ($LINK_TARGET), skipping"
+        info "Ссылка $LINK_PATH относится к другому проекту и сохранена."
     fi
-elif [ -f "$LINK_DIR/cf" ]; then
-    warn "$LINK_DIR/cf is a file, not a symlink — skipping (remove manually if needed)"
-else
-    skip "No symlink at $LINK_DIR/cf"
+elif [[ -e "$LINK_PATH" ]]; then
+    info "Файл $LINK_PATH сохранён: это не ссылка установки."
 fi
 
-# ── Remove shell integration from .zshrc ─────────────────────
-SHELL_SOURCE_LINE="source $SHELL_FILE"
-SHELL_COMMENT="# cf - Natural Language Shell Command Finder"
-
-if [ -f "$ZSHRC" ] && grep -qF "$SHELL_SOURCE_LINE" "$ZSHRC" 2>/dev/null; then
-    # Create backup before modifying
-    cp "$ZSHRC" "$ZSHRC.bak.cf"
-
-    # Remove the source line and the comment line above it
-    grep -vF "$SHELL_SOURCE_LINE" "$ZSHRC.bak.cf" | grep -vF "$SHELL_COMMENT" > "$ZSHRC"
-
-    # Clean up trailing blank lines left behind
-    sed -i '' -e :a -e '/^\n*$/{$d;N;ba' -e '}' "$ZSHRC" 2>/dev/null || true
-
-    ok "Removed shell integration from $ZSHRC"
-    info "Backup saved to $ZSHRC.bak.cf"
-else
-    skip "No shell integration found in $ZSHRC"
+printf -v SOURCE_LINE 'source %q' "$SHELL_FILE"
+MARKER_LINE="# cf-ru: $SOURCE_LINE"
+OLD_SOURCE_LINE="source $SHELL_FILE"
+if [[ -f "$ZSHRC" ]] && { grep -Fqx -- "$SOURCE_LINE" "$ZSHRC" || grep -Fqx -- "$OLD_SOURCE_LINE" "$ZSHRC"; }; then
+    cp -- "$ZSHRC" "$ZSHRC.bak.cf-ru"
+    TEMP_RC="$(mktemp "$ZSHRC.cf-ru.XXXXXX")"
+    if grep -Fvx -e "$SOURCE_LINE" -e "$OLD_SOURCE_LINE" -e "$MARKER_LINE" \
+        "$ZSHRC.bak.cf-ru" > "$TEMP_RC"; then
+        :
+    else
+        FILTER_STATUS=$?
+        [[ "$FILTER_STATUS" -eq 1 ]] || error 'Не удалось обновить .zshrc; резервная копия сохранена.'
+    fi
+    cat "$TEMP_RC" > "$ZSHRC"
+    rm -- "$TEMP_RC"
+    info "Интеграция удалена; резервная копия: $ZSHRC.bak.cf-ru"
 fi
 
-# ── Remove database and cache ────────────────────────────────
-if [ -d "$DATA_DIR" ]; then
-    rm -rf "$DATA_DIR"
-    ok "Removed database and cache ($DATA_DIR)"
-else
-    skip "No data directory at $DATA_DIR"
+if [[ -d "$VENV_DIR" || -L "$VENV_DIR" ]]; then
+    rm -rf -- "$VENV_DIR"
+    info 'Рабочее окружение удалено.'
 fi
 
-# ── Remove virtual environment ───────────────────────────────
-if [ -d "$VENV_DIR" ]; then
-    rm -rf "$VENV_DIR"
-    ok "Removed virtual environment ($VENV_DIR)"
+if "$PURGE"; then
+    if [[ -d "$DEFAULT_DATA_DIR" || -L "$DEFAULT_DATA_DIR" ]]; then
+        rm -rf -- "$DEFAULT_DATA_DIR"
+        info "Стандартные данные удалены: $DEFAULT_DATA_DIR"
+    fi
 else
-    skip "No virtual environment at $VENV_DIR"
+    info "Данные сохранены: $DEFAULT_DATA_DIR"
 fi
-
-# ── Done ─────────────────────────────────────────────────────
-echo ""
-echo -e "${GREEN}${BOLD}Uninstall complete.${NC}"
-echo ""
-echo "  The project source code is still at:"
-echo "    $SCRIPT_DIR"
-echo ""
-echo "  To reinstall:  ./install.sh"
-echo "  To fully remove:  rm -rf $SCRIPT_DIR"
-echo ""
+info 'Пользовательские CF_DB_DIR и CF_MODEL_DIR при необходимости удалите вручную.'
+info 'Исходники проекта сохранены. Повторная установка: ./install.sh'

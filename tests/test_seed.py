@@ -1,6 +1,7 @@
 """Tests for cf.seed module — seed file loading and database population."""
 
 import json
+import sqlite3
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
@@ -9,6 +10,30 @@ import pytest
 
 from cf.config import EMBEDDING_DIM
 from cf.seed import load_seed_files
+
+
+@pytest.fixture(autouse=True)
+def no_installed_model_is_needed_for_mock_encoding(monkeypatch, tmp_path):
+    monkeypatch.setattr("cf.seed._onnx_available", lambda: False)
+    monkeypatch.setattr("cf.db.ONNX_DIR", tmp_path / "unused_model")
+
+
+def old_index(tmp_path, dimension=384):
+    from cf.db import get_connection, init_db, insert_commands_batch, insert_patterns_batch
+    path = tmp_path / "old.db"
+    conn = get_connection(path)
+    init_db(conn)
+    cmd_id = insert_commands_batch(conn, [("old", "test", "old", "Старая команда")])[0]
+    pat_id = insert_patterns_batch(conn, [(cmd_id, "example", "старое описание", "old", None, 0)])[0]
+    conn.execute("DROP TABLE pattern_embeddings")
+    conn.execute(f"CREATE VIRTUAL TABLE pattern_embeddings USING vec0(pattern_id INTEGER PRIMARY KEY, embedding FLOAT[{dimension}])")
+    vector = np.ones(dimension, dtype=np.float32)
+    vector /= np.linalg.norm(vector)
+    conn.execute("INSERT INTO pattern_embeddings(pattern_id, embedding) VALUES (?, ?)", (pat_id, vector.tobytes()))
+    conn.execute("INSERT INTO query_cache(query_text, embedding) VALUES ('old-cache', ?)", (vector.tobytes(),))
+    conn.commit()
+    conn.close()
+    return path
 
 
 class TestLoadSeedFiles:
@@ -124,3 +149,71 @@ class TestSeedDatabase:
 
         assert stats["commands"] == 1
         assert stats["patterns"] == 2
+
+    @patch("cf.seed.encode_batch")
+    @patch("cf.seed.load_seed_files")
+    def test_repeated_nonforce_seed_keeps_counts_and_skips_encoding(self, mock_load, mock_encode, tmp_path, sample_seed_data):
+        from cf.seed import seed_database
+        from cf.db import get_connection, get_stats
+        path = tmp_path / "test.db"
+        mock_load.return_value = [sample_seed_data]
+        mock_encode.return_value = np.zeros((3, EMBEDDING_DIM), dtype=np.float32)
+        expected = seed_database(path)
+        mock_load.side_effect = AssertionError("existing index should be retained")
+        mock_encode.side_effect = AssertionError("existing index should not be encoded")
+        assert seed_database(path) == expected == {"commands": 2, "patterns": 3}
+        conn = get_connection(path)
+        assert get_stats(conn) == expected
+        assert conn.execute("SELECT COUNT(*) FROM pattern_embeddings").fetchone()[0] == 3
+        conn.close()
+
+    @patch("cf.seed.encode_batch")
+    @patch("cf.seed.load_seed_files")
+    def test_force_rebuilds_384_dimension_index_and_clears_query_cache(self, mock_load, mock_encode, tmp_path, sample_seed_data):
+        from cf.seed import seed_database
+        from cf.db import get_connection, init_db, index_identity
+        path = old_index(tmp_path)
+        mock_load.return_value = [sample_seed_data]
+        mock_encode.return_value = np.zeros((3, EMBEDDING_DIM), dtype=np.float32)
+        assert seed_database(path, force=True) == {"commands": 2, "patterns": 3}
+        conn = get_connection(path)
+        init_db(conn)
+        sql = conn.execute("SELECT sql FROM sqlite_master WHERE name='pattern_embeddings'").fetchone()[0]
+        assert f"FLOAT[{EMBEDDING_DIM}]" in sql
+        assert conn.execute("SELECT COUNT(*) FROM query_cache").fetchone()[0] == 0
+        marker = conn.execute("SELECT value FROM index_metadata WHERE key='model_identity'").fetchone()[0]
+        assert json.loads(marker) == index_identity()
+        conn.close()
+
+    @patch("cf.seed.encode_batch", side_effect=RuntimeError("encoder unavailable"))
+    @patch("cf.seed.load_seed_files")
+    def test_failed_encoding_preserves_old_index_and_cache(self, mock_load, mock_encode, tmp_path, sample_seed_data):
+        from cf.seed import seed_database
+        from cf.db import get_connection
+        path = old_index(tmp_path)
+        mock_load.return_value = [sample_seed_data]
+        with pytest.raises(RuntimeError, match="encoder unavailable"):
+            seed_database(path, force=True)
+        conn = get_connection(path)
+        assert conn.execute("SELECT name FROM commands").fetchall() == [("old",)]
+        assert conn.execute("SELECT COUNT(*) FROM pattern_embeddings").fetchone()[0] == 1
+        assert conn.execute("SELECT query_text FROM query_cache").fetchall() == [("old-cache",)]
+        assert "FLOAT[384]" in conn.execute("SELECT sql FROM sqlite_master WHERE name='pattern_embeddings'").fetchone()[0]
+        conn.close()
+
+    @patch("cf.seed.insert_patterns_batch", side_effect=sqlite3.IntegrityError("insert failed"))
+    @patch("cf.seed.encode_batch")
+    @patch("cf.seed.load_seed_files")
+    def test_failed_insert_rolls_back_schema_and_old_data(self, mock_load, mock_encode, mock_insert, tmp_path, sample_seed_data):
+        from cf.seed import seed_database
+        from cf.db import get_connection
+        path = old_index(tmp_path)
+        mock_load.return_value = [sample_seed_data]
+        mock_encode.return_value = np.zeros((3, EMBEDDING_DIM), dtype=np.float32)
+        with pytest.raises(sqlite3.IntegrityError, match="insert failed"):
+            seed_database(path, force=True)
+        conn = get_connection(path)
+        assert conn.execute("SELECT name FROM commands").fetchall() == [("old",)]
+        assert conn.execute("SELECT COUNT(*) FROM pattern_embeddings").fetchone()[0] == 1
+        assert "FLOAT[384]" in conn.execute("SELECT sql FROM sqlite_master WHERE name='pattern_embeddings'").fetchone()[0]
+        conn.close()

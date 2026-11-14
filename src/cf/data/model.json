@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "model": "sergeyzh/rubert-mini-retriever",
+  "revision": "4ae6298c749e413b958d64a4b349a907c15a3b54",
+  "dimensions": 312,
+  "max_tokens": 128,
+  "precision": "int8",
+  "query_prefix": "",
+  "document_prefix": "",
+  "normalization": "l2",
+  "pooling_in_graph": true,
+  "opset": 17,
+  "quantization": {
+    "method": "dynamic",
+    "weight_type": "QUInt8",
+    "per_channel": true,
+    "reduce_range": false,
+    "op_types": ["MatMul", "Gemm", "Gather"],
+    "MatMulConstBOnly": true
+  },
+  "reference_artifact": {
+    "model.onnx": "5a67801bb33c3da7214ec3edceb0c53f6a2116d7749bcafc8b76a8ad1116e799",
+    "tokenizer.json": "1fc12ec084e0580c3b7cbd870bf8a0290fb24af5a244bb28e0aa08fee643a841"
+  },
+  "license": "MIT",
+  "source": "https://huggingface.co/sergeyzh/rubert-mini-retriever"
+}

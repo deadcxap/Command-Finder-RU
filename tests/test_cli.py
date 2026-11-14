@@ -46,6 +46,39 @@ class TestSeedCommand:
         mock_seed.assert_called_once_with(True)
 
 
+class TestPrepareModel:
+    @patch("cf.model.prepare_model")
+    def test_import_ready_model(self, prepare, tmp_path):
+        prepare.return_value = tmp_path
+        result = runner.invoke(app, ["--prepare-model", "--model-source", str(tmp_path)])
+        assert result.exit_code == 0, result.output
+        prepare.assert_called_once_with(force=False, source=tmp_path)
+        assert "Модель готова" in result.output
+
+    @patch("cf.model.prepare_model", side_effect=RuntimeError("Проверка модели не пройдена"))
+    def test_model_failure_is_reported_in_russian(self, prepare):
+        result = runner.invoke(app, ["--prepare-model"])
+        assert result.exit_code == 1
+        assert "Ошибка подготовки модели" in result.output
+
+    def test_source_requires_prepare_flag(self, tmp_path):
+        result = runner.invoke(app, ["--model-source", str(tmp_path)])
+        assert result.exit_code != 0
+        assert "--prepare-model" in result.output
+
+    @patch("cf.seed.seed_database", return_value={"commands": 392, "patterns": 3892})
+    @patch("cf.model.prepare_model")
+    def test_seeding_prepares_model_before_indexing(self, prepare, seed):
+        from cf.cli import _do_seed
+
+        calls = []
+        prepare.side_effect = lambda: calls.append("model")
+        seed.side_effect = lambda **kwargs: calls.append("index") or {"commands": 392, "patterns": 3892}
+        _do_seed(True)
+        assert calls == ["model", "index"]
+        seed.assert_called_once_with(force=True)
+
+
 class TestQueryWithoutDB:
     @patch("cf.config.DB_PATH")
     def test_errors_when_no_db(self, mock_path):

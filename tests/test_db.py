@@ -1,6 +1,7 @@
 """Tests for cf.db module — schema, CRUD, caching, and vector search."""
 
 import sqlite3
+import json
 
 import numpy as np
 import pytest
@@ -19,6 +20,8 @@ from cf.db import (
     insert_patterns_batch,
     restore_pragmas,
     search_similar,
+    index_identity,
+    store_index_identity,
 )
 from cf.embeddings import to_bytes
 
@@ -93,6 +96,58 @@ class TestInitDb:
         init_db(conn)
         row = conn.execute("SELECT COUNT(*) FROM commands").fetchone()
         assert row[0] == 0
+
+    def test_rejects_old_vector_dimension_before_changing_schema(self, tmp_path):
+        conn = get_connection(tmp_path / "old.db")
+        conn.execute("CREATE VIRTUAL TABLE pattern_embeddings USING vec0(pattern_id INTEGER PRIMARY KEY, embedding FLOAT[384])")
+        with pytest.raises(RuntimeError, match="cf --seed --force"):
+            init_db(conn)
+        assert conn.execute("SELECT 1 FROM sqlite_master WHERE name = 'commands'").fetchone() is None
+        conn.close()
+
+    def test_rejects_model_revision_mismatch_without_reading_model_files(self, tmp_db):
+        _, conn = tmp_db
+        identity = {**index_identity(), "revision": "a-different-model"}
+        conn.execute("INSERT INTO index_metadata (key, value) VALUES ('model_identity', ?)", (json.dumps(identity),))
+        conn.commit()
+        with pytest.raises(RuntimeError, match="cf --seed --force"):
+            init_db(conn)
+
+    def test_accepts_current_marker_and_unmarked_fixture_databases(self, tmp_db):
+        _, conn = tmp_db
+        init_db(conn)
+        store_index_identity(conn)
+        conn.commit()
+        init_db(conn)
+
+    def test_rejects_changed_weights_with_the_same_model_revision(self, tmp_db, tmp_path, monkeypatch):
+        _, conn = tmp_db
+        directory = tmp_path / "checksummed-model"
+        directory.mkdir()
+        monkeypatch.setattr("cf.db.ONNX_DIR", directory)
+        path = directory / "checksums.json"
+        path.write_text(json.dumps({"model.onnx": "old-weights", "tokenizer.json": "same-tokenizer"}))
+        store_index_identity(conn)
+        conn.commit()
+        path.write_text(json.dumps({"model.onnx": "new-weights", "tokenizer.json": "same-tokenizer"}))
+        with pytest.raises(ValueError, match="cf --seed --force"):
+            init_db(conn)
+
+    def test_missing_model_checksums_do_not_prevent_a_cached_query(self, tmp_db, tmp_path, monkeypatch, embedding_bytes):
+        from cf.search import _normalize_query, search
+        from unittest.mock import patch
+        path, conn = tmp_db
+        directory = tmp_path / "checksummed-model"
+        directory.mkdir()
+        monkeypatch.setattr("cf.db.ONNX_DIR", directory)
+        checksum_path = directory / "checksums.json"
+        checksum_path.write_text(json.dumps({"model.onnx": "weights", "tokenizer.json": "tokenizer"}))
+        store_index_identity(conn)
+        cache_query(conn, _normalize_query("cached request"), embedding_bytes(0))
+        checksum_path.unlink()
+        with patch("cf.embeddings.encode_text", side_effect=AssertionError("model must not load")), \
+                patch("cf.embeddings.model_fingerprint", side_effect=AssertionError("weights must not be read")):
+            assert search("cached request", db_path=path) == []
 
 
 class TestInsertCommandsBatch:
@@ -171,6 +226,11 @@ class TestQueryCache:
         cache_query(conn, "same key", second)
         result = get_cached_query(conn, "same key")
         assert result == second
+
+    def test_invalid_cached_vector_is_ignored(self, tmp_db):
+        _, conn = tmp_db
+        cache_query(conn, "invalid", b"old-or-corrupt-vector")
+        assert get_cached_query(conn, "invalid") is None
 
 
 class TestSearchSimilar:

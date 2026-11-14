@@ -1,132 +1,115 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# cf - Natural Language Shell Command Finder
-# Install script for macOS/Linux
-
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-VENV_DIR="$SCRIPT_DIR/.venv"
-SHELL_FILE="$SCRIPT_DIR/shell/cf.zsh"
+PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
+VENV_DIR="$PROJECT_DIR/.venv"
+SHELL_FILE="$PROJECT_DIR/shell/cf.zsh"
 ZSHRC="${ZDOTDIR:-$HOME}/.zshrc"
-
-# Colors
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-CYAN='\033[0;36m'
-BOLD='\033[1m'
-NC='\033[0m'
-
-info()  { echo -e "${CYAN}[info]${NC}  $*"; }
-ok()    { echo -e "${GREEN}[ok]${NC}    $*"; }
-warn()  { echo -e "${YELLOW}[warn]${NC}  $*"; }
-error() { echo -e "${RED}[error]${NC} $*"; exit 1; }
-
-echo -e "${BOLD}"
-echo "  _____ ___ "
-echo " / ____|  _|"
-echo "| |    | |_  Command Finder"
-echo "| |___ |  _| v0.1.0"
-echo " \_____|_|   Natural language shell search"
-echo -e "${NC}"
-
-# ── Check Python ──────────────────────────────────────────────
-info "Checking Python..."
-if command -v python3 &>/dev/null; then
-    PYTHON="python3"
-elif command -v python &>/dev/null; then
-    PYTHON="python"
-else
-    error "Python 3.12+ is required but not found. Install it first."
-fi
-
-PY_VERSION=$($PYTHON -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')
-PY_MAJOR=$($PYTHON -c 'import sys; print(sys.version_info.major)')
-PY_MINOR=$($PYTHON -c 'import sys; print(sys.version_info.minor)')
-
-if [ "$PY_MAJOR" -lt 3 ] || { [ "$PY_MAJOR" -eq 3 ] && [ "$PY_MINOR" -lt 12 ]; }; then
-    error "Python 3.12+ is required (found $PY_VERSION)"
-fi
-ok "Python $PY_VERSION"
-
-# ── Create virtual environment ────────────────────────────────
-if [ -d "$VENV_DIR" ]; then
-    info "Virtual environment already exists at $VENV_DIR"
-else
-    info "Creating virtual environment..."
-    $PYTHON -m venv "$VENV_DIR"
-    ok "Created $VENV_DIR"
-fi
-
-# ── Install package ──────────────────────────────────────────
-info "Installing cf and dependencies (this may take a minute)..."
-"$VENV_DIR/bin/pip" install --quiet --upgrade pip
-"$VENV_DIR/bin/pip" install --quiet -e "$SCRIPT_DIR"
-ok "Installed cf $(\"$VENV_DIR/bin/cf\" --version 2>/dev/null || echo '0.1.0')"
-
-# ── Seed database ────────────────────────────────────────────
-info "Seeding command database..."
-"$VENV_DIR/bin/cf" --seed 2>&1 | grep -E "^(Done|Database)" || true
-ok "Database ready"
-
-# ── Symlink to PATH ──────────────────────────────────────────
 LINK_DIR="$HOME/.local/bin"
-mkdir -p "$LINK_DIR"
+LINK_PATH="$LINK_DIR/cf"
+BUILD_DIR=""
+WITH_SHELL=false
 
-if [ -L "$LINK_DIR/cf" ] || [ -f "$LINK_DIR/cf" ]; then
-    rm "$LINK_DIR/cf"
-fi
-ln -s "$VENV_DIR/bin/cf" "$LINK_DIR/cf"
-ok "Linked cf -> $LINK_DIR/cf"
-
-# Check if ~/.local/bin is in PATH
-if ! echo "$PATH" | tr ':' '\n' | grep -q "$LINK_DIR"; then
-    warn "$LINK_DIR is not in your PATH"
-    echo "     Add this to your shell profile:"
-    echo "       export PATH=\"\$HOME/.local/bin:\$PATH\""
-fi
-
-# ── Shell integration ────────────────────────────────────────
-echo ""
-info "Setting up shell integration..."
-
-SHELL_SOURCE_LINE="source $SHELL_FILE"
-
-if [ -f "$ZSHRC" ] && grep -qF "$SHELL_SOURCE_LINE" "$ZSHRC"; then
-    ok "Shell integration already in $ZSHRC"
-else
-    echo ""
-    echo -e "  ${BOLD}Shell integration enables:${NC}"
-    echo "    - cf \"query\" pushes the command into your prompt (print -z)"
-    echo "    - Ctrl+F opens cf search as a ZLE widget"
-    echo ""
-    read -rp "  Add shell integration to $ZSHRC? [Y/n] " answer
-    answer="${answer:-Y}"
-
-    if [[ "$answer" =~ ^[Yy]$ ]]; then
-        echo "" >> "$ZSHRC"
-        echo "# cf - Natural Language Shell Command Finder" >> "$ZSHRC"
-        echo "$SHELL_SOURCE_LINE" >> "$ZSHRC"
-        ok "Added to $ZSHRC"
-        warn "Run 'source ~/.zshrc' or restart your terminal to activate"
-    else
-        info "Skipped. You can add it manually later:"
-        echo "       $SHELL_SOURCE_LINE"
+info() { printf '[cf-ru] %s\n' "$*"; }
+error() { printf '[cf-ru] Ошибка: %s\n' "$*" >&2; exit 1; }
+cleanup() {
+    if [[ -n "$BUILD_DIR" && -d "$BUILD_DIR" ]]; then
+        rm -rf -- "$BUILD_DIR"
     fi
+}
+trap cleanup EXIT
+
+for argument in "$@"; do
+    case "$argument" in
+        --shell) WITH_SHELL=true ;;
+        --help|-h)
+            printf 'Установка Command Finder RU\n\nИспользование: ./install.sh [--shell]\n  --shell  добавить интеграцию в .zshrc\n'
+            exit 0 ;;
+        *) error "Неизвестный параметр: $argument" ;;
+    esac
+done
+
+case "$PROJECT_DIR" in
+    /mnt/[a-zA-Z]/*) error "Разместите проект в файловой системе Linux, например в ~/projects." ;;
+esac
+
+PYTHON_BIN="$(command -v "${CF_PYTHON:-python3}" || true)"
+[[ -n "$PYTHON_BIN" ]] || error 'Нужен Python 3.12 или новее.'
+case "$PYTHON_BIN" in
+    /mnt/*|*.exe) error 'Используйте Python, установленный в Linux/WSL или macOS.' ;;
+esac
+"$PYTHON_BIN" -c 'import sys; raise SystemExit(0 if sys.version_info >= (3, 12) and sys.platform in ("linux", "darwin") else 1)' \
+    || error 'Нужен Python 3.12+ для Linux/WSL или macOS.'
+
+if [[ -L "$LINK_PATH" ]]; then
+    [[ "$(readlink "$LINK_PATH")" == "$VENV_DIR/bin/cf" ]] \
+        || error "$LINK_PATH указывает на другой проект. Освободите это имя или установите вручную."
+elif [[ -e "$LINK_PATH" ]]; then
+    error "$LINK_PATH уже существует. Установщик сохраняет этот файл; используйте ручную установку."
+fi
+[[ ! -L "$VENV_DIR" ]] || error 'Каталог .venv должен быть обычным каталогом внутри проекта.'
+
+info 'Подготовка рабочего окружения...'
+if [[ ! -d "$VENV_DIR" ]]; then
+    "$PYTHON_BIN" -m venv "$VENV_DIR"
+fi
+"$VENV_DIR/bin/python" -m pip install --disable-pip-version-check -e "$PROJECT_DIR"
+MODEL_DIR="$("$VENV_DIR/bin/python" -c 'from cf.config import ONNX_DIR; print(ONNX_DIR)')"
+
+if "$VENV_DIR/bin/python" -c 'from cf.config import ONNX_DIR; from cf.model import verify_artifact; verify_artifact(ONNX_DIR)' \
+    >/dev/null 2>&1; then
+    info 'Проверка готовой локальной модели...'
+    "$VENV_DIR/bin/cf" --prepare-model
+else
+    "$PYTHON_BIN" -c 'import sys; raise SystemExit(0 if sys.version_info[:2] in ((3, 12), (3, 13)) else 1)' \
+        || error 'Для сборки закреплённой модели используйте CF_PYTHON=python3.12 ./install.sh либо готовый ONNX-артефакт.'
+    info 'Первоначальная сборка модели: нужны интернет и свободное место для CPU-зависимостей.'
+    BUILD_DIR="$(mktemp -d "$PROJECT_DIR/.model-build.XXXXXX")"
+    "$PYTHON_BIN" -m venv "$BUILD_DIR"
+    export PIP_CACHE_DIR="$BUILD_DIR/pip-cache"
+    if [[ "$(uname -s)" == Linux ]]; then
+        "$BUILD_DIR/bin/python" -m pip install --disable-pip-version-check 'torch==2.6.0' \
+            --index-url https://download.pytorch.org/whl/cpu
+    else
+        "$BUILD_DIR/bin/python" -m pip install --disable-pip-version-check 'torch==2.6.0'
+    fi
+    "$BUILD_DIR/bin/python" -m pip install --disable-pip-version-check -e "${PROJECT_DIR}[export]"
+    HF_HOME="$BUILD_DIR/model-cache" \
+    HF_HUB_CACHE="$BUILD_DIR/model-cache/hub" \
+    SENTENCE_TRANSFORMERS_HOME="$BUILD_DIR/model-cache" \
+    XDG_CACHE_HOME="$BUILD_DIR/cache" \
+        "$BUILD_DIR/bin/cf" --prepare-model
+    cleanup
+    BUILD_DIR=""
 fi
 
-# ── Done ──────────────────────────────────────────────────────
-echo ""
-echo -e "${GREEN}${BOLD}Installation complete!${NC}"
-echo ""
-echo "  Usage:"
-echo "    cf \"find large files\"              # interactive selector -> readline"
-echo "    cf --copy \"compress a folder\"       # copy to clipboard"
-echo "    cf --print \"undo git commit\"        # print to stdout"
-echo "    cf --tmux \"list processes\"          # send to tmux pane"
-echo "    cf --verbose \"disk usage\"           # show similarity scores"
-echo "    cf --seed --force                   # rebuild the database"
-echo ""
-echo "  Keybinding:"
-echo "    Ctrl+F                              # open cf search widget"
-echo ""
+info 'Индексация русского словаря...'
+"$VENV_DIR/bin/cf" --seed
+
+mkdir -p "$LINK_DIR"
+if [[ ! -L "$LINK_PATH" ]]; then
+    ln -s "$VENV_DIR/bin/cf" "$LINK_PATH"
+fi
+info "Команда доступна по пути $LINK_PATH"
+
+case ":$PATH:" in
+    *":$LINK_DIR:"*) ;;
+    *) info 'Добавьте в профиль оболочки: export PATH="$HOME/.local/bin:$PATH"' ;;
+esac
+
+printf -v SOURCE_LINE 'source %q' "$SHELL_FILE"
+MARKER_LINE="# cf-ru: $SOURCE_LINE"
+if "$WITH_SHELL"; then
+    case "$ZSHRC" in
+        /mnt/*) error 'Файл .zshrc должен находиться в файловой системе Linux/WSL.' ;;
+    esac
+    mkdir -p "$(dirname "$ZSHRC")"
+    if [[ ! -f "$ZSHRC" ]] || ! grep -Fqx -- "$SOURCE_LINE" "$ZSHRC"; then
+        printf '\n%s\n%s\n' "$MARKER_LINE" "$SOURCE_LINE" >> "$ZSHRC"
+    fi
+    info "Интеграция подключена в $ZSHRC. Перезапустите терминал."
+else
+    info "Для интеграции zsh добавьте в .zshrc: $SOURCE_LINE"
+fi
+
+info 'Установка завершена. Пример: cf "найди большие файлы"'

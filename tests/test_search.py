@@ -10,28 +10,27 @@ from cf.search import SearchResult, _normalize_query, search
 
 
 class TestNormalizeQuery:
-    def test_lowercases(self):
-        assert _normalize_query("FIND FILES") == "files find"
+    def test_preserves_negation(self):
+        assert _normalize_query("delete files") != _normalize_query("do not delete files")
+        assert _normalize_query("удали файлы") != _normalize_query("не удали файлы")
 
-    def test_strips_stopwords(self):
-        assert _normalize_query("how to find a file") == "file find"
+    def test_preserves_order(self):
+        assert _normalize_query("copy a into b") != _normalize_query("copy b into a")
 
-    def test_sorts_tokens(self):
-        assert _normalize_query("delete old files") == "delete files old"
+    def test_preserves_filename_case(self):
+        assert _normalize_query("read README.md") != _normalize_query("read readme.md")
 
-    def test_all_stopwords_fallback(self):
-        result = _normalize_query("the a an")
-        assert result != ""
-        assert "a" in result
+    def test_preserves_internal_whitespace(self):
+        assert _normalize_query("найди 'a  b'") != _normalize_query("найди 'a b'")
+
+    def test_strips_only_outer_whitespace(self):
+        assert _normalize_query("  найди файл\n") == _normalize_query("найди файл")
+
+    def test_does_not_reuse_old_normalized_keys(self):
+        assert _normalize_query("delete files") == "v2:delete files"
 
     def test_empty_string(self):
-        assert _normalize_query("") == ""
-
-    def test_deterministic_different_order(self):
-        assert _normalize_query("files list") == _normalize_query("list files")
-
-    def test_single_meaningful_word(self):
-        assert _normalize_query("the process") == "process"
+        assert _normalize_query("") == "v2:"
 
 
 class TestSearchResult:
@@ -62,6 +61,30 @@ class TestSearchResult:
 
 
 class TestSearch:
+    @pytest.mark.parametrize("first,second", [("delete files", "do not delete files"),
+                                            ("copy a into b", "copy b into a"),
+                                            ("read README.md", "read readme.md"),
+                                            ("найди 'a  b'", "найди 'a b'")])
+    def test_distinct_intents_are_encoded_separately_in_the_real_cache(self, populated_db, random_embedding, first, second):
+        path, conn = populated_db
+        with patch("cf.embeddings.encode_text", side_effect=[random_embedding(1), random_embedding(2)]) as encode:
+            initial = search(first, db_path=path)
+            search(second, db_path=path)
+            repeated = search(first, db_path=path)
+        assert encode.call_count == 2
+        assert repeated == initial
+        keys = {row[0] for row in conn.execute("SELECT query_text FROM query_cache")}
+        assert keys == {_normalize_query(first), _normalize_query(second)}
+
+    def test_cached_search_does_not_load_or_require_the_model(self, populated_db, embedding_bytes):
+        from cf.db import cache_query, store_index_identity
+        path, conn = populated_db
+        store_index_identity(conn)
+        cache_query(conn, _normalize_query("покажи файлы"), embedding_bytes(1))
+        with patch("cf.embeddings.encode_text", side_effect=AssertionError("cache hit must not encode")), \
+                patch("cf.embeddings.model_fingerprint", side_effect=AssertionError("cache hit must not read model weights")):
+            assert search("покажи файлы", db_path=path)
+
     @patch("cf.search.get_connection")
     @patch("cf.search.init_db")
     @patch("cf.search.get_cached_query", return_value=None)

@@ -1,107 +1,103 @@
 import json
 import sys
+
+import numpy as np
 from pathlib import Path
 
-from cf.config import DATA_DIR
+from cf.config import DATA_DIR, EMBEDDING_DIM
 from cf.db import (
     bulk_load_pragmas,
-    clear_all,
     get_connection,
     init_db,
+    get_stats,
+    reset_index,
+    store_index_identity,
     insert_commands_batch,
     insert_embeddings_batch,
     insert_patterns_batch,
     restore_pragmas,
 )
-from cf.embeddings import encode_batch, to_bytes
+from cf.embeddings import _onnx_available, encode_batch, model_fingerprint, to_bytes
 
 
 def load_seed_files(data_dir: Path = DATA_DIR) -> list[dict]:
     files = sorted(data_dir.glob("*.json"))
     if not files:
-        print(f"No seed files found in {data_dir}", file=sys.stderr)
+        print(f"Файлы словаря не найдены: {data_dir}", file=sys.stderr)
         return []
     all_data = []
     for f in files:
-        with open(f) as fh:
+        with open(f, encoding="utf-8") as fh:
             data = json.load(fh)
             all_data.append(data)
-        print(f"  Loaded {f.name}: {len(data['commands'])} commands", file=sys.stderr)
+        print(f"  Загружен {f.name}: {len(data['commands'])} команд", file=sys.stderr)
     return all_data
 
 
 def seed_database(db_path=None, force: bool = False) -> dict:
     from cf.config import DB_PATH
     db_path = db_path or DB_PATH
-
     conn = get_connection(db_path)
-    init_db(conn)
+    try:
+        if not force:
+            init_db(conn)
+            existing = get_stats(conn)
+            if existing["commands"] or existing["patterns"]:
+                print("База уже заполнена. Для перестроения выполните cf --seed --force.", file=sys.stderr)
+                return existing
 
-    if force:
-        print("Clearing existing data...", file=sys.stderr)
-        clear_all(conn)
+        print("Загрузка словаря...", file=sys.stderr)
+        all_data = load_seed_files()
+        if not all_data:
+            print("Словарь пуст; существующая база не изменена.", file=sys.stderr)
+            tables = {row[0] for row in conn.execute("SELECT name FROM sqlite_master WHERE type = 'table'")}
+            return get_stats(conn) if {"commands", "patterns"}.issubset(tables) else {"commands": 0, "patterns": 0}
 
-    print("Loading seed files...", file=sys.stderr)
-    all_data = load_seed_files()
-    if not all_data:
-        return {"commands": 0, "patterns": 0}
+        cmd_rows = []
+        cmd_seen = {}
+        pat_meta = []
+        for category_data in all_data:
+            category = category_data["category"]
+            for cmd in category_data["commands"]:
+                key = (category, cmd["name"])
+                if key not in cmd_seen:
+                    cmd_seen[key] = len(cmd_rows)
+                    cmd_rows.append((cmd["name"], category, cmd["synopsis"], cmd["description"]))
+                cmd_idx = cmd_seen[key]
+                for pat in cmd["patterns"]:
+                    pat_meta.append((cmd_idx, pat["type"], pat["text"], pat["command"],
+                                     pat.get("explanation"), 1 if pat.get("destructive") else 0))
 
-    # ── Phase 1: Flatten and collect ─────────────────────────
-    # Build ordered lists for batch operations
-    cmd_rows = []       # (name, category, synopsis, description)
-    cmd_keys = []       # tracks which command each row belongs to
-    cmd_seen = {}       # (category, name) -> index in cmd_rows
-    pat_meta = []       # (cmd_index, type, text, template, explanation, destructive)
+        texts = [pattern[2] for pattern in pat_meta]
+        print(f"Кодирование описаний: {len(texts)}...", file=sys.stderr)
+        fingerprint = model_fingerprint() if _onnx_available() else None
+        vectors = np.asarray(encode_batch(texts), dtype=np.float32)
+        if vectors.shape != (len(texts), EMBEDDING_DIM) or not np.isfinite(vectors).all():
+            raise ValueError("Модель вернула неверные векторы; существующая база не изменена")
+        if fingerprint is not None and model_fingerprint() != fingerprint:
+            raise RuntimeError("Модель изменилась во время индексации; повторите cf --seed --force")
 
-    for category_data in all_data:
-        category = category_data["category"]
-        for cmd in category_data["commands"]:
-            key = (category, cmd["name"])
-            if key not in cmd_seen:
-                cmd_seen[key] = len(cmd_rows)
-                cmd_rows.append((cmd["name"], category, cmd["synopsis"], cmd["description"]))
-            cmd_idx = cmd_seen[key]
-            for pat in cmd["patterns"]:
-                pat_meta.append((
-                    cmd_idx,
-                    pat["type"],
-                    pat["text"],
-                    pat["command"],
-                    pat.get("explanation"),
-                    1 if pat.get("destructive") else 0,
-                ))
+        print("Пакетная запись в базу...", file=sys.stderr)
+        bulk_load_pragmas(conn)
+        try:
+            conn.execute("BEGIN IMMEDIATE")
+            if force:
+                reset_index(conn)
+            cmd_ids = insert_commands_batch(conn, cmd_rows)
+            pat_rows = [(cmd_ids[ci], ptype, text, template, explanation, destructive)
+                        for ci, ptype, text, template, explanation, destructive in pat_meta]
+            pat_ids = insert_patterns_batch(conn, pat_rows)
+            insert_embeddings_batch(conn, [(pat_id, to_bytes(vectors[i])) for i, pat_id in enumerate(pat_ids)])
+            store_index_identity(conn, fingerprint)
+            conn.commit()
+        except Exception:
+            conn.rollback()
+            raise
+        finally:
+            restore_pragmas(conn)
 
-    # ── Phase 2: Encode embeddings (cached) ──────────────────
-    texts = [p[2] for p in pat_meta]
-    print(f"Encoding {len(texts)} patterns...", file=sys.stderr)
-    embeddings = encode_batch(texts)
-
-    # ── Phase 3: Batch insert into DB ────────────────────────
-    print("Inserting into database...", file=sys.stderr)
-    bulk_load_pragmas(conn)
-
-    # Insert all commands in one batch
-    cmd_ids = insert_commands_batch(conn, cmd_rows)
-
-    # Build pattern rows with resolved command IDs
-    pat_rows = [
-        (cmd_ids[cm_idx], ptype, text, tmpl, expl, destructive)
-        for cm_idx, ptype, text, tmpl, expl, destructive in pat_meta
-    ]
-    pat_ids = insert_patterns_batch(conn, pat_rows)
-
-    # Build embedding rows with resolved pattern IDs
-    emb_rows = [
-        (pat_ids[i], to_bytes(embeddings[i]))
-        for i in range(len(pat_ids))
-    ]
-    insert_embeddings_batch(conn, emb_rows)
-
-    conn.commit()
-    restore_pragmas(conn)
-    conn.close()
-
-    cmd_count = len(cmd_rows)
-    pat_count = len(pat_meta)
-    print(f"Done: {cmd_count} commands, {pat_count} patterns indexed.", file=sys.stderr)
-    return {"commands": cmd_count, "patterns": pat_count}
+        stats = {"commands": len(cmd_rows), "patterns": len(pat_meta)}
+        print(f"Готово: {stats['commands']} команд, {stats['patterns']} описаний.", file=sys.stderr)
+        return stats
+    finally:
+        conn.close()
