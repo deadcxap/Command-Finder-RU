@@ -1,6 +1,7 @@
 """Tests for cf.selector module — command selection UI logic."""
 
 from unittest.mock import MagicMock, mock_open, patch
+from dataclasses import replace
 
 import pytest
 
@@ -129,11 +130,100 @@ class TestSelectWithInput:
         assert result == "find . -name '*.txt'"
 
 
-@pytest.mark.parametrize("answer,accepted", [("да\n", True), ("ДА\n", True), ("yes\n", True), ("нет\n", False)])
-def test_destructive_confirmation_accepts_explicit_russian_or_english_yes(sample_results, answer, accepted):
+@pytest.mark.parametrize("answer", [
+    "y", "Y", "yes", "д", "да", "ДА", "да, подтверждаю", "подтверждаю", "ок", "конечно",
+    "yes, proceed", "давай", "да, пожалуйста", "Yes, please!", "я подтверждаю", "yes, I confirm",
+    "  да, конечно.  ", "yes, thank you", "да, согласен", "okay",
+    "ага", "угу", "ладно", "хорошо", "продолжай", "sure", "absolutely", "ага, конечно",
+])
+def test_destructive_confirmation_accepts_short_and_full_affirmative_answers(sample_results, answer):
     from cf.selector import _confirm_destructive
 
-    terminal = mock_open(read_data=answer)
+    terminal = mock_open(read_data=answer + "\n")
     with patch("builtins.open", terminal):
-        assert _confirm_destructive(sample_results[0]) is accepted
-    assert "ОПАСНАЯ КОМАНДА" in terminal().write.call_args.args[0]
+        assert _confirm_destructive(sample_results[0]) is True
+    prompt = terminal().write.call_args.args[0]
+    assert "ОПАСНАЯ КОМАНДА" in prompt
+    assert "[y/N]" in prompt
+
+
+@pytest.mark.parametrize("answer", [
+    "", "   ", "n", "N", "no", "нет", "не подтверждаю", "не уверен", "да нет", "да, но не надо",
+    "yes, but no", "no, thanks", "не давай", "да?", "наверное", "пожалуйста", "thank you",
+    "yesterday", "yesplease", "подтверждаюнет", "дада", "y/n", "yes/no", "surely not", "maybe yes",
+    "да, не уверен", "да, отмена", "не согласен", "не согласна", "whatever", "yes; proceed",
+])
+def test_destructive_confirmation_rejects_default_negation_ambiguity_and_unknown_answers(sample_results, answer):
+    from cf.selector import _confirm_destructive
+
+    with patch("builtins.open", mock_open(read_data=answer + "\n")):
+        assert _confirm_destructive(sample_results[0]) is False
+
+
+def test_destructive_confirmation_rejects_unavailable_terminal(sample_results, capsys):
+    from cf.selector import _confirm_destructive
+
+    with patch("builtins.open", side_effect=OSError("Нет терминала")):
+        assert _confirm_destructive(sample_results[0]) is False
+    assert "терминал недоступен" in capsys.readouterr().err
+
+
+def test_filled_command_is_shown_selected_and_confirmed(sample_results):
+    from cf.selector import _select_with_input
+
+    result = sample_results[0]
+    result.command_template = "mv -- <source> <destination>"
+    result.filled_command = "mv -- './мои файлы' ./backup"
+    result.destructive = True
+    assert result.command in _format_entry(result, verbose=False)
+    preview = _format_preview(result)
+    assert "Шаблон: mv -- <source> <destination>" in preview
+    assert "Подстановка: " + result.command in preview
+    terminal = mock_open(read_data="да\n")
+    with patch("builtins.input", return_value="1"), patch("builtins.open", terminal):
+        selected = _select_with_input([result], verbose=False, has_more=False)
+    assert selected == result.command
+    assert result.command in terminal().write.call_args.args[0]
+    assert select_command([result], non_interactive=True) == result.command
+
+
+def test_missing_arguments_are_visible_in_both_menus(sample_results, capsys):
+    from cf.selector import _select_with_input
+
+    result = sample_results[0]
+    result.missing_arguments = ("source", "destination")
+    assert "Заполните параметры: <source>, <destination>" in _format_preview(result)
+    with patch("builtins.input", return_value="q"):
+        _select_with_input([result], verbose=False, has_more=False)
+    assert "Заполните параметры: <source>, <destination>" in capsys.readouterr().err
+
+
+@pytest.mark.parametrize("command", [
+    "cat files_to_remove.txt | xargs rm",
+    "du -sh * | sort -rh | head -10",
+    "cat 'file|name.txt'",
+    r"cat 'file\|name.txt'",
+    r"cat 'file\\|name.txt' | sort",
+    "test -d ./test || mkdir ./test",
+])
+def test_real_menu_keeps_full_pipelines_literal_pipes_and_preview_identity(sample_results, monkeypatch, command):
+    from simple_term_menu import TerminalMenu
+    from cf.selector import _select_with_menu
+
+    monkeypatch.setenv("TERM", "xterm")
+    results = [replace(sample_results[0], command_template=command, pattern_text="Первый результат"),
+               replace(sample_results[0], command_template=command, pattern_text="Второй результат")]
+
+    def inspect_menu(menu):
+        assert menu._menu_entries[:2] == [_format_entry(result, False) for result in results]
+        for index, result in enumerate(results):
+            preview_argument = menu._preview_arguments[index]
+            assert menu._preview_command(preview_argument) == _format_preview(result)
+        assert menu._preview_command(menu._preview_arguments[2]) == ""
+        return 1
+
+    with patch.object(TerminalMenu, "_init_backspace_control_character"), \
+            patch.object(TerminalMenu, "_add_missing_control_characters_for_keys"), \
+            patch.object(TerminalMenu, "_init_terminal_codes"), \
+            patch.object(TerminalMenu, "show", autospec=True, side_effect=inspect_menu):
+        assert _select_with_menu(results, verbose=False, has_more=True) == command

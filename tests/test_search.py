@@ -6,7 +6,7 @@ import numpy as np
 import pytest
 
 from cf.config import EMBEDDING_DIM
-from cf.search import SearchResult, _normalize_query, search
+from cf.search import SearchResult, UnsupportedQueryError, _normalize_query, search
 
 
 class TestNormalizeQuery:
@@ -27,10 +27,10 @@ class TestNormalizeQuery:
         assert _normalize_query("  найди файл\n") == _normalize_query("найди файл")
 
     def test_does_not_reuse_old_normalized_keys(self):
-        assert _normalize_query("delete files") == "v2:delete files"
+        assert _normalize_query("delete files") == "v5:delete files"
 
     def test_empty_string(self):
-        assert _normalize_query("") == "v2:"
+        assert _normalize_query("") == "v5:"
 
 
 class TestSearchResult:
@@ -61,6 +61,34 @@ class TestSearchResult:
 
 
 class TestSearch:
+    @pytest.mark.parametrize("query", [
+        "удали файлы /tmp/old.log /tmp/current.log, кроме /tmp/current.log",
+        "удали файлы /tmp/old.log и /tmp/current.log кроме /tmp/current.log",
+        "удали файлы a.log или b.log",
+        "не удалять файлы",
+    ])
+    def test_unsupported_file_constraints_stop_before_database_and_encoder(self, query):
+        with patch("cf.search.get_connection") as database, patch("cf.embeddings.encode_text") as encoder:
+            with pytest.raises(UnsupportedQueryError, match="списка файлов"):
+                search(query)
+        database.assert_not_called()
+        encoder.assert_not_called()
+
+    @pytest.mark.parametrize("query,semantic", [
+        ("скопируй файл README.md в папку ~/backup", "скопируй файл в папку"),
+        ("удалить файлы test.tar.gz large_file.dat", "удалить файлы"),
+    ])
+    def test_argument_search_ignores_old_cached_vectors(self, populated_db, embedding_bytes, random_embedding, query, semantic):
+        from cf.db import cache_query
+
+        path, conn = populated_db
+        cache_query(conn, "v4:" + query, embedding_bytes(1))
+        with patch("cf.embeddings.encode_text", return_value=random_embedding(2)) as encode:
+            first = search(query, db_path=path)
+            repeated = search(query, db_path=path)
+        encode.assert_called_once_with(semantic)
+        assert first == repeated
+
     @pytest.mark.parametrize("first,second", [("delete files", "do not delete files"),
                                             ("copy a into b", "copy b into a"),
                                             ("read README.md", "read readme.md"),
@@ -84,6 +112,17 @@ class TestSearch:
         with patch("cf.embeddings.encode_text", side_effect=AssertionError("cache hit must not encode")), \
                 patch("cf.embeddings.model_fingerprint", side_effect=AssertionError("cache hit must not read model weights")):
             assert search("покажи файлы", db_path=path)
+
+    def test_show_more_keeps_existing_ranking_and_candidate_pool(self, populated_db, random_embedding):
+        from cf.db import search_similar
+
+        path, _ = populated_db
+        with patch("cf.embeddings.encode_text", return_value=random_embedding(1)), \
+                patch("cf.search.search_similar", wraps=search_similar) as candidates:
+            first = search("покажи файл ./example", top_k=1, db_path=path)
+            expanded = search("покажи файл ./example", top_k=7, db_path=path)
+        assert expanded[:1] == first
+        assert [call.kwargs["top_k"] for call in candidates.call_args_list] == [200, 200]
 
     @patch("cf.search.get_connection")
     @patch("cf.search.init_db")

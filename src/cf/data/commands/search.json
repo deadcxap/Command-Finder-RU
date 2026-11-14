@@ -820,13 +820,15 @@
           "type": "example",
           "text": "удалить файлы из списка files_to_remove.txt",
           "command": "cat files_to_remove.txt | xargs rm",
-          "explanation": "Удалить файлы из списка files_to_remove.txt."
+          "explanation": "Удалить файлы из списка files_to_remove.txt.",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "передать перечисленные в текстовом файле имена команде rm через xargs",
           "command": "cat files_to_remove.txt | xargs rm",
-          "explanation": "Удалить файлы из списка files_to_remove.txt."
+          "explanation": "Удалить файлы из списка files_to_remove.txt.",
+          "destructive": true
         },
         {
           "type": "example",

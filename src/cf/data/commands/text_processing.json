@@ -547,50 +547,74 @@
         {
           "type": "example",
           "text": "показать первые десять строк файла",
-          "command": "head file.txt",
-          "explanation": "Показать первые десять строк файла."
+          "command": "head -- <files>",
+          "explanation": "Показать первые десять строк файла.",
+          "arguments": {
+            "files": "paths"
+          }
         },
         {
           "type": "example",
           "text": "прочитать начало текста стандартной командой head",
-          "command": "head file.txt",
-          "explanation": "Показать первые десять строк файла."
+          "command": "head -- <files>",
+          "explanation": "Показать первые десять строк файла.",
+          "arguments": {
+            "files": "paths"
+          }
         },
         {
           "type": "example",
           "text": "вывести первые двадцать строк файла",
-          "command": "head -n 20 file.txt",
-          "explanation": "Вывести первые двадцать строк файла."
+          "command": "head -n 20 -- <files>",
+          "explanation": "Вывести первые двадцать строк файла.",
+          "arguments": {
+            "files": "paths"
+          }
         },
         {
           "type": "example",
           "text": "ограничить просмотр начала файла двадцатью строками",
-          "command": "head -n 20 file.txt",
-          "explanation": "Вывести первые двадцать строк файла."
+          "command": "head -n 20 -- <files>",
+          "explanation": "Вывести первые двадцать строк файла.",
+          "arguments": {
+            "files": "paths"
+          }
         },
         {
           "type": "example",
           "text": "показать файл без последних пяти строк",
-          "command": "head -n -5 file.txt",
-          "explanation": "Показать файл без последних пяти строк."
+          "command": "head -n -5 -- <files>",
+          "explanation": "Показать файл без последних пяти строк.",
+          "arguments": {
+            "files": "paths"
+          }
         },
         {
           "type": "example",
           "text": "вывести всё содержимое, исключив пять строк с конца",
-          "command": "head -n -5 file.txt",
-          "explanation": "Показать файл без последних пяти строк."
+          "command": "head -n -5 -- <files>",
+          "explanation": "Показать файл без последних пяти строк.",
+          "arguments": {
+            "files": "paths"
+          }
         },
         {
           "type": "example",
           "text": "прочитать первые сто байтов двоичного файла",
-          "command": "head -c 100 file.bin",
-          "explanation": "Прочитать первые сто байтов двоичного файла."
+          "command": "head -c 100 -- <files>",
+          "explanation": "Прочитать первые сто байтов двоичного файла.",
+          "arguments": {
+            "files": "paths"
+          }
         },
         {
           "type": "example",
           "text": "вывести начало file.bin длиной 100 байт",
-          "command": "head -c 100 file.bin",
-          "explanation": "Прочитать первые сто байтов двоичного файла."
+          "command": "head -c 100 -- <files>",
+          "explanation": "Прочитать первые сто байтов двоичного файла.",
+          "arguments": {
+            "files": "paths"
+          }
         }
       ]
     },
@@ -602,50 +626,74 @@
         {
           "type": "example",
           "text": "показать последние десять строк файла",
-          "command": "tail file.txt",
-          "explanation": "Показать последние десять строк файла."
+          "command": "tail -- <files>",
+          "explanation": "Показать последние десять строк файла.",
+          "arguments": {
+            "files": "paths"
+          }
         },
         {
           "type": "example",
           "text": "прочитать конец текста стандартной командой tail",
-          "command": "tail file.txt",
-          "explanation": "Показать последние десять строк файла."
+          "command": "tail -- <files>",
+          "explanation": "Показать последние десять строк файла.",
+          "arguments": {
+            "files": "paths"
+          }
         },
         {
           "type": "example",
           "text": "вывести последние пятьдесят строк журнала",
-          "command": "tail -n 50 log.txt",
-          "explanation": "Вывести последние пятьдесят строк журнала."
+          "command": "tail -n 50 -- <files>",
+          "explanation": "Вывести последние пятьдесят строк журнала.",
+          "arguments": {
+            "files": "paths"
+          }
         },
         {
           "type": "example",
           "text": "посмотреть хвост log.txt длиной 50 строк",
-          "command": "tail -n 50 log.txt",
-          "explanation": "Вывести последние пятьдесят строк журнала."
+          "command": "tail -n 50 -- <files>",
+          "explanation": "Вывести последние пятьдесят строк журнала.",
+          "arguments": {
+            "files": "paths"
+          }
         },
         {
           "type": "example",
           "text": "следить за новыми строками системного журнала в реальном времени",
-          "command": "tail -f /var/log/syslog",
-          "explanation": "Следить за новыми строками системного журнала в реальном времени."
+          "command": "tail -f -- <files>",
+          "explanation": "Следить за новыми строками системного журнала в реальном времени.",
+          "arguments": {
+            "files": "paths"
+          }
         },
         {
           "type": "example",
           "text": "непрерывно выводить дописываемое содержимое /var/log/syslog",
-          "command": "tail -f /var/log/syslog",
-          "explanation": "Следить за новыми строками системного журнала в реальном времени."
+          "command": "tail -f -- <files>",
+          "explanation": "Следить за новыми строками системного журнала в реальном времени.",
+          "arguments": {
+            "files": "paths"
+          }
         },
         {
           "type": "example",
           "text": "вывести файл начиная со сотой строки",
-          "command": "tail -n +100 file.txt",
-          "explanation": "Вывести файл начиная со сотой строки."
+          "command": "tail -n +100 -- <files>",
+          "explanation": "Вывести файл начиная со сотой строки.",
+          "arguments": {
+            "files": "paths"
+          }
         },
         {
           "type": "example",
           "text": "пропустить первые 99 строк и показать оставшийся текст",
-          "command": "tail -n +100 file.txt",
-          "explanation": "Вывести файл начиная со сотой строки."
+          "command": "tail -n +100 -- <files>",
+          "explanation": "Вывести файл начиная со сотой строки.",
+          "arguments": {
+            "files": "paths"
+          }
         },
         {
           "type": "example",
@@ -1561,14 +1609,20 @@
         {
           "type": "example",
           "text": "вывести содержимое текстового файла в терминал",
-          "command": "cat notes.txt",
-          "explanation": "Вывести содержимое текстового файла в терминал."
+          "command": "cat -- <files>",
+          "explanation": "Вывести содержимое текстового файла в терминал.",
+          "arguments": {
+            "files": "paths"
+          }
         },
         {
           "type": "example",
           "text": "прочитать notes.txt через cat",
-          "command": "cat notes.txt",
-          "explanation": "Вывести содержимое текстового файла в терминал."
+          "command": "cat -- <files>",
+          "explanation": "Вывести содержимое текстового файла в терминал.",
+          "arguments": {
+            "files": "paths"
+          }
         },
         {
           "type": "example",
@@ -1585,14 +1639,20 @@
         {
           "type": "example",
           "text": "показать скрипт с номерами всех строк",
-          "command": "cat -n script.sh",
-          "explanation": "Показать скрипт с номерами всех строк."
+          "command": "cat -n -- <files>",
+          "explanation": "Показать скрипт с номерами всех строк.",
+          "arguments": {
+            "files": "paths"
+          }
         },
         {
           "type": "example",
           "text": "пронумеровать содержимое script.sh через cat -n",
-          "command": "cat -n script.sh",
-          "explanation": "Показать скрипт с номерами всех строк."
+          "command": "cat -n -- <files>",
+          "explanation": "Показать скрипт с номерами всех строк.",
+          "arguments": {
+            "files": "paths"
+          }
         },
         {
           "type": "example",

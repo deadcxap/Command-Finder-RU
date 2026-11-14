@@ -110,9 +110,9 @@ def populated_db(tmp_db, random_embedding):
     ])
 
     pat_rows = [
-        (cmd_ids[0], "example", "list files in a directory", "ls -la", "Show details", 0),
-        (cmd_ids[0], "example", "show hidden files", "ls -a", "Include dotfiles", 0),
-        (cmd_ids[1], "example", "search for text in files", "grep -r 'pattern' .", "Recursive search", 0),
+        (cmd_ids[0], "example", "list files in a directory", "ls -la", "Show details", 0, '{}'),
+        (cmd_ids[0], "example", "show hidden files", "ls -a", "Include dotfiles", 0, '{}'),
+        (cmd_ids[1], "example", "search for text in files", "grep -r 'pattern' .", "Recursive search", 0, '{}'),
     ]
     pat_ids = insert_patterns_batch(conn, pat_rows)
 

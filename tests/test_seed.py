@@ -24,7 +24,7 @@ def old_index(tmp_path, dimension=384):
     conn = get_connection(path)
     init_db(conn)
     cmd_id = insert_commands_batch(conn, [("old", "test", "old", "Старая команда")])[0]
-    pat_id = insert_patterns_batch(conn, [(cmd_id, "example", "старое описание", "old", None, 0)])[0]
+    pat_id = insert_patterns_batch(conn, [(cmd_id, "example", "старое описание", "old", None, 0, '{}')])[0]
     conn.execute("DROP TABLE pattern_embeddings")
     conn.execute(f"CREATE VIRTUAL TABLE pattern_embeddings USING vec0(pattern_id INTEGER PRIMARY KEY, embedding FLOAT[{dimension}])")
     vector = np.ones(dimension, dtype=np.float32)
@@ -74,6 +74,18 @@ class TestLoadSeedFiles:
 
 
 class TestSeedDatabase:
+    def test_invalid_arguments_preserve_existing_index_before_encoding(self, populated_db, sample_seed_data):
+        from cf.seed import seed_database
+
+        path, conn = populated_db
+        original = conn.execute("SELECT command_template FROM patterns ORDER BY id").fetchall()
+        sample_seed_data["commands"][0]["patterns"][0]["arguments"] = {"missing": "path"}
+        with patch("cf.seed.load_seed_files", return_value=[sample_seed_data]), patch("cf.seed.encode_batch") as encode:
+            with pytest.raises(ValueError):
+                seed_database(path, force=True)
+        encode.assert_not_called()
+        assert conn.execute("SELECT command_template FROM patterns ORDER BY id").fetchall() == original
+
     @patch("cf.seed.encode_batch")
     @patch("cf.seed.load_seed_files")
     def test_seed_inserts_correct_counts(self, mock_load, mock_encode, tmp_db, sample_seed_data):

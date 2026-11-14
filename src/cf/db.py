@@ -82,7 +82,8 @@ def init_db(conn: sqlite3.Connection, *, commit: bool = True) -> None:
             text TEXT NOT NULL,
             command_template TEXT NOT NULL,
             explanation TEXT,
-            destructive INTEGER NOT NULL DEFAULT 0
+            destructive INTEGER NOT NULL DEFAULT 0,
+            arguments TEXT NOT NULL DEFAULT '{{}}'
         );
 
         CREATE VIRTUAL TABLE IF NOT EXISTS pattern_embeddings USING vec0(
@@ -111,6 +112,8 @@ def init_db(conn: sqlite3.Connection, *, commit: bool = True) -> None:
         conn.execute(
             "ALTER TABLE patterns ADD COLUMN destructive INTEGER NOT NULL DEFAULT 0"
         )
+    if "arguments" not in cols:
+        conn.execute("ALTER TABLE patterns ADD COLUMN arguments TEXT NOT NULL DEFAULT '{}'")
     if commit:
         conn.commit()
 
@@ -178,10 +181,10 @@ def insert_commands_batch(conn: sqlite3.Connection,
 
 def insert_patterns_batch(conn: sqlite3.Connection,
                           rows: list[tuple]) -> list[int]:
-    """Batch insert patterns. rows: [(command_id, type, text, template, explanation, destructive), ...]"""
+    """Пакетная запись шаблонов с JSON-описанием аргументов последним полем."""
     conn.executemany(
-        "INSERT INTO patterns (command_id, pattern_type, text, command_template, explanation, destructive) "
-        "VALUES (?, ?, ?, ?, ?, ?)",
+        "INSERT INTO patterns (command_id, pattern_type, text, command_template, explanation, destructive, arguments) "
+        "VALUES (?, ?, ?, ?, ?, ?, ?)",
         rows,
     )
     last_id = conn.execute("SELECT last_insert_rowid()").fetchone()[0]
@@ -208,7 +211,8 @@ def search_similar(conn: sqlite3.Connection, query_embedding_bytes: bytes,
             c.description,
             c.synopsis,
             pe.distance,
-            p.destructive
+            p.destructive,
+            p.arguments
         FROM pattern_embeddings pe
         JOIN patterns p ON p.id = pe.pattern_id
         JOIN commands c ON c.id = p.command_id
@@ -227,6 +231,7 @@ def search_similar(conn: sqlite3.Connection, query_embedding_bytes: bytes,
             "synopsis": r[5],
             "distance": r[6],
             "destructive": bool(r[7]),
+            "arguments": json.loads(r[8]),
         }
         for r in rows
     ]
