@@ -113,7 +113,7 @@
       "patterns": [
         {
           "type": "example",
-          "text": "check if a file exists",
+          "text": "check whether a path exists and is a regular file",
           "command": "test -f /path/to/file && echo \"exists\"",
           "explanation": "Returns true if the file exists and is a regular file"
         },
@@ -255,7 +255,7 @@
         },
         {
           "type": "example",
-          "text": "generate a stream of empty lines",
+          "text": "generate exactly one hundred empty lines",
           "command": "yes '' | head -n 100",
           "explanation": "Produces 100 blank lines"
         },
@@ -385,9 +385,10 @@
         },
         {
           "type": "example",
-          "text": "create an empty file using redirection",
+          "text": "create an empty file or truncate an existing file to zero bytes",
           "command": "true > empty_file.txt",
-          "explanation": "Creates or truncates a file to zero bytes"
+          "explanation": "Creates a missing file or discards the contents of an existing file",
+          "destructive": true
         }
       ]
     },
@@ -404,7 +405,7 @@
         },
         {
           "type": "example",
-          "text": "test error handling in a pipeline",
+          "text": "skip the next command when the previous command fails",
           "command": "false && echo \"this won't print\"",
           "explanation": "The second command is skipped because false returns failure"
         },
@@ -651,9 +652,9 @@
         },
         {
           "type": "example",
-          "text": "prevent sleep while downloading a large file",
+          "text": "prevent system sleep during a download while the Mac uses AC power",
           "command": "caffeinate -s curl -O https://example.com/largefile.iso",
-          "explanation": "Keeps the system awake during the download"
+          "explanation": "Prevents system sleep while the download runs, only when connected to AC power"
         }
       ]
     },
@@ -714,8 +715,8 @@
         {
           "type": "example",
           "text": "check if a name is an alias before removing",
-          "command": "type ll && unalias ll",
-          "explanation": "Verifies what ll refers to, then removes the alias"
+          "command": "alias ll >/dev/null 2>&1 && unalias ll",
+          "explanation": "Checks specifically for an alias named ll and removes it only when that alias exists"
         }
       ]
     },
@@ -744,9 +745,9 @@
         },
         {
           "type": "example",
-          "text": "clear the command history",
+          "text": "clear the current Bash session history in memory",
           "command": "history -c",
-          "explanation": "Removes all entries from the current session history"
+          "explanation": "Removes the in-memory history list; does not overwrite the history file by itself"
         },
         {
           "type": "example",
@@ -800,9 +801,9 @@
         },
         {
           "type": "example",
-          "text": "load environment variables from a .env file",
+          "text": "load shell assignments from a trusted .env file into the current shell",
           "command": "source .env",
-          "explanation": "Exports all variables defined in the .env file into the current shell"
+          "explanation": "Executes the file in the current shell; only variables marked for export become environment variables"
         },
         {
           "type": "example",
@@ -1128,7 +1129,7 @@
         },
         {
           "type": "example",
-          "text": "search for a keyword across all man pages",
+          "text": "search manual page names and short descriptions for keywords",
           "command": "man -k \"copy files\"",
           "explanation": "Searches manual page descriptions for the keyword"
         },
@@ -1190,7 +1191,7 @@
         },
         {
           "type": "example",
-          "text": "show detailed help for a builtin",
+          "text": "show a short description of a Bash builtin or keyword",
           "command": "help -d for",
           "explanation": "Displays a short description of the for loop builtin"
         },
@@ -1344,9 +1345,9 @@
         },
         {
           "type": "example",
-          "text": "generate hex bytes usable as raw Ethereum wallet private key material",
+          "text": "generate 32 random bytes encoded as 64 hexadecimal digits",
           "command": "openssl rand -hex 32",
-          "explanation": "EVM private keys are 32 bytes (64 hex digits). Never share or log this; prefer hardware or audited wallet software for real funds, and ensure any import path rejects invalid secp256k1 scalars"
+          "explanation": "Prints 32 random bytes as hexadecimal data; does not create or validate a wallet key"
         }
       ]
     },
@@ -1407,7 +1408,7 @@
         },
         {
           "type": "example",
-          "text": "clear screen and scrollback buffer",
+          "text": "clear the visible terminal screen while preserving scrollback",
           "command": "clear -x",
           "explanation": "Clears the visible screen without clearing scrollback history"
         },

@@ -344,9 +344,9 @@
         },
         {
           "type": "example",
-          "text": "remove a container and its volumes",
+          "text": "remove a container and its anonymous volumes",
           "command": "docker rm -v mycontainer",
-          "explanation": "Deletes the container along with its anonymous volumes",
+          "explanation": "Deletes the container and associated anonymous volumes; named volumes are retained",
           "destructive": true
         }
       ]
@@ -379,9 +379,9 @@
         },
         {
           "type": "example",
-          "text": "remove all images",
-          "command": "docker rmi $(docker images -q)",
-          "explanation": "Removes every local image",
+          "text": "attempt to remove all local images that Docker allows removing",
+          "command": "images=$(docker image ls --all --quiet | sort -u); if [ -n \"$images\" ]; then printf '%s\\n' \"$images\" | xargs docker image rm; fi",
+          "explanation": "Deduplicates all listed image IDs and removes them when the list is nonempty; images in use may be refused",
           "destructive": true
         }
       ]
@@ -401,7 +401,8 @@
           "type": "example",
           "text": "stop and remove all compose services",
           "command": "docker compose down",
-          "explanation": "Stops containers and removes containers, networks, and default volumes"
+          "explanation": "Stops and removes project containers and networks; named and anonymous volumes are retained without --volumes",
+          "destructive": true
         },
         {
           "type": "example",
@@ -423,9 +424,9 @@
         },
         {
           "type": "example",
-          "text": "run a one-off command in a service container",
+          "text": "open a shell in the running web service container",
           "command": "docker compose exec web bash",
-          "explanation": "Opens a shell in the running web service container"
+          "explanation": "Runs Bash inside the existing web service container using Compose exec"
         }
       ]
     },
@@ -491,9 +492,10 @@
         },
         {
           "type": "example",
-          "text": "remove unused volumes to free disk space",
-          "command": "docker volume prune",
-          "explanation": "Deletes all volumes not currently used by a container"
+          "text": "remove all unused named and anonymous Docker volumes",
+          "command": "docker volume prune --all",
+          "explanation": "Deletes named and anonymous local volumes not referenced by any container; requires Docker API 1.42 or newer",
+          "destructive": true
         },
         {
           "type": "example",
@@ -555,9 +557,9 @@
         },
         {
           "type": "example",
-          "text": "prune with volume cleanup too",
+          "text": "prune unused Docker resources including anonymous volumes",
           "command": "docker system prune -a --volumes",
-          "explanation": "Removes everything unused including volumes",
+          "explanation": "Removes stopped containers, unused networks and images, build cache, and unused anonymous volumes; named volumes are not included",
           "destructive": true
         },
         {

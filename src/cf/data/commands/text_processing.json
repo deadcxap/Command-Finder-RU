@@ -51,15 +51,16 @@
       "patterns": [
         {
           "type": "example",
-          "text": "replace a word in a file",
+          "text": "print a file with all occurrences of a word replaced without editing the original",
           "command": "sed 's/old/new/g' file.txt",
           "explanation": "Replaces all occurrences of 'old' with 'new' and prints to stdout"
         },
         {
           "type": "example",
-          "text": "edit a file in place replacing text",
-          "command": "sed -i '' 's/foo/bar/g' file.txt",
-          "explanation": "Modifies the file directly, replacing every 'foo' with 'bar'"
+          "text": "edit a file in place replacing text with GNU sed on Linux",
+          "command": "sed -i 's/foo/bar/g' file.txt",
+          "explanation": "GNU sed -i changes file.txt directly, replacing every foo with bar; BSD/macOS requires a different -i form",
+          "destructive": true
         },
         {
           "type": "example",
@@ -101,8 +102,8 @@
         {
           "type": "example",
           "text": "filter rows where a column meets a condition",
-          "command": "awk '$3 > 100' data.csv",
-          "explanation": "Prints lines where the third field is greater than 100"
+          "command": "awk -F',' '$3 > 100' data.csv",
+          "explanation": "Prints rows whose third comma-separated field exceeds 100; assumes simple data without quoted embedded commas"
         },
         {
           "type": "example",
@@ -218,8 +219,8 @@
         {
           "type": "example",
           "text": "sort by a specific column",
-          "command": "sort -t',' -k2 data.csv",
-          "explanation": "Sorts a CSV by the second column using comma as the delimiter"
+          "command": "sort -s -t',' -k2,2 data.csv",
+          "explanation": "Stably sorts simple comma-separated records by the second field only; equal keys retain input order"
         },
         {
           "type": "example",
@@ -273,9 +274,9 @@
       "patterns": [
         {
           "type": "example",
-          "text": "count the number of lines in a file",
+          "text": "count newline-terminated lines in a file",
           "command": "wc -l file.txt",
-          "explanation": "Prints the line count of the file"
+          "explanation": "Counts newline characters; a final record without a newline is not counted separately"
         },
         {
           "type": "example",
@@ -570,9 +571,9 @@
         },
         {
           "type": "example",
-          "text": "format a CSV as a readable table",
+          "text": "format simple comma-separated fields as a readable table",
           "command": "column -t -s',' data.csv",
-          "explanation": "Uses comma as the input separator and aligns into columns"
+          "explanation": "Splits simple records on commas and aligns columns; quoted CSV delimiters are not parsed"
         },
         {
           "type": "example",
@@ -665,7 +666,7 @@
           "type": "example",
           "text": "convert tabs using a custom tab width",
           "command": "expand -t 4 code.py",
-          "explanation": "Uses a tab width of 4 spaces instead of the default 8"
+          "explanation": "Uses tab stops every four columns; each tab expands to the number of spaces needed to reach the next stop"
         },
         {
           "type": "example",
@@ -794,8 +795,8 @@
         {
           "type": "example",
           "text": "reverse paragraphs separated by blank lines",
-          "command": "tac -s '' document.txt",
-          "explanation": "Reverses the order of paragraph blocks separated by empty lines"
+          "command": "awk -v RS='' '{printf \"%s%c\", $0, 0}' document.txt | tac -s '' | awk -v RS='\\0' 'BEGIN {ORS=\"\\n\\n\"} {print}'",
+          "explanation": "Splits text into paragraphs, reverses NUL-delimited records with GNU tac, then separates output paragraphs with a blank line"
         },
         {
           "type": "example",
@@ -855,7 +856,7 @@
         },
         {
           "type": "example",
-          "text": "convert UTF-8 to ASCII and discard unconvertible characters",
+          "text": "convert UTF-8 text to ASCII with transliteration",
           "command": "iconv -f UTF-8 -t ASCII//TRANSLIT input.txt",
           "explanation": "Transliterates characters that have no ASCII equivalent"
         },

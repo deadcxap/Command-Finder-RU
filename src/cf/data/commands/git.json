@@ -150,14 +150,16 @@
         {
           "type": "example",
           "text": "change the last commit message",
-          "command": "git commit --amend -m \"Updated message\"",
-          "explanation": "Replaces the most recent commit with a new message"
+          "command": "git commit --amend --only -m \"Updated message\"",
+          "explanation": "Replaces the last commit message without including staged changes; rewrites the commit hash",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "add forgotten files to the last commit",
           "command": "git commit --amend --no-edit",
-          "explanation": "Adds currently staged files to the previous commit without changing its message"
+          "explanation": "Adds currently staged files to the previous commit without changing its message",
+          "destructive": true
         },
         {
           "type": "example",
@@ -226,7 +228,8 @@
           "type": "example",
           "text": "delete a remote branch",
           "command": "git push origin --delete old-branch",
-          "explanation": "Removes the specified branch from the remote repository"
+          "explanation": "Removes the specified branch from the remote repository",
+          "destructive": true
         }
       ]
     },
@@ -417,13 +420,15 @@
           "type": "example",
           "text": "delete a branch that has been merged",
           "command": "git branch -d old-branch",
-          "explanation": "Deletes the branch only if it has been fully merged"
+          "explanation": "Deletes the branch only if it has been fully merged",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "force delete a branch even if not merged",
           "command": "git branch -D unmerged-branch",
-          "explanation": "Forcefully deletes the branch regardless of merge status"
+          "explanation": "Forcefully deletes the branch regardless of merge status",
+          "destructive": true
         },
         {
           "type": "example",
@@ -568,15 +573,15 @@
         },
         {
           "type": "example",
-          "text": "show the next commit after a specific commit hash",
-          "command": "git log --reverse --ancestry-path <hash>..HEAD --format=%H | head -1",
-          "explanation": "Prints the hash of the commit that directly follows <hash> on the current branch"
+          "text": "show the first descendant of a commit selected by reverse topological order",
+          "command": "git log --topo-order --reverse --ancestry-path <hash>..HEAD --format=%H | head -n 1",
+          "explanation": "Selects the first commit in reverse topological order on ancestry paths from <hash> to HEAD; multiple descendant paths may exist"
         },
         {
           "type": "example",
-          "text": "show full details of the commit right after a given hash",
-          "command": "git show $(git log --reverse --ancestry-path <hash>..HEAD --format=%H | head -1)",
-          "explanation": "Displays the diff and message of the commit immediately after <hash>"
+          "text": "show details of the first descendant selected after a given commit",
+          "command": "next=$(git log --topo-order --reverse --ancestry-path <hash>..HEAD --format=%H | head -n 1); if [ -n \"$next\" ]; then git show \"$next\"; fi",
+          "explanation": "Shows the selected descendant commit and prints nothing when the ancestry range is empty"
         },
         {
           "type": "example",
@@ -629,9 +634,9 @@
         },
         {
           "type": "example",
-          "text": "find the first commit in the repository",
+          "text": "find the root commits reachable from HEAD",
           "command": "git rev-list --max-parents=0 HEAD",
-          "explanation": "Returns the root commit(s) \u2014 commits with no parents"
+          "explanation": "Lists every reachable commit with no parents; unrelated histories may have multiple roots"
         },
         {
           "type": "example",
@@ -684,9 +689,9 @@
         },
         {
           "type": "example",
-          "text": "get a one-line summary of total changes",
+          "text": "get a one-line summary of changes from main to HEAD",
           "command": "git diff --shortstat main..HEAD",
-          "explanation": "Prints a single line like: X files changed, Y insertions(+), Z deletions(-)"
+          "explanation": "Compares the tree at main with HEAD and summarizes changed files, insertions, and deletions"
         },
         {
           "type": "example",
@@ -714,27 +719,27 @@
         },
         {
           "type": "example",
-          "text": "count changed files per top-level folder",
-          "command": "git diff --name-only main..HEAD | awk -F/ '{print $1}' | sort | uniq -c | sort -rn",
-          "explanation": "Simple per-folder file count without line stats, sorted by most-changed folder first"
+          "text": "count changed paths per top-level directory, including a group for root files",
+          "command": "git diff --no-renames --name-only -z main..HEAD | perl -0ne 'chomp; $d=m{/} ? (split m{/})[0] : \".\"; $c{$d}++; END {printf \"%5d %s\\n\", $c{$_}, $_ for sort {$c{$b}<=>$c{$a} || $a cmp $b} keys %c}'",
+          "explanation": "Counts changed paths by top-level directory using NUL-separated names; root files are grouped under . and renames count as delete/add paths"
         },
         {
           "type": "example",
           "text": "aggregate files changed and lines added/removed per top-level folder",
-          "command": "git diff --numstat main..HEAD | awk '{split($3,a,\"/\"); files[a[1]]++; add[a[1]]+=$1; del[a[1]]+=$2} END {for (d in files) printf \"%-30s %5d files  +%-6d -%d\\n\", d, files[d], add[d], del[d]}' | sort -k2 -nr",
-          "explanation": "Rolls up numstat into per-top-level-folder totals: files changed, insertions, deletions"
+          "command": "git diff --no-renames --numstat -z main..HEAD | perl -0ne 'chomp; ($add,$del,$path)=split /\\t/,$_,3; $d=$path=~m{/} ? (split m{/},$path)[0] : \".\"; $s{$d}[0]++; $s{$d}[1]+=$add eq \"-\" ? 0 : $add; $s{$d}[2]+=$del eq \"-\" ? 0 : $del; END {printf \"%-30s %5d files +%d -%d\\n\", $_, @{$s{$_}} for sort {$s{$b}[0]<=>$s{$a}[0] || $a cmp $b} keys %s}'",
+          "explanation": "Groups changed paths and line counts by top-level directory; . contains root files, binary files add zero line counts, and renames count as delete/add paths"
         },
         {
           "type": "example",
           "text": "aggregate stats per folder at any depth (configurable)",
-          "command": "git diff --numstat main..HEAD | awk -v depth=3 '{n=split($3,a,\"/\"); lim=(n<depth)?n:depth; d=a[1]; for (i=2; i<=lim; i++) d=d\"/\"a[i]; files[d]++; add[d]+=$1; del[d]+=$2} END {for (d in files) printf \"%-50s %5d  +%-6d -%d\\n\", d, files[d], add[d], del[d]}' | sort -k2 -nr",
-          "explanation": "Per-folder stats grouped at any path depth \u2014 change -v depth=3 to the desired number of levels"
+          "command": "git diff --no-renames --numstat -z main..HEAD | perl -0ne 'BEGIN {$depth=3} chomp; ($add,$del,$path)=split /\\t/,$_,3; @parts=split m{/},$path; pop @parts; $d=@parts ? join(\"/\",@parts[0..($#parts<$depth-1 ? $#parts : $depth-1)]) : \".\"; $s{$d}[0]++; $s{$d}[1]+=$add eq \"-\" ? 0 : $add; $s{$d}[2]+=$del eq \"-\" ? 0 : $del; END {printf \"%-30s %5d files +%d -%d\\n\", $_, @{$s{$_}} for sort {$s{$b}[0]<=>$s{$a}[0] || $a cmp $b} keys %s}'",
+          "explanation": "Groups line statistics by up to three directory levels, excluding the filename; edit $depth in BEGIN to change depth; binary files add zero line counts"
         },
         {
           "type": "example",
           "text": "show lines added and removed per author across a range",
-          "command": "git log --numstat --pretty=format:\"%an\" main..HEAD | awk 'NF==1{author=$0} NF==3{add[author]+=$1; del[author]+=$2} END {for (a in add) printf \"%-25s +%-8d -%d\\n\", a, add[a], del[a]}'",
-          "explanation": "Aggregates insertions and deletions by commit author across the given range"
+          "command": "git log --no-renames --numstat -z --format='AUTHOR:%an%x00' main..HEAD | perl -0ne 'chomp; s/\\A\\n+//; if(/\\AAUTHOR:(.*)\\z/s){$author=$1; next} ($add,$del,$path)=split /\\t/,$_,3; next unless defined $path; $a{$author}+=$add eq \"-\" ? 0 : $add; $d{$author}+=$del eq \"-\" ? 0 : $del; END {printf \"%-25s +%-8d -%d\\n\", $_, $a{$_}, $d{$_} for sort keys %a}'",
+          "explanation": "Aggregates line changes by author using explicit author markers and NUL-separated numstat; binary line counts are omitted"
         }
       ]
     },
@@ -820,7 +825,8 @@
           "type": "example",
           "text": "drop a specific stash entry",
           "command": "git stash drop stash@{2}",
-          "explanation": "Removes a specific stash entry from the stack"
+          "explanation": "Removes a specific stash entry from the stack",
+          "destructive": true
         }
       ]
     },
@@ -976,7 +982,8 @@
           "type": "example",
           "text": "delete a local tag",
           "command": "git tag -d v1.0.0",
-          "explanation": "Removes the tag from the local repository"
+          "explanation": "Removes the tag from the local repository",
+          "destructive": true
         },
         {
           "type": "example",
@@ -1117,8 +1124,8 @@
         {
           "type": "example",
           "text": "show only the commit message without the diff",
-          "command": "git show --stat abc1234",
-          "explanation": "Shows commit details with a file change summary"
+          "command": "git show -s --format=%B abc1234",
+          "explanation": "Prints only the full commit message, without a patch, file statistics, or commit headers"
         },
         {
           "type": "example",
@@ -1273,9 +1280,9 @@
         },
         {
           "type": "example",
-          "text": "recover a commit that was lost after a reset",
+          "text": "find a commit lost after a reset in the HEAD reflog",
           "command": "git reflog show HEAD",
-          "explanation": "Lists all recent positions of HEAD to find lost commits"
+          "explanation": "Lists recent positions of HEAD so a lost commit hash can be located; does not reset or restore anything"
         },
         {
           "type": "example",
@@ -1305,15 +1312,15 @@
       "patterns": [
         {
           "type": "example",
-          "text": "find the commit where a branch was created from main",
+          "text": "find a merge base shared by main and feature-branch",
           "command": "git merge-base main feature-branch",
-          "explanation": "Prints the SHA of the common ancestor commit where feature-branch diverged from main"
+          "explanation": "Prints a best common ancestor shared with feature-branch; rewritten history may differ from the original branch creation point"
         },
         {
           "type": "example",
-          "text": "show the commit that a branch was branched off from",
+          "text": "find a merge base shared by main and the current branch",
           "command": "git merge-base main HEAD",
-          "explanation": "Finds the branch point between the current branch and main"
+          "explanation": "Prints a best common ancestor shared with HEAD; rewritten history may differ from the original branch creation point"
         },
         {
           "type": "example",
@@ -1337,7 +1344,7 @@
           "type": "example",
           "text": "check if one commit is an ancestor of another",
           "command": "git merge-base --is-ancestor commit1 commit2",
-          "explanation": "Exits 0 if commit1 is an ancestor of commit2, 1 otherwise \u2014 useful in scripts"
+          "explanation": "Exits 0 if commit1 is an ancestor of commit2, 1 otherwise — useful in scripts"
         },
         {
           "type": "example",
@@ -1353,15 +1360,15 @@
         },
         {
           "type": "example",
-          "text": "find where the current branch diverged from its upstream",
+          "text": "find a merge base shared by HEAD and its upstream",
           "command": "git merge-base HEAD @{upstream}",
-          "explanation": "Identifies the point where the current branch split from its tracked remote branch"
+          "explanation": "Prints a best common ancestor shared with @{upstream}; rewritten history may differ from the original branch creation point"
         },
         {
           "type": "example",
-          "text": "get the first commit made on the current branch",
-          "command": "git log --oneline $(git merge-base main HEAD)..HEAD | tail -1",
-          "explanation": "Shows the earliest commit added on the current branch after it was created from main"
+          "text": "show the first topologically ordered commit in HEAD that is not in main",
+          "command": "git log --topo-order --reverse --oneline main..HEAD | head -n 1",
+          "explanation": "Selects the first commit in reverse topological order from main..HEAD; merges can make the historical branch creation point ambiguous"
         }
       ]
     }

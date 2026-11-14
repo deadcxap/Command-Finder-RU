@@ -186,9 +186,9 @@
         },
         {
           "type": "example",
-          "text": "run a command preserving the user's environment variables",
+          "text": "request preservation of permitted environment variables when running through sudo",
           "command": "sudo -E ./deploy.sh",
-          "explanation": "Executes the script as root while keeping the current environment"
+          "explanation": "Requests the current environment with sudo -E; sudo policy can still filter variables"
         }
       ]
     },
@@ -218,8 +218,8 @@
         {
           "type": "example",
           "text": "switch user preserving the current environment",
-          "command": "su alice",
-          "explanation": "Switches to alice but keeps the current working directory and environment"
+          "command": "su -m alice",
+          "explanation": "Switches to alice while requesting environment preservation; PAM can still adjust variables"
         }
       ]
     },
@@ -267,19 +267,19 @@
         },
         {
           "type": "example",
-          "text": "give a group read and write access to a directory",
-          "command": "setfacl -m g:devteam:rw /shared/project",
-          "explanation": "Adds an ACL entry granting the devteam group read/write access"
+          "text": "give a group read write and traversal access to a directory",
+          "command": "setfacl -m g:devteam:rwx /shared/project",
+          "explanation": "Grants devteam read/write/search permissions on the directory"
         },
         {
           "type": "example",
           "text": "set default ACL so new files inherit permissions",
-          "command": "setfacl -d -m g:devteam:rw /shared/project",
-          "explanation": "New files created in the directory will automatically have devteam read/write access"
+          "command": "setfacl -d -m g:devteam:rwx /shared/project",
+          "explanation": "Sets a default rwx group ACL for new children; effective inherited permissions are limited by each creation mode"
         },
         {
           "type": "example",
-          "text": "remove all ACL entries from a file",
+          "text": "remove extended ACL entries from a file",
           "command": "setfacl -b document.pdf",
           "explanation": "Strips all extended ACL entries, leaving only standard permissions"
         },
@@ -310,9 +310,9 @@
         },
         {
           "type": "example",
-          "text": "show only the effective permissions in the ACL",
+          "text": "show ACL entries with explicit effective-permission comments",
           "command": "getfacl -e /shared/data",
-          "explanation": "Displays the ACL with effective rights mask applied"
+          "explanation": "Adds effective-rights comments for applicable ACL entries, even when they match the entry permissions"
         },
         {
           "type": "example",
@@ -403,15 +403,15 @@
         },
         {
           "type": "example",
-          "text": "lock a user account to prevent login",
+          "text": "lock password authentication for a user account",
           "command": "sudo passwd -l bob",
-          "explanation": "Disables password authentication for bob's account"
+          "explanation": "Locks bob's password; other authentication methods such as SSH keys are not disabled"
         },
         {
           "type": "example",
-          "text": "unlock a previously locked user account",
+          "text": "unlock password authentication for a user account",
           "command": "sudo passwd -u bob",
-          "explanation": "Re-enables password authentication for bob's account"
+          "explanation": "Unlocks the password hash; expiration and other account restrictions remain unchanged"
         },
         {
           "type": "example",
@@ -473,25 +473,29 @@
           "type": "example",
           "text": "delete a user account",
           "command": "sudo userdel bob",
-          "explanation": "Removes the user bob but leaves their home directory intact"
+          "explanation": "Removes the user bob but leaves their home directory intact",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "delete a user and remove their home directory",
           "command": "sudo userdel -r bob",
-          "explanation": "Removes bob's account along with their home directory and mail spool"
+          "explanation": "Removes bob's account along with their home directory and mail spool",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "force delete a user even if they are currently logged in",
           "command": "sudo userdel -f bob",
-          "explanation": "Forces removal of the account even if the user has active processes"
+          "explanation": "Forces removal of the account even if the user has active processes",
+          "destructive": true
         },
         {
           "type": "example",
-          "text": "delete a user and clean up all their files",
+          "text": "force delete a user with their home directory and mail spool",
           "command": "sudo userdel -rf bob",
-          "explanation": "Forcibly removes the user, their home directory, and their mail spool"
+          "explanation": "Forcibly removes the user, their home directory, and their mail spool",
+          "destructive": true
         }
       ]
     },
@@ -514,9 +518,9 @@
         },
         {
           "type": "example",
-          "text": "lock a user account to prevent login",
+          "text": "lock a user password with usermod",
           "command": "sudo usermod -L bob",
-          "explanation": "Locks bob's password so the account cannot be used for login"
+          "explanation": "Locks bob's password hash; SSH-key authentication and other access methods are not necessarily disabled"
         },
         {
           "type": "example",
@@ -557,7 +561,7 @@
         },
         {
           "type": "example",
-          "text": "force create a group even if the name already exists as a user",
+          "text": "create a group or succeed if that group already exists",
           "command": "sudo groupadd -f shared",
           "explanation": "Creates the group or exits successfully if it already exists"
         }
@@ -572,25 +576,29 @@
           "type": "example",
           "text": "delete a group",
           "command": "sudo groupdel oldteam",
-          "explanation": "Removes the group oldteam from the system"
+          "explanation": "Removes the group oldteam from the system",
+          "destructive": true
         },
         {
           "type": "example",
-          "text": "force delete a group even if users have it as a supplementary group",
+          "text": "force delete a group even when it is a user primary group",
           "command": "sudo groupdel -f oldteam",
-          "explanation": "Forcibly removes the group regardless of existing members"
+          "explanation": "Requests forced group removal, including a primary group; availability depends on the shadow-utils version",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "check if a group exists before deleting it",
           "command": "getent group oldteam && sudo groupdel oldteam",
-          "explanation": "Only attempts deletion if the group exists, avoiding errors"
+          "explanation": "Only attempts deletion if the group exists, avoiding errors",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "remove a group and verify it was deleted",
-          "command": "sudo groupdel testgroup && grep testgroup /etc/group",
-          "explanation": "Deletes the group and confirms it no longer appears in /etc/group"
+          "command": "sudo groupdel testgroup && ! getent group testgroup",
+          "explanation": "Deletes the group, then succeeds only when NSS no longer returns that exact group",
+          "destructive": true
         }
       ]
     },

@@ -88,9 +88,9 @@
         },
         {
           "type": "example",
-          "text": "list all installed packages",
-          "command": "dpkg -l",
-          "explanation": "Shows every installed package with version and description"
+          "text": "list fully installed Debian packages with versions and descriptions",
+          "command": "dpkg -l | awk 'length($1) == 2 && substr($1, 2, 1) == \"i\" {print}'",
+          "explanation": "Selects fully installed actual states without an error flag, including packages held or marked for removal"
         },
         {
           "type": "example",
@@ -262,8 +262,8 @@
         {
           "type": "example",
           "text": "list only top-level installed formulas you asked for",
-          "command": "brew leaves",
-          "explanation": "Omits dependencies pulled in automatically"
+          "command": "brew leaves --installed-on-request",
+          "explanation": "Lists manually requested formulae that are not dependencies of another installed formula or cask"
         },
         {
           "type": "example",
@@ -466,7 +466,7 @@
         {
           "type": "example",
           "text": "start a static file server with CORS enabled",
-          "command": "npx serve -l 3000",
+          "command": "npx serve -l 3000 --cors",
           "explanation": "Serves current directory on port 3000 with CORS headers"
         },
         {
@@ -525,9 +525,10 @@
         },
         {
           "type": "example",
-          "text": "lint all JavaScript and TypeScript files",
+          "text": "lint JavaScript and TypeScript files and automatically apply available fixes",
           "command": "npx eslint . --ext .js,.ts,.tsx --fix",
-          "explanation": "Runs ESLint and auto-fixes what it can across JS/TS files"
+          "explanation": "Runs ESLint and auto-fixes what it can across JS/TS files",
+          "destructive": true
         },
         {
           "type": "example",
@@ -597,9 +598,10 @@
         },
         {
           "type": "example",
-          "text": "run Prisma database migrations",
+          "text": "create and apply a Prisma development database migration",
           "command": "npx prisma migrate dev --name init",
-          "explanation": "Creates and applies a migration from schema changes"
+          "explanation": "Creates and applies a migration from schema changes in a development database; may request a reset",
+          "destructive": true
         },
         {
           "type": "example",
@@ -621,9 +623,10 @@
         },
         {
           "type": "example",
-          "text": "check for outdated npm packages and update package.json",
+          "text": "update dependency version ranges in package.json without installing packages",
           "command": "npx npm-check-updates -u",
-          "explanation": "Updates all version ranges in package.json to latest"
+          "explanation": "Writes newer version ranges to package.json; run the package manager separately to install them",
+          "destructive": true
         },
         {
           "type": "example",
@@ -699,9 +702,9 @@
         },
         {
           "type": "example",
-          "text": "initialize Tailwind CSS configuration",
-          "command": "npx tailwindcss init -p",
-          "explanation": "Creates tailwind.config.js and postcss.config.js files"
+          "text": "initialize Tailwind CSS v3 and PostCSS configuration",
+          "command": "npx tailwindcss@3 init -p",
+          "explanation": "Uses the Tailwind v3 CLI to create tailwind.config.js and postcss.config.js"
         },
         {
           "type": "example",

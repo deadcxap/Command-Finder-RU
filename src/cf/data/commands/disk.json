@@ -84,19 +84,22 @@
           "type": "example",
           "text": "create a new GPT partition table on a disk",
           "command": "sudo parted /dev/sdb mklabel gpt",
-          "explanation": "Initializes the disk with a fresh GPT partition table"
+          "explanation": "Initializes the disk with a fresh GPT partition table",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "create a partition using the entire disk",
           "command": "sudo parted /dev/sdb mkpart primary ext4 0% 100%",
-          "explanation": "Creates a single partition spanning the whole disk"
+          "explanation": "Creates a partition spanning the disk with an ext4 type hint; does not create an ext4 filesystem",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "resize a partition",
           "command": "sudo parted /dev/sda resizepart 2 100%",
-          "explanation": "Expands partition 2 to fill all available space"
+          "explanation": "Moves the end of partition 2 to the end of the disk; resizing its filesystem is a separate operation",
+          "destructive": true
         },
         {
           "type": "example",
@@ -399,7 +402,7 @@
           "type": "example",
           "text": "do a non-destructive read-write test for bad blocks",
           "command": "sudo badblocks -nsv /dev/sdb",
-          "explanation": "Tests blocks by writing and reading without destroying data"
+          "explanation": "Performs read/write tests and restores original block contents; use an unmounted device"
         },
         {
           "type": "example",
@@ -552,8 +555,8 @@
         {
           "type": "example",
           "text": "display LV attributes and segments",
-          "command": "sudo lvdisplay /dev/vg_data/lv_home",
-          "explanation": "Shows comprehensive details about a specific logical volume"
+          "command": "sudo lvdisplay --maps /dev/vg_data/lv_home",
+          "explanation": "Shows logical-volume properties and the mapping of logical extents to physical extents"
         }
       ]
     },
@@ -663,9 +666,9 @@
       "patterns": [
         {
           "type": "example",
-          "text": "find what is taking up disk space interactively",
-          "command": "ncdu /",
-          "explanation": "Scans the root filesystem and shows an interactive size browser"
+          "text": "inspect root filesystem disk usage without crossing mounts or scanning /mnt",
+          "command": "ncdu -x --exclude /mnt /",
+          "explanation": "Scans only the root filesystem and excludes /mnt before opening the interactive browser"
         },
         {
           "type": "example",
@@ -676,8 +679,8 @@
         {
           "type": "example",
           "text": "scan excluding certain directories",
-          "command": "ncdu / --exclude /mnt --exclude /proc",
-          "explanation": "Skips the specified directories during the scan"
+          "command": "ncdu -x --exclude /mnt --exclude /proc /",
+          "explanation": "Scans only the root filesystem while excluding /mnt and /proc"
         },
         {
           "type": "example",

@@ -378,9 +378,9 @@
         },
         {
           "type": "example",
-          "text": "count occurrences of a pattern in compressed files",
+          "text": "count matching lines in each compressed log file",
           "command": "zgrep -c '404' /var/log/nginx/access.log.*.gz",
-          "explanation": "Counts 404 errors in each compressed access log file"
+          "explanation": "Counts lines containing 404 in each compressed access log; multiple matches on one line count once"
         },
         {
           "type": "example",
@@ -483,9 +483,9 @@
         },
         {
           "type": "example",
-          "text": "decompress a gzip file using multiple cores",
+          "text": "decompress a gzip file with pigz",
           "command": "pigz -d backup.sql.gz",
-          "explanation": "Decompresses the file using parallel processing for speed"
+          "explanation": "Decompresses backup.sql.gz; deflate decompression itself normally uses one thread"
         },
         {
           "type": "example",
@@ -557,9 +557,9 @@
         },
         {
           "type": "example",
-          "text": "compress with maximum compression level",
+          "text": "compress with the highest regular zstd compression level",
           "command": "zstd -19 database.sql",
-          "explanation": "Uses compression level 19 for the highest ratio"
+          "explanation": "Uses regular level 19; higher levels require the separate --ultra option"
         },
         {
           "type": "example",

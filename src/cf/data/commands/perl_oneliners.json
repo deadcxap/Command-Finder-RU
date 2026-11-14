@@ -9,38 +9,44 @@
         {
           "type": "example",
           "text": "replace all tabs with 4 spaces in every python file",
-          "command": "perl -pie 's/\\t/    /g' *.py",
-          "explanation": "In-place replaces every tab character with 4 spaces across all .py files"
+          "command": "perl -i -pe 's/\\t/    /g' *.py",
+          "explanation": "In-place replaces every tab character with 4 spaces across all .py files",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "find and replace a string across multiple files recursively",
-          "command": "find . -name '*.js' -exec perl -pie 's/oldFunction/newFunction/g' {} +",
-          "explanation": "Recursively finds all .js files and replaces oldFunction with newFunction in place"
+          "command": "find . -type f -name '*.js' -exec perl -i -pe 's/oldFunction/newFunction/g' {} +",
+          "explanation": "Recursively selects ordinary .js files and replaces oldFunction with newFunction in place; matching directory names are skipped.",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "replace text only on lines matching a condition",
-          "command": "perl -pie 's/localhost/production.host/g if /^DB_HOST/' .env",
-          "explanation": "Replaces localhost with production.host only on lines starting with DB_HOST"
+          "command": "perl -i -pe 's/localhost/production.host/g if /^DB_HOST/' .env",
+          "explanation": "Replaces localhost with production.host only on lines starting with DB_HOST",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "do a multiline search and replace across a file",
-          "command": "perl -0777 -pie 's/BEGIN.*?END/REPLACED/gs' file.txt",
-          "explanation": "Slurps the entire file and replaces everything between BEGIN and END including across lines"
+          "command": "perl -0777 -i -pe 's/BEGIN.*?END/REPLACED/gs' file.txt",
+          "explanation": "Slurps the entire file and replaces everything between BEGIN and END including across lines",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "convert DOS line endings to Unix line endings",
-          "command": "perl -pie 's/\\r\\n/\\n/g' file.txt",
-          "explanation": "Removes carriage returns to convert Windows CRLF to Unix LF line endings"
+          "command": "perl -i -pe 's/\\r\\n/\\n/g' file.txt",
+          "explanation": "Removes carriage returns to convert Windows CRLF to Unix LF line endings",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "swap two words everywhere in a file",
-          "command": "perl -pie 's/\\b(width)\\b|\\b(height)\\b/defined $1 ? \"height\" : \"width\"/ge' file.txt",
-          "explanation": "Atomically swaps every occurrence of width and height without intermediate collisions"
+          "command": "perl -i -pe 's/\\b(width)\\b|\\b(height)\\b/defined $1 ? \"height\" : \"width\"/ge' file.txt",
+          "explanation": "Atomically swaps every occurrence of width and height without intermediate collisions",
+          "destructive": true
         },
         {
           "type": "example",
@@ -50,33 +56,37 @@
         },
         {
           "type": "example",
-          "text": "remove all HTML tags from a file",
+          "text": "strip simple HTML-like tags from text",
           "command": "perl -pe 's/<[^>]*>//g' page.html",
-          "explanation": "Strips all HTML tags leaving only the text content"
+          "explanation": "Removes simple angle-bracket tag fragments; it does not parse arbitrary HTML or decode entities."
         },
         {
           "type": "example",
           "text": "replace a word with word boundaries in all C source files keeping backups",
           "command": "perl -p -i.bak -e 's/\\bfoo\\b/bar/g' *.c",
-          "explanation": "Replaces whole-word foo with bar in all .c files, saving originals as .bak"
+          "explanation": "Replaces whole-word foo with bar in all .c files, saving originals as .bak",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "replace text only on the first line of each file",
-          "command": "perl -i -pe '$new = 1; s/PATTERN/REPLACE/ if $new; $new = eof(ARGV) ? 1 : 0'",
-          "explanation": "Modifies only the first line of each input file, tracking file boundaries with eof"
+          "command": "perl -i -pe 's/PATTERN/REPLACE/ if $. == 1; close ARGV if eof' file1.txt file2.txt",
+          "explanation": "Replaces the first match only on the first line of each input file and resets the line counter at each file boundary.",
+          "destructive": true
         },
         {
           "type": "example",
-          "text": "increment all numbers in a file by one",
+          "text": "increment every sequence of decimal digits in a file by one",
           "command": "perl -i -pe 's/(\\d+)/ 1 + $1 /ge' file.txt",
-          "explanation": "Finds every number and adds 1 using the /e flag to evaluate the replacement as code"
+          "explanation": "Increments each digit sequence independently in place; neighboring signs and decimal points are not parsed as part of a number.",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "replace text in a binary executable file",
           "command": "perl -i.bak -pe 's/OldString/NewString/g' /usr/local/bin/myapp",
-          "explanation": "In-place text replacement inside a binary file, keeping a backup copy"
+          "explanation": "In-place text replacement inside a binary file, keeping a backup copy",
+          "destructive": true
         }
       ]
     },
@@ -94,8 +104,8 @@
         {
           "type": "example",
           "text": "extract all IP addresses from a file",
-          "command": "perl -ne 'print \"$_\\n\" for /(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})/g' access.log",
-          "explanation": "Matches and prints all IPv4 addresses found in the log file"
+          "command": "perl -ne 'print \"$_\\n\" for /(?<![0-9.])((?:(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9]))(?![0-9.])/g' access.log",
+          "explanation": "Extracts dotted-decimal IPv4 addresses with four octets in the range 0–255."
         },
         {
           "type": "example",
@@ -123,9 +133,9 @@
         },
         {
           "type": "example",
-          "text": "extract all unique words from a text file",
+          "text": "extract sorted unique ASCII words from a text file",
           "command": "perl -ne '$w{$_}++ for /([a-zA-Z]+)/g; END { print \"$_\\n\" for sort keys %w }' file.txt",
-          "explanation": "Collects every word into a hash for uniqueness then prints sorted unique words"
+          "explanation": "Collects ASCII-letter words case-sensitively and prints each distinct word in sorted order."
         },
         {
           "type": "example",
@@ -161,8 +171,8 @@
         {
           "type": "example",
           "text": "print lines longer than 80 characters",
-          "command": "perl -ne 'print if length > 80' file.txt",
-          "explanation": "Filters and shows only lines exceeding 80 characters in length"
+          "command": "perl -CSD -ne '$line=$_; $line =~ s/\\r?\\n\\z//; print if length($line)>80' file.txt",
+          "explanation": "Decodes UTF-8, counts characters after excluding LF/CRLF, and prints original records longer than 80 characters."
         },
         {
           "type": "example",
@@ -192,7 +202,8 @@
           "type": "example",
           "text": "delete content between START and END markers in a file",
           "command": "perl -i.old -ne 'print unless /^START$/ .. /^END$/' foo.txt",
-          "explanation": "Removes all lines from START to END inclusive using the flip-flop operator"
+          "explanation": "Removes all lines from START to END inclusive using the flip-flop operator",
+          "destructive": true
         },
         {
           "type": "example",
@@ -204,7 +215,8 @@
           "type": "example",
           "text": "delete the first 10 lines from a file",
           "command": "perl -i.old -ne 'print unless 1 .. 10' foo.txt",
-          "explanation": "Removes lines 1 through 10 in-place, keeping a backup"
+          "explanation": "Removes lines 1 through 10 in-place, keeping a backup",
+          "destructive": true
         },
         {
           "type": "example",
@@ -215,8 +227,8 @@
         {
           "type": "example",
           "text": "find duplicate consecutive words in a text file",
-          "command": "perl -0777 -ne 'print \"$.: doubled $1\\n\" while /\\b(\\w+)\\b\\s+\\b\\1\\b/gi'",
-          "explanation": "Slurps file and finds repeated adjacent words like 'the the' with line numbers"
+          "command": "perl -0777 -ne 'while (/\\b(\\w+)\\b\\s+\\b\\1\\b/gi) { $word=$1; $line=1+(substr($_,0,$-[0])=~tr/\\n//); print \"$line: doubled $word\\n\" }' file.txt",
+          "explanation": "Finds repeated adjacent words, including across line breaks, and reports the line where each repeated pair starts."
         },
         {
           "type": "example",
@@ -257,9 +269,9 @@
         },
         {
           "type": "example",
-          "text": "right-pad or left-pad strings to a fixed width",
-          "command": "perl -pe '$_ = sprintf(\"%-40s\\n\", chomp && $_)' file.txt",
-          "explanation": "Pads each line with trailing spaces to exactly 40 characters wide"
+          "text": "pad each line with trailing spaces to a minimum width of 40 characters",
+          "command": "perl -CSD -pe 's/\\r?\\n\\z//; $_ = sprintf(\"%-40s\\n\", $_)' file.txt",
+          "explanation": "Decodes UTF-8 and pads short lines on the right to a minimum of 40 Unicode characters; longer lines are retained and output records end with LF."
         },
         {
           "type": "example",
@@ -269,9 +281,9 @@
         },
         {
           "type": "example",
-          "text": "trim leading and trailing whitespace from every line",
-          "command": "perl -pe 's/^\\s+|\\s+$//g' file.txt",
-          "explanation": "Removes whitespace from both ends of each line"
+          "text": "trim leading and trailing spaces and tabs without joining lines",
+          "command": "perl -pe 's/^[ \\t]+//; s/[ \\t]+(?=\\r?$)//' file.txt",
+          "explanation": "Removes spaces and tabs at each line edge while preserving LF or CRLF line endings."
         },
         {
           "type": "example",
@@ -282,8 +294,9 @@
         {
           "type": "example",
           "text": "add zero-padded line numbers to each line of a file",
-          "command": "perl -i -ne 'printf \"%04d %s\", $., $_'",
-          "explanation": "Prepends 4-digit zero-padded line numbers to every line"
+          "command": "perl -i -ne 'printf \"%04d %s\", $., $_' file.txt",
+          "explanation": "Prepends 4-digit zero-padded line numbers to every line",
+          "destructive": true
         },
         {
           "type": "example",
@@ -312,51 +325,51 @@
       "patterns": [
         {
           "type": "example",
-          "text": "sum the third column of a CSV file",
+          "text": "sum the third column of a simple comma-delimited file",
           "command": "perl -F, -ane '$s += $F[2]; END { print \"$s\\n\" }' data.csv",
-          "explanation": "Splits each line on comma, accumulates the third field, and prints the total"
+          "explanation": "Splits each line on comma, accumulates the third field, and prints the total; input must not contain CSV quoting, embedded commas, or multiline fields."
         },
         {
           "type": "example",
-          "text": "reorder columns in a CSV file",
-          "command": "perl -F, -ane 'print join(\",\", @F[2,0,1]), \"\\n\"' data.csv",
-          "explanation": "Rearranges CSV columns to put the third column first, then first, then second"
+          "text": "reorder three columns in a simple comma-delimited file",
+          "command": "perl -F, -lane 'print join(\",\", @F[2,0,1])' data.csv",
+          "explanation": "Prints fields in third, first, second order without moving the original newline into the first field; requires simple unquoted data."
         },
         {
           "type": "example",
-          "text": "filter CSV rows where a column matches a condition",
+          "text": "filter simple comma-delimited rows where a column matches a condition",
           "command": "perl -F, -ane 'print if $F[3] > 100' data.csv",
-          "explanation": "Prints only CSV rows where the fourth column value exceeds 100"
+          "explanation": "Prints only CSV rows where the fourth column value exceeds 100; input must not contain CSV quoting, embedded commas, or multiline fields."
         },
         {
           "type": "example",
-          "text": "convert a CSV file to tab-separated format",
-          "command": "perl -F, -ane 'print join(\"\\t\", @F)' data.csv",
-          "explanation": "Splits on commas and rejoins fields with tabs to produce TSV output"
+          "text": "convert simple comma-delimited rows to tab-separated rows",
+          "command": "perl -ne 'chomp; print join(\"\\t\", split /,/, $_, -1), \"\\n\"' data.csv",
+          "explanation": "Splits simple unquoted rows with trailing empty fields retained, then joins them with tabs."
         },
         {
           "type": "example",
-          "text": "add a new calculated column to a CSV",
+          "text": "add a new calculated column to a simple comma-delimited",
           "command": "perl -F, -ane 'chomp; print \"$_,\", $F[1]*$F[2], \"\\n\"' data.csv",
-          "explanation": "Appends a new column that is the product of the second and third columns"
+          "explanation": "Appends a new column that is the product of the second and third columns; input must not contain CSV quoting, embedded commas, or multiline fields."
         },
         {
           "type": "example",
-          "text": "extract unique values from a specific CSV column",
-          "command": "perl -F, -ane '$seen{$F[1]}++; END { print \"$_\\n\" for sort keys %seen }' data.csv",
-          "explanation": "Collects unique values from the second column and prints them sorted"
+          "text": "extract sorted unique values from the second simple comma-delimited column",
+          "command": "perl -F, -lane '$seen{$F[1]}++; END { print for sort keys %seen }' data.csv",
+          "explanation": "Collects second-column values without record separators and prints sorted distinct values; requires simple unquoted data."
         },
         {
           "type": "example",
-          "text": "convert a CSV file to JSON array of objects",
-          "command": "perl -F, -ane 'BEGIN{print \"[\\n\"} chomp @F; if($.==1){@h=@F}else{print \",\\n\" if $.>2; print \"  {\"; print join(\", \", map{qq(\"$h[$_]\": \"$F[$_]\")} 0..$#F); print \"}\"} END{print \"\\n]\\n\"}' data.csv",
-          "explanation": "Uses the first row as headers and converts each subsequent row into a JSON object"
+          "text": "convert simple UTF-8 comma-delimited data with a header to a JSON array",
+          "command": "perl -CSD -MJSON::PP -ne 's/\\r?\\n\\z//; @f=split /,/, $_, -1; if ($.==1) { @h=@f; for (@h) { die \"duplicate header\\n\" if $h{$_}++ } } else { die \"column count mismatch\\n\" unless @f==@h; my %row; @row{@h}=@f; push @rows,\\%row } END { print JSON::PP->new->canonical->encode(\\@rows), \"\\n\" }' data.csv",
+          "explanation": "Uses the first row as unique object keys and JSON::PP for JSON escaping, removes LF/CRLF before splitting, and accepts simple comma-delimited UTF-8 data without CSV quoting."
         },
         {
           "type": "example",
-          "text": "group and count rows by a CSV column value",
-          "command": "perl -F, -ane '$c{$F[0]}++; END { printf \"%-20s %d\\n\", $_, $c{$_} for sort keys %c }' data.csv",
-          "explanation": "Counts occurrences of each unique value in the first column and prints a summary"
+          "text": "group and count simple comma-delimited rows by the first column",
+          "command": "perl -F, -lane '$c{$F[0]}++; END { printf \"%-20s %d\\n\", $_, $c{$_} for sort keys %c }' data.csv",
+          "explanation": "Counts first-field values after removing record separators; requires simple unquoted data."
         },
         {
           "type": "example",
@@ -373,14 +386,16 @@
         {
           "type": "example",
           "text": "delete all columns after column N in a tab-separated file",
-          "command": "perl -i -F'\\t' -nlae 'print join \"\\t\", @F[0..4]'",
-          "explanation": "Truncates each row to the first 5 columns in-place"
+          "command": "perl -i -ne 's/\\r?\\n\\z//; @f=split /\\t/, $_, -1; splice @f,5 if @f>5; print join(\"\\t\", @f), \"\\n\"' data.tsv",
+          "explanation": "Edits data.tsv in place, retaining up to its first five fields without padding short rows; preserves trailing empty retained fields and writes one LF per row.",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "insert a new column after a specific position in a TSV file",
-          "command": "perl -i -F'\\t' -nae 'print join \"\\t\", @F[0..2], \"new_value\", @F[3..$#F]'",
-          "explanation": "Splices a new column with value 'new_value' after the 3rd column"
+          "command": "perl -i -ne 's/\\r?\\n\\z//; @f=split /\\t/, $_, -1; push @f,\"\" while @f<3; splice @f,3,0,\"new_value\"; print join(\"\\t\", @f), \"\\n\"' data.tsv",
+          "explanation": "Edits data.tsv in place, inserts new_value as the fourth field, keeps trailing empty fields, and writes one LF per row; rows shorter than three fields are padded with empty fields.",
+          "destructive": true
         }
       ]
     },
@@ -393,61 +408,68 @@
           "type": "example",
           "text": "batch rename files replacing spaces with underscores",
           "command": "perl -e 'for (<*>) { $o=$_; s/ /_/g; rename $o, $_ if $o ne $_ }'",
-          "explanation": "Iterates over all files in the current directory and renames those with spaces"
+          "explanation": "Iterates over all files in the current directory and renames those with spaces",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "rename files changing extension from .txt to .md",
           "command": "perl -e 'for (<*.txt>) { ($n=$_) =~ s/\\.txt$/.md/; rename $_, $n }'",
-          "explanation": "Renames all .txt files to .md by substituting the extension"
+          "explanation": "Renames all .txt files to .md by substituting the extension",
+          "destructive": true
         },
         {
           "type": "example",
-          "text": "add a prefix or suffix to all filenames in a directory",
+          "text": "add the backup_ prefix to JPEG filenames in the current directory",
           "command": "perl -e 'for (<*.jpg>) { rename $_, \"backup_$_\" }'",
-          "explanation": "Prepends 'backup_' to every .jpg filename in the current directory"
+          "explanation": "Prepends 'backup_' to matching .jpg filenames in the current directory; it does not add a suffix.",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "lowercase all filenames in the current directory",
           "command": "perl -e 'for (<*>) { $o=$_; $_ = lc; rename $o, $_ if $o ne $_ }'",
-          "explanation": "Renames every file to its lowercase equivalent"
+          "explanation": "Renames every file to its lowercase equivalent",
+          "destructive": true
         },
         {
           "type": "example",
-          "text": "find and list all files larger than 10 megabytes",
+          "text": "recursively find ordinary files larger than 10 MiB",
           "command": "perl -MFile::Find -e 'find(sub { print \"$File::Find::name\\n\" if -f && -s _ > 10*1024*1024 }, \".\")'",
-          "explanation": "Recursively walks the directory tree and prints files exceeding 10MB"
+          "explanation": "Walks the current tree and prints ordinary files larger than 10*1024*1024 bytes."
         },
         {
           "type": "example",
           "text": "recursively replace a string in all files of a specific type",
-          "command": "perl -MFile::Find -e 'find(sub { return unless /\\.html$/; local @ARGV=($_); local $^I=\".bak\"; while(<>){s/old/new/g; print} }, \".\")'",
-          "explanation": "Walks directories finding .html files and does in-place replacement with backup"
+          "command": "perl -MFile::Find -e 'find({no_chdir=>1,wanted=>sub { return unless -f $_ && !-l $_ && /\\.html\\z/; local @ARGV=($_); local $^I=\".bak\"; local $_; while (<>) { s/old/new/g; print } }}, \".\")'",
+          "explanation": "Walks nested paths without changing directories, edits only ordinary non-symlink .html files, and keeps .bak backups; directories with an .html suffix are skipped.",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "number files sequentially like photo001.jpg photo002.jpg",
           "command": "perl -e '$i=1; for (sort <*.jpg>) { $n=sprintf(\"photo%03d.jpg\", $i++); rename $_, $n }'",
-          "explanation": "Renames all jpg files to sequentially numbered filenames with zero-padded numbers"
+          "explanation": "Renames all jpg files to sequentially numbered filenames with zero-padded numbers",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "find files containing a pattern in their first N lines",
-          "command": "perl -ne 'if (/PATTERN/) { print \"$ARGV\\n\"; close ARGV } close ARGV if $. >= 10' *.txt",
-          "explanation": "Reports filenames where PATTERN appears in the first 10 lines"
+          "command": "perl -ne 'if (/PATTERN/) { print \"$ARGV\\n\"; close ARGV } elsif ($. >= 10 || eof) { close ARGV }' *.txt",
+          "explanation": "Prints each filename at most once when PATTERN occurs within its first ten lines; resets the counter after every file, including short files."
         },
         {
           "type": "example",
           "text": "insert a line of text at a specific line number in a file",
-          "command": "perl -i -pe 'print \"new line here\\n\" if $. == 5; $. = 0 if eof'",
-          "explanation": "Inserts text before line 5, resetting line counter between files"
+          "command": "perl -i -pe 'print \"new line here\\n\" if $. == 5; $. = 0 if eof' file.txt",
+          "explanation": "Inserts text before line 5, resetting line counter between files",
+          "destructive": true
         },
         {
           "type": "example",
-          "text": "list files smaller than a certain size",
-          "command": "ls -l *.log | perl -nae 'print \"$F[8]\\n\" if $F[4] < 1000'",
-          "explanation": "Filters ls output to show only files under 1000 bytes"
+          "text": "list ordinary log files smaller than 1000 bytes in the current directory",
+          "command": "perl -e 'for (glob \"*.log\") { print \"$_\\n\" if -f && -s _ < 1000 }'",
+          "explanation": "Checks file types and sizes directly, preserving filenames containing spaces; only non-hidden *.log entries are selected."
         }
       ]
     },
@@ -489,8 +511,8 @@
         {
           "type": "example",
           "text": "calculate the median of a list of numbers",
-          "command": "perl -e '@n=sort{$a<=>$b}map{chomp;$_}<>; $m=$#n/2; print $#n%2 ? $n[$m+.5] : ($n[$m]+$n[$m+1])/2, \"\\n\"' numbers.txt",
-          "explanation": "Sorts all numbers and computes the median handling both odd and even counts"
+          "command": "perl -e '@n=sort {$a<=>$b} map { chomp; $_ } <>; die \"no numbers\\n\" unless @n; $m=int(@n/2); print((@n%2 ? $n[$m] : ($n[$m-1]+$n[$m])/2), \"\\n\")' numbers.txt",
+          "explanation": "Sorts numeric input, selects the central value for odd counts, averages the two central values for even counts, and rejects empty input."
         },
         {
           "type": "example",
@@ -500,9 +522,9 @@
         },
         {
           "type": "example",
-          "text": "sum file sizes in a directory listing",
-          "command": "ls -l | perl -ane '$s += $F[4]; END { printf \"%.2f MB\\n\", $s/1048576 }'",
-          "explanation": "Parses ls -l output, sums the size column, and converts to megabytes"
+          "text": "sum the size column of the current non-recursive ls listing in MiB",
+          "command": "ls -l | perl -ane '$s += $F[4]; END { printf \"%.2f MiB\\n\", $s/1048576 }'",
+          "explanation": "Sums the size column from ls -l, without recursive traversal or hidden names, and divides by 1048576."
         },
         {
           "type": "example",
@@ -513,8 +535,8 @@
         {
           "type": "example",
           "text": "find the median value from a list of numbers",
-          "command": "sort -n data.txt | perl -e '@l=<>; print $l[int($#l/2)]'",
-          "explanation": "Sorts numerically then picks the middle element as the median"
+          "command": "sort -n data.txt | perl -e '@n=<>; chomp @n; die \"no numbers\\n\" unless @n; $m=int(@n/2); print((@n%2 ? $n[$m] : ($n[$m-1]+$n[$m])/2), \"\\n\")'",
+          "explanation": "Numerically sorts input, then computes a true odd/even median instead of selecting only the lower central value."
         },
         {
           "type": "example",
@@ -524,15 +546,15 @@
         },
         {
           "type": "example",
-          "text": "group numbers into buckets and show distribution",
+          "text": "group numbers into thousand-wide buckets by truncation toward zero",
           "command": "perl -pe '$_ = 1000 * int($_/1000) . \"\\n\"' data.txt | sort -n | uniq -c",
-          "explanation": "Rounds numbers to nearest thousand and counts how many fall in each bucket"
+          "explanation": "Truncates each number divided by 1000 toward zero, multiplies back by 1000, then counts bucket frequencies."
         },
         {
           "type": "example",
-          "text": "count frequency of each word in a file",
+          "text": "count case-insensitive whitespace-delimited token frequencies",
           "command": "perl -lane '$c{lc$_}++ for @F; END{printf \"%4d %s\\n\",$c{$_},$_ for sort{$c{$b}<=>$c{$a}}keys%c}' file.txt",
-          "explanation": "Counts word occurrences and prints sorted by frequency descending"
+          "explanation": "Splits each line on whitespace, folds token case, retains punctuation inside tokens, and sorts by descending frequency."
         },
         {
           "type": "example",
@@ -605,7 +627,8 @@
           "type": "example",
           "text": "ROT13 encode a file in place",
           "command": "perl -i -pe 'tr/a-zA-Z/n-za-mN-ZA-M/' file.txt",
-          "explanation": "Applies ROT13 cipher to all letters in the file"
+          "explanation": "Applies ROT13 cipher to all letters in the file",
+          "destructive": true
         },
         {
           "type": "example",
@@ -635,8 +658,8 @@
         {
           "type": "example",
           "text": "find the top 10 most frequent IP addresses in a web server log",
-          "command": "perl -ane '$ip{$F[0]}++; END { printf \"%-16s %d\\n\", $_, $ip{$_} for (sort { $ip{$b}<=>$ip{$a} } keys %ip)[0..9] }' access.log",
-          "explanation": "Counts requests per IP and prints the top 10 sorted by frequency"
+          "command": "perl -ane '$ip{$F[0]}++; END { @ips=sort {$ip{$b}<=>$ip{$a} || $a cmp $b} keys %ip; for ($i=0; $i<@ips && $i<10; $i++) { printf \"%-16s %d\\n\", $ips[$i], $ip{$ips[$i]} } }' access.log",
+          "explanation": "Prints up to ten real IP keys ordered by request count, breaking ties by address; short and empty logs do not create missing entries."
         },
         {
           "type": "example",
@@ -659,14 +682,14 @@
         {
           "type": "example",
           "text": "calculate average response time from log entries",
-          "command": "perl -ne '$t+=$1; $n++ if /(\\d+)ms/; END { printf \"avg: %.1fms\\n\", $t/$n }' app.log",
-          "explanation": "Extracts millisecond timing values and computes the average response time"
+          "command": "perl -ne 'while (/(\\d+(?:\\.\\d+)?)ms/g) { $t+=$1; $n++ } END { die \"no timing samples\\n\" unless $n; printf \"avg: %.1fms\\n\", $t/$n }' app.log",
+          "explanation": "Averages all nonnegative integer or decimal millisecond values found in the log and rejects input with no timing samples."
         },
         {
           "type": "example",
           "text": "show log entries from the last hour only",
-          "command": "perl -ne 'use POSIX qw(mktime); if (/^(\\d{4})-(\\d{2})-(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})/) { $t=mktime($6,$5,$4,$3,$2-1,$1-1900); print if time()-$t < 3600 }' app.log",
-          "explanation": "Parses ISO timestamps and prints only entries within the last 3600 seconds"
+          "command": "perl -ne 'use POSIX qw(mktime); if (/^(\\d{4})-(\\d{2})-(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})/) { $t=mktime($6,$5,$4,$3,$2-1,$1-1900); $age=time()-$t; print if $age>=0 && $age<3600 }' app.log",
+          "explanation": "Interprets leading timestamps in local time and selects only records from now back to less than one hour ago, excluding future records."
         },
         {
           "type": "example",
@@ -684,8 +707,8 @@
         {
           "type": "example",
           "text": "extract and sort all unique IP addresses from a file",
-          "command": "perl -ne '$ip{$_}++ for /(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})/g; END { print \"$_\\n\" for sort { pack(\"C4\",split/\\./,$a) cmp pack(\"C4\",split/\\./,$b) } keys %ip }' file.txt",
-          "explanation": "Extracts unique IPs and sorts them numerically by each octet"
+          "command": "perl -ne '$ip{$_}++ for /(?<![0-9.])((?:(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9]))(?![0-9.])/g; END { print \"$_\\n\" for sort { pack(\"C4\",split/\\./,$a) cmp pack(\"C4\",split/\\./,$b) } keys %ip }' file.txt",
+          "explanation": "Extracts distinct dotted-decimal IPv4 addresses with octets 0–255, then sorts by their four numeric components."
         },
         {
           "type": "example",
@@ -701,9 +724,10 @@
         },
         {
           "type": "example",
-          "text": "parse and modify an INI-style config file section",
-          "command": "perl -pie 's/^(max_connections\\s*=\\s*).*/${1}200/' /etc/my.cnf",
-          "explanation": "Changes the max_connections setting to 200 in the MySQL config file"
+          "text": "set max_connections to 200 only in the mysqld section of a MySQL config",
+          "command": "perl -i -pe '$in = /^\\s*\\[mysqld\\]\\s*(?:[;#].*)?$/ ? 1 : 0 if /^\\s*\\[/; s/^([ \\t]*max_connections[ \\t]*=[ \\t]*).*/${1}200/ if $in' /etc/my.cnf",
+          "explanation": "Tracks INI section headers and edits max_connections only within [mysqld], leaving similarly named settings in other sections unchanged.",
+          "destructive": true
         },
         {
           "type": "example",
@@ -713,21 +737,22 @@
         },
         {
           "type": "example",
-          "text": "validate email address format",
+          "text": "check a simplified email address pattern",
           "command": "perl -e 'print $ARGV[0] =~ /^[\\w.+-]+@[a-zA-Z\\d.-]+\\.[a-zA-Z]{2,}$/ ? \"Valid\\n\" : \"Invalid\\n\"' 'user@example.com'",
-          "explanation": "Tests whether the given string matches a standard email address pattern"
+          "explanation": "Tests a simplified email-like syntax; it is not complete standards validation or a mailbox existence check."
         },
         {
           "type": "example",
           "text": "extract domain names from a list of URLs",
-          "command": "perl -ne 'print \"$1\\n\" if m{https?://([^/\\s:]+)}' urls.txt",
-          "explanation": "Parses URLs and extracts just the hostname/domain portion"
+          "command": "perl -ne 'print \"$1\\n\" while m{https?://([^/\\s:]+)}g' urls.txt",
+          "explanation": "Extracts host fragments from every simple HTTP/HTTPS URL on each line, without path or port."
         },
         {
           "type": "example",
           "text": "comment out a specific line in a config file",
-          "command": "perl -pie 's/^(PermitRootLogin.*)/#$1/' /etc/ssh/sshd_config",
-          "explanation": "Prepends # to comment out the PermitRootLogin line in sshd_config"
+          "command": "perl -i -pe 's/^([ \\t]*PermitRootLogin\\b.*)/#$1/' /etc/ssh/sshd_config",
+          "explanation": "Comments matching PermitRootLogin lines, including indented settings; this removes the explicit setting rather than guaranteeing a particular default policy.",
+          "destructive": true
         }
       ]
     },
@@ -739,50 +764,50 @@
         {
           "type": "example",
           "text": "pretty print a JSON file",
-          "command": "perl -MJSON -e 'local $/; print JSON->new->pretty->encode(decode_json(<STDIN>))' < data.json",
+          "command": "perl -MJSON::PP -e 'local $/; print JSON::PP->new->pretty->encode(decode_json(<STDIN>))' < data.json",
           "explanation": "Reads JSON from stdin, parses it, and outputs with indentation and formatting"
         },
         {
           "type": "example",
           "text": "extract a specific field from a JSON file",
-          "command": "perl -MJSON -e 'local $/; $d=decode_json(<STDIN>); print $d->{name}, \"\\n\"' < data.json",
+          "command": "perl -MJSON::PP -e 'local $/; $d=decode_json(<STDIN>); print $d->{name}, \"\\n\"' < data.json",
           "explanation": "Parses JSON and prints the value of the name field"
         },
         {
           "type": "example",
-          "text": "convert JSON to CSV format",
-          "command": "perl -MJSON -e 'local $/; $d=decode_json(<STDIN>); for(@$d){print join(\",\",map{\"\\\"$_\\\"\"}@{$_}{sort keys %{$d->[0]}}),\"\\n\"}' < data.json",
-          "explanation": "Reads a JSON array of objects and outputs each object as a CSV row"
+          "text": "convert a JSON array of flat objects to quoted CSV rows",
+          "command": "perl -MJSON::PP -e 'local $/; $d=decode_json(<STDIN>); binmode STDOUT, \":encoding(UTF-8)\"; @keys=sort keys %{$d->[0] // {}}; for $row (@$d) { @v=map { defined $row->{$_} ? $row->{$_} : \"\" } @keys; for (@v) { s/\"/\"\"/g; $_=qq(\"$_\") } print join(\",\", @v), \"\\n\" }' < data.json",
+          "explanation": "Uses sorted keys from the first object, emits no header, doubles embedded quotes, and quotes values containing line breaks; input fields must be scalar."
         },
         {
           "type": "example",
           "text": "merge two JSON files together",
-          "command": "perl -MJSON -e 'local $/; open(F,$_)or die for @ARGV; %m=(%{decode_json(do{local $/;<F>})}, %{decode_json(do{open G,$ARGV[1];local $/;<G>})}); print encode_json(\\%m)' a.json b.json",
-          "explanation": "Reads two JSON files and merges their top-level keys with the second file taking precedence"
+          "command": "perl -MJSON::PP -e 'local $/; @ARGV==2 or die \"usage: a.json b.json\\n\"; open my $a,\"<\",$ARGV[0] or die $!; open my $b,\"<\",$ARGV[1] or die $!; $x=decode_json(<$a>); $y=decode_json(<$b>); ref($x) eq \"HASH\" && ref($y) eq \"HASH\" or die \"JSON objects required\\n\"; print encode_json({%$x,%$y}), \"\\n\"' a.json b.json",
+          "explanation": "Reads two JSON objects independently and merges top-level keys, with keys from the second file taking precedence."
         },
         {
           "type": "example",
           "text": "filter a JSON array keeping only matching objects",
-          "command": "perl -MJSON -e 'local $/; $d=decode_json(<STDIN>); print encode_json([grep{$_->{status} eq \"active\"}@$d])' < data.json",
+          "command": "perl -MJSON::PP -e 'local $/; $d=decode_json(<STDIN>); print encode_json([grep{$_->{status} eq \"active\"}@$d])' < data.json",
           "explanation": "Filters a JSON array to include only objects where status equals active"
         },
         {
           "type": "example",
           "text": "extract all values for a specific key from nested JSON",
-          "command": "perl -MJSON -e 'local $/; $d=decode_json(<STDIN>); sub f{my$d=shift;if(ref$d eq\"HASH\"){print \"$d->{$ARGV[0]}\\n\" if exists$d->{$ARGV[0]};f($_)for values%$d}elsif(ref$d eq\"ARRAY\"){f($_)for@$d}} f($d)' name < data.json",
+          "command": "perl -MJSON::PP -e 'local $/; $d=decode_json(<STDIN>); sub f{my$d=shift;if(ref$d eq\"HASH\"){print \"$d->{$ARGV[0]}\\n\" if exists$d->{$ARGV[0]};f($_)for values%$d}elsif(ref$d eq\"ARRAY\"){f($_)for@$d}} f($d)' name < data.json",
           "explanation": "Recursively walks a JSON structure and prints every occurrence of the specified key"
         },
         {
           "type": "example",
           "text": "count objects in a JSON array grouped by a field value",
-          "command": "perl -MJSON -e 'local $/; $d=decode_json(<STDIN>); $c{$_->{type}}++ for @$d; printf \"%-20s %d\\n\",$_,$c{$_} for sort keys %c' < data.json",
+          "command": "perl -MJSON::PP -e 'local $/; $d=decode_json(<STDIN>); $c{$_->{type}}++ for @$d; printf \"%-20s %d\\n\",$_,$c{$_} for sort keys %c' < data.json",
           "explanation": "Groups JSON array objects by their type field and prints counts for each value"
         },
         {
           "type": "example",
-          "text": "extract text content between XML tags",
+          "text": "extract text between simple title tags in an XML-like file",
           "command": "perl -0777 -ne 'print \"$1\\n\" while /<title>(.*?)<\\/title>/gs' file.xml",
-          "explanation": "Slurps the file and extracts all content between title tags, handling multiline"
+          "explanation": "Extracts multiline content between exact <title> and </title> tags; attributes, namespaces and XML entity decoding require a real XML parser."
         }
       ]
     },
@@ -836,8 +861,8 @@
         {
           "type": "example",
           "text": "convert timestamps in a log file from epoch to readable dates",
-          "command": "perl -MPOSIX -pe 's/(\\d{10})/strftime(\"%Y-%m-%d %H:%M:%S\", localtime($1))/ge' log.txt",
-          "explanation": "Finds all 10-digit epoch timestamps in the file and replaces them with formatted dates"
+          "command": "perl -MPOSIX -pe 's/(?<!\\d)(\\d{10})(?!\\d)/strftime(\"%Y-%m-%d %H:%M:%S\", localtime($1))/ge' log.txt",
+          "explanation": "Converts standalone ten-digit sequences to local dates, without matching inside longer digit sequences."
         }
       ]
     },
@@ -922,8 +947,8 @@
         {
           "type": "example",
           "text": "count total number of lines in a file like wc -l",
-          "command": "perl -lne 'END { print $. }' file.txt",
-          "explanation": "Prints the final line number at the end of processing"
+          "command": "perl -ne '$n += tr/\\n//; END { print 0+$n, \"\\n\" }' file.txt",
+          "explanation": "Counts LF characters like wc -l; a final unterminated record does not add another line."
         },
         {
           "type": "example",
@@ -982,9 +1007,9 @@
         },
         {
           "type": "example",
-          "text": "generate a random 16-character password with symbols",
-          "command": "perl -le 'print map{(33..126)[rand 94]} 1..16'",
-          "explanation": "Generates password from all printable ASCII characters"
+          "text": "generate a random 16-character printable ASCII sample string",
+          "command": "perl -le 'print map { chr(33 + int rand 94) } 1..16'",
+          "explanation": "Produces sixteen printable ASCII symbols; Perl rand is a demonstration PRNG, not a cryptographic password generator."
         },
         {
           "type": "example",
@@ -1007,20 +1032,20 @@
         {
           "type": "example",
           "text": "calculate the least common multiple of two numbers",
-          "command": "perl -le 'sub g{$_[1]?g($_[1],$_[0]%$_[1]):$_[0]} print $_[0]/$_[1]*g(@_) for [36,24]'",
-          "explanation": "LCM using the formula LCM(a,b) = a*b/GCD(a,b)"
+          "command": "perl -le 'sub g { my ($a,$b)=map {abs} @_; ($a,$b)=($b,$a%$b) while $b; return $a } @ARGV==2 or die \"two integers required\\n\"; for (@ARGV) { /\\A-?\\d+\\z/ or die \"integers required\\n\" } ($a,$b)=@ARGV; print(($a==0 || $b==0) ? 0 : abs($a/g($a,$b)*$b))' -- 36 24",
+          "explanation": "Computes abs(a/GCD(a,b)*b) for two integers, returning zero when either input is zero."
         },
         {
           "type": "example",
           "text": "generate all permutations of a list",
-          "command": "perl -le 'sub p{@_<2?@_:map{my@b=@_;splice@b,$_,1;map[$b[$_],@$_],p(@b)}0..$#_} print \"@$_\\n\" for p(1..4)'",
-          "explanation": "Recursive permutation generator for any list of elements"
+          "command": "perl -e 'sub p { return ([]) unless @_; my @out; for my $i (0..$#_) { my @rest=@_; my $item=splice(@rest,$i,1); push @out, map {[$item,@$_]} p(@rest) } return @out } print join(\" \", @$_), \"\\n\" for p(@ARGV)' 1 2 3 4",
+          "explanation": "Recursively removes and remembers each chosen element, then prepends it to all permutations of the remaining input."
         },
         {
           "type": "example",
           "text": "calculate the power set of a set",
-          "command": "perl -le 'for $i(0..2**@a-1){print join \",\",grep{$i&1<<$_}0..$#a}' -- a b c d",
-          "explanation": "Uses bitmask to enumerate all subsets of the input set"
+          "command": "perl -le '@a=@ARGV; for $i (0..2**@a-1) { print join \",\", map {$a[$_]} grep {$i & (1<<$_)} 0..$#a }' a b c d",
+          "explanation": "Uses bitmasks to enumerate subsets of the actual command-line elements, including the empty subset."
         },
         {
           "type": "example",
@@ -1074,8 +1099,8 @@
         {
           "type": "example",
           "text": "create a comma-separated list of quoted strings",
-          "command": "perl -le 'print join \",\", map{\"\\\"$_\\\"\"} @ARGV' foo bar baz",
-          "explanation": "Wraps each argument in double quotes and joins with commas"
+          "command": "perl -le 'for (@ARGV) { s/\"/\"\"/g } print join \",\", map {qq(\"$_\")} @ARGV' foo bar baz",
+          "explanation": "Quotes each argument as a CSV field and doubles embedded double quotes before joining with commas."
         },
         {
           "type": "example",
@@ -1122,15 +1147,15 @@
         },
         {
           "type": "example",
-          "text": "strip all HTML tags from a file",
+          "text": "strip simple HTML-like tags from a file",
           "command": "perl -pe 's/<[^>]*>//g' file.html",
-          "explanation": "Removes anything between angle brackets including the brackets"
+          "explanation": "Removes simple fragments between angle brackets without parsing HTML structure or decoding entities."
         },
         {
           "type": "example",
-          "text": "convert camelCase to snake_case",
+          "text": "convert simple ASCII camelCase boundaries to underscores",
           "command": "perl -pe 's/([a-z])([A-Z])/$1_\\L$2/g' file.txt",
-          "explanation": "Inserts underscore before uppercase letters and lowercases them"
+          "explanation": "Replaces lowercase-ASCII to uppercase-ASCII boundaries with underscores; acronyms and general Unicode casing are not handled."
         },
         {
           "type": "example",
@@ -1141,8 +1166,8 @@
         {
           "type": "example",
           "text": "URL encode a string for use in URLs",
-          "command": "perl -le '$s=shift; $s=~s/([^A-Za-z0-9\\-_.~])/sprintf \"%%%02X\",ord $1/ge; print $s' 'hello world!'",
-          "explanation": "Encodes special characters as percent-hex for URL safety"
+          "command": "perl -MEncode=encode -CA -le '$s=encode(\"UTF-8\", shift); $s=~s/([^A-Za-z0-9\\-_.~])/sprintf \"%%%02X\",ord $1/ge; print $s' 'hello world!'",
+          "explanation": "Decodes the UTF-8 command-line argument, re-encodes it as UTF-8 bytes, and percent-escapes non-unreserved bytes."
         },
         {
           "type": "example",
@@ -1153,8 +1178,8 @@
         {
           "type": "example",
           "text": "convert tabs to spaces with configurable width",
-          "command": "perl -pe 's/\\t/\" \" x (8 - pos() % 8)/ge' file.txt",
-          "explanation": "Replaces tabs with correct number of spaces based on tab stop positions"
+          "command": "perl -CSD -MText::Tabs -pe '$Text::Tabs::tabstop=8; $_=expand($_)' file.txt",
+          "explanation": "Uses core Text::Tabs to expand UTF-8 text using tab stops every eight character positions."
         },
         {
           "type": "example",
@@ -1197,13 +1222,13 @@
           "type": "example",
           "text": "print the shortest line in a file",
           "command": "perl -ne '$l=$_ if !$l||length<length$l; END{print $l}' file.txt",
-          "explanation": "Tracks the shortest non-empty line and prints it at the end"
+          "explanation": "Tracks the shortest input record, including blank lines, and prints it at the end."
         },
         {
           "type": "example",
           "text": "print lines that are longer than 80 characters",
-          "command": "perl -ne 'print if length > 80' file.txt",
-          "explanation": "Filters for lines exceeding 80 characters"
+          "command": "perl -CSD -ne '$line=$_; $line =~ s/\\r?\\n\\z//; print if length($line)>80' file.txt",
+          "explanation": "Decodes UTF-8, counts characters after excluding LF/CRLF, and prints original records longer than 80 characters."
         },
         {
           "type": "example",
@@ -1213,15 +1238,15 @@
         },
         {
           "type": "example",
-          "text": "print only duplicate lines that appear more than once",
+          "text": "print one copy of each repeated line at its second occurrence",
           "command": "perl -ne 'print if $seen{$_}++ == 1' file.txt",
-          "explanation": "Prints a line the second time it appears (first duplicate)"
+          "explanation": "Prints the second appearance of every repeated line once; first and later appearances are not printed."
         },
         {
           "type": "example",
           "text": "print lines from two files that are different like diff",
-          "command": "perl -ne 'print if !$seen{$_}++' file1.txt | perl -ne 'print if !$seen{$_}++' file2.txt",
-          "explanation": "Shows unique lines from each file not present in the other"
+          "command": "perl -e '@ARGV==2 or die \"two files required\\n\"; for my $i (0,1) { open my $f,\"<\",$ARGV[$i] or die $!; while (<$f>) { chomp; push @order,$_ unless exists $seen{$_}; $seen{$_}|=1<<$i } } print \"$_\\n\" for grep {$seen{$_}!=3} @order' file1.txt file2.txt",
+          "explanation": "Prints each distinct line present in only one input file, preserving first-seen order and ignoring the presence of a final LF."
         },
         {
           "type": "example",
@@ -1232,8 +1257,8 @@
         {
           "type": "example",
           "text": "print lines matching a pattern and the N lines after it",
-          "command": "perl -ne 'if(/PATTERN/){$c=3} print if $c-->0' file.txt",
-          "explanation": "Like grep -A3, prints matching line plus 3 following lines"
+          "command": "perl -ne 'if (/PATTERN/) { $c=4 } print if $c-->0' file.txt",
+          "explanation": "Prints each matching line and the next three lines, merging overlapping context windows."
         }
       ]
     },
@@ -1246,61 +1271,71 @@
           "type": "example",
           "text": "delete all blank lines from a file in place",
           "command": "perl -i -ne 'print if /\\S/' file.txt",
-          "explanation": "Removes lines that contain only whitespace"
+          "explanation": "Removes lines that contain only whitespace",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "delete trailing whitespace from every line",
-          "command": "perl -i -pe 's/\\s+$/\\n/' file.txt",
-          "explanation": "Strips spaces and tabs at the end of each line"
+          "command": "perl -i -pe 's/[ \\t]+(?=\\r?$)//' file.txt",
+          "explanation": "Removes trailing spaces and tabs in place without changing LF/CRLF line endings.",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "delete leading whitespace from every line",
-          "command": "perl -i -pe 's/^\\s+//' file.txt",
-          "explanation": "Removes spaces and tabs from the beginning of each line"
+          "command": "perl -i -pe 's/^[ \\t]+//' file.txt",
+          "explanation": "Removes leading spaces and tabs in place while retaining blank lines and their line endings.",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "delete both leading and trailing whitespace from lines",
-          "command": "perl -i -pe 's/^\\s+|\\s+$//g' file.txt",
-          "explanation": "Trims whitespace from both ends of every line"
+          "command": "perl -i -pe 's/^[ \\t]+//; s/[ \\t]+(?=\\r?$)//' file.txt",
+          "explanation": "Trims leading and trailing spaces and tabs in place without deleting LF/CRLF record separators.",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "delete all lines that match a pattern from a file",
           "command": "perl -i -ne 'print unless /PATTERN/' file.txt",
-          "explanation": "Removes lines matching the regex in-place"
+          "explanation": "Removes lines matching the regex in-place",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "delete all duplicate lines from a file",
           "command": "perl -i -ne 'print unless $seen{$_}++' file.txt",
-          "explanation": "Keeps only the first occurrence of each unique line"
+          "explanation": "Keeps only the first occurrence of each unique line",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "delete all characters except letters and numbers",
-          "command": "perl -i -pe 's/[^a-zA-Z0-9\\n]//g' file.txt",
-          "explanation": "Strips everything except alphanumeric characters and newlines"
+          "command": "perl -CSD -i -pe 's/[^\\p{L}\\p{N}\\r\\n]//g' file.txt",
+          "explanation": "Retains Unicode letters, Unicode numbers and LF/CRLF line endings in a UTF-8 file, removing spaces and punctuation.",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "delete the last line of a file",
           "command": "perl -i -ne 'print if !eof' file.txt",
-          "explanation": "Prints all lines except when end-of-file is reached"
+          "explanation": "Prints all lines except when end-of-file is reached",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "delete lines from N to end of file",
           "command": "perl -i -ne 'print if $. < 10' file.txt",
-          "explanation": "Keeps only lines before line 10, deleting the rest"
+          "explanation": "Keeps only lines before line 10, deleting the rest",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "squeeze multiple consecutive blank lines into one",
           "command": "perl -i -00pe0 file.txt",
-          "explanation": "Paragraph mode normalizes runs of blank lines to single separators"
+          "explanation": "Paragraph mode normalizes runs of blank lines to single separators",
+          "destructive": true
         }
       ]
     },
@@ -1318,14 +1353,14 @@
         {
           "type": "example",
           "text": "match hex color codes in CSS or HTML files",
-          "command": "perl -ne 'print \"$_\\n\" for /#([0-9a-fA-F]{3}){1,2}\\b/g' style.css",
-          "explanation": "Matches both 3-digit and 6-digit hex color values"
+          "command": "perl -ne 'print \"$_\\n\" for /(#(?:[0-9a-fA-F]{6}|[0-9a-fA-F]{3}))\\b/g' style.css",
+          "explanation": "Extracts complete #RGB and #RRGGBB tokens, retaining the leading hash and all six digits when present."
         },
         {
           "type": "example",
           "text": "match dates in YYYY-MM-DD format",
           "command": "perl -ne 'print \"$_\\n\" for /\\b(\\d{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\\d|3[01]))\\b/g'",
-          "explanation": "Matches ISO 8601 date format with basic validation"
+          "explanation": "Checks YYYY-MM-DD shape with month 01–12 and day 01–31; month lengths and leap years are not validated."
         },
         {
           "type": "example",
@@ -1348,14 +1383,14 @@
         {
           "type": "example",
           "text": "find lines with unbalanced parentheses or brackets",
-          "command": "perl -ne 'print if tr/(// != tr/)// or tr/[// != tr/]//' file.txt",
-          "explanation": "Uses tr to count opening and closing brackets and compares"
+          "command": "perl -ne '@s=(); $bad=0; for $c (/[()\\[\\]]/g) { if ($c eq \"(\" || $c eq \"[\") { push @s,$c } else { $want=$c eq \")\" ? \"(\" : \"[\"; if (!@s || pop(@s) ne $want) { $bad=1; last } } } print if $bad || @s' file.txt",
+          "explanation": "Uses a stack to detect unmatched, incorrectly ordered or incorrectly nested parentheses and square brackets on each line."
         },
         {
           "type": "example",
           "text": "match and highlight words with mixed case like camelCase",
-          "command": "perl -ne 'print if /\\b[a-z]+[A-Z]/' file.txt",
-          "explanation": "Finds words that start lowercase then have an uppercase letter"
+          "command": "perl -ne 'if (/\\b[a-z]+[A-Z]\\w*\\b/) { s/(\\b[a-z]+[A-Z]\\w*\\b)/\\e[31m$1\\e[0m/g; print }' file.txt",
+          "explanation": "Selects lines with simple ASCII camelCase identifiers and wraps those identifiers in red ANSI color escapes."
         }
       ]
     },
@@ -1366,9 +1401,9 @@
       "patterns": [
         {
           "type": "example",
-          "text": "slurp an entire file into a single string",
+          "text": "read an entire file at once and print its byte length",
           "command": "perl -0777 -ne 'print length, \" bytes\\n\"' file.txt",
-          "explanation": "The -0777 flag reads the entire file as one string instead of line by line"
+          "explanation": "Slurps the input into one string and prints its byte length rather than printing the file content."
         },
         {
           "type": "example",
@@ -1408,9 +1443,10 @@
         },
         {
           "type": "example",
-          "text": "edit a file in place and keep numbered backup",
+          "text": "edit a file in place and keep a fixed .bak backup",
           "command": "perl -i.bak -pe 's/foo/bar/g' file.txt",
-          "explanation": "The -i.bak flag saves original as file.txt.bak before modifying"
+          "explanation": "Saves the original as file.txt.bak before modifying file.txt; repeated runs do not create numbered backups.",
+          "destructive": true
         }
       ]
     }

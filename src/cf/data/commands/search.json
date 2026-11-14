@@ -9,27 +9,27 @@
         {
           "type": "example",
           "text": "find all files with a specific extension",
-          "command": "find . -name '*.py'",
+          "command": "find . -type f -name '*.py'",
           "explanation": "Recursively finds all Python files starting from the current directory"
         },
         {
           "type": "example",
           "text": "find files modified in the last 24 hours",
-          "command": "find /var/log -mtime -1",
+          "command": "find /var/log -type f -mtime -1",
           "explanation": "Finds files under /var/log that were modified within the last day"
         },
         {
           "type": "example",
           "text": "find and delete all temporary files",
-          "command": "find . -name '*.tmp' -delete",
+          "command": "find . -type f -name '*.tmp' -delete",
           "explanation": "Finds and removes all .tmp files recursively",
           "destructive": true
         },
         {
           "type": "example",
-          "text": "find files larger than a certain size",
-          "command": "find / -size +100M -type f",
-          "explanation": "Finds regular files larger than 100 megabytes"
+          "text": "find files larger than 100 MiB on the root filesystem while excluding /mnt",
+          "command": "find / -xdev -path /mnt -prune -o -type f -size +100M -print",
+          "explanation": "Finds regular files larger than 100 MiB without crossing filesystem boundaries or entering /mnt"
         },
         {
           "type": "example",
@@ -40,8 +40,8 @@
         {
           "type": "example",
           "text": "find files and execute a command on each one",
-          "command": "find . -name '*.log' -exec gzip {} \\;",
-          "explanation": "Compresses every .log file found"
+          "command": "find . -type f -name '*.log' -exec gzip -- {} \\;",
+          "explanation": "Runs gzip once for each regular .log file; the escaped semicolon terminates -exec"
         },
         {
           "type": "example",
@@ -52,13 +52,13 @@
         {
           "type": "example",
           "text": "skip heavy directories like node_modules while finding source files",
-          "command": "find . -path '*/node_modules' -prune -o -name '*.ts' -print",
+          "command": "find . -path '*/node_modules' -prune -o -type f -name '*.ts' -print",
           "explanation": "-prune stops descending into matched paths; -o chains the real predicate"
         },
         {
           "type": "example",
           "text": "run a command on many files with one process (faster than one exec per file)",
-          "command": "find . -name '*.jpg' -exec jpegoptim {} +",
+          "command": "find . -type f -name '*.jpg' -exec jpegoptim {} +",
           "explanation": "The + form batches paths like xargs for efficiency"
         }
       ]
@@ -125,7 +125,7 @@
         },
         {
           "type": "example",
-          "text": "verify which version of a tool you are running",
+          "text": "find which installation of a tool is selected by PATH",
           "command": "which node",
           "explanation": "Shows the path to confirm you are using the intended installation"
         }
@@ -300,31 +300,31 @@
         {
           "type": "example",
           "text": "find files matching a pattern with a simpler syntax than find",
-          "command": "fd 'config' src/",
+          "command": "fd -t f 'config' src/",
           "explanation": "Finds all files and directories containing 'config' in their name under src/"
         },
         {
           "type": "example",
           "text": "find only files with a specific extension",
-          "command": "fd -e json",
+          "command": "fd -t f -e json",
           "explanation": "Finds all JSON files recursively from the current directory"
         },
         {
           "type": "example",
-          "text": "find hidden files that are normally ignored",
-          "command": "fd -H '.env'",
-          "explanation": "Includes hidden files in the search to find dotenv files"
+          "text": "find hidden dotenv files even when ignore rules exclude them",
+          "command": "fd -H -I -t f '^\\.env$'",
+          "explanation": "Includes hidden and ignored entries, restricts results to files and matches the exact .env name"
         },
         {
           "type": "example",
           "text": "find files and run a command on each one",
-          "command": "fd -e py -x black {}",
+          "command": "fd -t f -e py -x black {}",
           "explanation": "Finds all Python files and runs the black formatter on each"
         },
         {
           "type": "example",
           "text": "find files excluding certain directories",
-          "command": "fd -E node_modules -E .git 'test'",
+          "command": "fd -t f -E node_modules -E .git 'test'",
           "explanation": "Searches for files matching 'test' while excluding node_modules and .git"
         }
       ]
@@ -354,15 +354,16 @@
         },
         {
           "type": "example",
-          "text": "search for a pattern and replace it across files",
-          "command": "rg 'oldFunc' --files-with-matches | xargs sed -i 's/oldFunc/newFunc/g'",
-          "explanation": "Finds files containing 'oldFunc' then uses sed to replace it"
+          "text": "replace all occurrences of a literal string across matching files using GNU tools",
+          "command": "rg -l -0 -F 'oldFunc' . | xargs -0 -r sed -i -- 's/oldFunc/newFunc/g'",
+          "explanation": "Uses NUL-separated paths and GNU xargs -r/GNU sed -i to replace all oldFunc occurrences without corrupting unusual filenames",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "count the number of matches per file",
-          "command": "rg -c 'console.log' src/",
-          "explanation": "Shows how many matches each file contains"
+          "command": "rg --count-matches -F 'console.log' src/",
+          "explanation": "Counts every literal console.log occurrence per file, including multiple occurrences on one line"
         },
         {
           "type": "example",
@@ -417,7 +418,7 @@
         {
           "type": "example",
           "text": "interactively search and select a file to open",
-          "command": "vim $(fzf)",
+          "command": "file=$(fzf) && vim -- \"$file\"",
           "explanation": "Opens fzf to fuzzy-find a file then opens the selection in vim"
         },
         {
@@ -435,14 +436,15 @@
         {
           "type": "example",
           "text": "fuzzy find and switch to a git branch",
-          "command": "git branch | fzf | xargs git checkout",
-          "explanation": "Interactively pick a branch from the list and check it out"
+          "command": "branch=$(git for-each-ref --format='%(refname:short)' refs/heads/ | fzf) && git switch -- \"$branch\"",
+          "explanation": "Lists clean local branch names, quotes the selected name and switches only when selection succeeds"
         },
         {
           "type": "example",
-          "text": "select multiple items from a list",
-          "command": "find . -name '*.log' | fzf -m | xargs rm",
-          "explanation": "Allows selecting multiple log files with Tab then deletes them"
+          "text": "interactively select log files and delete the selected files on Linux",
+          "command": "find . -type f -name '*.log' -print0 | fzf --read0 --print0 -m | xargs -0 -r rm --",
+          "explanation": "Preserves filenames with NUL separators; GNU xargs -r skips rm when no files were selected",
+          "destructive": true
         }
       ]
     },
@@ -496,9 +498,9 @@
         },
         {
           "type": "example",
-          "text": "process a list of inputs from a file in parallel",
+          "text": "download URLs from a file in parallel",
           "command": "parallel -a urls.txt curl -O",
-          "explanation": "Downloads each URL from the file using all available CPU cores"
+          "explanation": "Runs concurrent curl -O downloads for addresses in urls.txt and creates local files using remote filenames"
         },
         {
           "type": "example",

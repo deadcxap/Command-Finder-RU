@@ -51,9 +51,9 @@
         },
         {
           "type": "example",
-          "text": "repair permissions and verify a volume (check first)",
+          "text": "verify the filesystem on the macOS boot volume without repairing it",
           "command": "diskutil verifyVolume /",
-          "explanation": "Runs a read-only check on the boot volume without repairing"
+          "explanation": "Runs a read-only filesystem verification of the selected volume; does not repair permissions"
         },
         {
           "type": "example",
@@ -94,9 +94,9 @@
         },
         {
           "type": "example",
-          "text": "print environment variables launchd injects for your session",
+          "text": "print the PATH environment variable from the launchd context",
           "command": "launchctl getenv PATH",
-          "explanation": "Reads a single variable from the caller's launchd context"
+          "explanation": "Reads only PATH from the caller's launchd context"
         }
       ]
     },
@@ -194,9 +194,9 @@
         },
         {
           "type": "example",
-          "text": "show what would be copied without writing files",
+          "text": "copy a directory while showing each processed path",
           "command": "ditto -V src dst",
-          "explanation": "Verbose mode lists each path as it is processed"
+          "explanation": "Copies src to dst and prints paths as they are processed; -V is not a dry-run"
         }
       ]
     },
@@ -244,9 +244,10 @@
         },
         {
           "type": "example",
-          "text": "install all recommended updates non-interactively",
+          "text": "install all available macOS updates non-interactively",
           "command": "sudo softwareupdate -ia",
-          "explanation": "Installs all available items; may require a reboot"
+          "explanation": "Installs all available updates, not only recommended items; may require a reboot",
+          "destructive": true
         },
         {
           "type": "example",
@@ -294,7 +295,7 @@
         },
         {
           "type": "example",
-          "text": "turn Wi-Fi power on or off",
+          "text": "turn off Wi-Fi power on interface en0",
           "command": "sudo networksetup -setairportpower en0 off",
           "explanation": "Disables wireless; replace en0 with your Wi-Fi interface"
         },
@@ -401,15 +402,15 @@
         },
         {
           "type": "example",
-          "text": "display current power management settings and battery state",
+          "text": "display current macOS power management settings",
           "command": "pmset -g",
-          "explanation": "Shows the active power management profile and battery percentage"
+          "explanation": "Shows the active power management settings; use pmset -g batt for battery state"
         },
         {
           "type": "example",
-          "text": "schedule the mac to wake up at a specific time",
-          "command": "pmset schedule wake \"08:00:00\"",
-          "explanation": "Adds a wake event to the system management controller"
+          "text": "schedule the Mac to wake tomorrow at 8 AM",
+          "command": "sudo pmset schedule wake \"$(date -v+1d '+%m/%d/%y') 08:00:00\"",
+          "explanation": "Uses BSD date to provide tomorrow's date and a complete quoted MM/dd/yy HH:mm:ss wake event"
         }
       ]
     },
@@ -432,9 +433,9 @@
         },
         {
           "type": "example",
-          "text": "check battery health and cycle count",
+          "text": "show the Mac battery charge cycle count",
           "command": "system_profiler SPPowerDataType | grep \"Cycle Count\"",
-          "explanation": "Filters the power profile to extract the battery cycle count"
+          "explanation": "Extracts Cycle Count from the power report without displaying the full battery health report"
         }
       ]
     },

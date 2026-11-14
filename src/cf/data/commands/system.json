@@ -26,7 +26,7 @@
         },
         {
           "type": "example",
-          "text": "find out the operating system name",
+          "text": "find out the operating system kernel name",
           "command": "uname -s",
           "explanation": "Prints the kernel name such as Linux or Darwin"
         }
@@ -342,8 +342,8 @@
         {
           "type": "example",
           "text": "check for hardware detection messages after plugging in a USB device",
-          "command": "dmesg | tail -20",
-          "explanation": "Shows the most recent kernel messages where USB detection appears"
+          "command": "dmesg | grep -i 'usb' | tail -n 20",
+          "explanation": "Shows up to 20 recent kernel log lines mentioning USB"
         },
         {
           "type": "example",
@@ -380,7 +380,7 @@
           "type": "example",
           "text": "reload sysctl settings from the configuration file",
           "command": "sysctl -p",
-          "explanation": "Loads settings from /etc/sysctl.conf to make changes persistent"
+          "explanation": "Applies settings already stored in /etc/sysctl.conf to the running kernel"
         },
         {
           "type": "example",
@@ -403,9 +403,9 @@
         },
         {
           "type": "example",
-          "text": "find out how many CPU cores are available",
-          "command": "lscpu | grep '^CPU(s):'",
-          "explanation": "Filters output to show the total number of CPU cores"
+          "text": "find out the total number of logical CPUs visible to the system",
+          "command": "LC_ALL=C lscpu | grep '^CPU(s):'",
+          "explanation": "Selects the logical CPU count using stable English lscpu field names"
         },
         {
           "type": "example",
@@ -435,18 +435,18 @@
         {
           "type": "example",
           "text": "show disk sizes and filesystem types",
-          "command": "lsblk -f",
-          "explanation": "Displays filesystem type, label, UUID, and mount point for each device"
+          "command": "lsblk -o NAME,SIZE,FSTYPE,LABEL,UUID,MOUNTPOINTS",
+          "explanation": "Displays device sizes together with filesystem type, label, UUID, and mount points"
         },
         {
           "type": "example",
-          "text": "list only physical disks without partitions",
+          "text": "list block devices without their dependency trees",
           "command": "lsblk -d",
-          "explanation": "Shows only top-level disk devices without their partitions"
+          "explanation": "Omits dependent devices such as partitions; virtual or loop devices can still appear"
         },
         {
           "type": "example",
-          "text": "show disk sizes in human-readable bytes",
+          "text": "show exact disk and partition sizes in bytes",
           "command": "lsblk -b",
           "explanation": "Displays device sizes in bytes for precise measurements"
         },
@@ -613,7 +613,7 @@
         },
         {
           "type": "example",
-          "text": "show memory totals only",
+          "text": "show RAM and swap with a combined total row",
           "command": "free -t -h",
           "explanation": "Adds a total row combining RAM and swap"
         },
@@ -650,9 +650,9 @@
         },
         {
           "type": "example",
-          "text": "display memory stats in megabytes for readability",
+          "text": "display vmstat memory statistics in mebibytes",
           "command": "vmstat -S M",
-          "explanation": "Shows memory values in megabytes instead of kilobytes"
+          "explanation": "Uses MiB (1024 × 1024 bytes) for memory amounts"
         },
         {
           "type": "example",
@@ -824,7 +824,7 @@
         {
           "type": "example",
           "text": "show logins from the past 7 days",
-          "command": "last -t $(date -d '7 days ago' '+%Y%m%d%H%M%S')",
+          "command": "last -s \"$(date -d '7 days ago' '+%Y%m%d%H%M%S')\"",
           "explanation": "Shows login records within the last week"
         },
         {
@@ -986,7 +986,7 @@
           "type": "example",
           "text": "check if a specific environment variable is set",
           "command": "printenv MY_VAR && echo 'Set' || echo 'Not set'",
-          "explanation": "Tests whether the variable exists and has a value"
+          "explanation": "Prints the variable value and reports whether it is defined, including an empty string"
         }
       ]
     },
@@ -1034,9 +1034,9 @@
         },
         {
           "type": "example",
-          "text": "add a directory to the system PATH",
+          "text": "append a directory to PATH in the current shell session",
           "command": "export PATH=$PATH:/opt/my-app/bin",
-          "explanation": "Appends a new directory to the existing PATH"
+          "explanation": "Extends the current shell PATH inherited by child processes without editing startup files"
         },
         {
           "type": "example",
@@ -1052,9 +1052,9 @@
         },
         {
           "type": "example",
-          "text": "remove a variable from the environment",
+          "text": "stop exporting a shell variable to child processes",
           "command": "export -n MY_VAR",
-          "explanation": "Unexports the variable so it is no longer passed to child processes"
+          "explanation": "Removes the export attribute while retaining the variable and its value in the current shell"
         }
       ]
     },
@@ -1120,7 +1120,7 @@
         },
         {
           "type": "example",
-          "text": "display all locale categories with their source",
+          "text": "display the locale keywords and values for time formatting",
           "command": "locale -k LC_TIME",
           "explanation": "Shows all keywords and values for the time locale category"
         }

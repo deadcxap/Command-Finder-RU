@@ -69,61 +69,61 @@ class TestSelectWithInput:
         from cf.selector import _select_with_input
 
         with patch("builtins.input", return_value="2"):
-            result = _select_with_input(sample_results, verbose=False)
+            result = _select_with_input(sample_results, verbose=False, has_more=False)
         assert result == "ls -a"
 
     def test_quit_returns_none(self, sample_results):
         from cf.selector import _select_with_input
 
         with patch("builtins.input", return_value="q"):
-            result = _select_with_input(sample_results, verbose=False)
+            result = _select_with_input(sample_results, verbose=False, has_more=False)
         assert result is None
 
     def test_empty_input_returns_none(self, sample_results):
         from cf.selector import _select_with_input
 
         with patch("builtins.input", return_value=""):
-            result = _select_with_input(sample_results, verbose=False)
+            result = _select_with_input(sample_results, verbose=False, has_more=False)
         assert result is None
 
     def test_invalid_number_returns_none(self, sample_results):
         from cf.selector import _select_with_input
 
         with patch("builtins.input", return_value="999"):
-            result = _select_with_input(sample_results, verbose=False)
+            result = _select_with_input(sample_results, verbose=False, has_more=False)
         assert result is None
 
     def test_non_numeric_returns_none(self, sample_results):
         from cf.selector import _select_with_input
 
         with patch("builtins.input", return_value="abc"):
-            result = _select_with_input(sample_results, verbose=False)
+            result = _select_with_input(sample_results, verbose=False, has_more=False)
         assert result is None
 
     def test_eof_returns_none(self, sample_results):
         from cf.selector import _select_with_input
 
         with patch("builtins.input", side_effect=EOFError):
-            result = _select_with_input(sample_results, verbose=False)
+            result = _select_with_input(sample_results, verbose=False, has_more=False)
         assert result is None
 
     def test_keyboard_interrupt_returns_none(self, sample_results):
         from cf.selector import _select_with_input
 
         with patch("builtins.input", side_effect=KeyboardInterrupt):
-            result = _select_with_input(sample_results, verbose=False)
+            result = _select_with_input(sample_results, verbose=False, has_more=False)
         assert result is None
 
     def test_first_selection(self, sample_results):
         from cf.selector import _select_with_input
 
         with patch("builtins.input", return_value="1"):
-            result = _select_with_input(sample_results, verbose=False)
+            result = _select_with_input(sample_results, verbose=False, has_more=False)
         assert result == "ls -la"
 
     def test_last_selection(self, sample_results):
         from cf.selector import _select_with_input
 
         with patch("builtins.input", return_value="3"):
-            result = _select_with_input(sample_results, verbose=False)
+            result = _select_with_input(sample_results, verbose=False, has_more=False)
         assert result == "find . -name '*.txt'"

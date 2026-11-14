@@ -200,31 +200,36 @@
           "type": "example",
           "text": "remove an empty directory",
           "command": "rmdir empty_dir",
-          "explanation": "Deletes a directory only if it contains no files"
+          "explanation": "Deletes a directory only if it contains no files",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "remove nested empty directories from the bottom up",
           "command": "rmdir -p a/b/c",
-          "explanation": "Removes c, then b, then a if each becomes empty after the child is removed"
+          "explanation": "Removes c, then b, then a if each becomes empty after the child is removed",
+          "destructive": true
         },
         {
           "type": "example",
-          "text": "delete an empty folder without error if it doesn't exist",
+          "text": "remove an empty directory while ignoring failures caused by non-empty directories",
           "command": "rmdir --ignore-fail-on-non-empty dir",
-          "explanation": "Suppresses errors when the directory is not empty"
+          "explanation": "Suppresses errors when the directory is not empty",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "clean up a chain of empty parent directories",
           "command": "rmdir -p path/to/empty/dirs",
-          "explanation": "Removes each directory component if it is empty after its child is removed"
+          "explanation": "Removes each directory component if it is empty after its child is removed",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "remove multiple empty directories at once",
           "command": "rmdir dir1 dir2 dir3",
-          "explanation": "Removes several empty directories in a single command"
+          "explanation": "Removes several empty directories in a single command",
+          "destructive": true
         }
       ]
     },
@@ -315,27 +320,27 @@
         },
         {
           "type": "example",
-          "text": "get just the file size in bytes",
-          "command": "stat -f%z file.txt",
-          "explanation": "Uses the format flag to output only the file size"
+          "text": "print the file size in bytes of a file with GNU stat on Linux",
+          "command": "stat -c '%s' file.txt",
+          "explanation": "GNU stat -c '%s' prints only the file size in bytes; BSD/macOS stat uses different flags"
         },
         {
           "type": "example",
-          "text": "check the inode number of a file",
-          "command": "stat -f%i file.txt",
-          "explanation": "Prints the inode number using format specifier"
+          "text": "print the inode number of a file with GNU stat on Linux",
+          "command": "stat -c '%i' file.txt",
+          "explanation": "GNU stat -c '%i' prints only the inode number; BSD/macOS stat uses different flags"
         },
         {
           "type": "example",
-          "text": "display when a file was last modified",
-          "command": "stat -f%m file.txt",
-          "explanation": "Shows the last modification time as a Unix timestamp"
+          "text": "print the modification time as a Unix timestamp of a file with GNU stat on Linux",
+          "command": "stat -c '%Y' file.txt",
+          "explanation": "GNU stat -c '%Y' prints only the modification time as a Unix timestamp; BSD/macOS stat uses different flags"
         },
         {
           "type": "example",
-          "text": "show the permissions of a file in octal",
-          "command": "stat -f%Lp file.txt",
-          "explanation": "Displays the file permissions as an octal number"
+          "text": "print the permissions in octal of a file with GNU stat on Linux",
+          "command": "stat -c '%a' file.txt",
+          "explanation": "GNU stat -c '%a' prints only the permissions in octal; BSD/macOS stat uses different flags"
         }
       ]
     },
@@ -821,33 +826,38 @@
       "patterns": [
         {
           "type": "example",
-          "text": "securely delete a sensitive file so it can't be recovered",
+          "text": "overwrite a sensitive file, finish with zeros, and remove it",
           "command": "shred -vzu file.txt",
-          "explanation": "Overwrites with random data, zeros, then removes the file; -v shows progress"
+          "explanation": "Overwrites the file, adds a zeroing pass and removes it; physical erasure is not guaranteed on every storage/filesystem",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "wipe a file with multiple overwrite passes",
           "command": "shred -n 10 secret.key",
-          "explanation": "Overwrites the file 10 times with random data"
+          "explanation": "Overwrites the file 10 times with random data",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "overwrite a disk device to destroy all data",
           "command": "sudo shred -v /dev/sdb",
-          "explanation": "Overwrites the entire block device with random data"
+          "explanation": "Overwrites the entire block device with random data",
+          "destructive": true
         },
         {
           "type": "example",
-          "text": "securely erase a file and remove it afterward",
+          "text": "overwrite a file and remove its directory entry afterward",
           "command": "shred -u confidential.doc",
-          "explanation": "The -u flag truncates and removes the file after overwriting"
+          "explanation": "The -u flag removes the file after overwriting; copies, snapshots, and storage behavior can retain data",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "overwrite a file with zeros instead of random data before deleting",
           "command": "shred -vzu -n 0 file.txt",
-          "explanation": "Uses -n 0 to skip random passes, -z for a single zero pass, then removes"
+          "explanation": "Uses -n 0 to skip random passes, -z for a single zero pass, then removes",
+          "destructive": true
         }
       ]
     },
@@ -906,15 +916,16 @@
         },
         {
           "type": "example",
-          "text": "create a swap file of a given size",
+          "text": "allocate space for a future swap file",
           "command": "sudo fallocate -l 4G /swapfile",
-          "explanation": "Allocates space for a 4 GB swap file"
+          "explanation": "Allocates a 4 GiB file; mkswap and swapon must be performed separately"
         },
         {
           "type": "example",
           "text": "punch a hole in a file to free up space in the middle",
           "command": "fallocate -p -o 1M -l 5M file.dat",
-          "explanation": "Deallocates space within the file without changing its apparent size"
+          "explanation": "Deallocates space within the file without changing its apparent size",
+          "destructive": true
         },
         {
           "type": "example",

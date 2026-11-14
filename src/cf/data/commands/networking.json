@@ -71,7 +71,7 @@
           "type": "example",
           "text": "limit download speed to avoid saturating bandwidth",
           "command": "wget --limit-rate=500k https://example.com/file.zip",
-          "explanation": "Restricts download speed to 500 kilobytes per second"
+          "explanation": "Limits the download rate to 500 KiB per second (500 × 1024 bytes/s)"
         }
       ]
     },
@@ -195,7 +195,7 @@
           "type": "example",
           "text": "copy a file between two remote servers",
           "command": "scp user1@server1:/path/file.txt user2@server2:/path/",
-          "explanation": "Transfers a file directly between two remote hosts"
+          "explanation": "Copies between remote hosts; the local scp client may relay the transfer"
         },
         {
           "type": "example",
@@ -292,9 +292,9 @@
         },
         {
           "type": "example",
-          "text": "ping with a specific packet size to test MTU",
-          "command": "ping -s 1472 -c 4 192.168.1.1",
-          "explanation": "Sends pings with a specific payload size to test maximum transmission unit"
+          "text": "test a 1500-byte IPv4 path MTU without fragmentation on Linux",
+          "command": "ping -4 -M do -s 1472 -c 4 192.168.1.1",
+          "explanation": "Sends four IPv4 ICMP probes with 1472 payload bytes and the do-not-fragment policy (Linux iputils)"
         },
         {
           "type": "example",
@@ -422,9 +422,9 @@
         },
         {
           "type": "example",
-          "text": "find all DNS record types for a domain",
+          "text": "request a verbose DNS ANY response for a domain",
           "command": "host -a example.com",
-          "explanation": "Queries for all record types including A, AAAA, MX, NS, and TXT"
+          "explanation": "Sends an ANY query; the DNS server determines which records it returns"
         },
         {
           "type": "example",
@@ -496,9 +496,9 @@
         },
         {
           "type": "example",
-          "text": "find which process is using a specific port",
-          "command": "ss -tlnp | grep :8080",
-          "explanation": "Filters listening sockets to find what is using port 8080"
+          "text": "find the process listening on TCP port 8080",
+          "command": "ss -tlnp 'sport = :8080'",
+          "explanation": "Filters listening TCP sockets by the exact local port 8080 and requests process details"
         },
         {
           "type": "example",
@@ -508,9 +508,9 @@
         },
         {
           "type": "example",
-          "text": "list all UDP sockets with process information",
+          "text": "list bound UDP sockets with process information",
           "command": "ss -ulnp",
-          "explanation": "Shows all UDP listening sockets with associated processes"
+          "explanation": "Shows UDP sockets selected by the listening/bound filter and available process details"
         }
       ]
     },
@@ -521,9 +521,9 @@
       "patterns": [
         {
           "type": "example",
-          "text": "show all active network connections and listening ports",
+          "text": "show listening TCP and UDP ports with process IDs",
           "command": "netstat -tulnp",
-          "explanation": "Lists all TCP and UDP connections with port numbers and process IDs"
+          "explanation": "Lists listening TCP and bound UDP sockets with numeric addresses and available process information"
         },
         {
           "type": "example",
@@ -545,9 +545,9 @@
         },
         {
           "type": "example",
-          "text": "continuously display network connections every 2 seconds",
+          "text": "continuously refresh the network connection listing",
           "command": "netstat -c",
-          "explanation": "Refreshes and displays connection info continuously"
+          "explanation": "Enables continuous netstat output using the utility default refresh interval"
         }
       ]
     },
@@ -564,7 +564,7 @@
         },
         {
           "type": "example",
-          "text": "bring a network interface up or down",
+          "text": "bring the eth0 network interface up",
           "command": "ip link set eth0 up",
           "explanation": "Enables the eth0 network interface"
         },
@@ -595,7 +595,7 @@
       "patterns": [
         {
           "type": "example",
-          "text": "show all network interfaces and their IP addresses",
+          "text": "show active network interfaces and their IP addresses",
           "command": "ifconfig",
           "explanation": "Displays configuration for all active network interfaces"
         },
@@ -690,7 +690,7 @@
           "type": "example",
           "text": "scan a host for open ports",
           "command": "nmap 192.168.1.1",
-          "explanation": "Performs a TCP SYN scan of the most common 1000 ports"
+          "explanation": "Scans the most common TCP ports using SYN or TCP connect scanning depending on available privileges"
         },
         {
           "type": "example",
@@ -743,9 +743,9 @@
         },
         {
           "type": "example",
-          "text": "capture only HTTP traffic on port 80",
+          "text": "capture packets using port 80 on all interfaces",
           "command": "tcpdump -i any port 80",
-          "explanation": "Captures packets on port 80 across all interfaces"
+          "explanation": "Selects packets by source or destination port 80 without validating the application protocol"
         },
         {
           "type": "example",
@@ -755,9 +755,9 @@
         },
         {
           "type": "example",
-          "text": "capture DNS traffic to debug name resolution",
+          "text": "capture DNS-port traffic to debug ordinary name resolution",
           "command": "tcpdump -i any port 53",
-          "explanation": "Captures all DNS query and response packets"
+          "explanation": "Captures port 53 packets; DNS over HTTPS or TLS on other ports is not included"
         }
       ]
     },
@@ -768,27 +768,28 @@
       "patterns": [
         {
           "type": "example",
-          "text": "list all current firewall rules",
+          "text": "list firewall rules in the default filter table",
           "command": "iptables -L -n -v",
-          "explanation": "Displays all rules with numeric addresses and packet counters"
+          "explanation": "Displays filter-table chains with numeric addresses, packet counters, and byte counters"
         },
         {
           "type": "example",
-          "text": "block all incoming traffic from a specific IP",
+          "text": "append a firewall rule to drop incoming packets from an IP",
           "command": "iptables -A INPUT -s 10.0.0.5 -j DROP",
-          "explanation": "Appends a rule to drop all packets from the given source IP"
+          "explanation": "Appends a DROP rule to INPUT; earlier matching rules may already accept or reject a packet"
         },
         {
           "type": "example",
-          "text": "allow incoming SSH connections on port 22",
+          "text": "append an INPUT rule allowing TCP traffic to SSH port 22",
           "command": "iptables -A INPUT -p tcp --dport 22 -j ACCEPT",
-          "explanation": "Permits inbound TCP traffic on port 22"
+          "explanation": "Adds an ACCEPT rule for destination TCP port 22 after existing INPUT rules"
         },
         {
           "type": "example",
-          "text": "flush all firewall rules to start fresh",
+          "text": "flush rules in all chains of the default filter table",
           "command": "iptables -F",
-          "explanation": "Removes all rules from all chains"
+          "explanation": "Removes rules from filter-table chains without changing chain policies or other tables",
+          "destructive": true
         },
         {
           "type": "example",
@@ -805,9 +806,9 @@
       "patterns": [
         {
           "type": "example",
-          "text": "enable the firewall with default deny incoming",
+          "text": "enable UFW with its currently configured policies",
           "command": "ufw enable",
-          "explanation": "Activates the firewall; default policy denies incoming traffic"
+          "explanation": "Activates the existing UFW configuration without selecting a new default incoming policy"
         },
         {
           "type": "example",
@@ -823,9 +824,9 @@
         },
         {
           "type": "example",
-          "text": "allow traffic from a specific IP address only",
+          "text": "add a firewall rule allowing traffic from a specific IP address",
           "command": "ufw allow from 192.168.1.100",
-          "explanation": "Permits all connections from the specified IP"
+          "explanation": "Adds an allow rule for the source IP without making it the only permitted source"
         },
         {
           "type": "example",
@@ -842,9 +843,9 @@
       "patterns": [
         {
           "type": "example",
-          "text": "find which process is listening on a specific port",
-          "command": "lsof -i :8080",
-          "explanation": "Shows the process bound to port 8080"
+          "text": "find processes listening on TCP port 8080",
+          "command": "lsof -nP -iTCP:8080 -sTCP:LISTEN",
+          "explanation": "Selects listening TCP sockets on port 8080 and prints numeric hosts and ports"
         },
         {
           "type": "example",
@@ -953,9 +954,9 @@
         },
         {
           "type": "example",
-          "text": "check if a Redis server is responding",
+          "text": "test a TCP connection to the local Redis port",
           "command": "telnet localhost 6379",
-          "explanation": "Connects to the default Redis port to verify the service is running"
+          "explanation": "Opens an interactive TCP connection to localhost:6379 without sending a Redis health check"
         },
         {
           "type": "example",
@@ -1040,9 +1041,9 @@
       "patterns": [
         {
           "type": "example",
-          "text": "enable passwordless SSH login to a server",
+          "text": "install an SSH public key for key-based login to a server",
           "command": "ssh-copy-id user@server.example.com",
-          "explanation": "Appends your default ~/.ssh/id*.pub to remote ~/.ssh/authorized_keys"
+          "explanation": "Adds a selected public key to remote authorized_keys; private-key passphrases and server policy still apply"
         },
         {
           "type": "example",

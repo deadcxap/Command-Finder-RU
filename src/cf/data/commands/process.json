@@ -27,8 +27,8 @@
         {
           "type": "example",
           "text": "list processes sorted by memory usage",
-          "command": "ps aux --sort=-%mem | head -20",
-          "explanation": "Shows top 20 processes consuming the most memory"
+          "command": "ps aux --sort=-%mem | head -n 21",
+          "explanation": "Shows the header and up to 20 processes with the highest memory percentages"
         },
         {
           "type": "example",
@@ -133,7 +133,7 @@
         },
         {
           "type": "example",
-          "text": "send a hangup signal to reload a daemon's configuration",
+          "text": "request a daemon configuration reload with SIGHUP when supported",
           "command": "kill -HUP 1234",
           "explanation": "Sends SIGHUP which many daemons interpret as a config reload request"
         },
@@ -161,31 +161,36 @@
           "type": "example",
           "text": "terminate all processes with a given name",
           "command": "killall firefox",
-          "explanation": "Sends SIGTERM to every process named firefox"
+          "explanation": "Sends SIGTERM to every process named firefox",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "force kill all instances of a program",
           "command": "killall -9 python3",
-          "explanation": "Sends SIGKILL to every process named python3"
+          "explanation": "Sends SIGKILL to every process named python3",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "kill processes owned by a specific user",
           "command": "killall -u john nginx",
-          "explanation": "Terminates all nginx processes belonging to user john"
+          "explanation": "Terminates all nginx processes belonging to user john",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "ask for confirmation before killing each process",
           "command": "killall -i node",
-          "explanation": "Interactively prompts before sending the signal to each matching node process"
+          "explanation": "Interactively prompts before sending the signal to each matching node process",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "wait for all killed processes to die",
           "command": "killall -w apache2",
-          "explanation": "Sends SIGTERM and waits until all apache2 processes have actually terminated"
+          "explanation": "Sends SIGTERM and waits until all apache2 processes have actually terminated",
+          "destructive": true
         }
       ]
     },
@@ -196,27 +201,31 @@
       "patterns": [
         {
           "type": "example",
-          "text": "kill processes whose names match a pattern",
+          "text": "terminate processes whose full command lines match a pattern",
           "command": "pkill -f 'python.*server'",
-          "explanation": "Terminates processes whose full command line matches the pattern"
+          "explanation": "Terminates processes whose full command line matches the pattern",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "send a signal to all processes owned by a user",
           "command": "pkill -u bob",
-          "explanation": "Sends SIGTERM to every process running under user bob"
+          "explanation": "Sends SIGTERM to every process running under user bob",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "kill the newest instance of a process",
           "command": "pkill -n chrome",
-          "explanation": "Sends SIGTERM only to the most recently started chrome process"
+          "explanation": "Sends SIGTERM only to the most recently started chrome process",
+          "destructive": true
         },
         {
           "type": "example",
           "text": "kill the oldest instance of a process",
           "command": "pkill -o worker",
-          "explanation": "Sends SIGTERM only to the longest-running worker process"
+          "explanation": "Sends SIGTERM only to the longest-running worker process",
+          "destructive": true
         },
         {
           "type": "example",
@@ -375,9 +384,9 @@
         },
         {
           "type": "example",
-          "text": "suspend a running foreground process then background it",
+          "text": "resume suspended job 1 in the background",
           "command": "bg %1",
-          "explanation": "After pressing Ctrl-Z to suspend, sends job 1 to background"
+          "explanation": "Continues an already suspended shell job in the background; suspend it with Ctrl-Z first"
         },
         {
           "type": "example",
@@ -579,7 +588,7 @@
         },
         {
           "type": "example",
-          "text": "split the current tmux pane horizontally",
+          "text": "split the current tmux pane into left and right panes",
           "command": "tmux split-window -h",
           "explanation": "Divides the current pane into two side-by-side panes"
         },
@@ -616,15 +625,15 @@
         },
         {
           "type": "example",
-          "text": "run a command repeatedly until it succeeds then stop",
+          "text": "repeat a command until its output changes",
           "command": "watch -g curl -s http://localhost:8080/health",
-          "explanation": "Keeps running until the output changes, indicating the service responded"
+          "explanation": "Runs the request repeatedly and exits when its displayed output changes, regardless of exit status"
         },
         {
           "type": "example",
-          "text": "monitor the number of connections to a port",
-          "command": "watch -n 1 'ss -tn state established | wc -l'",
-          "explanation": "Updates every second with the count of established TCP connections"
+          "text": "monitor established TCP connections to local port 8080",
+          "command": "watch -n 1 \"ss -Htn state established 'sport = :8080' | wc -l\"",
+          "explanation": "Counts established TCP sockets with local port 8080 once per second, excluding the ss header"
         }
       ]
     },
@@ -637,7 +646,7 @@
           "type": "example",
           "text": "run a command with a 30-second time limit",
           "command": "timeout 30s ./slow-script.sh",
-          "explanation": "Kills the script if it has not finished within 30 seconds"
+          "explanation": "Sends SIGTERM after 30 seconds if the script is still running; the script may handle or ignore the signal"
         },
         {
           "type": "example",
@@ -779,7 +788,7 @@
           "type": "example",
           "text": "find which process is using a specific port",
           "command": "lsof -i :8080",
-          "explanation": "Shows the process listening on or connected to port 8080"
+          "explanation": "Shows processes using port 8080, including listening sockets and established connections"
         },
         {
           "type": "example",
@@ -801,7 +810,7 @@
         },
         {
           "type": "example",
-          "text": "list all open TCP connections",
+          "text": "list established TCP connections and their processes",
           "command": "lsof -iTCP -sTCP:ESTABLISHED",
           "explanation": "Shows all established TCP connections on the system"
         }
@@ -820,15 +829,16 @@
         },
         {
           "type": "example",
-          "text": "find and kill all processes using a mount point",
-          "command": "fuser -km /mnt/usb",
-          "explanation": "Kills every process accessing the USB mount so it can be unmounted"
+          "text": "kill processes using the filesystem mounted at /mnt/usb",
+          "command": "fuser -k -m -M /mnt/usb",
+          "explanation": "Requires an actual mount point and sends SIGKILL to processes using that filesystem",
+          "destructive": true
         },
         {
           "type": "example",
-          "text": "check which process is listening on a TCP port",
+          "text": "find processes using local TCP port 80",
           "command": "fuser -n tcp 80",
-          "explanation": "Shows the PID of the process bound to TCP port 80"
+          "explanation": "Shows PIDs using the selected local TCP port without restricting the socket state to LISTEN"
         },
         {
           "type": "example",
@@ -896,13 +906,14 @@
           "type": "example",
           "text": "remove all cron jobs for the current user",
           "command": "crontab -r",
-          "explanation": "Deletes the entire crontab for the current user"
+          "explanation": "Deletes the entire crontab for the current user",
+          "destructive": true
         },
         {
           "type": "example",
-          "text": "schedule a script to run every day at midnight",
-          "command": "echo '0 0 * * * /home/user/backup.sh' | crontab -",
-          "explanation": "Sets up a single cron job that runs backup.sh at 00:00 daily"
+          "text": "append a daily midnight backup job while preserving existing cron entries",
+          "command": "(crontab -l 2>/dev/null; printf '%s\\n' '0 0 * * * /home/user/backup.sh') | crontab -",
+          "explanation": "Lists existing entries and appends the new job before installing the combined user crontab"
         },
         {
           "type": "example",
@@ -919,9 +930,9 @@
       "patterns": [
         {
           "type": "example",
-          "text": "schedule a command to run at a specific time today",
+          "text": "schedule a command for the next occurrence of 14:30",
           "command": "echo '/usr/local/bin/report.sh' | at 14:30",
-          "explanation": "Runs report.sh at 2:30 PM today"
+          "explanation": "Runs the script at the next 14:30, tomorrow if that time has already passed today"
         },
         {
           "type": "example",
@@ -995,7 +1006,7 @@
           "type": "example",
           "text": "run a command with resource limits using systemd",
           "command": "systemd-run --scope -p MemoryMax=512M ./memory-hungry-app",
-          "explanation": "Limits the application to 512 MB of memory via a systemd scope"
+          "explanation": "Runs the application in a systemd scope with a MemoryMax limit of 512 MiB"
         },
         {
           "type": "example",
@@ -1043,9 +1054,9 @@
       "patterns": [
         {
           "type": "example",
-          "text": "run a command on specific cpu cores",
+          "text": "run a command on selected logical CPUs",
           "command": "taskset -c 0,1 command",
-          "explanation": "Restricts the execution of the command to CPU cores 0 and 1"
+          "explanation": "Restricts CPU affinity to logical processors 0 and 1, which may share a physical core"
         },
         {
           "type": "example",
