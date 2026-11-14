@@ -43,4 +43,4 @@ cf = "cf.cli:app"
 where = ["src"]
 
 [tool.setuptools.package-data]
-cf = ["data/commands/*.json", "data/model.json"]
+cf = ["data/commands/*.json", "data/model.json", "data/cf.bash"]

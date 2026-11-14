@@ -3,8 +3,8 @@ set -euo pipefail
 
 PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
 VENV_DIR="$PROJECT_DIR/.venv"
-SHELL_FILE="$PROJECT_DIR/shell/cf.zsh"
-ZSHRC="${ZDOTDIR:-$HOME}/.zshrc"
+SHELL_FILE="$PROJECT_DIR/shell/cf.bash"
+BASHRC="${CF_BASHRC:-$HOME/.bashrc}"
 LINK_PATH="$HOME/.local/bin/cf"
 DEFAULT_DATA_DIR="$HOME/.local/share/cf-ru"
 PURGE=false
@@ -25,8 +25,8 @@ done
 case "$PROJECT_DIR" in
     /mnt/[a-zA-Z]/*) error 'Запускайте удаление из файловой системы Linux/WSL.' ;;
 esac
-case "$ZSHRC" in
-    /mnt/*) error 'Файл .zshrc должен находиться в файловой системе Linux/WSL.' ;;
+case "$BASHRC" in
+    /mnt/*) error 'Файл .bashrc должен находиться в файловой системе Linux/WSL.' ;;
 esac
 
 if [[ -L "$LINK_PATH" ]]; then
@@ -43,19 +43,19 @@ fi
 printf -v SOURCE_LINE 'source %q' "$SHELL_FILE"
 MARKER_LINE="# cf-ru: $SOURCE_LINE"
 OLD_SOURCE_LINE="source $SHELL_FILE"
-if [[ -f "$ZSHRC" ]] && { grep -Fqx -- "$SOURCE_LINE" "$ZSHRC" || grep -Fqx -- "$OLD_SOURCE_LINE" "$ZSHRC"; }; then
-    cp -- "$ZSHRC" "$ZSHRC.bak.cf-ru"
-    TEMP_RC="$(mktemp "$ZSHRC.cf-ru.XXXXXX")"
+if [[ -f "$BASHRC" ]] && { grep -Fqx -- "$SOURCE_LINE" "$BASHRC" || grep -Fqx -- "$OLD_SOURCE_LINE" "$BASHRC"; }; then
+    cp -- "$BASHRC" "$BASHRC.bak.cf-ru"
+    TEMP_RC="$(mktemp "$BASHRC.cf-ru.XXXXXX")"
     if grep -Fvx -e "$SOURCE_LINE" -e "$OLD_SOURCE_LINE" -e "$MARKER_LINE" \
-        "$ZSHRC.bak.cf-ru" > "$TEMP_RC"; then
+        "$BASHRC.bak.cf-ru" > "$TEMP_RC"; then
         :
     else
         FILTER_STATUS=$?
-        [[ "$FILTER_STATUS" -eq 1 ]] || error 'Не удалось обновить .zshrc; резервная копия сохранена.'
+        [[ "$FILTER_STATUS" -eq 1 ]] || error 'Не удалось обновить .bashrc; резервная копия сохранена.'
     fi
-    cat "$TEMP_RC" > "$ZSHRC"
+    cat "$TEMP_RC" > "$BASHRC"
     rm -- "$TEMP_RC"
-    info "Интеграция удалена; резервная копия: $ZSHRC.bak.cf-ru"
+    info "Интеграция удалена; резервная копия: $BASHRC.bak.cf-ru"
 fi
 
 if [[ -d "$VENV_DIR" || -L "$VENV_DIR" ]]; then

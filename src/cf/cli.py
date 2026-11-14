@@ -52,7 +52,7 @@ def main(
     force: Annotated[bool, typer.Option("--force", help="Пересоздать индекс; с --prepare-model пересобрать модель")] = False,
     verbose: Annotated[bool, typer.Option("--verbose", "-v", help="Показать расстояния и сведения о поиске")] = False,
     stats: Annotated[bool, typer.Option("--stats", help="Показать статистику базы команд")] = False,
-    install_shell: Annotated[bool, typer.Option("--install-shell", help="Показать инструкции интеграции с zsh")] = False,
+    install_shell: Annotated[bool, typer.Option("--install-shell", help="Напечатать скрипт интеграции с Bash")] = False,
     version: Annotated[bool, typer.Option("--version", callback=version_callback, is_eager=True, help="Показать версию")] = False,
 ):
     """Поиск консольных команд по описанию задачи."""
@@ -183,46 +183,6 @@ def _do_seed(force: bool):
 
 
 def _print_shell_instructions():
-    # Locate shell/ dir relative to the cf package source
-    shell_dir = Path(__file__).resolve().parent.parent.parent / "shell"
+    from importlib.resources import files
 
-    print(f"# cf - Shell Integration")
-    print(f"# Add the following to your ~/.zshrc:")
-    print(f"")
-    print(f"# Option 1: Source the cf.zsh file directly")
-    print(f"source {shell_dir}/cf.zsh")
-    print(f"")
-    print(f"# Option 2: Manual setup - paste this into ~/.zshrc:")
-    print(SHELL_SNIPPET)
-
-
-SHELL_SNIPPET = r"""
-cf() {
-    local result
-    result=$(command cf --print "$@" </dev/tty 2>/dev/tty)
-    if [[ -n "$result" ]]; then
-        print -z "$result"
-    fi
-}
-
-cf-widget() {
-    local query="$BUFFER"
-    local result
-    if [[ -z "$query" ]]; then
-        zle -I
-        echo -n "cf> " > /dev/tty
-        read -r query < /dev/tty
-        [[ -z "$query" ]] && return
-    fi
-    result=$(command cf --print "$query" </dev/tty 2>/dev/tty)
-    if [[ -n "$result" ]]; then
-        BUFFER="$result"
-        CURSOR=$#BUFFER
-    fi
-    zle reset-prompt
-}
-zle -N cf-widget
-bindkey '^F' cf-widget
-
-# Then restart your shell or run: source ~/.zshrc
-"""
+    print((files("cf") / "data/cf.bash").read_text(encoding="utf-8"), end="")

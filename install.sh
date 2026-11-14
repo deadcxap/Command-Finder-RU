@@ -3,8 +3,8 @@ set -euo pipefail
 
 PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
 VENV_DIR="$PROJECT_DIR/.venv"
-SHELL_FILE="$PROJECT_DIR/shell/cf.zsh"
-ZSHRC="${ZDOTDIR:-$HOME}/.zshrc"
+SHELL_FILE="$PROJECT_DIR/shell/cf.bash"
+BASHRC="${CF_BASHRC:-$HOME/.bashrc}"
 LINK_DIR="$HOME/.local/bin"
 LINK_PATH="$LINK_DIR/cf"
 BUILD_DIR=""
@@ -23,11 +23,15 @@ for argument in "$@"; do
     case "$argument" in
         --shell) WITH_SHELL=true ;;
         --help|-h)
-            printf 'Установка Command Finder RU\n\nИспользование: ./install.sh [--shell]\n  --shell  добавить интеграцию в .zshrc\n'
+            printf 'Установка Command Finder RU\n\nИспользование: ./install.sh [--shell]\n  --shell  добавить интеграцию в .bashrc\n'
             exit 0 ;;
         *) error "Неизвестный параметр: $argument" ;;
     esac
 done
+
+if "$WITH_SHELL" && (( BASH_VERSINFO[0] < 4 )); then
+    error 'Для интеграции нужен Bash 4 или новее. Запустите установщик современным Bash или без --shell.'
+fi
 
 case "$PROJECT_DIR" in
     /mnt/[a-zA-Z]/*) error "Разместите проект в файловой системе Linux, например в ~/projects." ;;
@@ -100,16 +104,16 @@ esac
 printf -v SOURCE_LINE 'source %q' "$SHELL_FILE"
 MARKER_LINE="# cf-ru: $SOURCE_LINE"
 if "$WITH_SHELL"; then
-    case "$ZSHRC" in
-        /mnt/*) error 'Файл .zshrc должен находиться в файловой системе Linux/WSL.' ;;
+    case "$BASHRC" in
+        /mnt/*) error 'Файл .bashrc должен находиться в файловой системе Linux/WSL.' ;;
     esac
-    mkdir -p "$(dirname "$ZSHRC")"
-    if [[ ! -f "$ZSHRC" ]] || ! grep -Fqx -- "$SOURCE_LINE" "$ZSHRC"; then
-        printf '\n%s\n%s\n' "$MARKER_LINE" "$SOURCE_LINE" >> "$ZSHRC"
+    mkdir -p "$(dirname "$BASHRC")"
+    if [[ ! -f "$BASHRC" ]] || ! grep -Fqx -- "$SOURCE_LINE" "$BASHRC"; then
+        printf '\n%s\n%s\n' "$MARKER_LINE" "$SOURCE_LINE" >> "$BASHRC"
     fi
-    info "Интеграция подключена в $ZSHRC. Перезапустите терминал."
+    info "Интеграция подключена в $BASHRC. Перезапустите терминал."
 else
-    info "Для интеграции zsh добавьте в .zshrc: $SOURCE_LINE"
+    info "Для интеграции Bash добавьте в .bashrc: $SOURCE_LINE"
 fi
 
 info 'Установка завершена. Пример: cf "найди большие файлы"'

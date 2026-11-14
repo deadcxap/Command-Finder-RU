@@ -29,7 +29,7 @@ class TestInstallShell:
         result = runner.invoke(app, ["--install-shell"])
         assert result.exit_code == 0
         assert "cf" in result.output
-        assert "zshrc" in result.output.lower() or "source" in result.output.lower()
+        assert "bashrc" in result.output.lower() or "source" in result.output.lower()
 
 
 class TestSeedCommand:

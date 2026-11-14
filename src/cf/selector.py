@@ -17,10 +17,11 @@ def _confirm_destructive(r: SearchResult) -> bool:
         f"   Для подтверждения введите «да» или «yes»: "
     )
     try:
-        with open("/dev/tty", "r+") as tty:
-            tty.write(msg)
-            tty.flush()
-            answer = tty.readline().strip().lower()
+        with open("/dev/tty", "w", encoding="utf-8") as tty_out, \
+                open("/dev/tty", "r", encoding="utf-8") as tty_in:
+            tty_out.write(msg)
+            tty_out.flush()
+            answer = tty_in.readline().strip().lower()
     except OSError:
         print("Не удалось запросить подтверждение: терминал недоступен.", file=sys.stderr)
         return False
