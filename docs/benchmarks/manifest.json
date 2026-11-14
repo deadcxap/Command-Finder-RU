@@ -1,0 +1,410 @@
+{
+  "schema_version": 1,
+  "status": "ready",
+  "suite_id": "20261114T040058Z-86201b8d",
+  "created_at_utc": "2026-11-14T04:00:58.674404+00:00",
+  "machine": {
+    "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+    "cpu_count": 2,
+    "cpu_model": "AMD Ryzen 7 5700X3D 8-Core Processor",
+    "memory_total_bytes": 8328941568,
+    "cpu_affinity": [
+      0,
+      1
+    ]
+  },
+  "onnx_ready_path": ".benchmarks/onnx-ready.json",
+  "profiles_path": ".benchmarks/pinned-profiles.json",
+  "profiles_sha256": "ed1485462881bab3dc2bd28c4c212284af597a94e94ee2455db9ee1be8284125",
+  "suite_code_sha256": "c169b051aebe80e84e5d65ee88eefd4eda6ba92e1241715cd71d2d9b3437f6b5",
+  "pipeline_sha256": {
+    "config.py": "a9214e21bedc9d8de8737978cd49e896ec4459c7a86a44242666d20d8ac74014",
+    "db.py": "23da22c4f6ecfa519dd4747d7a271dcc9e323e3cc4768b55838cc88dc7d4545f",
+    "embeddings.py": "10fe337c13e99966f56f3cc2a490ab7c0b8b770b51b8b026d3200e407b13a659",
+    "search.py": "bd3d5a9d93df09d5a304c9b0a9fc425407a3e1197208e754b26b20e1b3585eca",
+    "seed.py": "5245089821bceb8604abcac856cafddcd31007fe9c1900650533c6ec79c69def"
+  },
+  "benchmark_sha256": {
+    "runner.py": "2432d6edf1592bab30ba560b4b2fd85a422ad7a4b7d32d35aca13f82f96e086a",
+    "worker.py": "42e37af2526258c015f90b872199745c6875daeaae8097ebb5b68bfdf76c3496",
+    "metrics.py": "ea935b47bec7e9b23b3183bc071f9f47a4efc03c1001160036d8f7d96cccba78",
+    "onnx_encoder.py": "f99689c33e7b3c74f66eb8447b07e6f984229910329afda1b5033125cadbe54e"
+  },
+  "native_baseline_info": {
+    "schema_version": 1,
+    "status": "ready",
+    "artifact_type": "native-project-token-encoder",
+    "model": "all-MiniLM-L6-v2",
+    "requested_revision": "main",
+    "resolved_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+    "native_export_function": "cf.embeddings.export_onnx",
+    "onnx_dir": ".benchmarks/native-original-onnx/20261114T035745Z-30553652/onnx",
+    "device": "cpu",
+    "precision": "fp32",
+    "download_allowed": false,
+    "max_tokens": 128,
+    "intra_op_num_threads": 4,
+    "inter_op_num_threads": 1,
+    "graph_shapes": {
+      "input_ids": [
+        "batch",
+        "seq"
+      ],
+      "attention_mask": [
+        "batch",
+        "seq"
+      ],
+      "token_type_ids": [
+        "batch",
+        "seq"
+      ],
+      "token_embeddings": [
+        "batch",
+        "seq",
+        384
+      ]
+    },
+    "query_checks": [
+      {
+        "text": "найди большие файлы в текущем каталоге",
+        "shape": [
+          384
+        ],
+        "finite": true,
+        "norm": 1.0,
+        "cosine_vs_st": 1.0,
+        "max_abs_error": 1.5227124094963074e-07
+      },
+      {
+        "text": "find large files in the current directory",
+        "shape": [
+          384
+        ],
+        "finite": true,
+        "norm": 1.0,
+        "cosine_vs_st": 1.0,
+        "max_abs_error": 1.043081283569336e-07
+      }
+    ],
+    "all_file_sha256": {
+      "model.onnx": "958d7cb4a8ac9269bdf8c43686caca1edfb1cfd2d1fa0bff625f96664bd07fcb",
+      "special_tokens_map.json": "5d5b662e421ea9fac075174bb0688ee0d9431699900b90662acd44b2a350503a",
+      "tokenizer.json": "da0e79933b9ed51798a3ae27893d3c5fa4a201126cef75586296df9b4d2c62a0",
+      "tokenizer_config.json": "c128cee663cc23ce44cf253471d2a538d1623c7c3ead5e465b13519a017ca1f0",
+      "vocab.txt": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3"
+    },
+    "model_bytes": 90403795,
+    "whole_corpus_seed_run": false
+  },
+  "settings": {
+    "primary_baseline_id": "original-native-en",
+    "threads": 2,
+    "native_original_threads": 4,
+    "repeats": 3,
+    "cold_repeats": 3,
+    "max_tokens": 128,
+    "batch_size": 32,
+    "top_k": 7,
+    "languages": [
+      "ru",
+      "en"
+    ],
+    "offline": true,
+    "quality_in_scope_pairs": 90,
+    "out_of_scope_pairs": 6,
+    "notes": [
+      "All model measurements run sequentially on the same WSL CPU.",
+      "Quality is evaluated on 90 in-scope tasks; latency includes all 96 cases.",
+      "Controlled encoders use ru2: 3892 descriptions. Original English dictionary has 1946.",
+      "Native baseline follows first CLI setup: ST256/batch128 seeding, then original ONNX128/fixed padding/four-thread query loader.",
+      "Cold means a fresh process; Linux filesystem caches are not cleared.",
+      "Cold medians use three fresh processes per language; cache-only medians are separate.",
+      "Measures search core and process startup, without interactive terminal UI.",
+      "An additional separately identified E5 query/passage prefix sensitivity run follows the fixed primary 22-run matrix."
+    ]
+  },
+  "runs": [
+    {
+      "id": "original-native-en",
+      "profile": "original",
+      "backend": "project",
+      "precision": "native-onnx",
+      "corpus": "original",
+      "role": "baseline",
+      "onnx_dir": ".benchmarks/native-original-onnx/20261114T035745Z-30553652/onnx",
+      "project_initial_seed": true,
+      "threads": 4,
+      "status": "ready",
+      "report_path": ".benchmarks/runs/original-original-0a40f5ec3c-736d0dbd/report.json"
+    },
+    {
+      "id": "original-fallback-en",
+      "profile": "original",
+      "backend": "project",
+      "precision": "pytorch",
+      "corpus": "original",
+      "role": "baseline",
+      "threads": 2,
+      "status": "ready",
+      "report_path": ".benchmarks/runs/original-original-a77c7d6c72-6fe69350/report.json"
+    },
+    {
+      "id": "original-english-pytorch",
+      "profile": "original",
+      "backend": "sentence-transformers",
+      "precision": "pytorch",
+      "corpus": "original",
+      "role": "corpus-control",
+      "threads": 2,
+      "status": "ready",
+      "report_path": ".benchmarks/runs/original-original-aa8cd9cc92-a34fa002/report.json"
+    },
+    {
+      "id": "original-english-fp32",
+      "profile": "original",
+      "backend": "onnx",
+      "precision": "fp32",
+      "corpus": "original",
+      "role": "corpus-control",
+      "threads": 2,
+      "onnx_dir": ".benchmarks/onnx/original/20261114T032709Z-000a64c7/fp32",
+      "status": "ready",
+      "report_path": ".benchmarks/runs/original-original-c20669eefb-633f3dbc/report.json"
+    },
+    {
+      "id": "original-ru2-pytorch",
+      "profile": "original",
+      "backend": "sentence-transformers",
+      "precision": "pytorch",
+      "corpus": "ru2",
+      "role": "controlled",
+      "threads": 2,
+      "status": "ready",
+      "report_path": ".benchmarks/runs/original-ru2-ee7b8b704d-48aaa50d/report.json"
+    },
+    {
+      "id": "original-ru2-fp32",
+      "profile": "original",
+      "backend": "onnx",
+      "precision": "fp32",
+      "corpus": "ru2",
+      "role": "controlled",
+      "threads": 2,
+      "onnx_dir": ".benchmarks/onnx/original/20261114T032709Z-000a64c7/fp32",
+      "status": "ready",
+      "report_path": ".benchmarks/runs/original-ru2-54173a94a9-32dacea1/report.json"
+    },
+    {
+      "id": "original-ru2-int8",
+      "profile": "original",
+      "backend": "onnx",
+      "precision": "int8",
+      "corpus": "ru2",
+      "role": "controlled",
+      "threads": 2,
+      "onnx_dir": ".benchmarks/onnx/original/20261114T032709Z-000a64c7/int8",
+      "status": "ready",
+      "report_path": ".benchmarks/runs/original-ru2-b9cb4c7142-65d18028/report.json"
+    },
+    {
+      "id": "tiny2-ru2-pytorch",
+      "profile": "tiny2",
+      "backend": "sentence-transformers",
+      "precision": "pytorch",
+      "corpus": "ru2",
+      "role": "controlled",
+      "threads": 2,
+      "status": "ready",
+      "report_path": ".benchmarks/runs/tiny2-ru2-4e9dfe8eae-77757e3b/report.json"
+    },
+    {
+      "id": "tiny2-ru2-fp32",
+      "profile": "tiny2",
+      "backend": "onnx",
+      "precision": "fp32",
+      "corpus": "ru2",
+      "role": "controlled",
+      "threads": 2,
+      "onnx_dir": ".benchmarks/onnx/tiny2/20261114T032709Z-000a64c7/fp32",
+      "status": "ready",
+      "report_path": ".benchmarks/runs/tiny2-ru2-5a8af9b3d0-1b4fd927/report.json"
+    },
+    {
+      "id": "tiny2-ru2-int8",
+      "profile": "tiny2",
+      "backend": "onnx",
+      "precision": "int8",
+      "corpus": "ru2",
+      "role": "controlled",
+      "threads": 2,
+      "onnx_dir": ".benchmarks/onnx/tiny2/20261114T032709Z-000a64c7/int8",
+      "status": "ready",
+      "report_path": ".benchmarks/runs/tiny2-ru2-67ea261e19-c418c7c0/report.json"
+    },
+    {
+      "id": "tiny-retriever-ru2-pytorch",
+      "profile": "tiny-retriever",
+      "backend": "sentence-transformers",
+      "precision": "pytorch",
+      "corpus": "ru2",
+      "role": "controlled",
+      "threads": 2,
+      "status": "ready",
+      "report_path": ".benchmarks/runs/tiny-retriever-ru2-5b3fa4e305-9996555d/report.json"
+    },
+    {
+      "id": "tiny-retriever-ru2-fp32",
+      "profile": "tiny-retriever",
+      "backend": "onnx",
+      "precision": "fp32",
+      "corpus": "ru2",
+      "role": "controlled",
+      "threads": 2,
+      "onnx_dir": ".benchmarks/onnx/tiny-retriever/20261114T032709Z-000a64c7/fp32",
+      "status": "ready",
+      "report_path": ".benchmarks/runs/tiny-retriever-ru2-1d26c09ad0-33232803/report.json"
+    },
+    {
+      "id": "tiny-retriever-ru2-int8",
+      "profile": "tiny-retriever",
+      "backend": "onnx",
+      "precision": "int8",
+      "corpus": "ru2",
+      "role": "controlled",
+      "threads": 2,
+      "onnx_dir": ".benchmarks/onnx/tiny-retriever/20261114T032709Z-000a64c7/int8",
+      "status": "ready",
+      "report_path": ".benchmarks/runs/tiny-retriever-ru2-0e5033bc03-c7efa6fb/report.json"
+    },
+    {
+      "id": "mini-retriever-ru2-pytorch",
+      "profile": "mini-retriever",
+      "backend": "sentence-transformers",
+      "precision": "pytorch",
+      "corpus": "ru2",
+      "role": "controlled",
+      "threads": 2,
+      "status": "ready",
+      "report_path": ".benchmarks/runs/mini-retriever-ru2-fd95738565-c5a69b70/report.json"
+    },
+    {
+      "id": "mini-retriever-ru2-fp32",
+      "profile": "mini-retriever",
+      "backend": "onnx",
+      "precision": "fp32",
+      "corpus": "ru2",
+      "role": "controlled",
+      "threads": 2,
+      "onnx_dir": ".benchmarks/onnx/mini-retriever/20261114T032709Z-000a64c7/fp32",
+      "status": "ready",
+      "report_path": ".benchmarks/runs/mini-retriever-ru2-b64500cb27-424cfca2/report.json"
+    },
+    {
+      "id": "mini-retriever-ru2-int8",
+      "profile": "mini-retriever",
+      "backend": "onnx",
+      "precision": "int8",
+      "corpus": "ru2",
+      "role": "controlled",
+      "threads": 2,
+      "onnx_dir": ".benchmarks/onnx/mini-retriever/20261114T032709Z-000a64c7/int8",
+      "status": "ready",
+      "report_path": ".benchmarks/runs/mini-retriever-ru2-43b6311d91-d5c7f017/report.json"
+    },
+    {
+      "id": "user2-small-ru2-pytorch",
+      "profile": "user2-small",
+      "backend": "sentence-transformers",
+      "precision": "pytorch",
+      "corpus": "ru2",
+      "role": "controlled",
+      "threads": 2,
+      "status": "ready",
+      "report_path": ".benchmarks/runs/user2-small-ru2-f9f3749d6f-a78866f2/report.json"
+    },
+    {
+      "id": "user2-small-ru2-fp32",
+      "profile": "user2-small",
+      "backend": "onnx",
+      "precision": "fp32",
+      "corpus": "ru2",
+      "role": "controlled",
+      "threads": 2,
+      "onnx_dir": ".benchmarks/onnx/user2-small/20261114T032709Z-000a64c7/fp32",
+      "status": "ready",
+      "report_path": ".benchmarks/runs/user2-small-ru2-442d430f87-aed6bac4/report.json"
+    },
+    {
+      "id": "user2-small-ru2-int8",
+      "profile": "user2-small",
+      "backend": "onnx",
+      "precision": "int8",
+      "corpus": "ru2",
+      "role": "controlled",
+      "threads": 2,
+      "onnx_dir": ".benchmarks/onnx/user2-small/20261114T032709Z-000a64c7/int8",
+      "status": "ready",
+      "report_path": ".benchmarks/runs/user2-small-ru2-834832798e-5e4ad0a3/report.json"
+    },
+    {
+      "id": "e5-small-ru2-pytorch",
+      "profile": "e5-small",
+      "backend": "sentence-transformers",
+      "precision": "pytorch",
+      "corpus": "ru2",
+      "role": "controlled",
+      "threads": 2,
+      "status": "ready",
+      "report_path": ".benchmarks/runs/e5-small-ru2-9987cd7f99-1ff6886c/report.json"
+    },
+    {
+      "id": "e5-small-ru2-fp32",
+      "profile": "e5-small",
+      "backend": "onnx",
+      "precision": "fp32",
+      "corpus": "ru2",
+      "role": "controlled",
+      "threads": 2,
+      "onnx_dir": ".benchmarks/onnx/e5-small/20261114T032709Z-000a64c7/fp32",
+      "status": "ready",
+      "report_path": ".benchmarks/runs/e5-small-ru2-bc1a75bb28-54b56456/report.json"
+    },
+    {
+      "id": "e5-small-ru2-int8",
+      "profile": "e5-small",
+      "backend": "onnx",
+      "precision": "int8",
+      "corpus": "ru2",
+      "role": "controlled",
+      "threads": 2,
+      "onnx_dir": ".benchmarks/onnx/e5-small/20261114T032709Z-000a64c7/int8",
+      "status": "ready",
+      "report_path": ".benchmarks/runs/e5-small-ru2-5829e160b7-fb49a7ed/report.json"
+    },
+    {
+      "id": "e5-passage-ru2-pytorch",
+      "profile": "e5-passage",
+      "backend": "sentence-transformers",
+      "precision": "pytorch",
+      "corpus": "ru2",
+      "role": "prefix-control",
+      "threads": 2,
+      "status": "ready",
+      "report_path": ".benchmarks/runs/e5-passage-ru2-612ee71dbb-0d0a5bc5/report.json"
+    }
+  ],
+  "ready_count": 23,
+  "completed_at_utc": "2026-11-14T04:27:12.267685+00:00",
+  "extensions": [
+    {
+      "name": "E5 query/passage sensitivity control",
+      "script_sha256": "173fff6eaf0b5a7621de236a9c189f0f5af7574b665ed2b9c4882baabeb4c9b4",
+      "script_path": ".benchmarks/suites/20261114T040058Z-86201b8d/e5-prefix-control.py",
+      "profiles_path": ".benchmarks/suites/20261114T040058Z-86201b8d/e5-passage-profiles.json",
+      "profiles_sha256": "3564f04cba2baef78db49c9e235f383fd11df38ddaae70cf337fc1c6c47123f0",
+      "reason": "Both query/query paraphrase retrieval and query/passage asymmetric retrieval are documented E5 modes; compare both without changing the primary six-model profiles.",
+      "source": "https://huggingface.co/intfloat/multilingual-e5-small#faq"
+    }
+  ]
+}

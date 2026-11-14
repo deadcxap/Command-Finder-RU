@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "verified_at_utc": "2026-11-14T04:30:12.256694+00:00",
+  "recommended_candidate": "mini-retriever-ru2-int8",
+  "basis": "Best observed balance of Russian/English Hit@3, peak search RSS and latency on this test set; not a deployment change.",
+  "baseline": "original-native-en",
+  "quality_tasks_per_language": 90,
+  "timing_queries_per_language": 96,
+  "russian_uncached_speedup": 5.273650573401704,
+  "russian_cold_speedup": 1.3515734331689726,
+  "russian_peak_rss_reduction_fraction": 0.37912376651939506,
+  "russian_cold_ms": {
+    "baseline": 564.7311199973046,
+    "candidate": 417.83236199989915
+  },
+  "errors_to_review": [
+    {
+      "case_id": "process-03",
+      "query": "PID 1234 нужно заморозить, не завершать: пусть останется для продолжения потом.",
+      "expected": [
+        "kill -STOP 1234"
+      ],
+      "ranking": [
+        "kill 1234",
+        "top -p 1234",
+        "kill -9 1234",
+        "pip freeze > requirements.txt",
+        "tail -f --pid=1234 app.log",
+        "pstree -H 1234",
+        "kill -STOP 1234"
+      ],
+      "top1": "kill 1234"
+    },
+    {
+      "case_id": "process-06",
+      "query": "Какие задания cron сейчас стоят у моего пользователя? Открой только список, не редактор.",
+      "expected": [
+        "crontab -l"
+      ],
+      "ranking": [
+        "crontab -e",
+        "crontab -l",
+        "crontab -r",
+        "sudo crontab -u www-data -l",
+        "groups",
+        "w -s",
+        "cd /"
+      ],
+      "top1": "crontab -e"
+    },
+    {
+      "case_id": "docker-01",
+      "query": "Покажи Docker-контейнеры, которые живы сейчас; остановленные в этот список не включай.",
+      "expected": [
+        "docker ps"
+      ],
+      "ranking": [
+        "docker ps -a",
+        "docker ps",
+        "docker rm mycontainer",
+        "docker logs mycontainer",
+        "docker build -t myapp:latest .",
+        "docker exec mycontainer ls /app",
+        "docker rm -f mycontainer"
+      ],
+      "top1": "docker ps -a"
+    }
+  ],
+  "limitations": [
+    "Gold uses exact command templates and is not exhaustive; valid unlisted alternatives can count as misses.",
+    "One task changes Hit@3 by about 1.11 percentage points; small differences need a larger independently reviewed dataset.",
+    "Full speedup versus native includes dynamic padding/runtime/thread differences; see same-backend controls for encoder comparisons.",
+    "Negation/opposite flags remain unreliable; mini 8-bit forbidden@1 is 9/50 Russian and 8/50 English.",
+    "Cold starts have a fresh process but warm Linux filesystem caches. These are measurements on this WSL host."
+  ]
+}
