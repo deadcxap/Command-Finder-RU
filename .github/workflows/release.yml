@@ -113,7 +113,7 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python }}
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         with:
           name: release-assets
           path: ${{ runner.temp }}/release-assets
@@ -162,7 +162,7 @@ jobs:
       RELEASE_TAG: ${{ github.ref_name }}
       IS_PRERELEASE: ${{ needs.version.outputs.prerelease }}
     steps:
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         with:
           name: release-assets
           path: release-assets
