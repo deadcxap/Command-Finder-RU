@@ -132,7 +132,23 @@ class BashShellTests(unittest.TestCase):
             'CF_TEST_RESULT': self.result, 'CF_TEST_STATUS': '0', 'CF_TEST_MENU': '0',
             'CF_TEST_REAL_MENU': '0', 'CF_TEST_DESTRUCTIVE': '0', 'CF_TEST_PYTHON': sys.executable,
             'CF_TEST_SELECTOR': str(self.directory / 'real_selector.py'),
+            'CF_TEST_SLOW_CANCEL': '0',
+            'CF_TEST_SLOW_PROGRAM': str(self.directory / 'slow_cancel.py'),
         }
+        (self.directory / 'slow_cancel.py').write_text('''import signal, sys, termios, time
+with open('/dev/tty') as tty:
+    original = termios.tcgetattr(tty.fileno())
+    active = termios.tcgetattr(tty.fileno())
+    active[3] &= ~(termios.ICANON | termios.ECHO)
+    termios.tcsetattr(tty.fileno(), termios.TCSANOW, active)
+    try:
+        print('__CF_SLOW_MENU__', file=sys.stderr, flush=True)
+        signal.pause()
+    finally:
+        time.sleep(0.2)
+        termios.tcsetattr(tty.fileno(), termios.TCSANOW, original)
+        print('__CF_CLEANUP_DONE__', file=sys.stderr, flush=True)
+''')
         (self.directory / 'real_selector.py').write_text('''import os, sys
 from cf.search import SearchResult
 from cf.selector import select_command
@@ -146,6 +162,9 @@ print('__CF_MOCK_DONE__', file=sys.stderr)
         executable = self.directory / 'cf'
         executable.write_text('''#!/bin/bash
 printf '%s\\0' "$@" > "$CF_TEST_ARGUMENTS"
+if [[ $CF_TEST_SLOW_CANCEL == 1 ]]; then
+    exec "$CF_TEST_PYTHON" "$CF_TEST_SLOW_PROGRAM"
+fi
 if [[ $CF_TEST_REAL_MENU == 1 ]]; then
     exec "$CF_TEST_PYTHON" "$CF_TEST_SELECTOR"
 fi
@@ -292,6 +311,81 @@ exit "$CF_TEST_STATUS"
         terminal.expect(DONE)
         self.assertEqual(terminal.snapshot(), (self.result, len(self.result)))
         self.assertFalse(self.sentinel.exists())
+
+    def test_ctrl_c_waits_for_menu_cleanup_before_restoring_readline(self):
+        terminal = self.terminal(CF_TEST_SLOW_CANCEL='1')
+        terminal.send('покажи файлы'.encode() + b'\x06')
+        terminal.expect(b'__CF_SLOW_MENU__')
+        terminal.send(b'\x03')
+        terminal.expect(b'__CF_CLEANUP_DONE__')
+        terminal.expect(PROMPT)
+        self.assertEqual(terminal.snapshot(), ('покажи файлы', len('покажи файлы')))
+        terminal.send(b'abc\x1b[DZ')
+        self.assertEqual(terminal.snapshot(), ('abZc', 3))
+        terminal.send(b"export CF_TEST_SLOW_CANCEL=0\r")
+        terminal.expect(PROMPT)
+        terminal.send('покажи файлы'.encode() + b'\x06')
+        terminal.expect(DONE)
+        self.assertEqual(terminal.snapshot(), (self.result, len(self.result)))
+
+    def test_ctrl_c_in_real_menu_and_confirmation_keeps_readline_usable(self):
+        for mode in ('emacs', 'vi'):
+            for empty in (False, True):
+                for destructive in ('0', '1'):
+                    with self.subTest(mode=mode, empty=empty, destructive=destructive):
+                        terminal = self.terminal(mode=mode, CF_TEST_REAL_MENU='1',
+                                                 CF_TEST_DESTRUCTIVE=destructive)
+                        query = 'покажи файлы'.encode()
+                        terminal.send(b'\x06' if empty else query + b'\x06')
+                        if empty:
+                            terminal.expect(b'cf> ')
+                            terminal.send(query + b'\r')
+                        terminal.expect('Выберите команду'.encode())
+                        if destructive == '1':
+                            terminal.send(b'\r')
+                            terminal.expect(b'[y/N]')
+                        terminal.send(b'\x03')
+                        terminal.expect(PROMPT)
+                        original = '' if empty else query.decode()
+                        self.assertEqual(terminal.snapshot(), (original, len(original)))
+                        terminal.send(b'abc\x1b[DZ')
+                        self.assertEqual(terminal.snapshot(), ('abZc', 3))
+                        terminal.send(query + b'\x06')
+                        terminal.expect('Выберите команду'.encode())
+                        terminal.send(b'\r')
+                        if destructive == '1':
+                            terminal.expect(b'[y/N]')
+                            terminal.send(b'n\r')
+                        terminal.expect(DONE)
+                        expected = query.decode() if destructive == '1' else self.result
+                        self.assertEqual(terminal.snapshot(), (expected, len(expected)))
+                        self.assertFalse(self.sentinel.exists())
+                        terminal.close()
+
+    def test_ctrl_c_restores_sigint_handler_and_keeps_shell_with_strict_options_alive(self):
+        for custom_trap in (False, True):
+            for empty in (False, True):
+                with self.subTest(custom_trap=custom_trap, empty=empty):
+                    terminal = self.terminal(CF_TEST_SLOW_CANCEL='1')
+                    if custom_trap:
+                        terminal.send(b'''cf_test_int() { printf '__USER_INT__\\n'; }; trap cf_test_int INT\r''')
+                        terminal.expect(PROMPT)
+                    terminal.send(b'set -eu\r')
+                    terminal.expect(PROMPT)
+                    terminal.send(b'\x06' if empty else b'query\x06')
+                    terminal.expect(b'cf> ' if empty else b'__CF_SLOW_MENU__')
+                    terminal.send(b'\x03')
+                    terminal.expect(PROMPT)
+                    expected = '' if empty else 'query'
+                    self.assertEqual(terminal.snapshot(), (expected, len(expected)))
+                    terminal.send(b'''trap -p INT; printf '__SHELL_ALIVE__\\n'\r''')
+                    output = terminal.expect(b'__SHELL_ALIVE__\r\n')
+                    if custom_trap:
+                        self.assertIn(b"trap -- 'cf_test_int' SIGINT\r\n", output)
+                    else:
+                        self.assertNotIn(b'trap --', output)
+                    terminal.expect(PROMPT)
+                    terminal.close()
 
     def test_real_python_selector_accepts_enter_without_executing_the_selected_command(self):
         terminal = self.terminal(CF_TEST_REAL_MENU='1')
