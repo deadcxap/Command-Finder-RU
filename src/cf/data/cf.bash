@@ -35,25 +35,32 @@ _cf_bash_widget() {
     local cf_original_line=$READLINE_LINE
     local cf_original_point=$READLINE_POINT
     local cf_query=$READLINE_LINE
-    local cf_result cf_exit_status=0
+    local cf_result= cf_exit_status=0
     local cf_tty_state cf_read_status=0
+    local cf_saved_sigint cf_interrupted=0
 
     cf_tty_state=$(stty -g < /dev/tty) || return 0
-    stty icanon echo icrnl < /dev/tty || return 0
-    if [[ -z "$cf_query" ]]; then
-        printf '\ncf> ' > /dev/tty
-        IFS= read -r cf_query < /dev/tty || cf_read_status=$?
-        if (( cf_read_status != 0 )) || [[ -z "$cf_query" ]]; then
-            stty "$cf_tty_state" < /dev/tty || return 0
-            READLINE_LINE=$cf_original_line
-            READLINE_POINT=$cf_original_point
-            return 0
+    cf_saved_sigint=$(trap -p INT)
+    trap 'cf_interrupted=1' INT
+    if stty icanon echo icrnl < /dev/tty; then
+        if [[ -z "$cf_query" ]]; then
+            cf_query=$(
+                printf '\ncf> ' > /dev/tty
+                IFS= read -r cf_query < /dev/tty && printf '%s' "$cf_query"
+            ) || cf_read_status=$?
+        fi
+        if (( cf_read_status == 0 && cf_interrupted == 0 )) && [[ -n "$cf_query" ]]; then
+            cf_result=$(command cf --print -- "$cf_query" </dev/tty 2>/dev/tty) || cf_exit_status=$?
         fi
     fi
 
-    cf_result=$(command cf --print -- "$cf_query" </dev/tty 2>/dev/tty) || cf_exit_status=$?
-    stty "$cf_tty_state" < /dev/tty || return 0
-    if (( cf_exit_status == 0 )) && [[ -n "$cf_result" ]]; then
+    stty "$cf_tty_state" < /dev/tty || cf_exit_status=$?
+    if [[ -n "$cf_saved_sigint" ]]; then
+        eval "$cf_saved_sigint"
+    else
+        trap - INT
+    fi
+    if (( cf_exit_status == 0 && cf_interrupted == 0 )) && [[ -n "$cf_result" ]]; then
         READLINE_LINE=$cf_result
         READLINE_POINT=${#READLINE_LINE}
     else
